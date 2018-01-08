@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.zhongtie.work.MainActivity">
+
+
+    <ImageView
+        android:id="@+id/login_src"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_zhongtie" />
+
+    <TextView
+        android:id="@+id/login_company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_src"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_zhongtie"
+        android:textSize="16sp"
+        android:text="中铁电气化局集团有限公司城铁公司"
+        android:textColor="@color/base_color"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/login_name_view"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/login_company_name"
+        android:layout_marginTop="40dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="54dp"
+        android:paddingRight="54dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_cem="true"
+            android:src="@drawable/login_icon_user" />
+
+        <EditText
+            android:id="@+id/login_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:background="#00000000"
+            android:hint="用户名"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/login_name_view"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="#e1e1e1" />
+
+    <LinearLayout
+        android:id="@+id/login_password_view"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/login_name_view"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="54dp"
+        android:paddingRight="54dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_cem="true"
+            android:src="@drawable/login_icon_passwork" />
+
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:background="#00000000"
+            android:inputType="textPassword"
+            android:hint="密码"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/login_password_view"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="#e1e1e1" />
+
+    <TextView
+        android:id="@+id/login"
+        android:layout_width="150dp"
+        android:layout_height="44dp"
+        android:layout_below="@id/login_password_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:background="@drawable/btn_login"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="@string/login" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_login_btm"
+        android:scaleType="centerCrop"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
