@@ -46,6 +46,7 @@
         <activity android:name=".ui.login.LoginActivity"/>
         <activity android:name=".ui.main.MainActivity"/>
         <activity android:name=".ui.scan.ScanQRCodeActivity"/>
+        <activity android:name=".ui.safesupervision.SafeSupervisionActivity" />
     </application>
 
 </manifest>

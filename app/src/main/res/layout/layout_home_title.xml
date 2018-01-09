@@ -36,9 +36,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_color"
             android:textSize="14sp"
-            tools:text="西南分公司"/>
+            android:text="西南分公司"/>
 
         <ImageView
+            android:id="@+id/arrowView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

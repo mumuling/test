@@ -3,7 +3,6 @@ package com.zhongtie.work.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.LayoutRes;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 
 import com.zhongtie.work.list.AdapterDataObserver;
 import com.zhongtie.work.list.OnRefreshListener;
@@ -41,7 +39,7 @@ public class SwipeRefreshRecyclerView extends FanShuPtrFrameLayout implements Ad
             refreshComplete();
             if (onRefreshListeners != null) {
                 for (OnRefreshListener onRefreshListener : onRefreshListeners) {
-                    onRefreshListener.onRefresh();
+                    onRefreshListener.onRefreshComplete();
                 }
             }
         } else {

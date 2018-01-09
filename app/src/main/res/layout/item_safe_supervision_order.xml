@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="@drawable/item_white_select_bg"
+    android:orientation="vertical">
+
+    <com.zhongtie.work.widget.BaseImageView
+        android:id="@+id/safe_order_head"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="12dp"
+        app:placeholderImage="@drawable/portrait"
+        app:placeholderImageScaleType="centerCrop"
+        app:progressBarImage="@drawable/portrait"
+        app:roundAsCircle="true" />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:src="@drawable/arrow_next" />
+
+    <TextView
+        android:id="@+id/safe_order_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="4dp"
+        android:layout_toLeftOf="@id/arrow"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14dp"
+        tools:text="新进展" />
+
+    <TextView
+        android:id="@+id/safe_order_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_toRightOf="@id/safe_order_head"
+        android:textSize="14dp"
+        tools:text="刘梅" />
+
+    <TextView
+        android:id="@+id/safe_order_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/safe_order_name"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_toRightOf="@id/safe_order_head"
+        android:textColor="@color/text_color2"
+        android:textSize="10dp"
+        tools:text="渝中区某地 单位名称单位名称单位名称单..." />
+</RelativeLayout>

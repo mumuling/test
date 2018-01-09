@@ -1,36 +1,25 @@
 package com.zhongtie.work.ui.main;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.ListPopupWindow;
-import android.support.v7.widget.PopupMenu;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
+import android.widget.ImageView;
 
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
-import com.zhongtie.work.list.OnListPopupListener;
+import com.zhongtie.work.model.CompanyEntity;
 import com.zhongtie.work.ui.base.BaseActivity;
-import com.zhongtie.work.ui.main.adapter.PopupWindowAdapter;
 import com.zhongtie.work.ui.scan.ScanQRCodeActivity;
 import com.zhongtie.work.util.ListPopupWindowUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Chaek
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements CompanySelectPopup.OnCompanySelectListener {
 
 
     private android.widget.LinearLayout mLvHomeMenu;
@@ -40,6 +29,9 @@ public class MainActivity extends BaseActivity {
     private android.widget.LinearLayout mQrCodeScan;
     private android.widget.LinearLayout mWordFeed;
     private android.widget.FrameLayout mFragmentContent;
+
+    private ImageView mArrowView;
+
 
     public DrawerLayout mDrawerLayout;
 
@@ -60,6 +52,8 @@ public class MainActivity extends BaseActivity {
         mFragmentContent = findViewById(R.id.fragment_content);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
+        mArrowView = (ImageView) findViewById(R.id.arrowView);
+
         //点击按钮打开菜单
         mLvHomeMenu.setOnClickListener(v -> mDrawerLayout.openDrawer(Gravity.LEFT));
 
@@ -67,6 +61,12 @@ public class MainActivity extends BaseActivity {
 
         findViewById(R.id.safe).setOnClickListener(this::showSafePopup);
         findViewById(R.id.quality).setOnClickListener(this::showQualityPopup);
+        mLvHomeTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSelectCompany();
+            }
+        });
     }
 
     /**
@@ -87,6 +87,22 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private void showSelectCompany() {
+        List<CompanyEntity> companyEntityList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            CompanyEntity companyEntity = new CompanyEntity();
+            companyEntity.setCompanyCode(i);
+            companyEntity.setName("公司" + i);
+            companyEntityList.add(companyEntity);
+        }
+
+        CompanySelectPopup companySelectPopup = new CompanySelectPopup(this, companyEntityList);
+        companySelectPopup.showAsDropDown(mUserCompanyName);
+        companySelectPopup.setOnCompanySelectListener(this);
+        companySelectPopup.setOnDismissListener(() -> mArrowView.animate().rotation(0).setDuration(300).start());
+        mArrowView.animate().rotation(180).setDuration(300).start();
+    }
+
 
     @Override
     protected void initData() {
@@ -100,5 +116,10 @@ public class MainActivity extends BaseActivity {
                 .fragment(MenuFragment.class)
                 .single(false)
                 .into(R.id.nav_view);
+    }
+
+    @Override
+    public void onSelectCompany(CompanyEntity companyEntity, int position) {
+        mUserCompanyName.setText(companyEntity.getName());
     }
 }

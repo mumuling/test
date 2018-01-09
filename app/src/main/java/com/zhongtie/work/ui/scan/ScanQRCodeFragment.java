@@ -31,7 +31,7 @@ public class ScanQRCodeFragment extends BaseFragment implements ZXingScannerView
 
     @Override
     public void initView() {
-        mScannerView.setBorderColor(Util.getColor(R.color.app_color));
+        mScannerView.setBorderColor(Util.getColor(R.color.white));
 //        mScannerView.setBorderStrokeWidth(dip2px(80));
 //        mScannerView.setBorderLineLength(dip2px(80));
     }

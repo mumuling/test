@@ -12,13 +12,10 @@ import com.zhongtie.work.base.adapter.BaseXDiffCallback;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonListUpdateCallBack;
 import com.zhongtie.work.list.OnRefreshListener;
-import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
 
 
 /**
@@ -95,14 +92,7 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
      */
     private void obtainPageData(int page) {
         indexPage = page;
-        Observable<Object> observable = refreshRecyclerViewObservable.obtainPageData(page);
-        if (observable != null) {
-            observable.map(o -> (List<Object>) o)
-                    .subscribe(ts -> setListData(ts),
-                            throwable ->
-                                    onFail(HttpException.getErrorMessage(throwable)));
-
-        }
+        refreshRecyclerViewObservable.fetchPageListData(page);
     }
 
     @Override
@@ -217,7 +207,7 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
     }
 
     public interface RefreshPageConfig {
-        Observable obtainPageData(int page);
+        void fetchPageListData(int page);
 
         RecyclerView.Adapter createAdapter();
     }

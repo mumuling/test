@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:divider="@drawable/divider_vertical"
+            android:dividerPadding="10dp"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="单位："
+                    android:textColor="@color/text_color2"
+                    android:textSize="16dp" />
+
+
+                <TextView
+                    android:id="@+id/create_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:hint="事件时间"
+                    android:textColor="@color/text_color2"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="地点："
+                    android:textColor="@color/text_color2"
+                    android:textSize="16dp" />
+
+
+                <EditText
+                    android:id="@+id/create_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:hint="事件地点"
+                    android:textColorHint="@color/text_color3"
+                    android:textColor="@color/text_color2"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/create_company_select"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:id="@+id/create_company_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="单位："
+                    android:textColor="@color/text_color2"
+                    android:textSize="16dp" />
+
+
+                <TextView
+                    android:id="@+id/create_company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/create_company_title"
+                    android:hint="单位名称"
+                    android:textColor="@color/text_color2"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/arrow_next" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/create_company_work_select"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:id="@+id/create_company_work_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="劳务公司："
+                    android:textColor="@color/text_color2"
+                    android:textSize="16dp" />
+
+
+                <TextView
+                    android:id="@+id/create_company_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/create_company_work_title"
+                    android:hint="选择劳务公司"
+                    android:textColor="@color/text_color2"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/arrow_next" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="25dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="问题类型"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/c"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="25dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="描述"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/create_describe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edit_describe_bg"
+                android:gravity="top|left"
+                android:hint="请输入整改要求"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/text_color2"
+                android:textColorHint="@color/text_color3"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="25dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="整改要求"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/create_modify_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edit_describe_bg"
+                android:gravity="top|left"
+                android:hint="请输入整改要求"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/text_color2"
+                android:textColorHint="@color/text_color3"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            >
+
+            <TextView
+                android:id="@+id/examine_user_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="检查人"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/examine_user_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/examine_user_title"
+                android:text="向右滑查看更多"
+                android:textColor="@color/text_color2"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/add_examine_user"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/plus" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/check_examine_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/examine_user_title" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            >
+
+            <TextView
+                android:id="@+id/upload_pic_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="传图片"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/upload_pic_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/upload_pic_title"
+                android:text="上传照片数量最多12张"
+                android:textColor="@color/text_color2"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/upload_pic"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_cam" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/upload_pic_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/upload_pic_title" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            >
+
+            <TextView
+                android:id="@+id/check_user_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="审核人"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/check_user_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/check_user_title"
+                android:text="审核人最多2人"
+                android:textColor="@color/text_color2"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/add_check_user"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/plus" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/check_user_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/check_user_title" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/responsible_user_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="责任人"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/responsible_user_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/responsible_user_title"
+                android:text="向右滑查看更多"
+                android:textColor="@color/text_color2"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/add_responsible_user"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/plus" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/check_responsible_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/responsible_user_title" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/consult_user_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/info_title_img"
+                android:text="责任人"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/consult_user_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@id/consult_user_title"
+                android:text="向右滑查看更多"
+                android:textColor="@color/text_color2"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/add_consult_user"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/plus" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/check_consult_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/consult_user_title" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/create_safe"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:text="提交"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

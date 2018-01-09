@@ -7,8 +7,10 @@ import android.util.Pair;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.main.adapter.HomeItemView;
+import com.zhongtie.work.ui.safesupervision.SafeSupervisionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import io.reactivex.Observable;
  * Date: 2018/1/9
  */
 
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment implements OnRecyclerItemClickListener {
     private RecyclerView mList;
 
     private List<Pair<String, Integer>> mHomeItemList = new ArrayList<>();
@@ -42,6 +44,7 @@ public class MainFragment extends BaseFragment {
         fetchHomeItemList();
         mAdapter = new CommonAdapter(mHomeItemList).register(HomeItemView.class);
         mList.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(this);
     }
 
     /**
@@ -58,4 +61,15 @@ public class MainFragment extends BaseFragment {
         arr.recycle();
     }
 
+    @Override
+    public void onClick(Object t, int index) {
+        Pair<String, Integer> pair = mHomeItemList.get(index);
+        switch (pair.first) {
+            case "安全督导":
+                SafeSupervisionActivity.newInstance(getAppContext());
+                break;
+        }
+
+
+    }
 }

@@ -47,6 +47,7 @@
 
     <color name="app_color">#1F70B2</color>
     <color name="app_color_text">#1F70B2</color>
+    <color name="app_color_menu_bg">#3390C2</color>
     <color name="app_color_bg">#d9f5ec</color>
     <color name="background">#f7f7f7</color>
     <color name="text_color2">#666666</color>

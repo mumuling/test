@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#fff1f1f1"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/select_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="2017-09-21" />
+
+        <ImageView
+            android:id="@+id/select_date_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_day" />
+    </RelativeLayout>
+
+    <com.zhongtie.work.widget.CaterpillarIndicator
+        android:id="@+id/project_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        app:slide_caterpillar="false"
+        app:slide_footer_color="@color/app_color"
+        app:slide_footer_line_height="2dp"
+        app:slide_item_width="200dp"
+        app:slide_round="false"
+        app:slide_text_color="@color/text_color"
+        app:slide_text_color_normal="@color/text_color2"
+        app:slide_text_color_selected="@color/app_color"
+        app:slide_text_size_normal="14sp"
+        app:slide_text_size_selected="14sp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

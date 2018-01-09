@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.TypedValue;
 
 import com.zhongtie.work.R;
@@ -73,6 +75,12 @@ public class ViewUtils {
     }
 
 
+    public static Drawable getTintColorDrawable(Drawable oldDrawable, int color) {
+        Drawable.ConstantState state = oldDrawable.getConstantState();
+        Drawable mark1 = DrawableCompat.wrap(state == null ? oldDrawable : state.newDrawable()).mutate();
+        DrawableCompat.setTint(mark1, color);
+        return mark1;
+    }
 
 
 
