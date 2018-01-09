@@ -1,6 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_splash_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="85dp"
+        android:text="@string/splash_title"
+        android:textColor="@color/theme_assist"
+        android:textSize="26dp"/>
+
+    <TextView
+        android:id="@+id/tv_splash_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_splash_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/splash_title2"
+        android:textColor="@color/theme_assist"
+        android:textSize="16dp"/>
+
+    <ImageView
+        android:id="@+id/img_splash_icon"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_below="@id/tv_splash_title2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/splash_gb"/>
+
+    <TextView
+        android:id="@+id/tv_splash_copy_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/splash_copy_right"
+        android:textColor="@color/theme_assist"
+        android:textSize="14dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/splash_sync_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_splash_copy_right"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/loading_view_image"
+            style="@style/ProgressBarSmall"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:id="@+id/mzw_loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="正在同步请稍后"
+            android:textColor="@color/text_color3"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+</RelativeLayout>

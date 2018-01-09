@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.dm7.barcodescanner.zxing.ZXingScannerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:code="http://schemas.android.com/tools"
+    code:borderColor="#ffffff"
+    android:layout_height="match_parent">
+
+
+</me.dm7.barcodescanner.zxing.ZXingScannerView>

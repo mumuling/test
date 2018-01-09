@@ -17,16 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 def anko_version = "0.10.1"
 def dbflow_version = "4.1.1"
 def retrofit = "2.3.0"
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
     implementation "com.android.support:appcompat-v7:$supportlib"
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
@@ -37,14 +40,22 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
     implementation "com.squareup.retrofit2:retrofit:${retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
-    implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
-
+    //    implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-rx2:${dbflow_version}"
     implementation 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
+    implementation 'com.facebook.fresco:fresco:1.7.1'
+    implementation 'com.facebook.fresco:imagepipeline-okhttp3:1.7.1'
 
-
+    //签名
+    implementation 'com.github.gcacace:signature-pad:1.2.1'
+    //饼状图
+    compile 'org.quanqi:mpandroidchart:1.7.5'
+    compile 'me.dm7.barcodescanner:zxing:1.9.8'
+    compile 'me.dm7.barcodescanner:zbar:1.9.8'
+    implementation 'in.srain.cube:ultra-ptr:1.0.11'
+    implementation 'org.greenrobot:eventbus:3.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'

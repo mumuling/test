@@ -6,6 +6,117 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.FanShuButton</item>
+        <item name="android:editTextStyle">@style/Widget.AppCompat.Button.ZTEditText</item>
+        <item name="editTextStyle">@style/Widget.AppCompat.Button.ZTEditText</item>
+        <item name="android:progressBarStyle">@style/Widget.AppCompat.Button.ZTProgressBar</item>
+        <item name="android:textViewStyle">@style/Widget.AppCompat.Button.ZTTextView</item>
+        <item name="actionMenuTextColor">@color/black</item>
+
+        <item name="popupMenuStyle">@style/ZZMenuPopup</item>
+        <item name="android:popupMenuStyle">@style/ZZMenuPopup</item>
+        <item name="android:dropDownListViewStyle">@style/PopupMenuListView</item>
+        <!-- Change Overflow Menu ListView Item Height & Property -->
+        <item name="android:listPreferredItemHeightSmall">48dp</item>
+        <item name="android:listPreferredItemPaddingLeft">25dp</item>
+        <item name="android:listPreferredItemPaddingRight">25dp</item>
     </style>
 
+    <!-- Change Overflow Menu ListView Divider Property -->
+    <style name="PopupMenuListView" parent="Base.Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/line2</item>
+        <item name="android:layout_width">12dp</item>
+        <item name="android:dividerHeight">1px</item>
+        <item name="android:itemPadding">25dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+
+
+    <style name="ZZMenuPopup" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/app_color</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:dropDownWidth">50dp</item>
+        <item name="android:divider">@color/text_color2</item>
+        <item name="android:itemPadding">25dp</item>
+
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:dropDownVerticalOffset">-2dp</item>
+        <item name="android:dropDownHorizontalOffset">-2dp</item>
+        <item name="android:itemBackground">@drawable/item_white_select_bg</item>
+
+    </style>
+
+
+    <style name="myPopupMenuStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:itemBackground">@drawable/item_white_select_bg</item>
+    </style>
+
+    <style name="myPopupMenuStyle.myPopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/app_color</item>
+    </style>
+
+    <style name="myPopupMenuStyle.myPopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/app_color</item>
+    </style>
+
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.FanShuButton" parent="android:Widget.Button">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:background">@drawable/btn_base_background</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.ZTTextView" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.ZTEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:editTextBackground">@color/transparent</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textColorHint">@color/text_color_hint</item>
+        <item name="android:textCursorDrawable">@drawable/zt_edit_cursor</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.ZTProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="ProgressBarSmall">
+        <item name="android:indeterminateDrawable">@drawable/progress_small</item>
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:indeterminateBehavior">repeat</item>
+        <item name="android:indeterminateDuration">3500</item>
+    </style>
+
+
+    <style name="MultipleStatusView"/>
+
+    <style name="MultipleStatusView.Content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:textColor">#a9b7b7</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

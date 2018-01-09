@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/item_transparent_select_menu_bg"
+    android:layout_height="54dp"
+    tools:background="@color/app_color">
+
+    <ImageView
+        android:id="@+id/menu_img"
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        tools:src="@drawable/leftbar_icon_user"/>
+
+    <TextView
+        android:id="@+id/menu_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/menu_img"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        tools:text="工单台帐"/>
+</RelativeLayout>

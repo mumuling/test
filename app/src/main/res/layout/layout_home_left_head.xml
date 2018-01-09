@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:gravity="center">
+
+    <com.zhongtie.work.widget.BaseImageView
+        android:id="@+id/head"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        app:placeholderImageScaleType="centerCrop"
+        app:placeholderImage="@drawable/portrait"
+        app:progressBarImage="@drawable/portrait"
+        app:roundAsCircle="true"/>
+
+</LinearLayout>

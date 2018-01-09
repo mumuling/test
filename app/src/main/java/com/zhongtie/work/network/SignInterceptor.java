@@ -20,14 +20,14 @@ import okhttp3.Response;
  */
 
 class SignInterceptor implements Interceptor {
-    private String privateKey="";
+    private String privateKey = "";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request.Builder requestBuilder = request.newBuilder()
                 .method(request.method(), request.body())
-                .url(NetworkFactory.HOST)
+                .url(Http.HOST)
                 .addHeader("content-type", "text/json; charset=utf-8");
         FormBody.Builder builder = new FormBody.Builder();
         if (request.body() instanceof FormBody) {
@@ -35,12 +35,13 @@ class SignInterceptor implements Interceptor {
             //加密方法
             StringBuilder stringBuffer = new StringBuilder();
             FormBody body = (FormBody) request.body();
-            String[] action = request.url().toString().split("/?")[1].split("=");
+            String url = request.url().toString();
+            String actionName = url.substring(url.indexOf("=")+1, url.length());
 
             //提取action 参数
-            stringBuffer.append(action[0])
+            stringBuffer.append("action")
                     .append("=")
-                    .append(Base64.encodeToString(action[1].getBytes(), Base64.DEFAULT));
+                    .append(Base64.encodeToString(actionName.getBytes(), Base64.DEFAULT));
             //遍历用base64加密参数
             for (int i = 0, len = body.size(); i < len; i++) {
                 String value = URLDecoder.decode(body.encodedValue(i), "utf-8");
@@ -48,7 +49,7 @@ class SignInterceptor implements Interceptor {
                 stringBuffer.append(body.encodedName(i))
                         .append("=")
                         .append(Base64.encodeToString(value.getBytes(), Base64.DEFAULT));
-                if (i < body.size() - 1) {
+                if (i <= body.size() - 1) {
                     stringBuffer.append("&");
                 }
             }

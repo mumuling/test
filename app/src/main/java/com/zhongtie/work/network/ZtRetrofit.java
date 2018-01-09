@@ -11,13 +11,13 @@ import retrofit2.converter.fastjson.FastJsonConverterFactory;
  * Created by O on 2017.5.17.
  */
 
-class FanShuRetrofit {
+class ZtRetrofit {
 
     private OkHttpClient client;
     private Retrofit.Builder builder;
     private Retrofit retrofit;
 
-    FanShuRetrofit() {
+    ZtRetrofit() {
         client = new OkHttpClient.Builder()
                 .addInterceptor(new SignInterceptor())
                 .connectTimeout(30, TimeUnit.SECONDS)
@@ -25,7 +25,7 @@ class FanShuRetrofit {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
         builder = new Retrofit.Builder()
-                .baseUrl(NetworkFactory.HOST)
+                .baseUrl(Http.HOST)
                 .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(FastJsonConverterFactory.create());

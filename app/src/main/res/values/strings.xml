@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">ZhongTie</string>
     <string name="login">登录</string>
+    <string name="not_any_data">没有任何内容</string>
+    <string name="error_net">糟糕，加载失败了</string>
+    <string name="common_retry_text">刷新试试</string>
+    <string name="exit_app">再按一次退出程序</string>
+    <string name="user_please_enter_phone_number">请输入手机号码</string>
+    <string name="phoneNum_note">请输入正确的手机号码</string>
+    <string name="not_network">无法连接网络，请检查WiFi或移动网络是否开启</string>
+    <string name="no_data_text">暂无数据</string>
+    <string name="no_network_view_hint">网络异常</string>
+    <string name="loading">加载中</string>
+    <string name="splash_title">中铁</string>
+    <string name="splash_title2">办公流程随时记录 工作汇报及时点评</string>
+    <string name="splash_copy_right">中铁电气化局集团有限公司城铁公司</string>
+    <string name="login_company_name">中铁电气化局集团有限公司城铁公司</string>
+    <string name="login_name_title">用户名</string>
+    <string name="login_password">密码</string>
+    <string name="qr_code_scan">扫码</string>
+    <string name="word_feed">工作流</string>
 </resources>

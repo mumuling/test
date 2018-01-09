@@ -8,16 +8,16 @@ import java.util.List;
  * Created by O on 2017.5.16.
  */
 
-public class NetworkFactory {
+public class Http {
     static final String HOST = "http://47.100.3.212:82/api/api/";
 
-    private static FanShuRetrofit retrofit;
+    private static ZtRetrofit retrofit;
     private List<Class> apiList;
 
-    public static <T> T getApi(Class cl) {
+    public static <T> T createRetroService(Class<T> cl) {
         if (retrofit == null) {
-            synchronized (NetworkFactory.class) {
-                retrofit = new FanShuRetrofit();
+            synchronized (Http.class) {
+                retrofit = new ZtRetrofit();
             }
         }
         return retrofit.getApi(cl);

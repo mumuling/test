@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="home_item_name">
+        <item>安全督导</item>
+        <item>奖惩流程</item>
+        <item>文件签认</item>
+        <item>扫二维码</item>
+        <item>统计图表</item>
+        <item>文件下载</item>
+    </string-array>
+    <integer-array name="home_items_icon">
+        <item>@drawable/home1</item>
+        <item>@drawable/home2</item>
+        <item>@drawable/home3</item>
+        <item>@drawable/home4</item>
+        <item>@drawable/home5</item>
+        <item>@drawable/home6</item>
+    </integer-array>
+
+    <string-array name="menu_item_name">
+        <item>个人信息</item>
+        <item>统计表</item>
+        <item>通知设置</item>
+        <item>版本信息</item>
+        <item>注销</item>
+        <item>退出</item>
+    </string-array>
+    <integer-array name="menu_items_icon">
+        <item>@drawable/leftbar_icon_user</item>
+        <item>@drawable/leftbar_icon_count</item>
+        <item>@drawable/leftbar_icon_adv</item>
+        <item>@drawable/leftbar_icon_v</item>
+        <item>@drawable/leftbar_icon_off</item>
+        <item>@drawable/leftbar_icon_quit</item>
+    </integer-array>
+
+</resources>

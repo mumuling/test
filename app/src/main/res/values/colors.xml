@@ -1,8 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#1F70B2</color>
+    <color name="colorPrimaryDark">#21282C</color>
+    <color name="colorAccent">#1F70B2</color>
     <color name="base_color">#1F70B2</color>
     <color name="white">#ffffff</color>
+    <color name="mis_actionbar_color">#21282C</color>
+
+    <!--主题色-->
+    <color name="theme">#266699</color>
+    <!--次主题色-->
+    <color name="theme_assist">#1F70B2</color>
+
+    <!--标题、重要内容-->
+    <color name="text_large">#333333</color>
+
+    <!--小标题、副标题-->
+    <color name="text_middle">#585858</color>
+
+    <!--次要文字-->
+
+    <!--分割线-->
+    <color name="view_divider">#eaeaea</color>
+    <color name="view_pressed">#18000000</color>
+
+    <!--MainActivity底部按钮字体颜色-->
+    <color name="main_bottom_text_pressed">#185a9d</color>
+    <color name="main_bottom_text_normal">#666666</color>
+    <!--搜索框相关颜色-->
+    <color name="search_text_color">#185a9d</color>
+    <color name="search_bg_start">#d9f3ed</color>
+    <color name="search_bg_end">#d2e1eb</color>
+    <!--定位相关颜色-->
+    <color name="location_text_theme_color">#43cea2</color>
+    <color name="loaction_container_theme_bg">#d9f5ec</color>
+    <color name="loaction_container_gray_bg">#cccccc</color>
+    <!--忘记密码字体颜色-->
+
+
+    <!--一般按钮的颜色渐变值-->
+    <color name="normal_btn_start_color">#3dc0a1</color>
+    <color name="normal_btn_end_color">#1d699d</color>
+    <!--微信登陆按钮的颜色渐变值-->
+    <color name="wechat_login_btn_start_color">#9beb66</color>
+    <color name="wechat_login_btn_end_color">#2ba245</color>
+
+    <color name="app_color">#1F70B2</color>
+    <color name="app_color_text">#1F70B2</color>
+    <color name="app_color_bg">#d9f5ec</color>
+    <color name="background">#f7f7f7</color>
+    <color name="text_color2">#666666</color>
+    <color name="text_color3">#999999</color>
+    <color name="text_color">#333333</color>
+    <color name="login_edit_text_color">#2c929e</color>
+    <color name="remark_text_color">#5ca5af</color>
+    <color name="blue">#185a9d</color>
+    <color name="text_color_hint">#d9d9d9</color>
+    <color name="line">#f7f7f7</color>
+    <color name="line2">#e1e1e1</color>
+    <color name="money_color">#f23061</color>
+    <color name="transparency">#00000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="head_color">#556080</color>
+    <color name="cart_count_color">#7f7f7f</color>
+    <color name="black">#000000</color>
+    <color name="sale_color">#b7bbc6</color>
+
+    <color name="state_red_color">#f24d10</color>
+    <color name="state_yellow_color">#ccad13</color>
+    <color name="state_green_color">#9beb66</color>
+    <color name="state_blue_color">#185a9d</color>
+    <color name="filtrate_select_color">#f1f1f1</color>
+    <color name="white_press">#f2f1f1</color>
+    <color name="wallet_red">#c63a06</color>
+    <color name="wallet_green">#7ab751</color>
 </resources>
