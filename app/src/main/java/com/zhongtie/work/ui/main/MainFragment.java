@@ -11,6 +11,7 @@ import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.main.adapter.HomeItemView;
 import com.zhongtie.work.ui.safesupervision.SafeSupervisionActivity;
+import com.zhongtie.work.ui.statistics.StatisticsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,9 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
         switch (pair.first) {
             case "安全督导":
                 SafeSupervisionActivity.newInstance(getAppContext());
+                break;
+            case "统计图表":
+                StatisticsActivity.newInstance(getAppContext());
                 break;
         }
 

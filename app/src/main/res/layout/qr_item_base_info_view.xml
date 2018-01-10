@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_duty_title"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
 
         <TextView
@@ -23,9 +24,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            tools:text="安全员"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            tools:text="安全员"/>
 
     </LinearLayout>
 
@@ -40,7 +41,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_type_work_title"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
 
         <TextView
@@ -48,9 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            tools:text="普工"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            tools:text="普工"/>
     </LinearLayout>
 
 
@@ -65,7 +66,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_belong_company_title"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
 
         <TextView
@@ -73,9 +74,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            tools:text="普工"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            tools:text="普工"/>
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +90,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_company_offer_title"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
 
         <TextView
@@ -97,9 +98,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            tools:text="劳务公司"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            tools:text="劳务公司"/>
     </LinearLayout>
 
     <LinearLayout
@@ -113,7 +114,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_study_date_title"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
 
         <TextView
@@ -121,9 +122,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            tools:text="劳务公司"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            tools:text="劳务公司"/>
     </LinearLayout>
 
     <LinearLayout
@@ -137,7 +138,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_health_state_title"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
 
         <TextView
@@ -145,9 +146,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:tooltipText="" :text="劳务公司"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            tools:text="劳务公司"/>
     </LinearLayout>
 
     <LinearLayout
@@ -161,7 +162,7 @@
             android:layout_height="wrap_content"
             android:text="@string/info_work_state_title"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
 
         <TextView
@@ -171,7 +172,7 @@
             android:layout_marginLeft="5dp"
             android:text="劳务公司"
             android:textColor="@color/text_color2"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
     </LinearLayout>
 
 </LinearLayout>

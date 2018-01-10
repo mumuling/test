@@ -70,7 +70,7 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
         mInfoInsurance = (TextView) findViewById(R.id.info_insurance);
         mItemContent = (TextView) findViewById(R.id.item_content);
         mImg1 = (ImageView) findViewById(R.id.img1);
-        mInfoErrTitle = (TextView) findViewById(R.id.info_err_title);
+//        mInfoErrTitle = (TextView) findViewById(R.id.info_err_title);
         mAddError = (Button) findViewById(R.id.add_error);
         mInfoErrorList = (TextView) findViewById(R.id.info_error_list);
 

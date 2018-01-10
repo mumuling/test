@@ -57,4 +57,5 @@
     <string name="safe_ratio_title">安全比例</string>
     <string name="company_work">劳务公司</string>
     <string name="company_belong">所属单位</string>
+    <string name="station_format">%.0f(%.0f%%)</string>
 </resources>

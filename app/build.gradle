@@ -49,11 +49,12 @@ dependencies {
     implementation 'com.facebook.fresco:imagepipeline-okhttp3:1.7.1'
     compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
     compile 'com.github.MagicMashRoom:SuperCalendar:1.6'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
     //签名
     implementation 'com.github.gcacace:signature-pad:1.2.1'
     //饼状图
-    compile 'org.quanqi:mpandroidchart:1.7.5'
+//    compile 'org.quanqi:mpandroidchart:1.7.5'
     compile 'me.dm7.barcodescanner:zxing:1.9.8'
     compile 'me.dm7.barcodescanner:zbar:1.9.8'
     implementation 'in.srain.cube:ultra-ptr:1.0.11'
