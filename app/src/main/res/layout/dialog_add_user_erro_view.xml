@@ -43,12 +43,12 @@
             android:background="@color/line2" />
 
         <EditText
-            android:id="@+id/error_content"
+            android:id="@+id/violation_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="left|top"
-            android:hint="请输入违规情况"
+            android:hint="@string/violation_content_hint"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:paddingTop="8dp"

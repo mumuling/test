@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:divider="@drawable/divider_vertical"
+    android:dividerPadding="10dp"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    tools:showIn="@layout/safe_supervision_create_fragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_time_title"
+            android:textColor="@color/text_color2"
+            android:textSize="16dp"/>
+
+
+        <TextView
+            android:id="@+id/create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:hint="@string/create_time_hint"
+            android:textColor="@color/text_color2"
+            android:textSize="14dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_address_title"
+            android:textColor="@color/text_color2"
+            android:textSize="16dp"/>
+
+
+        <EditText
+            android:id="@+id/create_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:hint="@string/create_address_hint"
+            android:textColor="@color/text_color2"
+            android:textColorHint="@color/text_color3"
+            android:textSize="14dp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/create_company_select"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/create_company_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/create_company_title"
+            android:textColor="@color/text_color2"
+            android:textSize="16dp"/>
+
+
+        <TextView
+            android:id="@+id/create_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/create_company_title"
+            android:hint="@string/create_company_hint"
+            android:textColor="@color/text_color2"
+            android:textSize="14dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/arrow_next"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/create_company_work_select"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/create_company_work_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/create_company_work_title"
+            android:textColor="@color/text_color2"
+            android:textSize="16dp"/>
+
+
+        <TextView
+            android:id="@+id/create_company_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/create_company_work_title"
+            android:hint="@string/create_company_work_hint"
+            android:textColor="@color/text_color2"
+            android:textSize="14dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/arrow_next"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

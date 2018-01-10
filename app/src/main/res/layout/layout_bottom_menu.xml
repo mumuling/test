@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
-            android:text="安全"
+            android:text="@string/home_safe_menu"
             android:textColor="@color/text_color2"
             android:textSize="16sp" />
     </LinearLayout>
@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
-            android:text="质量"
+            android:text="@string/home_quality_menu"
             android:textColor="@color/text_color2"
             android:textSize="16sp" />
     </LinearLayout>

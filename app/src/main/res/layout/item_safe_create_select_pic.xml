@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="10dp">
+
+    <com.zhongtie.work.widget.BaseImageView
+        android:id="@+id/item_pic"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        app:roundingBorderColor="@color/line2"
+        app:roundingBorderWidth="1dp"
+        tools:background="@color/line2"/>
+
+
+    <ImageView
+        android:id="@+id/item_pic_delete"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginBottom="-7dp"
+        android:layout_marginLeft="-7dp"
+        android:layout_toRightOf="@id/item_pic"
+        android:src="@drawable/ic_close_yellow"
+        android:visibility="gone"/>
+</RelativeLayout>

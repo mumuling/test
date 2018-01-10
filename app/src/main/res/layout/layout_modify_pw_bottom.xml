@@ -13,6 +13,6 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="10dp"
-        android:text="应用"
+        android:text="@string/apply_btn"
         android:textColor="@color/white"/>
 </LinearLayout>

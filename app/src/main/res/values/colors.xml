@@ -75,4 +75,6 @@
     <color name="white_press">#f2f1f1</color>
     <color name="wallet_red">#c63a06</color>
     <color name="wallet_green">#7ab751</color>
+    <color name="pen_bg_color">#DBDBDB</color>
+    <color name="line_color">#C7C7C7</color>
 </resources>

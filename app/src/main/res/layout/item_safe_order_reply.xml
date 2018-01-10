@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/padding_len"
+              android:paddingLeft="@dimen/padding_len"
+              android:paddingRight="@dimen/padding_len"
+              android:paddingTop="@dimen/padding_len">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.zhongtie.work.widget.BaseImageView
+            android:id="@+id/safe_order_reply_head"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            app:placeholderImage="@drawable/portrait"
+            app:placeholderImageScaleType="centerCrop"
+            app:progressBarImage="@drawable/portrait"
+            app:roundAsCircle="true"
+            app:roundingBorderColor="@color/line"
+            app:roundingBorderWidth="1dp"
+            tools:background="@drawable/portrait"/>
+
+        <com.zhongtie.work.widget.BaseImageView
+            android:id="@+id/safe_order_reply_sign"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            tools:background="@color/line"
+            />
+
+
+        <TextView
+            android:id="@+id/safe_order_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/safe_order_reply_head"
+            android:textSize="16dp"
+            tools:text="刘梅"/>
+
+        <TextView
+            android:id="@+id/safe_order_reply_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/safe_order_name"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_toRightOf="@id/safe_order_reply_head"
+            android:textColor="@color/text_color2"
+            android:textSize="11dp"
+            tools:text="2018-01-10 09:00"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/safe_order_reply_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="5dp"
+        android:textColor="@color/text_color"
+        android:textSize="14dp"
+        tools:text="新进展新进展新进展新新进展新进展新进展新进展新进展新进展新进展新进展新进展新进展新进展新进展进展"/>
+
+    <include layout="@layout/layout_img_list_view"/>
+
+</LinearLayout>

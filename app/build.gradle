@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.zhongtie.work"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -47,6 +47,8 @@ dependencies {
     implementation 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
     implementation 'com.facebook.fresco:fresco:1.7.1'
     implementation 'com.facebook.fresco:imagepipeline-okhttp3:1.7.1'
+    compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
+    compile 'com.github.MagicMashRoom:SuperCalendar:1.6'
 
     //签名
     implementation 'com.github.gcacace:signature-pad:1.2.1'

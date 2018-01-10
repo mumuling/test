@@ -42,7 +42,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@id/info_title_img"
-                    android:text="工单台帐"
+                    android:text="@string/user_base_info_title"
                     android:textColor="@color/text_color"
                     android:textSize="16dp" />
 
@@ -79,7 +79,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@id/info_title_img"
-                    android:text="保险情况"
+                    android:text="@string/info_insurance_title"
                     android:textColor="@color/text_color"
                     android:textSize="16dp" />
 
@@ -92,7 +92,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="10dp"
-                android:text="2017-2-27~2018-2-28\n2017-2-27~2018-2-28"
+                tools:text="2017-2-27~2018-2-28\n2017-2-27~2018-2-28"
                 android:textColor="@color/text_color2"
                 android:textSize="14dp" />
 
@@ -118,19 +118,18 @@
                     android:src="@drawable/profile_icon_weigui" />
 
                 <TextView
-                    android:id="@+id/info_err_title"
+                    android:id="@+id/info_violate_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@id/img1"
-                    android:text="违规情况"
+                    android:text="@string/info_violate_title"
                     android:textColor="@color/text_color"
                     android:textSize="16dp" />
 
-
                 <Button
-                    android:id="@+id/add_error"
+                    android:id="@+id/add_violate"
                     android:layout_width="70dp"
                     android:layout_height="34dp"
                     android:layout_alignParentRight="true"
@@ -138,7 +137,7 @@
                     android:layout_gravity="right|center_vertical"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/btn_base_background"
-                    android:text="+添加违规"
+                    android:text="@string/add_violate"
                     android:textColor="@color/white"
                     android:textSize="12dp" />
 
@@ -152,7 +151,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="10dp"
-                android:text="2017-2-27~2018-2-28\n2017-2-27~2018-2-28"
+                tools:text="2017-2-27~2018-2-28\n2017-2-27~2018-2-28"
                 android:textColor="@color/text_color2"
                 android:textSize="14dp" />
         </LinearLayout>
