@@ -1,5 +1,6 @@
 package com.zhongtie.work.ui.scan;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +19,16 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class ScanQRCodeFragment extends BaseFragment implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView mScannerView;
+
+    private OnNextFragmentListener onNextFragmentListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnNextFragmentListener) {
+            onNextFragmentListener = (OnNextFragmentListener) context;
+        }
+    }
 
     @Override
     protected View createFragmentView(ViewGroup container) {
@@ -56,6 +67,8 @@ public class ScanQRCodeFragment extends BaseFragment implements ZXingScannerView
 
     @Override
     public void handleResult(Result result) {
-
+        if (onNextFragmentListener != null) {
+            onNextFragmentListener.onNextUserInfo(result.getText());
+        }
     }
 }

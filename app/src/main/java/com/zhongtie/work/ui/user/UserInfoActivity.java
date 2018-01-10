@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.statistics;
+package com.zhongtie.work.ui.user;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,9 @@ import com.zhongtie.work.ui.base.BaseActivity;
  * Date: 2018/1/10
  */
 
-public class StatisticsActivity extends BaseActivity {
+public class UserInfoActivity extends BaseActivity {
     public static void newInstance(Context context) {
-        context.startActivity(new Intent(context, StatisticsActivity.class));
+        context.startActivity(new Intent(context, UserInfoActivity.class));
     }
 
     @Override
@@ -24,9 +24,9 @@ public class StatisticsActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        setTitle("报表统计");
+        setTitle(getString(R.string.user_info_title));
         Fragments.with(this)
-                .fragment(StatisticsFragment.class)
+                .fragment(UserInfoFragment.class)
                 .into(R.id.fragment_content);
     }
 

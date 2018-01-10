@@ -14,7 +14,11 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.main.adapter.MenuItemView;
-import com.zhongtie.work.widget.BaseImageView;
+import com.zhongtie.work.ui.setting.NoticeSettingFragment;
+import com.zhongtie.work.ui.setting.SettingActivity;
+import com.zhongtie.work.ui.setting.VersionFragment;
+import com.zhongtie.work.ui.statistics.StatisticsActivity;
+import com.zhongtie.work.ui.user.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,15 +112,24 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
         Pair<String, Integer> pair = mMenuItemList.get(index);
         mDrawerLayout.closeDrawers();
 
-//        switch (pair.first) {
-//            case "个人信息":
-//                break;
-//
-//            case "统计表":
-//                break;
-//            case "个人信息":
-//                break;
-//            default:
-//        }
+        switch (pair.first) {
+            case "个人信息":
+                UserInfoActivity.newInstance(getActivity());
+                break;
+            case "统计表":
+                StatisticsActivity.newInstance(getActivity());
+                break;
+            case "通知设置":
+                SettingActivity.newInstance(getActivity(), NoticeSettingFragment.class, getString(R.string.notice_setting_title));
+                break;
+            case "版本信息":
+                SettingActivity.newInstance(getActivity(), VersionFragment.class, getString(R.string.version_info_title));
+                break;
+            case "注销":
+                break;
+            case "退出":
+                break;
+            default:
+        }
     }
 }

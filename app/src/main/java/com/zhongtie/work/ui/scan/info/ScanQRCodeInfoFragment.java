@@ -1,11 +1,14 @@
 package com.zhongtie.work.ui.scan.info;
 
+import android.content.Context;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
+import com.zhongtie.work.ui.scan.OnNextFragmentListener;
 import com.zhongtie.work.widget.BaseImageView;
 
 import java.util.List;
@@ -36,6 +39,27 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
     private Button mAddError;
     private TextView mInfoErrorList;
 
+    private TextView mInfoViolateTitle;
+    private Button mAddViolate;
+
+    private OnNextFragmentListener onNextFragmentListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnNextFragmentListener) {
+            onNextFragmentListener = (OnNextFragmentListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(onNextFragmentListener!=null)
+        {
+            onNextFragmentListener.onResumeCamera();
+        }
+    }
 
     @Override
     public void setInfoList(List<Object> objectList) {
@@ -44,7 +68,7 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
 
     @Override
     protected ScanQRCodeInfoContract.Presenter getPresenter() {
-        return null;
+        return new ScanInfoPresenterImpl();
     }
 
     @Override
@@ -71,13 +95,20 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
         mItemContent = (TextView) findViewById(R.id.item_content);
         mImg1 = (ImageView) findViewById(R.id.img1);
 //        mInfoErrTitle = (TextView) findViewById(R.id.info_err_title);
-        mAddError = (Button) findViewById(R.id.add_error);
-        mInfoErrorList = (TextView) findViewById(R.id.info_error_list);
+
+        mInfoViolateTitle = (TextView) findViewById(R.id.info_violate_title);
+        mAddViolate = (Button) findViewById(R.id.add_violate);
+        mAddViolate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AddViolateDialog(getActivity()).show();
+            }
+        });
 
     }
 
     @Override
     protected void initData() {
-
+//        initLoading();
     }
 }

@@ -12,7 +12,7 @@
 
 
         <include
-            android:id="@+id/title"
+            android:id="@+id/title1"
             layout="@layout/layout_home_title" />
 
         <include layout="@layout/layout_bottom_menu" />
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/bottom"
-            android:layout_below="@id/title"
+            android:layout_below="@id/title1"
             android:layout_marginTop="1dp"
             android:background="@color/white" />
 

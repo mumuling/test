@@ -38,9 +38,7 @@ public class UserInfoItemView extends AbstractItemView<Pair<String, String>, Com
         title.setText(data.first);
         title.append(":");
         if (content != null) {
-            title.setText(data.first);
-        } else {
-
+            content.setText(data.second);
         }
     }
 

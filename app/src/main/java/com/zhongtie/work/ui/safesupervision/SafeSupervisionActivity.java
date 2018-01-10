@@ -37,6 +37,8 @@ public class SafeSupervisionActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        setTitle(getString(R.string.safe_supervision_title));
+        setRightText("发起");
         mSelectDate = (TextView) findViewById(R.id.select_date);
         mSelectDateImg = (ImageView) findViewById(R.id.select_date_img);
         mProjectTitleBar = (CaterpillarIndicator) findViewById(R.id.project_title_bar);
@@ -53,5 +55,11 @@ public class SafeSupervisionActivity extends BaseActivity {
         ZtFragmentAdapter adapter = new ZtFragmentAdapter(getSupportFragmentManager(), supervisionFragments);
         mViewPage.setAdapter(adapter);
         mProjectTitleBar.initTitle(mViewPage, "全部", "未完结", "已完结");
+    }
+
+    @Override
+    protected void onClickRight() {
+        super.onClickRight();
+        SafeSupervisionCreateActivity.newInstance(this, SafeSupervisionCreateFragment.class, getString(R.string.safe_supervision_title));
     }
 }

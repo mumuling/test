@@ -15,6 +15,7 @@
     <string name="splash_title2">办公流程随时记录 工作汇报及时点评</string>
     <string name="splash_copy_right">中铁电气化局集团有限公司城铁公司</string>
     <string name="login_company_name">中铁电气化局集团有限公司城铁公司</string>
+    <string name="version_copy_right">Copyright © 2017. All Rights Reserved</string>
     <string name="login_name_title">用户名</string>
     <string name="login_password">密码</string>
     <string name="qr_code_scan">扫码</string>
@@ -58,4 +59,14 @@
     <string name="company_work">劳务公司</string>
     <string name="company_belong">所属单位</string>
     <string name="station_format">%.0f(%.0f%%)</string>
+    <string name="station_line_format">%d(%.0f%%)</string>
+    <string name="percent_end">100%</string>
+    <string name="user_info_title">个人信息</string>
+    <string name="notice_check">允许接收信息通知</string>
+    <string name="open_fail">打开失败</string>
+    <string name="notice_setting_title">通知设置</string>
+    <string name="version_info_title">版本信息</string>
+    <string name="now_version">当前版本</string>
+    <string name="scan_qr_title">扫二维码</string>
+    <string name="safe_supervision_title">安全督导</string>
 </resources>

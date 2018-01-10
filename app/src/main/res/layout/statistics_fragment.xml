@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:text="@string/qr_code_scan"
                 android:textColor="@color/text_color2"
                 android:textSize="14dp"
-                tools:text="2017年"/>
+                tools:text="2017年" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_marginRight="20dp"
                 android:rotation="180"
                 android:src="@drawable/ic_sanjiao"
-                app:tint="@color/text_color"/>
+                app:tint="@color/text_color" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -59,7 +59,7 @@
                 android:text="@string/qr_code_scan"
                 android:textColor="@color/text_color2"
                 android:textSize="14dp"
-                tools:text="2017年"/>
+                tools:text="2017年" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                 android:layout_marginRight="20dp"
                 android:rotation="180"
                 android:src="@drawable/ic_sanjiao"
-                app:tint="@color/text_color"/>
+                app:tint="@color/text_color" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -90,8 +90,7 @@
                 android:layout_marginTop="25dp"
                 android:text="@string/safe_ratio_title"
                 android:textColor="#ff333333"
-                android:textSize="16dp"
-                />
+                android:textSize="16dp" />
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/safe_ratio_chart"
@@ -100,32 +99,33 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="25dp"/>
+                android:layout_marginTop="25dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/line2"/>
+                    android:layout_height="1px"
+                    android:background="@color/line2" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="25dp"
                     android:text="@string/company_work"
                     android:textColor="#ff333333"
-                    android:textSize="16dp"
-                    />
+                    android:textSize="16dp" />
 
-                <com.github.mikephil.charting.charts.HorizontalBarChart
+                <com.zhongtie.work.ui.statistics.ChartLineView
                     android:id="@+id/company_work_line"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -135,22 +135,22 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/line2"/>
+                    android:layout_height="1px"
+                    android:background="@color/line2" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="25dp"
                     android:text="@string/company_belong"
-                    android:textSize="16dp"
-                    />
+                    android:textSize="16dp" />
 
-                <com.github.mikephil.charting.charts.LineChart
+                <com.zhongtie.work.ui.statistics.ChartLineView
                     android:id="@+id/company_belong_line"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
 

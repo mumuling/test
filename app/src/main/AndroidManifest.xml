@@ -48,6 +48,9 @@
         <activity android:name=".ui.scan.ScanQRCodeActivity"/>
         <activity android:name=".ui.safesupervision.SafeSupervisionActivity" />
         <activity android:name=".ui.statistics.StatisticsActivity"/>
+        <activity android:name=".ui.user.UserInfoActivity" />
+        <activity android:name=".ui.setting.SettingActivity" />
+        <activity android:name=".ui.safesupervision.SafeSupervisionCreateActivity" />
     </application>
 
 </manifest>
