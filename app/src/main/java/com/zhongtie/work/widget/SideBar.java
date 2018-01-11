@@ -24,7 +24,8 @@ public class SideBar extends View {
 
     private TextView mTextDialog;
 
-    private Context context;
+
+    private int height;
 
     public void setTextView(TextView mTextDialog) {
         this.mTextDialog = mTextDialog;
@@ -34,13 +35,13 @@ public class SideBar extends View {
         super(context, attrs, defStyle);
     }
 
+
     public SideBar(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     public SideBar(Context context) {
         super(context);
-        this.context = context;
     }
 
     /**
@@ -61,17 +62,19 @@ public class SideBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int height = getHeight();
+        if (height <= 0) {
+            height = getHeight();
+        }
         int width = getWidth();
         int singleHeight = height / b.length;
 
         for (int i = 0; i < b.length; i++) {
-            paint.setColor(Color.parseColor("#e52f17"));
+            paint.setColor(Color.parseColor("#1F70B2"));
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             paint.setAntiAlias(true);
-            paint.setTextSize(ViewUtils.dip2px(10));
+            paint.setTextSize(ViewUtils.dip2px(12));
             if (i == choose) {
-                paint.setColor(Color.parseColor("#999999"));
+                paint.setColor(Color.parseColor("#666666"));
                 paint.setFakeBoldText(true);
             }
             float xPos = width / 2 - paint.measureText(b[i]) / 2;

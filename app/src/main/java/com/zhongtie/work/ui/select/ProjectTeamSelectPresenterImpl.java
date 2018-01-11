@@ -66,6 +66,9 @@ class ProjectTeamSelectPresenterImpl extends BasePresenterImpl<ProjectTeamSelect
 
     }
 
+    /**
+     * 为list按照字幕分组并加上
+     */
     private Flowable<ProjectTeamEntity> convertList(List<ProjectTeamEntity> projectTeamEntities) {
         return Flowable.fromIterable(projectTeamEntities)
                 .map(ProjectTeamEntity::getCharacter)

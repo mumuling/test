@@ -4,7 +4,6 @@ import android.content.Intent;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseActivity;
-import com.zhongtie.work.ui.login.LoginActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +36,7 @@ public class SplashActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(aLong -> count - aLong)
                 .subscribe(aLong -> {
-                    startActivity(new Intent(getAppContext(), LoginActivity.class));
+                    startActivity(new Intent(getAppContext(), MainActivity.class));
                     finish();
                     if (mDisposable != null) {
                         mDisposable.clear();

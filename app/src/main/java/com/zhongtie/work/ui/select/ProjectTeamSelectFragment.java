@@ -5,19 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.select.item.SelectContentItemView;
 import com.zhongtie.work.widget.SideBar;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
-
 /**
+ * 单位名称
  * Auth: Chaek
  * Date: 2018/1/11
  */
@@ -28,7 +23,6 @@ public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeam
 
     private CommonAdapter mCommonAdapter;
     private List<ProjectTeamEntity> mProjectTeamEntities;
-
 
     @Override
     public int getLayoutViewId() {
@@ -69,7 +63,7 @@ public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeam
     @Override
     public void onTouchingLetterChanged(String s) {
         for (int i = 0, len = mProjectTeamEntities.size(); i < len; i++) {
-            if (mProjectTeamEntities.get(i).getCharacter().equals(s)) {
+            if (mProjectTeamEntities.get(i).getCharacter() != null && mProjectTeamEntities.get(i).getCharacter().equals(s)) {
                 mList.smoothScrollToPosition(i);
                 break;
             }

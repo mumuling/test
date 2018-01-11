@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseActivity;
-import com.zhongtie.work.ui.setting.SettingActivity;
 
 import static android.provider.MediaStore.Files.FileColumns.TITLE;
 import static com.zhongtie.work.ui.setting.SettingActivity.FRAGMENT;
@@ -90,11 +89,9 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        if (mOnSearchContentListener == null) {
+        if (mOnSearchContentListener != null) {
             mOnSearchContentListener.onSearch(s.toString());
         }
-
     }
 
     @Override

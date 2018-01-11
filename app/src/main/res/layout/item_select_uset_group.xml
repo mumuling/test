@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/team_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+
+        <TextView
+            android:id="@+id/item_team_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/text_color"
+            android:textSize="16dp"
+            tools:text="检查人" />
+
+        <TextView
+            android:id="@+id/item_team_select_add"
+            android:layout_width="60dp"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:background="@drawable/item_select_all_round_bg"
+            android:gravity="center"
+            android:text="@string/aite_select"
+            android:textColor="@color/text_color2"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/item_team_select_all"
+            android:layout_width="60dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:layout_toLeftOf="@id/item_team_select_add"
+            android:background="@drawable/item_select_all_round_bg"
+            android:gravity="center"
+            android:text="@string/select_all"
+            android:textColor="@color/text_color2"
+            android:textSize="12dp" />
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/check_examine_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background" />
+</LinearLayout>

@@ -12,6 +12,9 @@ import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.main.adapter.HomeItemView;
 import com.zhongtie.work.ui.safesupervision.SafeSupervisionActivity;
 import com.zhongtie.work.ui.scan.ScanQRCodeActivity;
+import com.zhongtie.work.ui.select.SelectLookGroupFragment;
+import com.zhongtie.work.ui.select.SelectUserFragment;
+import com.zhongtie.work.ui.setting.SettingActivity;
 import com.zhongtie.work.ui.statistics.StatisticsActivity;
 
 import java.util.ArrayList;
@@ -75,6 +78,12 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
                 break;
             case "扫二维码":
                 ScanQRCodeActivity.newInstance(getActivity());
+                break;
+            case "文件下载":
+                SettingActivity.newInstance(getActivity(), SelectUserFragment.class,"责任人");
+                break;
+            case "文件签认":
+                SettingActivity.newInstance(getActivity(), SelectLookGroupFragment.class,"查阅组");
                 break;
         }
 

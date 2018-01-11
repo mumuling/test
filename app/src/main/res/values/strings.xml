@@ -78,4 +78,8 @@
     <string name="seven">日</string>
     <string name="select_date" formatted="true">%d年%02d月</string>
     <string name="safe_select_title_date" formatted="true">%d-%02d-%02d</string>
+    <string name="select_all">全选</string>
+    <string name="aite_select">\u0040已选</string>
+    <string name="look_group_title">查阅组</string>
+    <string name="add">添加</string>
 </resources>

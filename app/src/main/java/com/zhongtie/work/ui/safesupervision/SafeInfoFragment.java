@@ -32,7 +32,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  * date:2018.1.9
  */
 
-public class SafeSupervisionCreate2Fragment extends BasePresenterFragment<SafeSupervisionContract.Presenter> implements SafeSupervisionContract.View, RefreshRecyclerView.RefreshPageConfig {
+public class SafeInfoFragment extends BasePresenterFragment<SafeSupervisionContract.Presenter> implements SafeSupervisionContract.View, RefreshRecyclerView.RefreshPageConfig {
 
     public static final String ID = "id";
     private int mSafeID;
@@ -45,9 +45,9 @@ public class SafeSupervisionCreate2Fragment extends BasePresenterFragment<SafeSu
     private List<Object> mInfoList = new ArrayList<>();
 
 
-    public static SafeSupervisionCreate2Fragment newInstance(int id) {
+    public static SafeInfoFragment newInstance(int id) {
         Bundle args = new Bundle();
-        SafeSupervisionCreate2Fragment fragment = new SafeSupervisionCreate2Fragment();
+        SafeInfoFragment fragment = new SafeInfoFragment();
         args.putInt(ID, id);
         fragment.setArguments(args);
         return fragment;
@@ -151,7 +151,7 @@ public class SafeSupervisionCreate2Fragment extends BasePresenterFragment<SafeSu
         return null;
     }
 
-    public static final String[] imageUrls = new String[]{
+    public final String[] imageUrls = new String[]{
             "http://img.my.csdn.net/uploads/201309/01/1378037235_3453.jpg",
             "http://img.my.csdn.net/uploads/201309/01/1378037235_7476.jpg",
             "http://img.my.csdn.net/uploads/201309/01/1378037235_9280.jpg",

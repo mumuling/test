@@ -1,14 +1,43 @@
 package com.zhongtie.work.data.create;
 
+import com.zhongtie.work.event.BaseEvent;
+
 /**
  * Auth: Chaek
  * Date: 2018/1/11
  */
 
-public class CreateUserEntity {
+public class CreateUserEntity extends BaseEvent{
     private String userName;
     private String userPic;
     private int userId;
+    private boolean isSelect;
+    private boolean isAt;
+    private int userID;
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
+
+    public boolean isAt() {
+        return isAt;
+    }
+
+    public void setAt(boolean at) {
+        isAt = at;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public CreateUserEntity(String userName, String userPic, int userId) {
         this.userName = userName;

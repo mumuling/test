@@ -79,7 +79,7 @@ public class SafeSupervisionActivity extends BaseActivity implements CalendarDia
     @Override
     protected void onClickRight() {
         super.onClickRight();
-        SafeSupervisionCreateActivity.newInstance(this, SafeSupervisionCreate2Fragment.class, getString(R.string.safe_supervision_title));
+        SafeSupervisionCreateActivity.newInstance(this, SafeSupervisionCreateFragment.class, getString(R.string.safe_supervision_title));
     }
 
     @Override
