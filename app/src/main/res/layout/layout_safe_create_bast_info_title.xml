@@ -12,6 +12,7 @@
     tools:showIn="@layout/safe_supervision_create_fragment">
 
     <LinearLayout
+        android:id="@+id/create_time_select"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center_vertical"
@@ -54,9 +55,10 @@
 
         <EditText
             android:id="@+id/create_address"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:gravity="left"
             android:hint="@string/create_address_hint"
             android:textColor="@color/text_color2"
             android:textColorHint="@color/text_color3"
@@ -89,6 +91,7 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/create_company_title"
             android:hint="@string/create_company_hint"
+            android:textColorHint="@color/text_color3"
             android:textColor="@color/text_color2"
             android:textSize="14dp"/>
 
@@ -127,6 +130,7 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/create_company_work_title"
             android:hint="@string/create_company_work_hint"
+            android:textColorHint="@color/text_color3"
             android:textColor="@color/text_color2"
             android:textSize="14dp"/>
 

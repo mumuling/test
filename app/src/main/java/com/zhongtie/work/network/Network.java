@@ -25,7 +25,7 @@ public class Network {
      * ui thread   {@link AndroidSchedulers#mainThread()}
      * </p>
      */
-    public static <T> ObservableTransformer<T, T> netorkIO() {
+    public static <T> FlowableTransformer<T, T> netorkIO() {
         return network -> network.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

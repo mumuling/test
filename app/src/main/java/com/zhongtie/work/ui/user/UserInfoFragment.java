@@ -41,7 +41,7 @@ public class UserInfoFragment extends BasePresenterFragment<UserContract.Present
         mFooterView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_modify_pw_bottom, mList, false);
         commonAdapter = new CommonAdapter().register(UserInfoItemView.class);
         commonAdapter.addFooterView(mFooterView);
-        mFooterView.findViewById(R.id.modify_password).setOnClickListener(view -> mPresenter.modfiyPassword());
+        mFooterView.findViewById(R.id.modify_password).setOnClickListener(view -> mPresenter.modifyPassword());
     }
 
     @Override

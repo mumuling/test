@@ -11,34 +11,7 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:clickable="true"
-            android:layout_height="48dp">
-
-            <TextView
-                android:id="@+id/cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:text="@string/cancel"
-                android:textColor="@color/app_color"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/finish"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:text="@string/confirm"
-                android:textColor="@color/app_color"
-                android:textSize="16dp" />
-        </RelativeLayout>
+        <include layout="@layout/layout_dialog_head"/>
 
         <View
             android:layout_width="match_parent"

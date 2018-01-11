@@ -69,4 +69,13 @@
     <string name="now_version">当前版本</string>
     <string name="scan_qr_title">扫二维码</string>
     <string name="safe_supervision_title">安全督导</string>
+    <string name="one">一</string>
+    <string name="two">二</string>
+    <string name="three">三</string>
+    <string name="four">四</string>
+    <string name="five">五</string>
+    <string name="six">六</string>
+    <string name="seven">日</string>
+    <string name="select_date" formatted="true">%d年%02d月</string>
+    <string name="safe_select_title_date" formatted="true">%d-%02d-%02d</string>
 </resources>

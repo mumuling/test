@@ -9,7 +9,7 @@ import com.zhongtie.work.ui.base.BasePresenterImpl;
 
 class UserPresenterImpl extends BasePresenterImpl<UserContract.View> implements UserContract.Presenter {
     @Override
-    public void modfiyPassword() {
+    public void modifyPassword() {
 
     }
 }

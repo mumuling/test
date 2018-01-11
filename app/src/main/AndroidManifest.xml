@@ -49,8 +49,9 @@
         <activity android:name=".ui.safesupervision.SafeSupervisionActivity" />
         <activity android:name=".ui.statistics.StatisticsActivity"/>
         <activity android:name=".ui.user.UserInfoActivity" />
-        <activity android:name=".ui.setting.SettingActivity" />
+        <activity android:name=".ui.setting.SettingActivity"   android:theme="@style/GrayTheme" />
         <activity android:name=".ui.safesupervision.SafeSupervisionCreateActivity" />
+        <activity android:name=".ui.select.CommonSelectSearchActivity"/>
     </application>
 
 </manifest>

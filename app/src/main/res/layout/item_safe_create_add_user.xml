@@ -1,48 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingBottom="16dp"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="15dp">
+    android:paddingRight="16dp">
 
-    <TextView
-        android:id="@+id/item_user_list_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/info_title_img"
-        tools:text="检查人"
-        android:textColor="@color/text_color"
-        android:textSize="16dp"/>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:paddingRight="16dp"
+        >
 
-    <TextView
-        android:id="@+id/item_user_list_tip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/item_user_list_title"
-        android:text="@string/right_slide_look_more"
-        android:textColor="@color/text_color2"
-        android:textSize="12dp"/>
 
-    <ImageView
-        android:id="@+id/item_user_add_img"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/plus"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/item_user_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/text_color"
+            android:textSize="16dp"
+            tools:text="检查人"/>
+
+        <TextView
+            android:id="@+id/item_user_list_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:layout_toRightOf="@id/item_user_list_title"
+            android:text="@string/right_slide_look_more"
+            android:textColor="@color/text_color2"
+            android:textSize="12dp"/>
+
+        <ImageView
+            android:id="@+id/item_user_add_img"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/plus"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/check_examine_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_user_list_title"
-        android:layout_marginTop="18dp"/>
-</RelativeLayout>
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"
+        />
+</LinearLayout>

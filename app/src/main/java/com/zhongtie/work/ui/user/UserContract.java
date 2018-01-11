@@ -24,6 +24,6 @@ public interface UserContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void modfiyPassword();
+        void modifyPassword();
     }
 }

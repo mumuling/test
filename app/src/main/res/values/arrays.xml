@@ -34,4 +34,14 @@
         <item>@drawable/leftbar_icon_quit</item>
     </integer-array>
 
+    <string-array name="type_list">
+        <item>安全防护</item>
+        <item>文明施工</item>
+        <item>操作流程</item>
+        <item>临时用电</item>
+        <item>消防管理</item>
+        <item>高处作业</item>
+        <item>其它</item>
+    </string-array>
+
 </resources>

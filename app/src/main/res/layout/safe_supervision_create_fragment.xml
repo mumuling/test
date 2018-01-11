@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/safe_layout_create_bast_info_title"/>
+        <include layout="@layout/layout_safe_create_bast_info_title"/>
 
         <LinearLayout
             android:layout_width="match_parent"

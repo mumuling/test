@@ -102,7 +102,7 @@ public class SideBar extends View {
                 break;
             default:
 //                setBackgroundResource(R.drawable.scrollbar_yuan);
-                getBackground().setAlpha(25);
+//                getBackground().setAlpha(25);
                 if (oldChoose != c) {
                     if (c >= 0 && c < b.length) {
                         if (listener != null) {

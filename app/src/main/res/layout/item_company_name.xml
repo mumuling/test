@@ -12,6 +12,7 @@
         android:layout_height="49dp"
         android:layout_marginLeft="15dp"
         android:textSize="16dp"
+        android:singleLine="true"
         tools:text="安全检查项目部"/>
 
     <View
