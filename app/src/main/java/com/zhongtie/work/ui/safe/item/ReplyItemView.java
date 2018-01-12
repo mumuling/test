@@ -17,6 +17,7 @@ import com.zhongtie.work.data.ApproveEntity;
 import com.zhongtie.work.widget.BaseImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
@@ -28,8 +29,21 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls
 
 @BindItemData(value = {ReplyEntity.class, ApproveEntity.class})
 public class ReplyItemView extends AbstractItemView<Object, ReplyItemView.ViewHolder> {
+
+    public static final int APPROVE = 1;
+
+    @Override
+    public int getItemViewType(int position, @NonNull Object data) {
+        if (data instanceof ApproveEntity)
+            return APPROVE;
+        return super.getItemViewType(position, data);
+    }
+
     @Override
     public int getLayoutId(int viewType) {
+        if (viewType == APPROVE) {
+            return R.layout.item_approve_view;
+        }
         return R.layout.item_safe_order_reply;
     }
 
@@ -41,23 +55,22 @@ public class ReplyItemView extends AbstractItemView<Object, ReplyItemView.ViewHo
             vh.safeOrderName.setText("测试");
             vh.safeOrderReplyTime.setText("2012-01-12");
             vh.safeOrderReplyContent.setText("确定确定确定确定确定确定确定确定");
+            if (vh.list.getAdapter() == null) {
+                vh.list.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayoutManager.HORIZONTAL, false));
+                CreatePicItemView createPicItemView = new CreatePicItemView(false);
+                CommonAdapter commonAdapter = new CommonAdapter().register(createPicItemView);
+                vh.list.setAdapter(commonAdapter);
+                List<String> list = new ArrayList<>();
+                list.addAll(Arrays.asList(imageUrls).subList(0, 10));
+                commonAdapter.setListData(list);
+            }
+
         } else {
             vh.safeOrderReplyHead.loadImage(imageUrls[3]);
             vh.safeOrderReplySign.loadImage(imageUrls[1]);
             vh.safeOrderName.setText("测试");
             vh.safeOrderReplyTime.setText("2012-01-12");
-            vh.safeOrderReplyContent.setText("同意，注意安全注意安全注意安全");
-        }
-        if (vh.list.getAdapter() == null) {
-            vh.list.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayoutManager.HORIZONTAL, false));
-            CreatePicItemView createPicItemView=new CreatePicItemView(false);
-            CommonAdapter commonAdapter = new CommonAdapter().register(createPicItemView);
-            vh.list.setAdapter(commonAdapter);
-            List<String> list = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                list.add(imageUrls[i]);
-            }
-            commonAdapter.setListData(list);
+//            vh.safeOrderReplyContent.setText("同意，注意安全注意安全注意安全");
         }
 
     }

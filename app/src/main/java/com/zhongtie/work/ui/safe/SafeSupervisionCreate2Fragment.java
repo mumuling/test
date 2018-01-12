@@ -15,10 +15,10 @@ import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
 import com.zhongtie.work.ui.safe.item.CreateCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
+import com.zhongtie.work.ui.safe.order.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
-import com.zhongtie.work.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +82,10 @@ public class SafeSupervisionCreate2Fragment extends BasePresenterFragment<SafeCr
 
     @Override
     protected void initData() {
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), VERTICAL_LIST);
+        SafeDividerItemDecoration dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
         dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
+        dividerItemDecoration.setEndPosition(8);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
         mPresenter.getItemList(mSafeOrderID);
@@ -97,8 +98,7 @@ public class SafeSupervisionCreate2Fragment extends BasePresenterFragment<SafeCr
 
     @Override
     public void setItemList(List<Object> itemList) {
-        mInfoList.clear();
-        mInfoList.addAll(itemList);
+        mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
     }
 

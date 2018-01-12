@@ -41,6 +41,9 @@ public class CreateUserEntity implements BaseEvent, Serializable {
         this.userID = userID;
     }
 
+    public CreateUserEntity() {
+    }
+
     public CreateUserEntity(String userName, String userPic, int userId) {
         this.userName = userName;
         this.userPic = userPic;

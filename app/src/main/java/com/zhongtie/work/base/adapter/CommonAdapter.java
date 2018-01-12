@@ -80,10 +80,10 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
         classList = new ArrayList<>();
         itemViewList = new ArrayList<>();
         positionTypeMap = new ArrayMap<>();
-        if (listData == null) {
-            listData = new ArrayList<>();
+        mListData = new ArrayList<>();
+        if (listData != null) {
+            mListData.addAll(listData);
         }
-        this.mListData = listData;
     }
 
     /**

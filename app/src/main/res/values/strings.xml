@@ -110,4 +110,16 @@
     <string name="at_user_name">\@%s</string>
     <string name="modify">修改</string>
     <string name="reply">回复</string>
+    <string name="approve">签名审批</string>
+    <string name="detail_site">地点：</string>
+    <string name="work_category">工种：</string>
+    <string name="question_type">问题类型：</string>
+    <string name="detail_time">时间：</string>
+    <string name="project_team">单位：</string>
+    <string name="submit">提交</string>
+    <string name="select_photo_tip">上传照片数量最多12张</string>
+    <string name="description">描述</string>
+    <string name="description_hint">请输入事件描述</string>
+    <string name="imaage_title">图片</string>
+    <string name="safe_reward_punish">安全奖罚</string>
 </resources>

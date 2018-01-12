@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="vertical"
-        android:paddingRight="16dp"
         >
 
 
@@ -37,7 +36,7 @@
             android:layout_marginLeft="7dp"
             android:layout_toRightOf="@id/item_user_list_title"
             android:text="@string/right_slide_look_more"
-            android:textColor="@color/text_color2"
+            android:textColor="@color/text_color3"
             android:textSize="12dp"/>
 
         <ImageView

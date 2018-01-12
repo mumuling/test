@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
@@ -164,13 +161,12 @@ public class MultiImageSelectorActivity extends BaseActivity implements MultiIma
     private void compressedImage() {
         imgList = new ArrayList<>();
         showLoadDialog(getString(R.string.compress_image_loading));
-        final Compressor compressedImage = new Compressor.Builder(this)
+        final Compressor compressedImage = new Compressor(this)
                 .setMaxWidth(1280)
                 .setMaxHeight(1280)
                 .setQuality(90)
                 .setCompressFormat(Bitmap.CompressFormat.JPEG)
-                .setDestinationDirectoryPath(getExternalCacheDir().toString()+"/image/")
-                .build();
+                .setDestinationDirectoryPath(getExternalCacheDir().toString()+"/image/");
         Flowable.fromIterable(resultList)
                 .map(new Function<String, String>() {
                     @Override

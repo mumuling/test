@@ -56,4 +56,14 @@
         <item>向右滑动查看更多</item>
     </string-array>
 
+    <string-array name="create_reward_punish_item_title">
+        <item>安全监察</item>
+        <item>被罚款单位负责人</item>
+        <item>查阅组</item>
+    </string-array>
+    <string-array name="create_reward_punish_item_tip">
+        <item>仅限选择1人</item>
+        <item>仅限选择1人</item>
+        <item>向右滑动查看更多</item>
+    </string-array>
 </resources>

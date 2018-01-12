@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparency"
     android:gravity="center">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:id="@+id/dialog"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="17dp"
         android:background="@drawable/bg_dialog_signature"
         android:orientation="vertical"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
         android:paddingTop="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            >
+            android:paddingRight="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/signature"
-                android:textSize="12dp"/>
+                android:textColor="@color/text_color"
+                android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/clear_signature"
@@ -35,25 +35,24 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="@string/clear"
-                android:textSize="12dp"/>
+                android:textSize="12dp" />
         </RelativeLayout>
 
         <com.github.gcacace.signaturepad.views.SignaturePad
             android:id="@+id/signature_pad"
             android:layout_width="match_parent"
             android:layout_height="165dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/pen_bg_color"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:penColor="@android:color/black"
-            />
+            android:layout_marginTop="15dp"
+            android:background="@color/pen_bg_color"
+            app:penColor="@android:color/black" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="15dp"
-            android:background="@color/line2"/>
+            android:background="@color/line2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,7 +71,7 @@
                 android:gravity="center"
                 android:text="@string/cancel"
                 android:textColor="@color/text_color2"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
 
             <TextView
@@ -86,7 +85,7 @@
                 android:gravity="center"
                 android:text="@string/confirm"
                 android:textColor="@color/app_color"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

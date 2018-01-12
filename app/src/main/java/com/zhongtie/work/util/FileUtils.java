@@ -11,15 +11,11 @@ import android.text.TextUtils;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
-import kotlin.jvm.internal.Intrinsics;
 
 import static android.os.Environment.MEDIA_MOUNTED;
 
@@ -51,11 +47,9 @@ public class FileUtils {
     private static String getFileStamp() {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
         String var10000 = format.format(Calendar.getInstance().getTime());
-        Intrinsics.checkExpressionValueIsNotNull(var10000, "format.format(Calendar.getInstance().time)");
         return var10000;
     }
 
-    @NotNull
     public static File getOutputImageFilePath() {
         if (!TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {
             File file = new File(App.getInstance().getCacheDir().toString() + "/camera/");
@@ -72,7 +66,6 @@ public class FileUtils {
         return new File(App.getInstance().getExternalCacheDir() + "/camera/", getFileStamp() + ".jpeg");
     }
 
-    @NotNull
     public static Uri getOutputImageUri(File mTmpFile) {
         Uri u;
         if (Build.VERSION.SDK_INT >= 24) {

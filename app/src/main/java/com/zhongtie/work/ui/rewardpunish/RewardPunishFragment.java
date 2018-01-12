@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe;
+package com.zhongtie.work.ui.rewardpunish;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,10 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.model.SafeSupervisionEnity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.safe.item.SafeSupervisionItemView;
-import com.zhongtie.work.ui.safe.order.SafeOrderDetailFragment;
+import com.zhongtie.work.ui.rewardpunish.item.RewardPunishLookItemView;
+import com.zhongtie.work.ui.rewardpunish.item.RewardPunishItemView;
+import com.zhongtie.work.ui.safe.SafeSupervisionContract;
+import com.zhongtie.work.ui.safe.SafeSupervisionPresenterImpl;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
 import java.util.List;
@@ -19,16 +21,17 @@ import java.util.List;
  * date:2018.1.9
  */
 
-public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisionContract.Presenter> implements SafeSupervisionContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
+public class RewardPunishFragment extends BasePresenterFragment<SafeSupervisionContract.Presenter> implements SafeSupervisionContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
 
     public static final String TYPE = "type";
 
     private RefreshRecyclerView mList;
     private CommonAdapter commonAdapter;
+    private int mType;
 
-    public static SafeSupervisionFragment newInstance(int type) {
+    public static RewardPunishFragment newInstance(int type) {
         Bundle args = new Bundle();
-        SafeSupervisionFragment fragment = new SafeSupervisionFragment();
+        RewardPunishFragment fragment = new RewardPunishFragment();
         args.putInt(TYPE, type);
         fragment.setArguments(args);
         return fragment;
@@ -36,18 +39,23 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
 
     @Override
     public int getLayoutViewId() {
+        mType = getArguments().getInt(TYPE, 0);
         return R.layout.safe_supervision_fragment;
     }
 
     @Override
     public void initView() {
         mList = (RefreshRecyclerView) findViewById(R.id.list);
-
     }
 
     @Override
     protected void initData() {
-        commonAdapter = new CommonAdapter().register(SafeSupervisionItemView.class);
+        commonAdapter = new CommonAdapter();
+        if (mType == 0) {
+            commonAdapter.register(RewardPunishItemView.class);
+        } else {
+            commonAdapter.register(RewardPunishLookItemView.class);
+        }
         mList.setDivider(true);
         mList.initConfig(this);
         mList.setEmptyView(R.layout.placeholder_empty_view);
@@ -76,6 +84,5 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
 
     @Override
     public void onClick(Object t, int index) {
-        SafeSupervisionCreateActivity.newInstance(getActivity(), SafeOrderDetailFragment.class, getString(R.string.safe_supervision_title));
     }
 }

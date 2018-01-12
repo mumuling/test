@@ -30,6 +30,7 @@
         <item name="android:listPreferredItemPaddingLeft">25dp</item>
         <item name="android:listPreferredItemPaddingRight">25dp</item>
     </style>
+
     <style name="GrayTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/background</item>
     </style>
@@ -42,7 +43,6 @@
         <item name="android:itemPadding">25dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
-
 
 
     <style name="ZZMenuPopup" parent="Widget.AppCompat.PopupMenu">
@@ -112,7 +112,7 @@
     </style>
 
 
-    <style name="MultipleStatusView"/>
+    <style name="MultipleStatusView" />
 
     <style name="MultipleStatusView.Content">
         <item name="android:layout_width">wrap_content</item>
@@ -137,6 +137,7 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
     <style name="mystyle" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
@@ -150,5 +151,24 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_color2</item>
+    </style>
+
+    <!--<item name="android:windowIsFloating">false</item>-->
+    <!--<item name="android:windowFullscreen">false</item>-->
+    <!--<item name="android:layout_centerInParent">true</item>-->
+    <!--<item name="android:windowNoTitle">true</item>-->
+    <!--<item name="android:backgroundDimEnabled">true</item>-->
+    <!--<item name="android:windowIsTranslucent">true</item>-->
+    <!--<item name="android:windowContentOverlay">@null</item>-->
+
+    <style name="signature_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>

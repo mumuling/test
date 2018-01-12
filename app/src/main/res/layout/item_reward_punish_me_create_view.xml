@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.zhongtie.work.widget.BaseImageView
+        android:id="@+id/order_user_pic"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="-7dp"
+        android:visibility="visible"
+        app:placeholderImage="@drawable/portrait"
+        app:placeholderImageScaleType="centerCrop"
+        app:progressBarImage="@drawable/portrait"
+        app:roundAsCircle="true"
+        app:roundingBorderColor="@color/line2"
+        app:roundingBorderWidth="1px"
+        tools:background="@color/line" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/order_user_pic"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/order_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            tools:text="刘梅" />
+
+        <TextView
+            android:id="@+id/order_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/text_color2"
+            android:textSize="12dp"
+            android:singleLine="true"
+            tools:text="2018-01-10 09:00" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/order_create_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/text_color3"
+        android:textSize="12dp"
+        tools:text="2018-01-10 09:00" />
+</RelativeLayout>

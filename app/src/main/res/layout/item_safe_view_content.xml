@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingBottom="20dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/item_safe_view_title"
@@ -17,15 +14,17 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/info_title_img"
-        tools:text="整改要求"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textColor="@color/text_color"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        tools:text="整改要求" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1px"
         android:layout_marginTop="10dp"
-        android:background="@color/line2"/>
+        android:background="@color/line2" />
 
     <TextView
         android:id="@+id/item_safe_view_content"
@@ -34,7 +33,9 @@
         android:layout_marginTop="15dp"
         android:gravity="top|left"
         android:lineSpacingExtra="5dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textColor="@color/text_color2"
         android:textSize="14dp"
-        tools:text="请输入整改要请输入整改要求请输入整改要求请输入整改要求请输入整改要求请输入整改要求请输入整改要求求"/>
+        tools:text="请输入整改要请输入整改要求请输入整改要求请输入整改要求请输入整改要求请输入整改要求请输入整改要求求" />
 </LinearLayout>

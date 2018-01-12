@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="6dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginRight="8dp"
+        android:paddingRight="4dp">
+
+        <TextView
+            android:id="@+id/item_user_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/text_color"
+            android:textSize="16dp"
+            tools:text="检查人" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/check_examine_list"
+        android:layout_width="wrap_content"
+        android:layout_height="78dp"
+        android:overScrollMode="never" />
+</LinearLayout>

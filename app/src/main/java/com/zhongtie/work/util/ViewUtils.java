@@ -2,7 +2,6 @@
 
 package com.zhongtie.work.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -63,7 +62,7 @@ public class ViewUtils {
      * @return 获取屏幕宽度
      */
     public static int getScreenWidth(Context context) {
-        return ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
+        return context.getResources().getDisplayMetrics().widthPixels;
     }
 
     /**
@@ -71,7 +70,7 @@ public class ViewUtils {
      * @return 获取屏幕高
      */
     public static int getScreenHeight(Context context) {
-        return ((Activity) context).getWindowManager().getDefaultDisplay().getHeight();
+        return context.getResources().getDisplayMetrics().heightPixels;
     }
 
 
