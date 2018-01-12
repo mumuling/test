@@ -77,4 +77,5 @@
     <color name="wallet_green">#7ab751</color>
     <color name="pen_bg_color">#DBDBDB</color>
     <color name="line_color">#C7C7C7</color>
+    <color name="image_bottom">#252525</color>
 </resources>

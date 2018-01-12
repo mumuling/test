@@ -11,7 +11,7 @@ import java.util.List;
 public class CreateTypeItem {
 
     private String title;
-    private List<CreateCategoryData> mTypeItemList;
+    private List<CategoryData> mTypeItemList;
 
     public CreateTypeItem(String title) {
         this.title = title;
@@ -25,11 +25,11 @@ public class CreateTypeItem {
         this.title = title;
     }
 
-    public List<CreateCategoryData> getTypeItemList() {
+    public List<CategoryData> getTypeItemList() {
         return mTypeItemList;
     }
 
-    public void setTypeItemList(List<CreateCategoryData> typeItemList) {
+    public void setTypeItemList(List<CategoryData> typeItemList) {
         mTypeItemList = typeItemList;
     }
 }

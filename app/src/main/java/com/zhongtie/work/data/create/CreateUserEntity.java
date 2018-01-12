@@ -2,12 +2,14 @@ package com.zhongtie.work.data.create;
 
 import com.zhongtie.work.event.BaseEvent;
 
+import java.io.Serializable;
+
 /**
  * Auth: Chaek
  * Date: 2018/1/11
  */
 
-public class CreateUserEntity extends BaseEvent{
+public class CreateUserEntity implements BaseEvent, Serializable {
     private String userName;
     private String userPic;
     private int userId;

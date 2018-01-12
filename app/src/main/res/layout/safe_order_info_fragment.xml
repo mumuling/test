@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <include layout="@layout/base_recyclerview"/>
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line2"/>
+
+
+        <LinearLayout
+            android:id="@+id/bottom_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:divider="@drawable/divider_horizontal"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/modify"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/item_white_select_bg"
+                android:gravity="center"
+                android:text="@string/modify"
+                android:textColor="@color/app_color"
+                android:textSize="16sp"/>
+
+
+            <TextView
+                android:id="@+id/reply"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/item_white_select_bg"
+                android:gravity="center"
+                android:text="@string/reply"
+                android:textColor="@color/app_color"
+                android:textSize="16sp"/>
+
+
+            <TextView
+                android:id="@+id/approve"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/item_white_select_bg"
+                android:gravity="center"
+                android:text="@string/confirm"
+                android:textColor="@color/app_color"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

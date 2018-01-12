@@ -7,8 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:orientation="vertical"
-    android:visibility="gone"
-    tools:showIn="@layout/item_safe_order_reply">
+    android:visibility="visible">
 
     <include layout="@layout/base_recyclerview"/>
 
@@ -16,7 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_toRightOf="@id/item_user_list_title"
         android:text="@string/right_slide_look_more"
         android:textColor="@color/text_color2"
         android:textSize="12dp"/>

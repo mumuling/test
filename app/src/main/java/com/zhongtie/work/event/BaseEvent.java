@@ -7,8 +7,8 @@ import org.greenrobot.eventbus.EventBus;
  * date:2018.1.11
  */
 
-public class BaseEvent {
-    public void post() {
+public interface BaseEvent {
+    default void post() {
         EventBus.getDefault().post(this);
     }
 }

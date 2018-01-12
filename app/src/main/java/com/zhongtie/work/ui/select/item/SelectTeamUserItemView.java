@@ -28,34 +28,23 @@ public class SelectTeamUserItemView extends AbstractItemView<CreateUserEntity, S
         vh.mItemTitleCheck.setChecked(data.isSelect());
         vh.mItemTitleCheck.setText(data.getUserName());
         vh.mItemNoticeCheck.setChecked(data.isAt());
-        vh.mItemNoticeCheck.setOnCheckedChangeListener((compoundButton, b) -> {
-            data.setAt(b);
-            if (b) {
-                data.setSelect(true);
-            }
-            getCommonAdapter().notifyDataSetChanged();
-            data.post();
-        });
-        vh.mItemTitleCheck.setOnCheckedChangeListener(null);
-        vh.mItemTitleCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        vh.mItemNoticeCheck.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                data.setSelect(b);
+            public void onClick(View v) {
+                data.setAt(vh.mItemNoticeCheck.isChecked());
+                if (vh.mItemNoticeCheck.isChecked()) {
+                    data.setSelect(true);
+                }
                 getCommonAdapter().notifyDataSetChanged();
                 data.post();
             }
         });
-//        vh.mItemTitleCheck.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                data.setSelect(vh.mItemTitleCheck.isChecked());
-//                data.setSelect(true);
-//                data.post();
-//            }
-//        });
-//        vh.mItemTitleCheck.setOnClickListener((compoundButton, b) -> {
-//
-//        });
+        vh.mItemTitleCheck.setOnCheckedChangeListener(null);
+        vh.mItemTitleCheck.setOnClickListener(v -> {
+            data.setSelect(vh.mItemTitleCheck.isChecked());
+            getCommonAdapter().notifyDataSetChanged();
+            data.post();
+        });
     }
 
 

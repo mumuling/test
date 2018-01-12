@@ -17,7 +17,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseActivity;
 
 import static android.provider.MediaStore.Files.FileColumns.TITLE;
-import static com.zhongtie.work.ui.setting.SettingActivity.FRAGMENT;
+import static com.zhongtie.work.ui.setting.CommonFragmentActivity.FRAGMENT;
 
 /**
  * Auth: Chaek

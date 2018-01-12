@@ -7,7 +7,7 @@ import com.zhongtie.work.event.BaseEvent;
  * date:2018.1.11
  */
 
-public class CompanyTeamUserEntity extends BaseEvent {
+public class CompanyTeamUserEntity implements BaseEvent {
     private String userName;
     private boolean isSelect;
     private boolean isAt;

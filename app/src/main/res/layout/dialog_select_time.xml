@@ -78,19 +78,19 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <com.zhongtie.work.ui.safesupervision.dialog.wheel.WheelView
+                <com.zhongtie.work.ui.safe.dialog.wheel.WheelView
                     android:id="@+id/days"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
 
-                <com.zhongtie.work.ui.safesupervision.dialog.wheel.WheelView
+                <com.zhongtie.work.ui.safe.dialog.wheel.WheelView
                     android:id="@+id/hour"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
 
-                <com.zhongtie.work.ui.safesupervision.dialog.wheel.WheelView
+                <com.zhongtie.work.ui.safe.dialog.wheel.WheelView
                     android:id="@+id/mins"
                     android:layout_width="0px"
                     android:layout_height="match_parent"

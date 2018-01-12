@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/team_title"
@@ -22,7 +22,7 @@
             android:layout_marginBottom="12dp"
             android:textColor="@color/text_color"
             android:textSize="16dp"
-            tools:text="检查人" />
+            tools:text="检查人"/>
 
         <TextView
             android:id="@+id/item_team_select_add"
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="@string/aite_select"
             android:textColor="@color/text_color2"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
 
         <TextView
             android:id="@+id/item_team_select_all"
@@ -48,10 +48,15 @@
             android:gravity="center"
             android:text="@string/select_all"
             android:textColor="@color/text_color2"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
 
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/background"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/check_examine_list"
@@ -60,10 +65,10 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/background" />
+        android:background="@color/background"/>
 </LinearLayout>

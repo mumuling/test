@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhongtie.work.widget.InputMethodRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/input"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,27 +18,27 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/line2"/>
+
         <include
             layout="@layout/item_safe_create_add_user"
             android:layout_width="match_parent"
-            android:layout_height="170dp" />
+            android:layout_height="170dp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/line2" />
+            android:background="@color/line2"/>
 
         <LinearLayout
+            android:id="@+id/bottom_btn"
             android:layout_width="match_parent"
             android:layout_height="49dp"
-            android:layout_marginLeft="-20dp"
-            android:layout_marginRight="-20dp"
             android:divider="@drawable/divider_horizontal"
             android:orientation="horizontal"
             android:showDividers="middle">
 
             <TextView
-                android:id="@+id/update_download_cancel"
+                android:id="@+id/cancel"
                 android:layout_width="0px"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -44,11 +46,11 @@
                 android:gravity="center"
                 android:text="@string/cancel"
                 android:textColor="@color/text_color2"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
 
             <TextView
-                android:id="@+id/update_back_ground_download"
+                android:id="@+id/confirm"
                 android:layout_width="0px"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
@@ -59,16 +61,16 @@
                 android:gravity="center"
                 android:text="@string/confirm"
                 android:textColor="@color/app_color"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom"
-        android:orientation="vertical"
-        tools:background="@color/background">
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_above="@id/bottom"
+                  android:orientation="vertical"
+                  tools:background="@color/background">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/search"
@@ -88,17 +90,30 @@
             android:singleLine="true"
             android:textColor="@color/text_color2"
             android:textColorHint="@color/text_color_hint"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
+
+        <com.zhongtie.work.widget.EmptyFragment
+            android:id="@+id/search_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:background="@color/white"
+            android:paddingTop="16dp"
+            android:overScrollMode="never"
+            android:visibility="gone"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/temp_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:visibility="visible"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 
 
-</RelativeLayout>
+</com.zhongtie.work.widget.InputMethodRelativeLayout>

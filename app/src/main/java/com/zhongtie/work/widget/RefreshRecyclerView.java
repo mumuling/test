@@ -182,11 +182,9 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
      */
     public void setDivider(boolean isDivider) {
         if (isDivider) {
-            KDividerItemDecoration decoration = new KDividerItemDecoration(getContext(), KDividerItemDecoration.VERTICAL);
+            DividerItemDecoration decoration = new DividerItemDecoration(getContext(), KDividerItemDecoration.VERTICAL);
+            decoration.setDividerHeight(1);
             refreshRecyclerView.addItemDecoration(decoration);
-        }
-        if (refreshAdapter != null) {
-            notifyDataSetChanged();
         }
     }
 

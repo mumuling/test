@@ -36,9 +36,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             EventBus.getDefault().register(this);
         }
         initTitle();
+        initView(savedInstanceState);
         initView();
         initModel();
         initData();
+    }
+
+    protected void initView(Bundle savedInstanceState) {
+
     }
 
     protected void initModel() {
@@ -59,11 +64,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     private void initTitle() {
-        mToolbarTitle = (TextView) findViewById(R.id.title);
+        mToolbarTitle = findViewById(R.id.title);
+        if (mToolbarTitle != null) {
+            findViewById(R.id.title_back).setOnClickListener(this);
+        }
         mMenuTitle = findViewById(R.id.title_right_btn);
         if (mMenuTitle != null) {
             mMenuTitle.setOnClickListener(this);
-            findViewById(R.id.title_back).setOnClickListener(this);
         }
     }
 

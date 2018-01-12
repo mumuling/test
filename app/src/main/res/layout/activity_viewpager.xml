@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tool="http://schemas.android.com/tools"
+                  android:id="@+id/title_layout_view"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/title_back"
+                android:layout_width="48dp"
+                android:layout_height="45dp"
+                android:background="@drawable/item_white_select_bg"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/title_back_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_back"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                tool:text="标题"/>
+
+            <TextView
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/btn_base_background"
+                android:gravity="center|right"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tool:text="标题"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/title_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/image_choose_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/image_bottom"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/image_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/checkmark"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/mis_check_selected"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/select"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <com.zhongtie.work.widget.MultiTouchViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_above="@id/image_choose_bottom"
+        android:layout_height="match_parent"
+        android:layout_marginTop="45dp"/>
+</RelativeLayout>

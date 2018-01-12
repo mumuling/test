@@ -1,10 +1,8 @@
 package com.zhongtie.work.ui.select;
 
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.model.SafeSupervisionEnity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
-import com.zhongtie.work.ui.safesupervision.SafeSupervisionContract;
 
 import java.util.List;
 

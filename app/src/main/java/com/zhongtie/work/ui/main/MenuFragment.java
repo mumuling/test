@@ -15,7 +15,7 @@ import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.main.adapter.MenuItemView;
 import com.zhongtie.work.ui.setting.NoticeSettingFragment;
-import com.zhongtie.work.ui.setting.SettingActivity;
+import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.ui.setting.VersionFragment;
 import com.zhongtie.work.ui.statistics.StatisticsActivity;
 import com.zhongtie.work.ui.user.UserInfoActivity;
@@ -120,10 +120,10 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
                 StatisticsActivity.newInstance(getActivity());
                 break;
             case "通知设置":
-                SettingActivity.newInstance(getActivity(), NoticeSettingFragment.class, getString(R.string.notice_setting_title));
+                CommonFragmentActivity.newInstance(getActivity(), NoticeSettingFragment.class, getString(R.string.notice_setting_title));
                 break;
             case "版本信息":
-                SettingActivity.newInstance(getActivity(), VersionFragment.class, getString(R.string.version_info_title));
+                CommonFragmentActivity.newInstance(getActivity(), VersionFragment.class, getString(R.string.version_info_title));
                 break;
             case "注销":
                 break;

@@ -19,6 +19,29 @@
         app:progressBarImage="@drawable/portrait"
         app:roundAsCircle="true" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/safe_order_head"
+        android:layout_marginLeft="12dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/safe_order_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            tools:text="刘梅" />
+
+        <TextView
+            android:id="@+id/safe_order_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/text_color2"
+            android:textSize="10dp"
+            tools:text="渝中区某地 单位名称单位名称单位名称单..." />
+    </LinearLayout>
     <ImageView
         android:id="@+id/arrow"
         android:layout_width="wrap_content"
@@ -40,25 +63,5 @@
         android:textSize="14dp"
         tools:text="新进展" />
 
-    <TextView
-        android:id="@+id/safe_order_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_toRightOf="@id/safe_order_head"
-        android:textSize="14dp"
-        tools:text="刘梅" />
 
-    <TextView
-        android:id="@+id/safe_order_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/safe_order_name"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="6dp"
-        android:layout_toRightOf="@id/safe_order_head"
-        android:textColor="@color/text_color2"
-        android:textSize="10dp"
-        tools:text="渝中区某地 单位名称单位名称单位名称单..." />
 </RelativeLayout>

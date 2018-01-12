@@ -50,6 +50,9 @@ dependencies {
     compile 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
     compile 'com.github.MagicMashRoom:SuperCalendar:1.6'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    compile 'id.zelory:compressor:1.0.4'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    compile 'me.relex:photodraweeview:1.1.2'
 
     //签名
     implementation 'com.github.gcacace:signature-pad:1.2.1'

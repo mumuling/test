@@ -9,12 +9,13 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.main.adapter.HomeItemView;
-import com.zhongtie.work.ui.safesupervision.SafeSupervisionActivity;
+import com.zhongtie.work.ui.safe.SafeSupervisionActivity;
 import com.zhongtie.work.ui.scan.ScanQRCodeActivity;
 import com.zhongtie.work.ui.select.SelectLookGroupFragment;
 import com.zhongtie.work.ui.select.SelectUserFragment;
-import com.zhongtie.work.ui.setting.SettingActivity;
+import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.ui.statistics.StatisticsActivity;
 
 import java.util.ArrayList;
@@ -80,11 +81,16 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
                 ScanQRCodeActivity.newInstance(getActivity());
                 break;
             case "文件下载":
-                SettingActivity.newInstance(getActivity(), SelectUserFragment.class,"责任人");
+                CommonFragmentActivity.newInstance(getActivity(), SelectUserFragment.class,"责任人");
                 break;
             case "文件签认":
-                SettingActivity.newInstance(getActivity(), SelectLookGroupFragment.class,"查阅组");
+                CommonFragmentActivity.newInstance(getActivity(), SelectLookGroupFragment.class,"查阅组");
                 break;
+            case "奖惩流程":
+                MultiImageSelector.create().count(9).start(this,1001);
+//                SettingActivity.newInstance(getActivity(), SelectLookGroupFragment.class,"查阅组");
+                break;
+                default:
         }
 
 
