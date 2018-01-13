@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
@@ -205,11 +204,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
                 .subscribe(createUserEntities -> {
                     mSearchAdapter.setListData(createUserEntities);
                     mSearchAdapter.notifyDataSetChanged();
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
+                }, throwable -> {
                 });
 
     }

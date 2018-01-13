@@ -25,6 +25,16 @@ public class CreateUserItemView extends AbstractItemView<CreateUserEntity, Creat
         return R.layout.item_safe_create_user_head;
     }
 
+    private boolean isEdit;
+
+    public CreateUserItemView(boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
+    public CreateUserItemView() {
+        isEdit = true;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CreateUserEntity data) {
         vh.mItemUserHead.setImageURI(Uri.parse(data.getUserPic()));
@@ -32,15 +42,20 @@ public class CreateUserItemView extends AbstractItemView<CreateUserEntity, Creat
         if (data.isAt()) {
             vh.mItemUserName.setTextColor(vh.mContext.getResources().getColor(R.color.state_red_color));
             vh.mItemUserName.setText(vh.mContext.getString(R.string.at_user_name, data.getUserName()));
-        }else {
+        } else {
             vh.mItemUserName.setTextColor(vh.mContext.getResources().getColor(R.color.text_color));
             vh.mItemUserName.setText(data.getUserName());
         }
+        if (isEdit) {
+            vh.mItemUserDelete.setVisibility(View.VISIBLE);
+        } else {
+            vh.mItemUserDelete.setVisibility(View.GONE);
+        }
+
         //点击删除按钮
-        vh.mItemUserDelete.setVisibility(View.VISIBLE);
         vh.mItemUserDelete.setOnClickListener(v -> {
             commonAdapter.getListData().remove(data);
-            commonAdapter.notifyDataSetChanged();
+            commonAdapter.notifyItemRemoved(vh.getLayoutPosition());
         });
     }
 

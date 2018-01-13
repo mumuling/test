@@ -5,12 +5,12 @@ package com.zhongtie.work.base.adapter;
  *
  * @author Chaek
  */
-public interface OnRecyclerItemClickListener {
+public interface OnRecyclerItemClickListener<T> {
     /**
      * onClick callback
      *
      * @param t     click item data
      * @param index click item position
      */
-    void onClick(Object t, int index);
+    void onClick(T t, int index);
 }

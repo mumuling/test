@@ -51,7 +51,7 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
     }
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.layout_safe_create_bast_info_title, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.layout_safe_create_base_info_title, this, true);
         mCreateTime = findViewById(R.id.create_time);
         mCreateAddress = findViewById(R.id.create_address);
         mCreateCompanySelect = findViewById(R.id.create_company_select);

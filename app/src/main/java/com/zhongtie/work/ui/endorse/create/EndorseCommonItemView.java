@@ -1,10 +1,11 @@
-package com.zhongtie.work.ui.safe.item;
+package com.zhongtie.work.ui.endorse.create;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,20 +19,16 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.ui.image.MultiImageSelector;
+import com.zhongtie.work.ui.endorse.detail.EndorseUserItemView;
+import com.zhongtie.work.ui.file.FileSelectFragment;
+import com.zhongtie.work.ui.safe.item.CreateUserItemView;
+import com.zhongtie.work.ui.safe.item.TeamNameItemView;
 import com.zhongtie.work.ui.select.SelectLookGroupFragment;
 import com.zhongtie.work.ui.select.SelectUserFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 
-import static com.zhongtie.work.ui.image.MultiImageSelector.REQUEST_CODE;
-
-/**
- * 创建类别选择
- * Auth: Chaek
- * Date: 2018/1/11
- */
 @BindItemData(CommonItemType.class)
-public class CreateCommonItemView extends AbstractItemView<CommonItemType, CreateCommonItemView.ViewHolder> {
+public class EndorseCommonItemView extends AbstractItemView<CommonItemType, EndorseCommonItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_create_add_user;
@@ -48,10 +45,7 @@ public class CreateCommonItemView extends AbstractItemView<CommonItemType, Creat
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CommonItemType data) {
-        vh.mItemUserListTitle.setText(data.getTitle());
-        if (data.getTypeItemList().size() > 0) {
-            vh.mItemUserListTitle.append("\t(" + data.getTypeItemList().size() + ")");
-        }
+
         vh.mItemUserListTip.setText(data.getHint());
         vh.mItemUserAddImg.setImageResource((data.getIcon()));
         vh.mItemUserAddImg.setVisibility(View.VISIBLE);
@@ -62,43 +56,74 @@ public class CreateCommonItemView extends AbstractItemView<CommonItemType, Creat
             vh.mItemUserAddImg.setVisibility(View.GONE);
             vh.mItemUserListTip.setVisibility(View.GONE);
         }
-        vh.mItemUserAddImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (data.getTitle().contains(vh.mContext.getString(R.string.photo))) {
-                    //照片
-                    int count = data.getTypeItemList() == null ? MultiImageSelector.MAX_COUNT : MultiImageSelector.MAX_COUNT - data.getTypeItemList().size();
-                    MultiImageSelector.create().count(count).start(getFragment(v.getContext()), REQUEST_CODE);
-                } else if (data.getTitle().contains("查阅")) {
-                    CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectLookGroupFragment.class, data.getTitle(), data.getTypeItemList());
-                } else {
-                    CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectUserFragment.class, data.getTitle(), data.getTypeItemList());
-                }
-            }
-        });
-        if (vh.mCheckExamineList.getAdapter() == null) {
-            CommonAdapter adapter = new CommonAdapter(data.getTypeItemList());
-//            adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-//                @Override
-//                public void onChanged() {
-//                    super.onChanged();
-//                    getCommonAdapter().notifyDataSetChanged();
-//                }
-//            });
+        //查阅横向滑动查看
+        if (data.getTitle().contains("查阅")) {
             vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, false));
-            adapter.register(new CreatePicItemView(data.isEdit()));
-            //用户信息
-            adapter.register(CreateUserItemView.class);
-            vh.mCheckExamineList.setAdapter(adapter);
+        } else if (data.getTitle().contains("签认人")) {
+            vh.mCheckExamineList.setLayoutManager(new GridLayoutManager(vh.mContext, 5));
         } else {
-            CommonAdapter adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
+            //其它选项则上下滑动
+            vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
+        }
+
+        //跳转实现
+        vh.mItemUserAddImg.setOnClickListener(v -> itemStartView(v, data));
+        CommonAdapter adapter;
+        if (vh.mCheckExamineList.getAdapter() == null) {
+            adapter = new CommonAdapter(data.getTypeItemList());
+            //选择的文件
+            adapter.register(new EndorseFileItemView(data.isEdit()));
+            //选择人
+            adapter.register(new CreateUserItemView(data.isEdit()));
+            //查阅组
+            adapter.register(TeamNameItemView.class);
+            //签认人
+            adapter.register(EndorseUserItemView.class);
+
+            vh.mCheckExamineList.setAdapter(adapter);
+
+            if (vh.mCheckExamineList.getTag() != null) {
+                adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
+            }
+            RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+                @Override
+                public void onItemRangeRemoved(int positionStart, int itemCount) {
+                    super.onItemRangeRemoved(positionStart, itemCount);
+                    changeItemView(vh, data);
+                }
+            };
+            adapter.registerAdapterDataObserver(observer);
+            vh.mCheckExamineList.setTag(observer);
+
+        } else {
+            adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
             adapter.setListData(data.getTypeItemList());
-            vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
+        }
+
+        changeItemView(vh, data);
+    }
+
+
+    private void changeItemView(ViewHolder vh, CommonItemType data) {
+        vh.mItemUserListTitle.setText(data.getTitle());
+        if (data.getTypeItemList().size() > 0) {
+            vh.mItemUserListTitle.append("\t(" + data.getTypeItemList().size() + ")");
         }
         if (data.getTypeItemList() == null || data.getTypeItemList().isEmpty()) {
             vh.mCheckExamineList.setVisibility(View.GONE);
         } else {
             vh.mCheckExamineList.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void itemStartView(View v, @NonNull CommonItemType data) {
+        if (data.getTitle().contains("查阅")) {
+            CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectLookGroupFragment.class, data.getTitle(), data.getTypeItemList());
+        } else if (data.getTitle().contains("上传文件")) {
+            CommonFragmentActivity.newInstance(v.getContext(), FileSelectFragment.class, "选择文件");
+        } else {
+            CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectUserFragment.class, data.getTitle(), data.getTypeItemList());
         }
     }
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_white_select_bg"
+    android:minHeight="65dp">
+
+    <ImageView
+        android:id="@+id/folder_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/portrait" />
+
+    <ImageView
+        android:id="@+id/folder_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/arrow_next" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_toLeftOf="@id/folder_arrow"
+        android:layout_toRightOf="@id/folder_img"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="文件第一文件第一级分类名称文件第一级分类名称文件第一级分类名称级分类名称"
+            android:textColor="@color/text_color"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/folder_file_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="子分类5个 文件2个"
+            android:textColor="@color/text_color3"
+            android:textSize="11dp" />
+    </LinearLayout>
+
+</RelativeLayout>

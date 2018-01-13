@@ -3,7 +3,7 @@ package com.zhongtie.work.ui.safe;
 import android.support.v7.widget.RecyclerView;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.model.SafeSupervisionEnity;
+import com.zhongtie.work.model.SafeSupervisionEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
@@ -37,7 +37,7 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeSup
     }
 
     @Override
-    public void setSafeSupervisionList(List<SafeSupervisionEnity> supervisionList) {
+    public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
     }
 
     @Override

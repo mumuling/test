@@ -4,9 +4,11 @@ import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.data.create.CategoryData;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.CreateTypeItem;
+import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
@@ -19,8 +21,6 @@ import java.util.List;
  */
 
 public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateContract.View> implements RewardPunishCreateContract.Presenter {
-
-
     /**
      * 描述编辑数据
      */
@@ -29,28 +29,6 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
      * 整改内容
      */
     private EditContentEntity mRectifyEditContent;
-
-    /**
-     * 图片信息
-     */
-    private CommonItemType<String> mPicItemType;
-//    /**
-//     * 检查人
-//     */
-//    private CommonItemType<CreateUserEntity> mExamineItemType;
-//    /**
-//     * 验证人
-//     */
-//    private CommonItemType<CreateUserEntity> mVerifyItemType;
-//    /**
-//     * 整改人
-//     */
-//    private CommonItemType<CreateUserEntity> mRectifyItemType;
-//    /**
-//     * 查阅组
-//     */
-//    private CommonItemType<TeamNameEntity> mLookGroupItemType;
-
     private ArrayMap<String, CommonItemType> mTypeArrayMap;
 
     /**
@@ -85,17 +63,14 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     public void getItemList(int safeOrderID) {
         List<Object> itemList = new ArrayList<>();
         mTypeArrayMap = new ArrayMap<>();
-
         mDescribeEditContent = new EditContentEntity("摘要", "请输入摘要说明", "");
+        mRectifyEditContent = new EditContentEntity("详细情况", "请输入详细情况", "");
+
         //添加描述
         itemList.add(mDescribeEditContent);
         //添加修改要求
-        mRectifyEditContent = new EditContentEntity("详细情况", "请输入详细情况", "");
         itemList.add(mRectifyEditContent);
-
         itemList.addAll(fetchCommonItemTypeList());
-
-
         mView.setItemList(itemList);
     }
 
@@ -104,7 +79,18 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     public void setSelectUserInfoList(String title, List createUserEntities) {
         CommonItemType itemType = mTypeArrayMap.get(title);
         if (itemType != null) {
-            itemType.setTypeItemList(createUserEntities);
+            if (!title.contains("查阅")) {
+                List<RPRecordEntity> list = new ArrayList<>();
+                for (int i = 0; i < createUserEntities.size(); i++) {
+                    CreateUserEntity createUserEntity = (CreateUserEntity) createUserEntities.get(i);
+                    RPRecordEntity rpRecordEntity = new RPRecordEntity();
+                    rpRecordEntity.setEdit(true);
+                    list.add(rpRecordEntity);
+                }
+                itemType.setTypeItemList(list);
+            } else {
+                itemType.setTypeItemList(createUserEntities);
+            }
         }
     }
 

@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class TimeUtils {
     private static DateFormat formatEnd = new SimpleDateFormat("MM月dd日");
@@ -32,6 +33,60 @@ public class TimeUtils {
     private static DateFormat startTimeFormat = new SimpleDateFormat("HH:mm");
     private static DateFormat TemporaryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static DateFormat from_temporaryDate = new SimpleDateFormat("dd日 HH:mm");
+
+
+    private static SimpleDateFormat mYDateTimeFormat;
+    private static SimpleDateFormat mDateTimeFormat;
+    private static SimpleDateFormat mYDateFormat;
+    private static String[] sTimeUnits;
+
+    public static String formatYDateTime(long timestamp) {
+        if (mYDateTimeFormat == null) {
+            mYDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        }
+        if (timestamp == 0) {
+            return "-";
+        }
+        return mYDateTimeFormat.format(new Date(timestamp));
+    }
+
+
+    public static String formatDateTime(long timestamp) {
+        if (mDateTimeFormat == null) {
+            mDateTimeFormat = new SimpleDateFormat("MM-dd HH:mm", Locale.getDefault());
+        }
+        if (timestamp == 0) {
+            return "-";
+        }
+        return mDateTimeFormat.format(new Date(timestamp));
+    }
+    public static String formatDateTimeAll(long timestamp) {
+        if (mDateTimeFormat == null) {
+            mDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        }
+        if (timestamp == 0) {
+            return "-";
+        }
+        return mDateTimeFormat.format(new Date(timestamp));
+    }
+
+    public static String formatYDate(long timestamp) {
+        if (mYDateFormat == null) {
+            mYDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        }
+        if (timestamp == 0) {
+            return "-";
+        }
+        return mYDateFormat.format(new Date(timestamp));
+    }
+
+    public static String formatDate(String format, long timestamp) {
+        if (timestamp == 0) {
+            return "-";
+        }
+        return new SimpleDateFormat(format, Locale.getDefault()).format(new Date(timestamp));
+    }
+
 
     /**
      * 得到当前系统日期,格式:yyyy-mm-dd
@@ -88,6 +143,9 @@ public class TimeUtils {
      */
     public static String getFormatDateAll() {
         return getFormatDate("yyyy-MM-dd HH:mm:ss");
+    }
+    public static String getFormatDateTime() {
+        return getFormatDate("yyyy-MM-dd HH:mm");
     }
 
     /**
@@ -156,23 +214,8 @@ public class TimeUtils {
         return dateComPareFlag;
     }
 
-//    2015-12-11 08:40:18
 
-    /**
-     * 获取时间星期
-     *
-     * @param time 时间
-     */
-    public static String getTimeWeeK(Date time) {
 
-        String[] weekDays = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(time);
-        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        if (w < 0)
-            w = 0;
-        return weekDays[w];
-    }
 
     public static String getVocherDate(String time) throws ParseException {
         // 设定时间的模板

@@ -60,6 +60,8 @@
         <activity android:name=".ui.image.MultiImageSelectDetailActivity" />
         <activity android:name=".ui.image.MultiImageSelectorActivity" />
         <activity android:name=".ui.rewardpunish.RewardPunishActivity" />
+        <activity android:name=".ui.file.FileShareActivity" />
+        <activity android:name=".ui.endorse.EndorseListActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

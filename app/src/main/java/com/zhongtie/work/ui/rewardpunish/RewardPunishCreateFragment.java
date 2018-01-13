@@ -10,8 +10,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.safe.SafeCreateEditHeadView;
-import com.zhongtie.work.ui.safe.item.CreateCommonItemView;
+import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
 import com.zhongtie.work.ui.safe.order.SafeDividerItemDecoration;
@@ -61,7 +60,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
     @Override
     public void initView() {
         mList = (RecyclerView) findViewById(R.id.list);
-        mHeadInfoView = new SafeCreateEditHeadView(getActivity());
+        mHeadInfoView = new RPCreateHeadView(getActivity());
         initAdapter();
     }
 
@@ -72,8 +71,9 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
                 //输入数据
                 .register(CreateEditContentItemView.class)
                 //基本界面
-                .register(CreateCommonItemView.class);
+                .register(RPCommonItemView.class);
         mCommonAdapter.addHeaderView(mHeadInfoView);
+
         View mFooterView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_modify_pw_bottom, mList, false);
         mCommonAdapter.addFooterView(mFooterView);
     }

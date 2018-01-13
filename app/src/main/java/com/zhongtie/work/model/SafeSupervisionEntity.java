@@ -5,5 +5,5 @@ package com.zhongtie.work.model;
  * date:2018.1.9
  */
 
-public class SafeSupervisionEnity {
+public class SafeSupervisionEntity {
 }

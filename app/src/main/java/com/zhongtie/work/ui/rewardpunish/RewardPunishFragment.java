@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
-import com.zhongtie.work.model.SafeSupervisionEnity;
+import com.zhongtie.work.model.SafeSupervisionEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.rewardpunish.item.RewardPunishLookItemView;
+import com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RewardPunishItemView;
+import com.zhongtie.work.ui.rewardpunish.item.RewardPunishLookItemView;
 import com.zhongtie.work.ui.safe.SafeSupervisionContract;
+import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.SafeSupervisionPresenterImpl;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
@@ -68,7 +70,7 @@ public class RewardPunishFragment extends BasePresenterFragment<SafeSupervisionC
     }
 
     @Override
-    public void setSafeSupervisionList(List<SafeSupervisionEnity> supervisionList) {
+    public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
         mList.setListData(supervisionList);
     }
 
@@ -84,5 +86,7 @@ public class RewardPunishFragment extends BasePresenterFragment<SafeSupervisionC
 
     @Override
     public void onClick(Object t, int index) {
+        SafeSupervisionCreateActivity.newInstance(getActivity(), RPOrderDetailFragment.class, getString(R.string.safe_supervision_title));
+
     }
 }

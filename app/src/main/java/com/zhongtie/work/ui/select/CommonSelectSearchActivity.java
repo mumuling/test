@@ -2,6 +2,7 @@ package com.zhongtie.work.ui.select;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,9 +16,15 @@ import android.widget.TextView;
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseActivity;
+import com.zhongtie.work.ui.setting.CommonFragmentActivity;
+
+import java.io.Serializable;
+import java.util.List;
 
 import static android.provider.MediaStore.Files.FileColumns.TITLE;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.FRAGMENT;
+import static com.zhongtie.work.ui.setting.CommonFragmentActivity.LIST;
+import static com.zhongtie.work.ui.setting.CommonFragmentActivity.USER_SELECT_CODE;
 
 /**
  * Auth: Chaek
@@ -46,6 +53,16 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
         context.startActivity(intent);
     }
 
+    public static void newInstance(Fragment context, Class fragment, String hint, List list) {
+        Intent intent = new Intent(context.getContext(), CommonSelectSearchActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(FRAGMENT, fragment.getName());
+        bundle.putString(TITLE, hint);
+        bundle.putSerializable(LIST, (Serializable) list);
+        intent.putExtras(bundle);
+        context.startActivityForResult(intent, USER_SELECT_CODE);
+    }
+
     @Override
     protected int getLayoutViewId() {
         return R.layout.search_activity;
@@ -72,6 +89,7 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
         try {
             mFragment = Fragments.with(this)
                     .fragment(Class.forName(getIntent().getStringExtra(FRAGMENT)))
+                    .bundle(getIntent().getExtras())
                     .into(R.id.fragment_content);
             if (mFragment instanceof OnSearchContentListener) {
                 mOnSearchContentListener = (OnSearchContentListener) mFragment;

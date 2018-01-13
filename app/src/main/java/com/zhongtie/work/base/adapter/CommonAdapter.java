@@ -80,9 +80,10 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
         classList = new ArrayList<>();
         itemViewList = new ArrayList<>();
         positionTypeMap = new ArrayMap<>();
-        mListData = new ArrayList<>();
         if (listData != null) {
-            mListData.addAll(listData);
+            mListData = listData;
+        }else {
+            mListData = new ArrayList<>();
         }
     }
 
@@ -288,8 +289,8 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
      * @param mListData list数据 list item 可以是任意数据格式 但是对应得格式都需要注册{@link #register(Class[])}
      */
     public void setListData(List mListData) {
-        this.mListData.clear();
-        this.mListData.addAll(mListData);
+        this.mListData = mListData;
+//        this.mListData.addAll(mListData);
     }
 
     /**

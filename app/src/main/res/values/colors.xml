@@ -34,7 +34,7 @@
     <!--定位相关颜色-->
     <color name="location_text_theme_color">#43cea2</color>
     <color name="loaction_container_theme_bg">#d9f5ec</color>
-    <color name="loaction_container_gray_bg">#cccccc</color>
+    <color name="enabled_gray_bg">#cccccc</color>
     <!--忘记密码字体颜色-->
 
 

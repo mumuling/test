@@ -9,7 +9,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.model.SafeSupervisionEnity;
+import com.zhongtie.work.model.SafeSupervisionEntity;
 import com.zhongtie.work.widget.BaseImageView;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
@@ -19,8 +19,8 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls
  * Auth: Chaek
  * Date: 2018/1/11
  */
-@BindItemData(SafeSupervisionEnity.class)
-public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEnity, SafeSupervisionItemView.ViewHolder> {
+@BindItemData(SafeSupervisionEntity.class)
+public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEntity, SafeSupervisionItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_supervision_order;
@@ -28,7 +28,7 @@ public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEni
 
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SafeSupervisionEnity data) {
+    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SafeSupervisionEntity data) {
         vh.mSafeOrderHead.loadImage(imageUrls[vh.getItemPosition() % imageUrls.length]);
         vh.mSafeOrderName.setText("测试" + vh.getItemPosition());
         vh.mSafeOrderState.setText("已阅");

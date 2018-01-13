@@ -66,4 +66,27 @@
         <item>仅限选择1人</item>
         <item>向右滑动查看更多</item>
     </string-array>
+    <string-array name="create_file_sign_item_title">
+        <item>上传文件</item>
+        <item>签认人</item>
+        <item>查阅组</item>
+    </string-array>
+    <string-array name="create_file_sign_item_tip">
+        <item>仅支持上传1个word文件</item>
+        <item> </item>
+        <item>向右滑动查看更多</item>
+    </string-array>
+
+    <string-array name="create_file_sign_detail_title">
+        <item>签认文件</item>
+        <item>签认人</item>
+        <item>查阅组</item>
+        <item>已签认</item>
+    </string-array>
+    <string-array name="create_file_sign_detail_tip">
+        <item>仅支持上传1个word文件</item>
+        <item> </item>
+        <item>向右滑动查看更多</item>
+        <item> </item>
+    </string-array>
 </resources>

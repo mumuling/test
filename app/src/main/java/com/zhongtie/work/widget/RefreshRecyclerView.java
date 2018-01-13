@@ -60,8 +60,9 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
      */
     public void initConfig(RefreshPageConfig observable) {
         //获取实例化Adapter
-        CommonAdapter baseAdapte = (CommonAdapter) observable.createAdapter();
-        this.refreshAdapter = (V) baseAdapte;
+        CommonAdapter baseAdapter = (CommonAdapter) observable.createAdapter();
+        baseAdapter.setListData(listData);
+        this.refreshAdapter = (V) baseAdapter;
         setRefreshRecyclerViewConfig(observable);
     }
 
@@ -138,11 +139,11 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
         }
 //        if (indexPage == FIRST_PAGE) {
 //            refreshAdapter.setListData(listData);
-//            refreshAdapter.notifyDataSetChanged();
+            refreshAdapter.notifyDataSetChanged();
 //        } else {
-            notifyDataSetChanged();
+//            notifyDataSetChanged();
 //        }
-        onChanged();
+//        onChanged();
     }
 
     private void notifyDataSetChanged() {

@@ -12,7 +12,7 @@ import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
-import com.zhongtie.work.ui.safe.item.CreateCommonItemView;
+import com.zhongtie.work.ui.safe.item.SafeCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
 import com.zhongtie.work.ui.safe.order.SafeDividerItemDecoration;
@@ -73,7 +73,7 @@ public class SafeSupervisionCreate2Fragment extends BasePresenterFragment<SafeCr
                 //输入数据
                 .register(CreateEditContentItemView.class)
                 //基本界面
-                .register(CreateCommonItemView.class);
+                .register(SafeCommonItemView.class);
         mCommonAdapter.addHeaderView(mHeadInfoView);
         View mFooterView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_modify_pw_bottom, mList, false);
         mCommonAdapter.addFooterView(mFooterView);

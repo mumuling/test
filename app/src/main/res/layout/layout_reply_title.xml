@@ -8,8 +8,8 @@
 
     <com.zhongtie.work.widget.BaseImageView
         android:id="@+id/safe_order_reply_head"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
         app:placeholderImage="@drawable/portrait"
@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/safe_order_reply_head"
         android:orientation="vertical">
 
@@ -39,7 +40,6 @@
             android:id="@+id/safe_order_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/safe_order_reply_head"
             android:textSize="16dp"
             tools:text="刘梅" />
@@ -49,7 +49,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/safe_order_name"
-            android:layout_marginLeft="12dp"
             android:layout_marginTop="4dp"
             android:layout_toRightOf="@id/safe_order_reply_head"
             android:textColor="@color/text_color2"

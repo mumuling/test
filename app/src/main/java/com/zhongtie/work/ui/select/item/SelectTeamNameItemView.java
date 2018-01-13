@@ -16,26 +16,16 @@ import com.zhongtie.work.data.TeamNameEntity;
  */
 
 @BindItemData(TeamNameEntity.class)
-public class TeamNameItemView extends AbstractItemView<TeamNameEntity, TeamNameItemView.ViewHolder> {
+public class SelectTeamNameItemView extends AbstractItemView<TeamNameEntity, SelectTeamNameItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_create_select_type;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TeamNameItemView.ViewHolder vh, @NonNull TeamNameEntity data) {
+    public void onBindViewHolder(@NonNull SelectTeamNameItemView.ViewHolder vh, @NonNull TeamNameEntity data) {
         vh.mItemTitleCheck.setText("测试" + vh.getItemPosition());
-//        vh.mItemTitleCheck.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                data.setSelect(vh.mItemTitleCheck.isChecked());
-//                data.setSelect(true);
-//                data.post();
-//            }
-//        });
-//        vh.mItemTitleCheck.setOnClickListener((compoundButton, b) -> {
-//
-//        });
+        vh.mItemTitleCheck.setOnClickListener(view -> data.post());
     }
 
 
