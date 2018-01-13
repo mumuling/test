@@ -5,12 +5,6 @@ import android.content.Intent;
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseActivity;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * Auth: Chaek
  * Date: 2018/1/9
@@ -31,17 +25,23 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        addDispose(Observable.interval(0, 1, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(aLong -> count - aLong)
-                .subscribe(aLong -> {
-                    startActivity(new Intent(getAppContext(), MainActivity.class));
-                    finish();
-                    if (mDisposable != null) {
-                        mDisposable.clear();
-                    }
-                }, throwable -> {
-                }));
+        getWindow().getDecorView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(getAppContext(), MainActivity.class));
+                finish();
+                if (mDisposable != null) {
+                    mDisposable.clear();
+                }
+            }
+        },2000);
+//        addDispose(Observable.interval(0, 1, TimeUnit.SECONDS)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .map(aLong -> count - aLong)
+//                .subscribe(aLong -> {
+//
+//                }, throwable -> {
+//                }));
     }
 }

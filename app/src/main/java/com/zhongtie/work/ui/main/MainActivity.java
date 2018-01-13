@@ -1,6 +1,5 @@
 package com.zhongtie.work.ui.main;
 
-import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
@@ -10,8 +9,6 @@ import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
 import com.zhongtie.work.model.CompanyEntity;
 import com.zhongtie.work.ui.base.BaseActivity;
-import com.zhongtie.work.ui.scan.ScanQRCodeActivity;
-import com.zhongtie.work.util.ListPopupWindowUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +44,6 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
         mLvHomeTitle = findViewById(R.id.lv_home_title);
         mUserCompanyName = findViewById(R.id.user_company_name);
         mBottom = findViewById(R.id.bottom);
-        mQrCodeScan = findViewById(R.id.qr_code_scan);
-        mWordFeed = findViewById(R.id.word_feed);
         mFragmentContent = findViewById(R.id.fragment_content);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -57,10 +52,6 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
         //点击按钮打开菜单
         mLvHomeMenu.setOnClickListener(v -> mDrawerLayout.openDrawer(Gravity.LEFT));
 
-        mQrCodeScan.setOnClickListener(v -> startActivity(new Intent(getAppContext(), ScanQRCodeActivity.class)));
-
-        findViewById(R.id.safe).setOnClickListener(this::showSafePopup);
-        findViewById(R.id.quality).setOnClickListener(this::showQualityPopup);
         mLvHomeTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,23 +60,6 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
         });
     }
 
-    /**
-     * 质量弹窗选择
-     */
-    private void showQualityPopup(View v) {
-        ListPopupWindowUtil.showListPopupWindow(v, Gravity.TOP, new String[]{"质量督导", "质量控制"}, (item, position) -> {
-
-        });
-    }
-
-    /**
-     * 安全弹窗选择
-     */
-    private void showSafePopup(View v) {
-        ListPopupWindowUtil.showListPopupWindow(v, Gravity.TOP, new String[]{"安全督导", "奖惩流程", "文件签认"}, (item, position) -> {
-
-        });
-    }
 
     private void showSelectCompany() {
         List<CompanyEntity> companyEntityList = new ArrayList<>();
