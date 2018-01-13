@@ -7,6 +7,6 @@ import com.raizlabs.android.dbflow.annotation.Database;
  * date:2018.1.8
  */
 
-@Database(name = "zhongtie", version = 0)
+@Database(name = "company", version = 1)
 public class AppDB {
 }

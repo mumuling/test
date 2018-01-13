@@ -5,8 +5,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
+import com.zhongtie.work.db.BaseDb;
 import com.zhongtie.work.model.CompanyEntity;
 import com.zhongtie.work.ui.base.BaseActivity;
 
@@ -18,6 +20,7 @@ import java.util.List;
  */
 public class MainActivity extends BaseActivity implements CompanySelectPopup.OnCompanySelectListener {
 
+    private static final String TAG = "MainActivity";
 
     private android.widget.LinearLayout mLvHomeMenu;
     private android.widget.LinearLayout mLvHomeTitle;
@@ -58,6 +61,11 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
                 showSelectCompany();
             }
         });
+
+
+
+        showToast( SQLite.selectCountOf().from(BaseDb.class)
+                .count()+"条");
     }
 
 
