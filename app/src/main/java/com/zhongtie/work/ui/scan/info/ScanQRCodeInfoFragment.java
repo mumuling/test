@@ -1,7 +1,6 @@
 package com.zhongtie.work.ui.scan.info;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,8 +40,9 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
 
     private TextView mInfoViolateTitle;
     private Button mAddViolate;
-
     private OnNextFragmentListener onNextFragmentListener;
+
+    private String userId;
 
     @Override
     public void onAttach(Context context) {
@@ -55,8 +55,7 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
     @Override
     public void onDetach() {
         super.onDetach();
-        if(onNextFragmentListener!=null)
-        {
+        if (onNextFragmentListener != null) {
             onNextFragmentListener.onResumeCamera();
         }
     }
@@ -67,12 +66,75 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
     }
 
     @Override
+    public void noFindUserInfo() {
+        if (mStatusView != null) {
+            mStatusView.showEmpty();
+        }
+    }
+
+    @Override
+    public void setUserName(String name) {
+        mUserInfoName.setText(name);
+    }
+
+    @Override
+    public void setUserHead(String userHead) {
+        mUserInfoHead.loadImage(userHead);
+    }
+
+    @Override
+    public void setUserCardCode(String userCardCode) {
+        mUserInfoCard.setText(userCardCode);
+    }
+
+    @Override
+    public void setUserDuty(String userDuty) {
+        mInfoDuty.setText(userDuty);
+    }
+
+    @Override
+    public void setUserWorkType(String userWorkType) {
+        mInfoTypeWork.setText(userWorkType);
+    }
+
+    @Override
+    public void setUserUnit(String userUnit) {
+        mInfoCompanyOffer.setText(userUnit);
+    }
+
+    @Override
+    public void setUserLearn(String userLearn) {
+        mInfoStudyDate.setText(userLearn);
+    }
+
+    @Override
+    public void setUserHealth(String userHealth) {
+        mInfoHealthState.setText(userHealth);
+    }
+
+    @Override
+    public void setUserOnJob(String userOnJob) {
+        mInfoWorkState.setText(userOnJob);
+    }
+
+    @Override
+    public void setUserInsure(String userInsure) {
+        mInfoInsurance.setText(userInsure.replace(",", "\n"));
+    }
+
+    @Override
+    public void setUserWorkTeam(String workTeam) {
+        mInfoCompany.setText(workTeam);
+    }
+
+    @Override
     protected ScanQRCodeInfoContract.Presenter getPresenter() {
         return new ScanInfoPresenterImpl();
     }
 
     @Override
     public int getLayoutViewId() {
+        userId = getArguments().getString("user_id");
         return R.layout.qr_user_info_fragment;
     }
 
@@ -98,17 +160,13 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
 
         mInfoViolateTitle = (TextView) findViewById(R.id.info_violate_title);
         mAddViolate = (Button) findViewById(R.id.add_violate);
-        mAddViolate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AddViolateDialog(getActivity()).show();
-            }
-        });
+        mAddViolate.setOnClickListener(view -> new AddViolateDialog(getActivity()).show());
 
     }
 
     @Override
     protected void initData() {
-//        initLoading();
+        initLoading();
+        mPresenter.fetchQRCodeInfo(userId);
     }
 }

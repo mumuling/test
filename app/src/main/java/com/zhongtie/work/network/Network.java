@@ -5,7 +5,6 @@ import com.zhongtie.work.data.Result;
 import com.zhongtie.work.ui.base.BaseView;
 import com.zhongtie.work.util.ToastUtil;
 
-import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,9 +52,9 @@ public class Network {
                 });
     }
 
-    public static <T> FlowableTransformer<Result<T>, T> networkDialog(BaseView baseView) {
+    public static <T> FlowableTransformer<Result<T>, T> networkConvertDialog(BaseView baseView,String title) {
         return network -> network.subscribeOn(Schedulers.io())
-                .doOnSubscribe(disposable -> baseView.showLoadDialog("请稍后"))
+                .doOnSubscribe(disposable -> baseView.showLoadDialog(title))
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new NetWorkFunc1<>())
                 .doFinally(baseView::cancelDialog)
@@ -63,6 +62,20 @@ public class Network {
                     baseView.cancelDialog();
                     baseView.showToast(HttpException.getErrorMessage(throwable));
                 });
+    }
+    public static <T> FlowableTransformer<T, T> networkDialog(BaseView baseView,String title) {
+        return network -> network.subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> baseView.showLoadDialog(title))
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(baseView::cancelDialog)
+                .doOnError(throwable -> {
+                    baseView.cancelDialog();
+                    baseView.showToast(HttpException.getErrorMessage(throwable));
+                });
+    }
+
+    public static <T> FlowableTransformer<Result<T>, T> networkConvertDialog(BaseView baseView) {
+        return networkConvertDialog(baseView,"请稍后");
     }
 
 

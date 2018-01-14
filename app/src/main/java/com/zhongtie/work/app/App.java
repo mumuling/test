@@ -7,6 +7,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.raizlabs.android.dbflow.config.DatabaseConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.util.ImageConfigFactory;
 import com.zhongtie.work.util.ToastUtil;
 
@@ -24,12 +25,23 @@ import static com.raizlabs.android.dbflow.config.FlowManager.destroy;
  */
 
 public class App extends Application {
+    private static final String TAG = "App";
+
     private static App instance;
 
-    private static final String TAG = "App";
+    private LoginUserInfoEntity userInfo;
 
     public static App getInstance() {
         return instance;
+    }
+
+
+    public LoginUserInfoEntity getUser() {
+        return userInfo;
+    }
+
+    public void setUserInfo(LoginUserInfoEntity userInfo) {
+        this.userInfo = userInfo;
     }
 
     @Override
@@ -87,7 +99,7 @@ public class App extends Application {
 //            e.printStackTrace();
 //        }
         try {
-            File sqliteDb = new File(Environment.getExternalStorageDirectory() + "/zhongtie/company_db/company17.db");
+            File sqliteDb = new File(Environment.getExternalStorageDirectory() + "/zhongtie/company_db/company1.db");
             InputStream is = new FileInputStream(sqliteDb);
             OutputStream os = new FileOutputStream(dbFile);
             byte[] buffer = new byte[10240];

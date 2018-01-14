@@ -33,17 +33,17 @@ public class NormalFileItemView extends AbstractItemView<NormalFile, NormalFileI
         vh.mFolderFileContent.append("\t");
         vh.mFolderFileContent.append(time);
         if (data.getPath().endsWith("xls") || data.getPath().endsWith("xlsx")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_excel);
+            vh.mFileImg.setImageResource(R.drawable.ic_file_excel);
         } else if (data.getPath().endsWith("doc") || data.getPath().endsWith("docx")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_word);
+            vh.mFileImg.setImageResource(R.drawable.ic_file_word);
         } else if (data.getPath().endsWith("ppt") || data.getPath().endsWith("pptx")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_ppt);
+            vh.mFileImg.setImageResource(R.drawable.ic_file_power);
         } else if (data.getPath().endsWith("pdf")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_pdf);
+            vh.mFileImg.setImageResource(R.drawable.ic_file_pdf);
         } else if (data.getPath().endsWith("txt")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_txt);
+            vh.mFileImg.setImageResource(R.drawable.ic_file_unknow);
         } else {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_file);
+            vh.mFileImg.setImageResource(R.drawable.ic_file_unknow);
         }
     }
 

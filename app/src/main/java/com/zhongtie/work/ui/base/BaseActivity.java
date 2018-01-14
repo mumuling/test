@@ -2,10 +2,12 @@ package com.zhongtie.work.ui.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
@@ -27,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected CompositeDisposable mDisposable;
     protected TextView mToolbarTitle;
     protected TextView mMenuTitle;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +84,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         if (mDisposable != null) {
             mDisposable.clear();
         }
+        cancelDialog();
+        mLoadingDialog = null;
     }
 
     public void setRightText(String text) {
@@ -141,6 +146,17 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void showLoadDialog(String message) {
+        try {
+            if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+                mLoadingDialog.setText(message);
+            } else {
+                mLoadingDialog = new LoadingDialog(this, message);
+                mLoadingDialog.setCancelable(false);
+                mLoadingDialog.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -149,6 +165,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void cancelDialog() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing())
+            mLoadingDialog.cancel();
     }
 
     @Override
@@ -210,6 +228,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         return getApplicationContext();
     }
 
+    /**
+     * 隐藏键盘
+     */
+    public void hideInput() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        boolean isOpen = imm.isActive();
+        if (isOpen) {
+            try {
+                IBinder iBinder = getWindow().getDecorView().getWindowToken();
+                if (iBinder != null) {
+                    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(iBinder, InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -221,4 +257,5 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                 break;
         }
     }
+
 }

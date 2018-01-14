@@ -9,10 +9,15 @@ import io.reactivex.functions.Function;
 /**
  * 接口检测
  */
-class NetWorkFunc1<T> implements Function<Result<T>, T> {
+public class NetWorkFunc1<T> implements Function<Result<T>, T> {
 
     @Override
     public T apply(Result result) throws Exception {
-        return (T) result.getData();
+        if (result.isSuccess() || result.getCode() == 1) {
+            if (result.getData() != null)
+                return (T) result.getData();
+            return (T) result.getList();
+        }
+        throw new HttpException(result.getMsg(), result.getCode());
     }
 }

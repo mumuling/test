@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                tools:context="com.zhongtie.work.ui.main.MainActivity">
+<com.zhongtie.work.widget.InputMethodRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
 
     <ImageView
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:src="@drawable/ic_zhongtie"/>
+        android:src="@drawable/ic_zhongtie" />
 
     <TextView
         android:id="@+id/login_company_name"
@@ -26,15 +25,15 @@
         android:text="@string/login_company_name"
         android:textColor="@color/base_color"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/login_edit_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/login_company_name"
         android:layout_centerHorizontal="true"
         android:gravity="center|left"
-        android:layout_below="@id/login_company_name"
         android:orientation="vertical">
 
         <LinearLayout
@@ -43,13 +42,12 @@
             android:layout_height="48dp"
             android:layout_marginTop="40dp"
             android:gravity="center|left"
-            android:paddingLeft="2dp"
-            >
+            android:paddingLeft="2dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/login_icon_user"/>
+                android:src="@drawable/login_icon_user" />
 
             <EditText
                 android:id="@+id/login_name"
@@ -58,7 +56,7 @@
                 android:layout_marginLeft="12dp"
                 android:hint="@string/login_name_title"
                 android:maxLength="20"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -66,7 +64,7 @@
             android:id="@+id/line1"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/line2"/>
+            android:background="@color/line2" />
 
         <LinearLayout
             android:id="@+id/login_password_view"
@@ -75,13 +73,12 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:gravity="center|left"
-            android:paddingLeft="2dp"
-            >
+            android:paddingLeft="2dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/login_icon_passwork"/>
+                android:src="@drawable/login_icon_passwork" />
 
             <EditText
                 android:id="@+id/login_password"
@@ -91,7 +88,8 @@
                 android:hint="@string/login_password"
                 android:inputType="textPassword"
                 android:maxLength="20"
-                android:textSize="14sp"/>
+                android:singleLine="true"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -99,7 +97,7 @@
             android:id="@+id/line2"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/line2"/>
+            android:background="@color/line2" />
     </LinearLayout>
 
 
@@ -113,12 +111,12 @@
         android:background="@drawable/btn_login"
         android:gravity="center"
         android:text="@string/login"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_login_btm"/>
-</RelativeLayout>
+        android:src="@drawable/ic_login_btm" />
+</com.zhongtie.work.widget.InputMethodRelativeLayout>

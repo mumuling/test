@@ -13,7 +13,7 @@
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/portrait" />
+        android:src="@drawable/ic_file_dir" />
 
     <ImageView
         android:id="@+id/folder_arrow"

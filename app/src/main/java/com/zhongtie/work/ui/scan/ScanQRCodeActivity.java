@@ -42,6 +42,7 @@ public class ScanQRCodeActivity extends BaseActivity implements OnNextFragmentLi
     public void onNextUserInfo(String userInfo) {
         Fragments.with(this)
                 .fragment(ScanQRCodeInfoFragment.class)
+                .putString("user_id",userInfo)
                 .addToBackStack()
                 .into(R.id.content_view);
     }

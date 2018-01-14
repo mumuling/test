@@ -29,6 +29,11 @@ public class LoginFragment extends BasePresenterFragment<LoginContract.Presenter
     }
 
     @Override
+    public void setLastLoginUserName(String userName) {
+
+    }
+
+    @Override
     public void loginFail() {
 
     }

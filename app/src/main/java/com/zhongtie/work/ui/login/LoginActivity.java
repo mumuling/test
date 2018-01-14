@@ -1,14 +1,15 @@
 package com.zhongtie.work.ui.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
 import com.zhongtie.work.ui.main.MainActivity;
+import com.zhongtie.work.util.TextUtil;
 
 /**
  * Date: 2018/1/9
@@ -19,21 +20,28 @@ import com.zhongtie.work.ui.main.MainActivity;
 public class LoginActivity extends BasePresenterActivity<LoginContract.Presenter> implements LoginContract.View {
     private ImageView mLoginSrc;
     private TextView mLoginCompanyName;
-    private LinearLayout mLoginNameView;
     private EditText mLoginName;
-    private LinearLayout mLoginPasswordView;
     private EditText mLoginPassword;
     private TextView mLogin;
 
     @Override
     public void loginSuccess() {
-
+        startActivity(new Intent(getAppContext(), MainActivity.class));
+        finish();
     }
 
     @Override
+    public void setLastLoginUserName(String userName) {
+        mLoginName.setText(userName);
+        if (!TextUtil.isEmpty(userName)) {
+            mLoginName.setSelection(userName.length());
+        }
+    }
+
+
+    @Override
     public void loginFail() {
-        startActivity(new Intent(getAppContext(), MainActivity.class));
-        finish();
+
     }
 
     @Override
@@ -60,20 +68,25 @@ public class LoginActivity extends BasePresenterActivity<LoginContract.Presenter
     public void initView() {
         mLoginSrc = (ImageView) findViewById(R.id.login_src);
         mLoginCompanyName = (TextView) findViewById(R.id.login_company_name);
-        mLoginNameView = (LinearLayout) findViewById(R.id.login_name_view);
         mLoginName = (EditText) findViewById(R.id.login_name);
-        mLoginPasswordView = (LinearLayout) findViewById(R.id.login_password_view);
         mLoginPassword = (EditText) findViewById(R.id.login_password);
         mLogin = (TextView) findViewById(R.id.login);
+
+
     }
 
     @Override
     protected void initData() {
-//        mLogin.setOnClickListener(v -> mPresenter.login());
-        mLogin.setOnClickListener(v ->loginFail());
+        mPresenter.fetchCacheUserName();
+
+        mLogin.setOnClickListener(view -> {
+            mPresenter.login();
+            hideInput();
+        });
         mLoginCompanyName.post(this::requestLoginLayout);
     }
 
+    @SuppressLint("WrongViewCast")
     private void requestLoginLayout() {
         findViewById(R.id.login_edit_view).getLayoutParams().width = mLoginCompanyName.getMeasuredWidth();
         findViewById(R.id.login_edit_view).requestLayout();

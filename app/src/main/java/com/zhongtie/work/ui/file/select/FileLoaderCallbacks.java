@@ -90,11 +90,11 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                     if (path != null && contains(path)) {
                         //Create a File instance
                         NormalFile file = new NormalFile();
-                        file.setId(data.getLong(data.getColumnIndexOrThrow(_ID)));
-                        file.setName(data.getString(data.getColumnIndexOrThrow(TITLE)));
-                        file.setPath(data.getString(data.getColumnIndexOrThrow(DATA)));
-                        file.setSize(data.getLong(data.getColumnIndexOrThrow(SIZE)));
-                        file.setDate(data.getLong(data.getColumnIndexOrThrow(DATE_ADDED)));
+                        file.setId(data.getLong(data.getColumnIndex(_ID)));
+                        file.setName(data.getString(data.getColumnIndex(TITLE)));
+                        file.setPath(data.getString(data.getColumnIndex(DATA)));
+                        file.setSize(data.getLong(data.getColumnIndex(SIZE)));
+                        file.setDate(data.getLong(data.getColumnIndex(DATE_ADDED)));
 
                         file.setMimeType(data.getString(data.getColumnIndexOrThrow(MIME_TYPE)));
 
@@ -111,6 +111,7 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                         }
                     }
                 }
+                data.close();
                 return directories;
             }
         }).compose(Network.netorkIO())

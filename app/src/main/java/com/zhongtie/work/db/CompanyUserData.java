@@ -1,5 +1,6 @@
 package com.zhongtie.work.db;
 
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -9,23 +10,37 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
  * date:2018.1.8
  */
 
-@Table(database = AppDB.class, name = "user")
-public class BaseDb extends BaseModel {
+@Table(database = CompanyDB.class, name = "user")
+public class CompanyUserData extends BaseModel {
     @PrimaryKey
     public int id;
+    @Column
     public int company;
+    @Column
     public String name;
+    @Column
     public String sex;
+    @Column
     public String idencode;
+    @Column
     public String duty;
+    @Column
     public String worktype;
+    @Column
     public String unit;
+    @Column
     public String learn;
+    @Column
     public String health;
+    @Column
     public String onjob;
+    @Column
     public String photo;
+    @Column
     public String insure;
+    @Column
     public String workteam;
+    @Column
     public String url;
 
     public int getId() {

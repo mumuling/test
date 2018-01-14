@@ -17,7 +17,6 @@
         app:placeholderImageScaleType="centerCrop"
         app:progressBarImage="@drawable/portrait"
         app:roundAsCircle="true"
-        app:overlayImage="@drawable/test"
         app:roundingBorderColor="@color/white"
         app:roundingBorderWidth="4dp" />
 

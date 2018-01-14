@@ -13,6 +13,8 @@ public interface LoginContract {
 
         void loginSuccess();
 
+        void setLastLoginUserName(String userName);
+
         void loginFail();
 
         String getUserPhone();
@@ -22,5 +24,7 @@ public interface LoginContract {
 
     interface Presenter extends BasePresenter<View> {
         void login();
+
+        void fetchCacheUserName();
     }
 }

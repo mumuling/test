@@ -8,5 +8,5 @@ import com.raizlabs.android.dbflow.annotation.Database;
  */
 
 @Database(name = "company", version = 1)
-public class AppDB {
+public class CompanyDB {
 }

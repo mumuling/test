@@ -8,6 +8,24 @@ public class Result<T> {
     private boolean success;
     private String msg;
     private T data;
+    private int code;
+    private T list;
+
+    public T getList() {
+        return list;
+    }
+
+    public void setList(T list) {
+        this.list = list;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 
     public boolean isSuccess() {
         return success;

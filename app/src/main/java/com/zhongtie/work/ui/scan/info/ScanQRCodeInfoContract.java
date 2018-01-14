@@ -16,6 +16,30 @@ public interface ScanQRCodeInfoContract {
 
         void setInfoList(List<Object> objectList);
 
+        void noFindUserInfo();
+
+        void setUserName(String name);
+
+        void setUserHead(String userHead);
+
+        void setUserCardCode(String userCardCode);
+
+        void setUserDuty(String userDuty);
+
+        void setUserWorkType(String userWorkType);
+
+        void setUserUnit(String userUnit);
+
+        void setUserLearn(String userLearn);
+
+        void setUserHealth(String userHealth);
+
+        void setUserOnJob(String userOnJob);
+
+        void setUserInsure(String userInsure);
+
+        void setUserWorkTeam(String workTeam);
+
     }
 
     interface Presenter extends BasePresenter<View> {

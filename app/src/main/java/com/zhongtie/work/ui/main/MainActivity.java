@@ -2,23 +2,22 @@ package com.zhongtie.work.ui.main;
 
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
-import com.zhongtie.work.db.BaseDb;
-import com.zhongtie.work.model.CompanyEntity;
-import com.zhongtie.work.ui.base.BaseActivity;
+import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.data.LoginUserInfoEntity;
+import com.zhongtie.work.db.CompanyUserData;
+import com.zhongtie.work.ui.base.BasePresenterActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Chaek
  */
-public class MainActivity extends BaseActivity implements CompanySelectPopup.OnCompanySelectListener {
+public class MainActivity extends BasePresenterActivity<MainContract.Presenter> implements CompanySelectPopup.OnCompanySelectListener ,MainContract.View {
 
     private static final String TAG = "MainActivity";
 
@@ -31,9 +30,9 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
     private android.widget.FrameLayout mFragmentContent;
 
     private ImageView mArrowView;
-
-
     public DrawerLayout mDrawerLayout;
+
+    private  List<CompanyEntity> companyEntityList;
 
 
     @Override
@@ -55,29 +54,15 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
         //点击按钮打开菜单
         mLvHomeMenu.setOnClickListener(v -> mDrawerLayout.openDrawer(Gravity.LEFT));
 
-        mLvHomeTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSelectCompany();
-            }
-        });
+        mLvHomeTitle.setOnClickListener(view -> showSelectCompany());
 
 
-
-        showToast( SQLite.selectCountOf().from(BaseDb.class)
+        showToast( SQLite.selectCountOf().from(CompanyUserData.class)
                 .count()+"条");
     }
 
 
     private void showSelectCompany() {
-        List<CompanyEntity> companyEntityList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            CompanyEntity companyEntity = new CompanyEntity();
-            companyEntity.setCompanyCode(i);
-            companyEntity.setName("公司" + i);
-            companyEntityList.add(companyEntity);
-        }
-
         CompanySelectPopup companySelectPopup = new CompanySelectPopup(this, companyEntityList);
         companySelectPopup.showAsDropDown(mUserCompanyName);
         companySelectPopup.setOnCompanySelectListener(this);
@@ -88,6 +73,7 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
 
     @Override
     protected void initData() {
+        mPresenter.fetchInitData();
 
         Fragments.with(this)
                 .fragment(MainFragment.class)
@@ -98,10 +84,31 @@ public class MainActivity extends BaseActivity implements CompanySelectPopup.OnC
                 .fragment(MenuFragment.class)
                 .single(false)
                 .into(R.id.nav_view);
+
     }
 
     @Override
     public void onSelectCompany(CompanyEntity companyEntity, int position) {
         mUserCompanyName.setText(companyEntity.getName());
+    }
+
+    @Override
+    public void setUserCompany(String company) {
+        mUserCompanyName.setText(company);
+    }
+
+    @Override
+    public void setAllCompanyList(List<com.zhongtie.work.data.CompanyEntity> allCompanyList) {
+        this.companyEntityList=allCompanyList;
+    }
+
+    @Override
+    public void setUserInfo(LoginUserInfoEntity userInfo) {
+
+    }
+
+    @Override
+    protected MainContract.Presenter getPresenter() {
+        return new MainPresenterImpl();
     }
 }

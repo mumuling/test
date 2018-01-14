@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/arrow_left" />
+                    android:src="@drawable/ic_file_up1" />
             </LinearLayout>
 
             <LinearLayout
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:src="@drawable/arrow_left" />
+                    android:src="@drawable/ic_file_down2" />
             </LinearLayout>
 
         </LinearLayout>

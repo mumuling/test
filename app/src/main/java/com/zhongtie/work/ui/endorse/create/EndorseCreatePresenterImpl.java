@@ -28,7 +28,7 @@ public class EndorseCreatePresenterImpl extends BasePresenterImpl<EndorseCreateC
         List<CommonItemType> list = new ArrayList<>();
         int size = titleList.length;
         for (int i = 0; i < size; i++) {
-            CommonItemType item = new CommonItemType<>(titleList[i], tip[i], R.drawable.plus, true);
+            CommonItemType item = new CommonItemType<>(titleList[i], tip[i], titleList[i].contains("上传") ? R.drawable.ic_file_up1 : R.drawable.plus, true);
             mTypeArrayMap.put(titleList[i], item);
             list.add(item);
         }

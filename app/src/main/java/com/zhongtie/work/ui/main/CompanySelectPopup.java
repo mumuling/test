@@ -9,13 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
-import com.zhongtie.work.model.CompanyEntity;
+import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.ZhongtieDb;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.NetWorkFunc1;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.Api;
 import com.zhongtie.work.ui.main.adapter.CompanyItemView;
 
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Auth:Cheek
@@ -38,6 +47,28 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         super(context);
         this.companyEntityList = companyEntityList;
         this.context = context;
+
+        Http.createRetroService(Api.class).fetchCompanyList(0)
+                .map(new NetWorkFunc1<>())
+                .map(companyEntities -> {
+                    FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->
+                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CompanyEntity.class)).
+                                    addAll(companyEntities).build().execute(databaseWrapper));
+                    return companyEntities;
+                })
+                .compose(Network.netorkIO())
+                .subscribe(new Consumer<List<CompanyEntity>>() {
+                    @Override
+                    public void accept(List<CompanyEntity> companyEntities) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                    }
+                });
+
         initView();
         initData();
     }

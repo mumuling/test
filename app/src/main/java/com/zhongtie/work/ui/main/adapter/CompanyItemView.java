@@ -8,7 +8,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.model.CompanyEntity;
+import com.zhongtie.work.data.CompanyEntity;
 
 /**
  * Auth:Cheek
