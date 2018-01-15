@@ -18,6 +18,7 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CommonItemType;
+import com.zhongtie.work.list.CommonAdapterDataObserver;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.select.SelectLookGroupFragment;
 import com.zhongtie.work.ui.select.SelectUserFragment;
@@ -90,13 +91,12 @@ public class SafeCommonItemView extends AbstractItemView<CommonItemType, SafeCom
         if (vh.mCheckExamineList.getTag() != null) {
             adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
         }
-        RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+        RecyclerView.AdapterDataObserver observer = new CommonAdapterDataObserver(vh, new CommonAdapterDataObserver.OnAdapterDataChangedListener() {
             @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                super.onItemRangeRemoved(positionStart, itemCount);
-                changeItemView(vh, data);
+            public void onChanged(CommonViewHolder commonViewHolder) {
+                changeItemView((ViewHolder) commonViewHolder, (CommonItemType) getCommonAdapter().getListData(commonViewHolder.getItemPosition()));
             }
-        };
+        });
         adapter.registerAdapterDataObserver(observer);
     }
 

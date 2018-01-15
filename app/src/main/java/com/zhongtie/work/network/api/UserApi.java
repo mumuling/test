@@ -56,5 +56,17 @@ public interface UserApi {
     @POST("?action=CompanyList")
     Flowable<Result<String>> modifyPassword(@Field("userid") String userid, @Field("password") String newPassword);
 
+    /**
+     * 添加违规情况
+     *
+     * @param wronguserid 违规用户
+     * @param wrongByid   记录人
+     * @param detail      违规内容
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("?action=AddWrong")
+    Flowable<Result<String>> addWrong(@Field("wronguserid") String wronguserid, @Field("wrongByid") String wrongByid, @Field("detail") String detail);
+
 
 }

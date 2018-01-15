@@ -10,6 +10,9 @@ public class StatisticsLineData {
     private String company;
     private int total;
 
+    public StatisticsLineData() {
+    }
+
     public StatisticsLineData(float percent, String company, int total) {
         this.percent = percent;
         this.company = company;

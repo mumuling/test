@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.login;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +25,10 @@ public class LoginActivity extends BasePresenterActivity<LoginContract.Presenter
     private EditText mLoginPassword;
     private TextView mLogin;
 
+
+    public static void newInstance(Context context) {
+        context.startActivity(new Intent(context, LoginActivity.class));
+    }
     @Override
     public void loginSuccess() {
         startActivity(new Intent(getAppContext(), MainActivity.class));

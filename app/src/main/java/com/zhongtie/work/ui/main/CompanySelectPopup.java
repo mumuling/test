@@ -9,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.CompanyEntity;
-import com.zhongtie.work.db.ZhongtieDb;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
@@ -51,9 +48,9 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         Http.netSetver(UserApi.class).fetchCompanyList(0)
                 .map(new NetWorkFunc1<>())
                 .map(companyEntities -> {
-                    FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->
-                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CompanyEntity.class)).
-                                    addAll(companyEntities).build().execute(databaseWrapper));
+//                    FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->
+//                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CompanyEntity.class)).
+//                                    addAll(companyEntities).build().execute(databaseWrapper));
                     return companyEntities;
                 })
                 .compose(Network.netorkIO())

@@ -7,7 +7,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SyncApi;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.safe.SafeCreateContract;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment;
@@ -19,11 +23,14 @@ import com.zhongtie.work.ui.safe.item.DetailCommonItemView;
 import com.zhongtie.work.ui.safe.item.ReplyItemView;
 import com.zhongtie.work.ui.safe.item.SafeTitleItemView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
+import com.zhongtie.work.util.ToastUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
@@ -129,5 +136,19 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeCreateCon
     @Override
     public void onSignature(String imagePath) {
 
+        Http.netSetver(SyncApi.class)
+                .uploadPic(Cache.getUserID(),imagePath)
+                .compose(Network.networkConvertDialog(this))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        ToastUtil.showToast(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                    }
+                });
     }
 }

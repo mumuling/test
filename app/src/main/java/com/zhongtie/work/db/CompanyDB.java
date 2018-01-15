@@ -9,4 +9,6 @@ import com.raizlabs.android.dbflow.annotation.Database;
 
 @Database(name = "company", version = 1)
 public class CompanyDB {
+
+    public static final String NAME="company";
 }

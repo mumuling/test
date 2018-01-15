@@ -1,9 +1,12 @@
 package com.zhongtie.work.ui.scan.info;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.db.CompanyUserData_Table;
+import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.UserApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
 import io.reactivex.Flowable;
@@ -14,11 +17,13 @@ import io.reactivex.Flowable;
  */
 
 class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.View> implements ScanQRCodeInfoContract.Presenter {
+    private String userId;
+
     @Override
     public void fetchQRCodeInfo(String qrcodeinfo) {
         int idIndex = qrcodeinfo.indexOf("id=");
         if (idIndex > 0) {
-            String userId = qrcodeinfo.substring(idIndex + 3, qrcodeinfo.length());
+            userId = qrcodeinfo.substring(idIndex + 3, qrcodeinfo.length());
             Flowable.just(userId)
                     .map(s -> SQLite.select().from(CompanyUserData.class)
                             .where(CompanyUserData_Table.id.eq(1))
@@ -35,6 +40,18 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
 //                        mView.initFail();
                     });
         }
+
+    }
+
+    @Override
+    public void addWrong(String content) {
+        addDispose(Http.netSetver(UserApi.class)
+                .addWrong(userId, Cache.getUserID(), content)
+                .compose(Network.networkConvertDialog(mView))
+                .subscribe(s -> {
+                }, throwable -> {
+                }));
+
 
     }
 

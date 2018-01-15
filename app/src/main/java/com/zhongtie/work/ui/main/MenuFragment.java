@@ -9,13 +9,16 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.ui.login.LoginActivity;
 import com.zhongtie.work.ui.main.adapter.MenuItemView;
-import com.zhongtie.work.ui.setting.NoticeSettingFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
+import com.zhongtie.work.ui.setting.NoticeSettingFragment;
 import com.zhongtie.work.ui.setting.VersionFragment;
 import com.zhongtie.work.ui.statistics.StatisticsActivity;
 import com.zhongtie.work.ui.user.UserInfoActivity;
@@ -126,10 +129,39 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
                 CommonFragmentActivity.newInstance(getActivity(), VersionFragment.class, getString(R.string.version_info_title));
                 break;
             case "注销":
+                exitLogin();
                 break;
             case "退出":
+                exitApp();
                 break;
             default:
         }
+    }
+
+    private void exitApp() {
+        new MaterialDialog.Builder(getActivity())
+                .title("提示")
+                .content("确定要退出应用吗？")
+                .positiveText("退出")
+                .negativeText("取消")
+                .onPositive((dialog, which) -> {
+                    getActivity().finish();
+                }).onNegative((dialog, which) -> dialog.dismiss())
+                .build().show();
+
+    }
+
+    private void exitLogin() {
+        new MaterialDialog.Builder(getActivity())
+                .title("提示")
+                .content("确定要退出当前用户登录吗？")
+                .positiveText("确定")
+                .negativeText("取消")
+                .onPositive((dialog, which) -> {
+                    Cache.exitLogin();
+                    getActivity().finish();
+                    LoginActivity.newInstance(getActivity());
+                }).onNegative((dialog, which) -> dialog.dismiss()).build().show();
+
     }
 }

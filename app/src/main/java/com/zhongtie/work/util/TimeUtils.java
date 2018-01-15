@@ -60,6 +60,7 @@ public class TimeUtils {
         }
         return mDateTimeFormat.format(new Date(timestamp));
     }
+
     public static String formatDateTimeAll(long timestamp) {
         if (mDateTimeFormat == null) {
             mDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
@@ -144,6 +145,7 @@ public class TimeUtils {
     public static String getFormatDateAll() {
         return getFormatDate("yyyy-MM-dd HH:mm:ss");
     }
+
     public static String getFormatDateTime() {
         return getFormatDate("yyyy-MM-dd HH:mm");
     }
@@ -215,8 +217,6 @@ public class TimeUtils {
     }
 
 
-
-
     public static String getVocherDate(String time) throws ParseException {
         // 设定时间的模板
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -253,6 +253,19 @@ public class TimeUtils {
             e.printStackTrace();
         }
         return 30 * 60;
+    }
+
+    public static long converter(String time) {
+        try {
+            if (TextUtil.isEmpty(time)) {
+                return 0;
+            }
+            Date createTime = TemporaryDate.parse(time);
+            return createTime.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 

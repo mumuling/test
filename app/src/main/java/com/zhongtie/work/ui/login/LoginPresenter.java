@@ -28,6 +28,7 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
     public static final String LOGIN_USER_NAME = "login_user_name";
     public static final String LOGIN_USER_ID = "login_user_id";
     public static final String LOGIN_USER_COMPANY = "login_user_company";
+    public static final String LOGIN_USER_COMPANY_NAME = "login_user_company_name";
 
     @Override
     public void login() {
@@ -67,6 +68,7 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
                 .subscribe(data -> {
                             SharePrefUtil.getUserPre().putString(LOGIN_USER_NAME, user);
                             SharePrefUtil.getUserPre().putString(LOGIN_USER_ID, String.valueOf(data.getId()));
+                            SharePrefUtil.getUserPre().putString(LOGIN_USER_COMPANY_NAME, data.companyname);
                             SharePrefUtil.getUserPre().putInt(LOGIN_USER_COMPANY, data.getCompany());
                             App.getInstance().setUserInfo(data);
                             mView.loginSuccess();

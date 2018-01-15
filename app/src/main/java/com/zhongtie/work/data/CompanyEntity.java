@@ -27,6 +27,13 @@ public class CompanyEntity extends BaseModel {
     @Column
     public int sign;
 
+    @Column
+    public String dbupdatetime;
+
+    @Column
+    public String dburl;
+
+
     public int getId() {
         return id;
     }
@@ -49,5 +56,21 @@ public class CompanyEntity extends BaseModel {
 
     public void setSign(int sign) {
         this.sign = sign;
+    }
+
+    public String getDbupdatetime() {
+        return dbupdatetime;
+    }
+
+    public void setDbupdatetime(String dbupdatetime) {
+        this.dbupdatetime = dbupdatetime;
+    }
+
+    public String getDburl() {
+        return dburl;
+    }
+
+    public void setDburl(String dburl) {
+        this.dburl = dburl;
     }
 }

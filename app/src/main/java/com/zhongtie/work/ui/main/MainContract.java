@@ -25,6 +25,8 @@ public interface MainContract {
     interface Presenter extends BasePresenter<View> {
 
         void fetchInitData();
+
+        void switchSelectCompany(CompanyEntity companyEntity);
     }
 
 }

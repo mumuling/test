@@ -17,6 +17,7 @@ public interface SyncApi {
      * 获取下载地址
      */
     @FormUrlEncoded
-    @POST("?action=login")
-    Flowable<Result<String>> login(@Field("userId") String userId, @Field("password") String pw);
+    @POST("?action=UploadPic")
+    Flowable<Result<String>> uploadPic(@Field("userid") String userId, @Field("picfile") String picFile);
+
 }

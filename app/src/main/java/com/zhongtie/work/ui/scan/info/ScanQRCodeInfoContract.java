@@ -40,11 +40,15 @@ public interface ScanQRCodeInfoContract {
 
         void setUserWorkTeam(String workTeam);
 
+        void addWrongSuccess();
+
     }
 
     interface Presenter extends BasePresenter<View> {
 
         void fetchQRCodeInfo(String QRCodeInfo);
+
+        void addWrong(String content);
     }
 
 }

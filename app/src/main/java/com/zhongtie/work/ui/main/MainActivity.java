@@ -89,7 +89,7 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
 
     @Override
     public void onSelectCompany(CompanyEntity companyEntity, int position) {
-        mUserCompanyName.setText(companyEntity.getName());
+        mPresenter.switchSelectCompany(companyEntity);
     }
 
     @Override

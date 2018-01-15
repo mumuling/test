@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseDialog;
+import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.ToastUtil;
 
 /**
  * Auth:Cheek
@@ -19,9 +21,11 @@ public class AddViolateDialog extends BaseDialog implements View.OnClickListener
     private TextView mCancel;
     private TextView mFinish;
     private EditText mViolationContent;
+    private OnAddWrongListener onAddWrongListener;
 
-    public AddViolateDialog(@NonNull Context context) {
+    public AddViolateDialog(@NonNull Context context, OnAddWrongListener onAddWrongListener) {
         super(context);
+        this.onAddWrongListener = onAddWrongListener;
     }
 
     @Override
@@ -52,6 +56,20 @@ public class AddViolateDialog extends BaseDialog implements View.OnClickListener
     }
 
     private void verifyContent() {
-        dismiss();
+        String userContent = mViolationContent.getText().toString();
+        if (TextUtil.isEmpty(userContent)) {
+            ToastUtil.showToast("请输入内容");
+            return;
+        }
+        if (onAddWrongListener != null) {
+            onAddWrongListener.onAddWrong(userContent);
+        } else {
+            dismiss();
+        }
+    }
+
+    public interface OnAddWrongListener {
+
+        void onAddWrong(String content);
     }
 }

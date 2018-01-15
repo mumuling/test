@@ -65,7 +65,9 @@ dependencies {
     implementation 'in.srain.cube:ultra-ptr:1.0.11'
     implementation 'org.greenrobot:eventbus:3.0.0'
     testImplementation 'junit:junit:4.12'
-
+    implementation('com.afollestad.material-dialogs:core:0.9.4.4', {
+        exclude group: 'com.android.support'
+    })
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
 
 //    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {

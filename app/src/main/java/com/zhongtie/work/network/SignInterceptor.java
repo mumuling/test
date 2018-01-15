@@ -6,13 +6,18 @@ import com.zhongtie.work.util.Base64;
 import com.zhongtie.work.util.RSASignature;
 import com.zhongtie.work.util.TimeUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -54,6 +59,10 @@ class SignInterceptor implements Interceptor {
                 baseData.put(body.encodedName(i), body.encodedValue(i));
             }
 
+
+
+
+
             for (String key : baseData.keySet()) {
                 String value = baseData.get(key);
                 //提取action 参数
@@ -81,9 +90,20 @@ class SignInterceptor implements Interceptor {
             }
             stringBuffer.delete(stringBuffer.length() - 2, stringBuffer.length());
 
-            FormBody.Builder postForm = new FormBody.Builder();
-            postForm.add("ref", stringBuffer.toString());
-            requestBuilder.post(postForm.build());
+            if (actionName.equals("UploadPic")) {
+                String upload = URLDecoder.decode(baseData.get("picfile"));
+                MultipartBody.Builder newBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                newBuilder.addFormDataPart("ref", stringBuffer.toString());
+
+                RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), new File(upload));
+                MultipartBody.Part part = MultipartBody.Part.createFormData("picfile", "file.jpg", requestBody);
+                newBuilder.addPart(part);
+                requestBuilder.post(newBuilder.build());
+            } else {
+                FormBody.Builder postForm = new FormBody.Builder();
+                postForm.add("ref", stringBuffer.toString());
+                requestBuilder.post(postForm.build());
+            }
         }
         Request r = requestBuilder.build();
         return chain.proceed(r);

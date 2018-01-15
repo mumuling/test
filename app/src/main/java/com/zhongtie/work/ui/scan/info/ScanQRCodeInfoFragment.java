@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.scan.info;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import java.util.List;
  * date:2018.1.9
  */
 
-public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfoContract.Presenter> implements ScanQRCodeInfoContract.View {
+public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfoContract.Presenter> implements ScanQRCodeInfoContract.View, AddViolateDialog.OnAddWrongListener {
 
     private BaseImageView mUserInfoHead;
     private TextView mUserInfoName;
@@ -43,6 +44,8 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
     private OnNextFragmentListener onNextFragmentListener;
 
     private String userId;
+
+    private AddViolateDialog addViolateDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -128,6 +131,13 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
     }
 
     @Override
+    public void addWrongSuccess() {
+        if (addViolateDialog != null && addViolateDialog.isShowing()) {
+            addViolateDialog.dismiss();
+        }
+    }
+
+    @Override
     protected ScanQRCodeInfoContract.Presenter getPresenter() {
         return new ScanInfoPresenterImpl();
     }
@@ -160,7 +170,12 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
 
         mInfoViolateTitle = (TextView) findViewById(R.id.info_violate_title);
         mAddViolate = (Button) findViewById(R.id.add_violate);
-        mAddViolate.setOnClickListener(view -> new AddViolateDialog(getActivity()).show());
+        mAddViolate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addViolateDialog = new AddViolateDialog(getActivity(), ScanQRCodeInfoFragment.this);
+            }
+        });
 
     }
 
@@ -168,5 +183,10 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
     protected void initData() {
         initLoading();
         mPresenter.fetchQRCodeInfo(userId);
+    }
+
+    @Override
+    public void onAddWrong(String content) {
+        mPresenter.addWrong(content);
     }
 }

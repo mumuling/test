@@ -9,17 +9,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SyncApi;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CreatePicItemView;
+import com.zhongtie.work.util.ToastUtil;
 import com.zhongtie.work.widget.AdapterDataObserver;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.image.MultiImageSelector.REQUEST_CODE;
@@ -115,6 +122,21 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
 
     @Override
     public void onSignature(String imagePath) {
+
+        Http.netSetver(SyncApi.class)
+                .uploadPic(Cache.getUserID(),imagePath)
+                .compose(Network.networkConvertDialog(this))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        ToastUtil.showToast(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                    }
+                });
 
     }
 
