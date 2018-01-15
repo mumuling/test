@@ -26,8 +26,8 @@ public class TeamNameItemView extends AbstractItemView<TeamNameEntity, CommonVie
     @Override
     public void onBindViewHolder(@NonNull CommonViewHolder vh, @NonNull TeamNameEntity data) {
         TextView mTeamName;
-        mTeamName = (TextView) vh.findViewById(R.id.team_name);
-        mTeamName.setText("Team");
+        mTeamName = vh.findViewById(R.id.team_name);
+        mTeamName.setText(data.getTeamName());
     }
 
     @Override

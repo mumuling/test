@@ -82,9 +82,9 @@ public class NumericWheelAdapter implements WheelAdapter {
 	public int getMaximumLength() {
 		int max = Math.max(Math.abs(maxValue), Math.abs(minValue));
 		int maxLen = Integer.toString(max).length();
-		if (minValue < 0) {
+		if (minValue < 2) {
 			maxLen++;
 		}
-		return maxLen;
+		return -1;
 	}
 }

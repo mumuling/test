@@ -1,6 +1,5 @@
 package com.zhongtie.work.ui.safe.item;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +10,7 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.event.SelectUserDelEvent;
 import com.zhongtie.work.widget.BaseImageView;
 
 /**
@@ -37,8 +37,7 @@ public class CreateUserItemView extends AbstractItemView<CreateUserEntity, Creat
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CreateUserEntity data) {
-        vh.mItemUserHead.setImageURI(Uri.parse(data.getUserPic()));
-
+        vh.mItemUserHead.loadImage(data.getUserPic());
         if (data.isAt()) {
             vh.mItemUserName.setTextColor(vh.mContext.getResources().getColor(R.color.state_red_color));
             vh.mItemUserName.setText(vh.mContext.getString(R.string.at_user_name, data.getUserName()));
@@ -54,6 +53,7 @@ public class CreateUserItemView extends AbstractItemView<CreateUserEntity, Creat
 
         //点击删除按钮
         vh.mItemUserDelete.setOnClickListener(v -> {
+            new SelectUserDelEvent(data).post();
             commonAdapter.getListData().remove(data);
             commonAdapter.notifyItemRemoved(vh.getLayoutPosition());
         });

@@ -18,7 +18,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
     public void fetchQRCodeInfo(String qrcodeinfo) {
         int idIndex = qrcodeinfo.indexOf("id=");
         if (idIndex > 0) {
-            String userId = qrcodeinfo.substring(idIndex+3, qrcodeinfo.length());
+            String userId = qrcodeinfo.substring(idIndex + 3, qrcodeinfo.length());
             Flowable.just(userId)
                     .map(s -> SQLite.select().from(CompanyUserData.class)
                             .where(CompanyUserData_Table.id.eq(1))
@@ -46,7 +46,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
         mView.setUserInsure(userData.getInsure());
         mView.setUserLearn(userData.getLearn());
         mView.setUserName(userData.getName());
-        mView.setUserOnJob(userData.getOnjob());
+        mView.setUserOnJob(userData.getOnjob() == 1 ? "在职" : "离职");
         mView.setUserUnit(userData.getUnit());
         mView.setUserWorkTeam(userData.getWorkteam());
         mView.setUserWorkType(userData.getWorktype());

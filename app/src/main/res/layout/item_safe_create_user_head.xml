@@ -14,7 +14,11 @@
         app:roundAsCircle="true"
         app:roundingBorderColor="@color/line2"
         app:roundingBorderWidth="1dp"
-        tools:background="@drawable/portrait"/>
+        app:failureImageScaleType="centerCrop"
+        app:failureImage="@drawable/portrait"
+        app:placeholderImageScaleType="centerCrop"
+        app:placeholderImage="@drawable/portrait"
+        android:background="@drawable/portrait"/>
 
     <TextView
         android:id="@+id/item_user_name"

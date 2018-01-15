@@ -4,9 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.data.KeyValueEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class UserInfoFragment extends BasePresenterFragment<UserContract.Present
 
     private RecyclerView mList;
     private CommonAdapter commonAdapter;
-    private List<Pair<String, String>> userInfoList;
+    private List<KeyValueEntity<String, String>> userInfoList = new ArrayList<>();
 
     private View mFooterView;
 
@@ -41,26 +44,24 @@ public class UserInfoFragment extends BasePresenterFragment<UserContract.Present
         mFooterView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_modify_pw_bottom, mList, false);
         commonAdapter = new CommonAdapter().register(UserInfoItemView.class);
         commonAdapter.addFooterView(mFooterView);
-        mFooterView.findViewById(R.id.modify_password).setOnClickListener(view -> mPresenter.modifyPassword());
+        TextView modifyBtn = mFooterView.findViewById(R.id.modify_password);
+        modifyBtn.setText(R.string.modify_password);
+        modifyBtn.setOnClickListener(view -> mPresenter.modifyPassword());
     }
 
     @Override
     protected void initData() {
         userInfoList = new ArrayList<>();
-        userInfoList.add(new Pair<>("姓名", "xxx"));
-        userInfoList.add(new Pair<>("登录名", "xxx"));
-        userInfoList.add(new Pair<>("密码", "xxx"));
-        userInfoList.add(new Pair<>("性别", "男"));
-        userInfoList.add(new Pair<>("身份证", "10324198702113446"));
-        userInfoList.add(new Pair<>("职务", "xxx"));
-        userInfoList.add(new Pair<>("工种", "xxx"));
         commonAdapter.setListData(userInfoList);
         mList.setAdapter(commonAdapter);
+        mPresenter.fetchUserInfo();
     }
 
     @Override
     public void modifyPasswordSuccess() {
+        showToast("修改成功");
         getActivity().finish();
+//        Cache.exitLogin();
     }
 
     @Override
@@ -69,7 +70,14 @@ public class UserInfoFragment extends BasePresenterFragment<UserContract.Present
     }
 
     @Override
-    public void setListUserInfoList(List<Pair<String, String>> listUserInfoList) {
-        this.userInfoList = listUserInfoList;
+    public void setListUserInfoList(List<KeyValueEntity<String, String>> listUserInfoList) {
+        this.userInfoList.clear();
+        this.userInfoList.addAll(listUserInfoList);
+        commonAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public String getModifyPassword() {
+        return userInfoList.get(2).getContent();
     }
 }

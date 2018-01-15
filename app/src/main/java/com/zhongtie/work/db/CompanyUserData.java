@@ -10,38 +10,41 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
  * date:2018.1.8
  */
 
-@Table(database = CompanyDB.class, name = "user")
+@Table(database = CompanyDB.class, name = "work_u_user")
 public class CompanyUserData extends BaseModel {
     @PrimaryKey
     public int id;
-    @Column
+    @Column(name = "user_company")
     public int company;
-    @Column
+    @Column(name = "user_account")
+    public String userAccount;
+    @Column(name = "user_name")
     public String name;
-    @Column
+    @Column(name = "user_sex")
     public String sex;
-    @Column
+    @Column(name = "user_identitycode")
     public String idencode;
-    @Column
+    @Column(name = "user_position")
     public String duty;
-    @Column
+    @Column(name = "user_worktype")
     public String worktype;
-    @Column
+    @Column(name = "user_unit")
     public String unit;
-    @Column
+    @Column(name = "user_learn")
     public String learn;
-    @Column
+    @Column(name = "user_health")
     public String health;
-    @Column
-    public String onjob;
-    @Column
+    @Column(name = "user_onjob")
+    public int onjob;
+    @Column(name = "user_picture")
     public String photo;
-    @Column
+    @Column(name = "user_insure")
     public String insure;
-    @Column
+    @Column(name = "user_workerteam")
     public String workteam;
-    @Column
-    public String url;
+//    @Column
+//    public String url;
+
 
     public int getId() {
         return id;
@@ -57,6 +60,14 @@ public class CompanyUserData extends BaseModel {
 
     public void setCompany(int company) {
         this.company = company;
+    }
+
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
     }
 
     public String getName() {
@@ -123,11 +134,11 @@ public class CompanyUserData extends BaseModel {
         this.health = health;
     }
 
-    public String getOnjob() {
+    public int getOnjob() {
         return onjob;
     }
 
-    public void setOnjob(String onjob) {
+    public void setOnjob(int onjob) {
         this.onjob = onjob;
     }
 
@@ -153,13 +164,5 @@ public class CompanyUserData extends BaseModel {
 
     public void setWorkteam(String workteam) {
         this.workteam = workteam;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 }

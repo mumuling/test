@@ -17,6 +17,8 @@
 
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.FanShuButton</item>
         <item name="android:editTextStyle">@style/Widget.AppCompat.Button.ZTEditText</item>
+        <item name="android:checkboxStyle">@style/Widget.AppCompat.Button.ZTCheckBox</item>
+        <item name="checkboxStyle">@style/Widget.AppCompat.Button.ZTCheckBox</item>
         <item name="editTextStyle">@style/Widget.AppCompat.Button.ZTEditText</item>
         <item name="android:progressBarStyle">@style/Widget.AppCompat.Button.ZTProgressBar</item>
         <item name="android:textViewStyle">@style/Widget.AppCompat.Button.ZTTextView</item>
@@ -91,6 +93,10 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="Widget.AppCompat.Button.ZTCheckBox" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/common_check_box</item>
+    </style>
+
     <style name="Widget.AppCompat.Button.ZTEditText" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">15sp</item>
@@ -112,7 +118,7 @@
     </style>
 
 
-    <style name="MultipleStatusView" />
+    <style name="MultipleStatusView"/>
 
     <style name="MultipleStatusView.Content">
         <item name="android:layout_width">wrap_content</item>
@@ -171,6 +177,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
     <style name="load_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

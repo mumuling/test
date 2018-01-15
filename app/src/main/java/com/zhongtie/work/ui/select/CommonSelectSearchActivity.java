@@ -63,6 +63,25 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
         context.startActivityForResult(intent, USER_SELECT_CODE);
     }
 
+
+    /**
+     * 参数
+     *
+     * @param context     context
+     * @param fragment    fragment
+     * @param title       标题
+     * @param valueBundle 参数集合
+     */
+    public static void newInstance(Fragment context, Class fragment, String title, Bundle valueBundle) {
+        Intent intent = new Intent(context.getContext(), CommonSelectSearchActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(FRAGMENT, fragment.getName());
+        bundle.putString(TITLE, title);
+        bundle.putAll(valueBundle);
+        intent.putExtras(bundle);
+        context.startActivityForResult(intent, USER_SELECT_CODE);
+    }
+
     @Override
     protected int getLayoutViewId() {
         return R.layout.search_activity;

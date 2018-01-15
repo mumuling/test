@@ -29,7 +29,7 @@ public class SplashActivity extends BaseActivity {
         getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(getAppContext(), LoginActivity.class));
+                startActivity(new Intent(getAppContext(), MainActivity.class));
                 finish();
                 if (mDisposable != null) {
                     mDisposable.clear();

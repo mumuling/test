@@ -8,10 +8,14 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.TeamNameEntity;
+import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.db.CompanyUserGroupTable;
+import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.select.item.SelectTeamNameItemView;
 import com.zhongtie.work.util.Util;
@@ -19,10 +23,16 @@ import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.DividerItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.reactivestreams.Publisher;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Flowable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.LIST;
@@ -41,10 +51,16 @@ public class SelectLookGroupFragment extends BaseFragment implements OnRecyclerI
     private RecyclerView mCheckExamineList;
     private TextView mAdd;
 
-    private List<TeamNameEntity> nameEntityList=new ArrayList<>();
+    private List<TeamNameEntity> nameEntityList = new ArrayList<>();
+    private List<TeamNameEntity> mAllTeamList = new ArrayList<>();
+
+    private CommonAdapter mCommonAdapter;
+
+    private boolean isSelect;
 
     @Override
     public int getLayoutViewId() {
+        nameEntityList = (List<TeamNameEntity>) getArguments().getSerializable(LIST);
         return R.layout.look_group_fragment;
     }
 
@@ -75,28 +91,63 @@ public class SelectLookGroupFragment extends BaseFragment implements OnRecyclerI
                 getActivity().finish();
             }
         });
+
+        mItemTeamSelectAll.setOnClickListener(v -> selectAllTeam());
+    }
+
+    private void selectAllTeam() {
+        nameEntityList = new ArrayList<>();
+        for (TeamNameEntity entity : mAllTeamList) {
+            entity.setSelect(!isSelect);
+            if (!isSelect) {
+                nameEntityList.add(entity);
+            } else {
+                nameEntityList.clear();
+            }
+        }
+        isSelect = !isSelect;
+        mItemTeamSelectAll.setText(!isSelect ? "全选" : "取消全选");
+        mCommonAdapter.notifyDataSetChanged();
     }
 
     @Subscribe
     public void userEntityEvent(TeamNameEntity createUserEntity) {
         if (nameEntityList.contains(createUserEntity)) {
             nameEntityList.remove(createUserEntity);
-        }else {
+        } else {
             nameEntityList.add(createUserEntity);
         }
     }
 
     @Override
     protected void initData() {
-        CommonAdapter adapter = new CommonAdapter().register(SelectTeamNameItemView.class);
-        adapter.setOnItemClickListener(this);
-        List<TeamNameEntity> teamNameEntities = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            teamNameEntities.add(new TeamNameEntity());
-        }
-        adapter.setListData(teamNameEntities);
-        mCheckExamineList.setAdapter(adapter);
+        mCommonAdapter = new CommonAdapter().register(SelectTeamNameItemView.class);
+        mCommonAdapter.setOnItemClickListener(this);
 
+        Flowable.fromCallable(() -> SQLite.select().from(CompanyUserGroupTable.class).queryList())
+                .flatMap(Flowable::fromIterable)
+                .map(companyUserGroupTable -> {
+                    TeamNameEntity teamNameEntity = new TeamNameEntity();
+                    teamNameEntity.setTeamName(companyUserGroupTable.getGroupName());
+                    teamNameEntity.setTeamId(companyUserGroupTable.getId());
+                    for (int i = 0; i < nameEntityList.size(); i++) {
+                        TeamNameEntity data = nameEntityList.get(i);
+                        if (teamNameEntity.getTeamId() == data.getTeamId()) {
+                            teamNameEntity.setSelect(true);
+                            break;
+                        }
+                    }
+                    return teamNameEntity;
+                }).toList()
+                .toFlowable()
+                .compose(Network.netorkIO())
+                .subscribe(teamNameEntities -> {
+                    mAllTeamList = teamNameEntities;
+                    mCommonAdapter.setListData(teamNameEntities);
+                    mCheckExamineList.setAdapter(mCommonAdapter);
+                }, throwable -> {
+
+                });
     }
 
 

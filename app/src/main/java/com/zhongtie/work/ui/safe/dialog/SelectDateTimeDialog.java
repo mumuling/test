@@ -77,6 +77,7 @@ public class SelectDateTimeDialog extends BaseDialog implements OnTouchListener,
         return super.onTouchEvent(event);
 
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,51 +92,22 @@ public class SelectDateTimeDialog extends BaseDialog implements OnTouchListener,
         mSelectDateTimeTitle.setText(build.title);
         selectType = build.selectType;
 
+
         switch (build.getType()) {
             case BIRTH_DATE:
                 initBirthDate();
                 break;
-            case BWH_SELECT:
-                bwhSelect();
-                break;
-            case DEADLINE_SELECT:
-            case TAG_SELECT:
-                dayWheel.setVisibility(View.INVISIBLE);
-                monthWheel.setVisibility(View.VISIBLE);
-                if (build.getType() == DEADLINE_SELECT) {
-                    monthWheel.getLayoutParams().width = ViewUtils.getScreenWidth(mContext);
-                    monthWheel.requestLayout();
-                }
-                yearWheel.setVisibility(View.INVISIBLE);
-                initTag();
-                break;
+            default:
         }
+
+
     }
 
-    private void initTag() {
-        int textSize = ViewUtils.dip2px(18);
-        monthWheel.setLabel(build.Label);
-        monthWheel.setTextSize(textSize);
-        monthWheel.setAdapter(build.adapter);
-        monthWheel.setCurrentItem(selectType[1]);
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
     }
 
-    private void bwhSelect() {
-        int textSize = ViewUtils.dip2px(18);
-        yearWheel.setTextSize(textSize);
-        yearWheel.setLabel("cm");
-        monthWheel.setTextSize(textSize);
-        monthWheel.setLabel("cm");
-        dayWheel.setTextSize(textSize);
-        dayWheel.setLabel("cm");
-
-        yearWheel.setAdapter(new NumericWheelAdapter(20, 200));
-        yearWheel.setCurrentItem(selectType[0]);
-        monthWheel.setAdapter(new NumericWheelAdapter(20, 200));
-        monthWheel.setCurrentItem(selectType[1]);
-        dayWheel.setAdapter(new NumericWheelAdapter(20, 200));
-        dayWheel.setCurrentItem(selectType[2]);
-    }
 
     private String age;
 
@@ -154,28 +126,25 @@ public class SelectDateTimeDialog extends BaseDialog implements OnTouchListener,
         int maxDays = calendar.getActualMaximum(Calendar.DATE);
         if (build.dataModel == Build.BIRTH) {
             if ((getYearCurrentItem() == (yearWheel.getAdapter().getItemsCount() - 1))) {
-                monthWheel.setAdapter(new NumericWheelAdapter(1, currentMonth, "%02d"));
+                month.setAdapter(new NumericWheelAdapter(1, currentMonth , "%02d"));
                 if (getMonthCurrentItem() == monthWheel.getAdapter().getItemsCount() - 1) {
                     maxDays = calendar.get(Calendar.DAY_OF_MONTH);
                 }
             } else {
-                monthWheel.setAdapter(new NumericWheelAdapter(1, 12, "%02d"));
-            }
-        } else {
-            if ((getYearCurrentItem() == 0)) {
-                monthWheel.setAdapter(new NumericWheelAdapter(currentMonth, 12, "%02d"));
-                if (getMonthCurrentItem() == 0) {
-                    minDay = calendar.get(Calendar.DAY_OF_MONTH);
-                }
-            } else {
-                monthWheel.setAdapter(new NumericWheelAdapter(1, 12, "%02d"));
+                month.setAdapter(new NumericWheelAdapter(1, 12, "%02d"));
             }
         }
         day.setAdapter(new NumericWheelAdapter(minDay, maxDays, "%02d"));
         int curDay = Math.min(maxDays - minDay, day.getCurrentItem());
         int curMonth = Math.min(maxDays, month.getCurrentItem() + 1);
+
+
         if (isFirst) {
-            day.setCurrentItem(mCurDay);
+            day.setCurrentItem(maxDays - 1);
+            day.requestLayout();
+//            if (currentMonth > 1)
+                month.setCurrentItem(currentMonth - 1);
+            month.requestLayout();
         } else {
             if (month.getCurrentItem() >= month.getAdapter().getItemsCount()) {
                 month.setCurrentItem(month.getAdapter().getItemsCount() - 1);
@@ -216,14 +185,16 @@ public class SelectDateTimeDialog extends BaseDialog implements OnTouchListener,
         NumericWheelAdapter yearNumber = new NumericWheelAdapter(oldYear, lastYear);
 
         yearWheel.setAdapter(yearNumber);
-        yearWheel.setCurrentItem(build.dataModel == Build.BIRTH ? mCurYear : 0);
+        yearWheel.setCurrentItem(build.dataModel == Build.BIRTH ? 100 : 0);
         yearWheel.addChangingListener(this);
 
         monthWheel.setAdapter(new NumericWheelAdapter(1, 12, "%02d"));
         monthWheel.setCurrentItem(mCurMonth);
         monthWheel.addChangingListener(this);
 
-        updateAllWheel(yearWheel, monthWheel, dayWheel, true);
+        monthWheel.post(() -> updateAllWheel(yearWheel, monthWheel, dayWheel, true));
+
+
     }
 
 

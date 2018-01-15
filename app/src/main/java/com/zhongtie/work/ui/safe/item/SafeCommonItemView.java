@@ -78,26 +78,26 @@ public class SafeCommonItemView extends AbstractItemView<CommonItemType, SafeCom
             vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, false));
             adapter.register(new CreatePicItemView(data.isEdit()));
             adapter.register(CreateUserItemView.class);
-
             adapter.register(TeamNameItemView.class);
             vh.mCheckExamineList.setAdapter(adapter);
 
-            if (vh.mCheckExamineList.getTag() != null) {
-                adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
-            }
-            RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onItemRangeRemoved(int positionStart, int itemCount) {
-                    super.onItemRangeRemoved(positionStart, itemCount);
-                    changeItemView(vh, data);
-                }
-            };
-            adapter.registerAdapterDataObserver(observer);
         } else {
             adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
             adapter.setListData(data.getTypeItemList());
             adapter.notifyDataSetChanged();
         }
+
+        if (vh.mCheckExamineList.getTag() != null) {
+            adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
+        }
+        RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                changeItemView(vh, data);
+            }
+        };
+        adapter.registerAdapterDataObserver(observer);
     }
 
     private void changeItemView(ViewHolder vh, CommonItemType data) {

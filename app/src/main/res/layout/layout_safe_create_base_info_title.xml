@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:hint="@string/create_time_hint"
+            android:textColorHint="@color/text_color3"
             android:textColor="@color/text_color2"
             android:textSize="14dp"/>
 

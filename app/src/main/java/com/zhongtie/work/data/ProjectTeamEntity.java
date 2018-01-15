@@ -9,6 +9,7 @@ public class ProjectTeamEntity {
     private String projectTeamName;
     private String character;
     private int projectTeamID;
+    private int companyID;
 
     public ProjectTeamEntity(String projectTeamName) {
         this.projectTeamName = projectTeamName;
@@ -36,5 +37,13 @@ public class ProjectTeamEntity {
 
     public void setProjectTeamID(int projectTeamID) {
         this.projectTeamID = projectTeamID;
+    }
+
+    public int getCompanyID() {
+        return companyID;
+    }
+
+    public void setCompanyID(int companyID) {
+        this.companyID = companyID;
     }
 }

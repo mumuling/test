@@ -46,7 +46,7 @@ public class CreatePicItemView extends AbstractItemView<String, CreatePicItemVie
         //点击删除按钮
         vh.mItemPicDelete.setOnClickListener(v -> {
             commonAdapter.getListData().remove(data);
-            commonAdapter.notifyDataSetChanged();
+            commonAdapter.notifyItemRemoved(vh.getLayoutPosition());
         });
     }
 

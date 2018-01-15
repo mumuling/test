@@ -8,7 +8,7 @@ import com.zhongtie.work.db.SwitchCompanyUtil;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.Api;
+import com.zhongtie.work.network.api.UserApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.SharePrefUtil;
 
@@ -23,7 +23,7 @@ import io.reactivex.functions.Function;
  * Date: 2018/1/9
  */
 
-class LoginPresenter extends BasePresenterImpl<LoginContract.View> implements LoginContract.Presenter {
+public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implements LoginContract.Presenter {
 
     public static final String LOGIN_USER_NAME = "login_user_name";
     public static final String LOGIN_USER_ID = "login_user_id";
@@ -43,10 +43,10 @@ class LoginPresenter extends BasePresenterImpl<LoginContract.View> implements Lo
             return;
         }
 
-//        addDispose(Http.createRetroService(Api.class).login(user, pw)
+//        addDispose(Http.netSetver(Api.class).login(user, pw)
 //                .delay(500, TimeUnit.MILLISECONDS)
 //                .map(new NetWorkFunc1<>())
-//                .concatMap(userId -> Http.createRetroService(Api.class).userInfo(userId))
+//                .concatMap(userId -> Http.netSetver(Api.class).userInfo(userId))
 //                .compose(Network.networkDialog(mView, "正在登录..."))
 //                .map(new SwitchUserCompany())
 //                .compose(Network.netorkIO())
@@ -60,7 +60,7 @@ class LoginPresenter extends BasePresenterImpl<LoginContract.View> implements Lo
 //                        }));
         addDispose(Flowable.just("1")
                 .delay(500, TimeUnit.MILLISECONDS)
-                .concatMap(userId -> Http.createRetroService(Api.class).userInfo(userId))
+                .concatMap(userId -> Http.netSetver(UserApi.class).userInfo(userId))
                 .map(new NetWorkFunc1<>())
                 .map(new SwitchUserCompany())
                 .compose(Network.networkDialog(mView, "正在登录..."))

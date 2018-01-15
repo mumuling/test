@@ -2,6 +2,7 @@ package com.zhongtie.work.ui.user;
 
 import android.util.Pair;
 
+import com.zhongtie.work.data.KeyValueEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
 
@@ -19,11 +20,15 @@ public interface UserContract {
 
         void modifyPasswordFail();
 
-        void setListUserInfoList(List<Pair<String, String>> listUserInfoList);
+        void setListUserInfoList(List<KeyValueEntity<String, String>> listUserInfoList);
+
+        String getModifyPassword();
 
     }
 
     interface Presenter extends BasePresenter<View> {
         void modifyPassword();
+
+        void fetchUserInfo();
     }
 }

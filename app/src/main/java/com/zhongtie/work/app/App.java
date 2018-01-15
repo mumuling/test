@@ -73,7 +73,6 @@ public class App extends Application {
 
     //初始化数据库
     public void initDB() {
-
         writeCityDb();
         FlowConfig flowConfig = new FlowConfig.Builder(instance)
                 .addDatabaseConfig(DatabaseConfig.builder(App.class)

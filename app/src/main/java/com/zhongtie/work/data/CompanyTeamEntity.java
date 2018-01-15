@@ -1,6 +1,7 @@
 package com.zhongtie.work.data;
 
 import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.db.CompanyUserData;
 
 import java.util.List;
 
@@ -14,6 +15,15 @@ public class CompanyTeamEntity {
     private boolean isSelect;
     private boolean isExpansion;
     private boolean isAt;
+    private List<CreateUserEntity> teamUserEntities;
+
+    public List<CreateUserEntity> getTeamUserEntities() {
+        return teamUserEntities;
+    }
+
+    public void setTeamUserEntities(List<CreateUserEntity> teamUserEntities) {
+        this.teamUserEntities = teamUserEntities;
+    }
 
     public boolean isAt() {
         return isAt;
@@ -22,8 +32,6 @@ public class CompanyTeamEntity {
     public void setAt(boolean at) {
         isAt = at;
     }
-
-    private List<CreateUserEntity> teamUserEntities;
 
     public String getTeamName() {
         return teamName;
@@ -41,13 +49,6 @@ public class CompanyTeamEntity {
         isSelect = select;
     }
 
-    public List<CreateUserEntity> getTeamUserEntities() {
-        return teamUserEntities;
-    }
-
-    public void setTeamUserEntities(List<CreateUserEntity> teamUserEntities) {
-        this.teamUserEntities = teamUserEntities;
-    }
 
     public boolean isExpansion() {
         return isExpansion;
@@ -56,4 +57,9 @@ public class CompanyTeamEntity {
     public void setExpansion(boolean expansion) {
         isExpansion = expansion;
     }
+
+
+
+
+
 }

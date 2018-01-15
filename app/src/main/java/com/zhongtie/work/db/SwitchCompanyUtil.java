@@ -44,7 +44,7 @@ public class SwitchCompanyUtil {
     public void changeCompany(int company) {
         switchCompany(company)
                 .subscribe(s -> {
-                    FlowManager.destroy();
+                    FlowManager.reset();
                     FlowManager.init(App.getInstance());
                 }, throwable -> {
 

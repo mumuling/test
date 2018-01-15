@@ -4,7 +4,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.event.SelectCompanyEvent;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.select.item.SelectContentItemView;
 import com.zhongtie.work.widget.SideBar;
@@ -12,15 +14,16 @@ import com.zhongtie.work.widget.SideBar;
 import java.util.List;
 
 /**
- * 单位名称
+ * 选择单位名称
  * Auth: Chaek
  * Date: 2018/1/11
  */
 
-public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeamSelectContract.Presenter> implements ProjectTeamSelectContract.View, OnSearchContentListener, SideBar.OnTouchingLetterChangedListener {
-    private RecyclerView mList;
-    private SideBar mSideBar;
+public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeamSelectContract.Presenter> implements ProjectTeamSelectContract.View, OnSearchContentListener,
+        SideBar.OnTouchingLetterChangedListener, OnRecyclerItemClickListener<ProjectTeamEntity> {
 
+    public static final String TYPE = "select_type";
+    private RecyclerView mList;
     private CommonAdapter mCommonAdapter;
     private List<ProjectTeamEntity> mProjectTeamEntities;
 
@@ -32,14 +35,15 @@ public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeam
     @Override
     public void initView() {
         mList = (RecyclerView) findViewById(R.id.list);
-        mSideBar = (SideBar) findViewById(R.id.side_bar);
-        mSideBar.setOnTouchingLetterChangedListener(this);
+        SideBar sideBar = (SideBar) findViewById(R.id.side_bar);
+        sideBar.setOnTouchingLetterChangedListener(this);
     }
 
     @Override
     protected void initData() {
         mCommonAdapter = new CommonAdapter().register(SelectContentItemView.class);
         mList.setAdapter(mCommonAdapter);
+        mCommonAdapter.setOnItemClickListener(this);
         mPresenter.getProjectTeamListData();
     }
 
@@ -56,6 +60,11 @@ public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeam
     }
 
     @Override
+    public int listType() {
+        return getArguments().getInt(TYPE, 0);
+    }
+
+    @Override
     public void onSearch(String searchContent) {
         mPresenter.searchProjectTeamList(searchContent);
     }
@@ -68,6 +77,14 @@ public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeam
                 break;
             }
         }
+    }
 
+    @Override
+    public void onClick(ProjectTeamEntity projectTeamEntity, int index) {
+        if (projectTeamEntity.getCompanyID() == 0) {
+            return;
+        }
+        new SelectCompanyEvent(listType(), projectTeamEntity).post();
+        getActivity().finish();
     }
 }

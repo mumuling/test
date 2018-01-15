@@ -2,7 +2,10 @@ package com.zhongtie.work.ui.select;
 
 import android.util.Log;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.model.CompanyUnitEntity;
+import com.zhongtie.work.model.WorkTeamEntity;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.HanziToPinyin;
@@ -11,9 +14,12 @@ import com.zhongtie.work.util.TextUtil;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Auth: Chaek
@@ -25,30 +31,18 @@ class ProjectTeamSelectPresenterImpl extends BasePresenterImpl<ProjectTeamSelect
 
     @Override
     public void getProjectTeamListData() {
-        addDispose(Flowable.just(bank)
-                .map(s -> JsonUtil.getPersons(s, String.class))
+        //单位
+        Flowable<ProjectTeamEntity> unit = Flowable.fromCallable(() -> SQLite.select().from(CompanyUnitEntity.class).queryList())
                 .flatMap(Flowable::fromIterable)
-                .map(s -> {
-                    List<String> list = JsonUtil.getPersons(s, String.class);
-                    ProjectTeamEntity item = new ProjectTeamEntity(list.get(0));
-                    item.setProjectTeamID(1);
-                    return item;
-                })
-                .toList()
-                .toFlowable()
+                .map(CompanyUnitEntity::convert);
+
+        //劳务公司
+        Flowable<ProjectTeamEntity> workTeam = Flowable.fromCallable(() -> SQLite.select().from(WorkTeamEntity.class).queryList())
                 .flatMap(Flowable::fromIterable)
-                .filter(it -> it.getProjectTeamName() != null)
-                //转换字符
-                .map(projectTeamEntity -> {
-                    try {
-                        String c = HanziToPinyin.getInstance().get(projectTeamEntity.getProjectTeamName().substring(0, 1)).get(0).target.substring(0, 1);
-                        projectTeamEntity.setCharacter(c);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        projectTeamEntity.setCharacter("#");
-                    }
-                    return projectTeamEntity;
-                })
+                .map(WorkTeamEntity::convert);
+
+        Flowable<ProjectTeamEntity> baseFlowable = mView.listType() == 0 ? unit : workTeam;
+        addDispose(baseFlowable
                 .toList()
                 .map(projectTeamEntities -> {
                     //排序
@@ -63,7 +57,6 @@ class ProjectTeamSelectPresenterImpl extends BasePresenterImpl<ProjectTeamSelect
                 .compose(Network.netorkIO())
                 .subscribe(projectTeamEntities -> mView.setProjectTeamListData(projectTeamEntities), throwable -> {
                 }));
-
     }
 
     /**

@@ -15,6 +15,8 @@ public interface ProjectTeamSelectContract {
     interface View extends BaseView {
 
         void setProjectTeamListData(List<ProjectTeamEntity> supervisionList);
+
+        int listType();
     }
 
     interface Presenter extends BasePresenter<View> {

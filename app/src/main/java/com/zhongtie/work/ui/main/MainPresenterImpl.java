@@ -10,7 +10,7 @@ import com.zhongtie.work.db.ZhongtieDb;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.Api;
+import com.zhongtie.work.network.api.UserApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
 
     private void fetchCompanyList() {
 
-        Flowable<List<CompanyEntity>> listFlowable = Http.createRetroService(Api.class).fetchCompanyList(0)
+        Flowable<List<CompanyEntity>> listFlowable = Http.netSetver(UserApi.class).fetchCompanyList(0)
                 .map(new NetWorkFunc1<>())
                 .map(companyEntities -> {
                     FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->

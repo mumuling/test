@@ -10,6 +10,7 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.util.L;
 
 /**
  * Auth:Cheek
@@ -25,24 +26,28 @@ public class SelectTeamUserItemView extends AbstractItemView<CreateUserEntity, S
 
     @Override
     public void onBindViewHolder(@NonNull SelectTeamUserItemView.ViewHolder vh, @NonNull CreateUserEntity data) {
-        vh.mItemTitleCheck.setChecked(data.isSelect());
         vh.mItemTitleCheck.setText(data.getUserName());
+
+        L.e("----------------------", data.toString());
+        vh.mItemTitleCheck.setChecked(data.isSelect());
         vh.mItemNoticeCheck.setChecked(data.isAt());
-        vh.mItemNoticeCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data.setAt(vh.mItemNoticeCheck.isChecked());
-                if (vh.mItemNoticeCheck.isChecked()) {
-                    data.setSelect(true);
-                }
-                getCommonAdapter().notifyDataSetChanged();
-                data.post();
+
+        vh.mItemNoticeCheck.setOnClickListener(v -> {
+            data.setAt(vh.mItemNoticeCheck.isChecked());
+            if (vh.mItemNoticeCheck.isChecked()) {
+                data.setSelect(true);
             }
+            getCommonAdapter().notifyDataSetChanged();
+            data.post();
         });
         vh.mItemTitleCheck.setOnCheckedChangeListener(null);
         vh.mItemTitleCheck.setOnClickListener(v -> {
-            data.setSelect(vh.mItemTitleCheck.isChecked());
-            getCommonAdapter().notifyDataSetChanged();
+            boolean isSelect = vh.mItemTitleCheck.isChecked();
+            if (!isSelect) {
+                data.setAt(false);
+            }
+            data.setSelect(isSelect);
+            getCommonAdapter().notifyItemChanged(vh.getLayoutPosition());
             data.post();
         });
     }

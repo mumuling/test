@@ -1,5 +1,6 @@
 package com.zhongtie.work.data.create;
 
+import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.event.BaseEvent;
 
 import java.io.Serializable;
@@ -15,7 +16,6 @@ public class CreateUserEntity implements BaseEvent, Serializable {
     private int userId;
     private boolean isSelect;
     private boolean isAt;
-    private int userID;
 
     public boolean isSelect() {
         return isSelect;
@@ -33,13 +33,6 @@ public class CreateUserEntity implements BaseEvent, Serializable {
         isAt = at;
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
 
     public CreateUserEntity() {
     }
@@ -72,5 +65,23 @@ public class CreateUserEntity implements BaseEvent, Serializable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public CreateUserEntity convertUser(CompanyUserData companyUserData) {
+        userName = companyUserData.getName();
+        userPic = companyUserData.getPhoto();
+        userId = companyUserData.getId();
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateUserEntity{" +
+                "userName='" + userName + '\'' +
+                ", userPic='" + userPic + '\'' +
+                ", userId=" + userId +
+                ", isSelect=" + isSelect +
+                ", isAt=" + isAt +
+                '}';
     }
 }

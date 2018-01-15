@@ -29,6 +29,7 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
 
     @Override
     public void onBindViewHolder(@NonNull SelectTeamItemView.ViewHolder vh, @NonNull CompanyTeamEntity data) {
+
         vh.mItemTeamTitle.setText(data.getTeamName());
         vh.setOnClickListener(view -> {
             data.setExpansion(!data.isExpansion());
@@ -39,42 +40,53 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
             public void onClick(View view) {
                 for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
                     createUserEntity.setSelect(!data.isSelect());
-                    if (data.isSelect()) {
+                    if (!createUserEntity.isSelect()) {
                         createUserEntity.setAt(false);
                     }
+                    createUserEntity.post();
                 }
                 data.setSelect(!data.isSelect());
-                vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
-            }
-        });
-        vh.mItemTeamSelectAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
-                    if (!data.isAt() && createUserEntity.isSelect()) {
-                        createUserEntity.setAt(true);
-                    } else {
-                        createUserEntity.setAt(false);
-                    }
+                if (!data.isExpansion()) {
+                    data.setExpansion(true);
                 }
-                data.setAt(!data.isAt());
-                vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
+
+                getCommonAdapter().notifyItemChanged(vh.getLayoutPosition());
+//                vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
             }
         });
-
-
-        CommonAdapter adapter = new CommonAdapter(data.getTeamUserEntities());
-        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                getCommonAdapter().notifyDataSetChanged();
+        vh.mItemTeamSelectAT.setOnClickListener(view -> {
+            for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
+                if (!data.isAt() && createUserEntity.isSelect()) {
+                    createUserEntity.setAt(true);
+                } else {
+                    createUserEntity.setAt(false);
+                }
+                createUserEntity.post();
             }
+            data.setAt(!data.isAt());
+            vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
         });
-        vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
-        //用户信息
-        adapter.register(SelectTeamUserItemView.class);
-        vh.mCheckExamineList.setAdapter(adapter);
+
+        if (vh.mCheckExamineList.getAdapter() == null) {
+            CommonAdapter adapter = new CommonAdapter(data.getTeamUserEntities());
+            adapter.register(SelectTeamUserItemView.class);
+//            adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+//                @Override
+//                public void onChanged() {
+//                    super.onChanged();
+//                    getCommonAdapter().notifyDataSetChanged();
+//                }
+//            });
+            vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
+            //用户信息
+            vh.mCheckExamineList.setAdapter(adapter);
+        } else {
+            CommonAdapter adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
+            adapter.setListData(data.getTeamUserEntities());
+            adapter.notifyDataSetChanged();
+        }
+
+
         if (data.getTeamUserEntities() == null || data.getTeamUserEntities().isEmpty()) {
             vh.mCheckExamineList.setVisibility(View.GONE);
         } else {
@@ -94,7 +106,7 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
 
     public static class ViewHolder extends CommonViewHolder {
         private TextView mItemTeamTitle;
-        private TextView mItemTeamSelectAdd;
+        private TextView mItemTeamSelectAT;
         private TextView mItemTeamSelectAll;
         private RecyclerView mCheckExamineList;
         private RelativeLayout mTeamTitle;
@@ -103,7 +115,7 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
         public ViewHolder(View itemView) {
             super(itemView);
             mItemTeamTitle = (TextView) findViewById(R.id.item_team_title);
-            mItemTeamSelectAdd = (TextView) findViewById(R.id.item_team_select_add);
+            mItemTeamSelectAT = (TextView) findViewById(R.id.item_team_select_add);
             mItemTeamSelectAll = (TextView) findViewById(R.id.item_team_select_all);
             mCheckExamineList = (RecyclerView) findViewById(R.id.check_examine_list);
             mTeamTitle = (RelativeLayout) findViewById(R.id.team_title);

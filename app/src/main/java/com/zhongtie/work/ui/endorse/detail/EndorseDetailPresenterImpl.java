@@ -38,7 +38,7 @@ public class EndorseDetailPresenterImpl extends BasePresenterImpl<EndorseDetailC
         List<CreateUserEntity> createUserEntities = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             CreateUserEntity c = new CreateUserEntity();
-            c.setUserID(i);
+            c.setUserId(i);
             c.setUserName("测试" + 1);
             c.setUserPic(imageUrls[i]);
             createUserEntities.add(c);

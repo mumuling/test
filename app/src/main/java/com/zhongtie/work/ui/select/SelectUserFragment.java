@@ -2,6 +2,7 @@ package com.zhongtie.work.ui.select;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +13,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.CompanyTeamEntity;
 import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.db.CompanyUserData;
+import com.zhongtie.work.db.CompanyUserData_Table;
+import com.zhongtie.work.db.CompanyUserGroupTable;
+import com.zhongtie.work.event.SelectUserDelEvent;
+import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.item.CreateUserItemView;
 import com.zhongtie.work.ui.select.item.SelectTeamItemView;
 import com.zhongtie.work.ui.select.item.SelectTeamUserItemView;
+import com.zhongtie.work.ui.user.UserInfoActivity;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
@@ -35,9 +43,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.functions.Function;
 
 import static android.app.Activity.RESULT_OK;
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.LIST;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.TITLE;
 import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
@@ -53,26 +61,28 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     private TextView mItemUserListTitle;
     private TextView mItemUserListTip;
     private ImageView mItemUserAddImg;
-    private RecyclerView mTeamGroupList;
+    private RecyclerView mSelectRcycler;
     private TextView mUpdateDownloadCancel;
     private TextView mUpdateBackGroundDownload;
     private AppCompatEditText mSearch;
-    private RecyclerView mTempList;
+    private RecyclerView mUserGroupList;
 
     private CommonAdapter mSelectInfoAdapter;
-    private List<CreateUserEntity> createUserEntities = new ArrayList<>();
+    private List<CreateUserEntity> mSelectUserList = new ArrayList<>();
     private InputMethodRelativeLayout mInput;
 
     private List<CompanyTeamEntity> mTeamEntityList;
     private EmptyFragment mSearchList;
 
+    private CommonAdapter mAllUserListAdapter;
     private CommonAdapter mSearchAdapter;
+    private List<CreateUserEntity> mAllUserNameInfo;
     private boolean isInput;
 
 
     @Override
     public int getLayoutViewId() {
-        createUserEntities = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
+        mSelectUserList = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
         return R.layout.select_user_fragment;
     }
 
@@ -83,13 +93,19 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
         mItemUserListTitle = (TextView) findViewById(R.id.item_user_list_title);
         mItemUserListTip = (TextView) findViewById(R.id.item_user_list_tip);
         mItemUserAddImg = (ImageView) findViewById(R.id.item_user_add_img);
-        mTeamGroupList = (RecyclerView) findViewById(R.id.check_examine_list);
-        mTeamGroupList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mSelectRcycler = (RecyclerView) findViewById(R.id.check_examine_list);
+        //设置横向
+        mSelectRcycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
         mUpdateDownloadCancel = (TextView) findViewById(R.id.cancel);
         mUpdateBackGroundDownload = (TextView) findViewById(R.id.confirm);
         mSearch = (AppCompatEditText) findViewById(R.id.search);
         mSearchList = (EmptyFragment) findViewById(R.id.search_list);
-        mTempList = (RecyclerView) findViewById(R.id.temp_list);
+
+        mUserGroupList = (RecyclerView) findViewById(R.id.temp_list);
+        mUserGroupList.setLayoutManager(new LinearLayoutManager(getAppContext()));
+
+
         mInput.setInputMethodChangedListener(this);
         mSearch.addTextChangedListener(this);
         mUpdateDownloadCancel.setOnClickListener(v -> getActivity().finish());
@@ -98,7 +114,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putString(TITLE, getArguments().getString(TITLE));
-            bundle.putSerializable(LIST, (Serializable) createUserEntities);
+            bundle.putSerializable(LIST, (Serializable) mSelectUserList);
             intent.putExtras(bundle);
             getActivity().setResult(RESULT_OK, intent);
             getActivity().finish();
@@ -107,7 +123,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     @Subscribe
     public void userEntityEvent(CreateUserEntity createUserEntity) {
-        Iterator iterator = createUserEntities.iterator();
+        Iterator iterator = mSelectUserList.iterator();
         while (iterator.hasNext()) {
             CreateUserEntity userEntity = (CreateUserEntity) iterator.next();
             if (userEntity.getUserId() == createUserEntity.getUserId()) {
@@ -115,9 +131,22 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
             }
         }
         if (createUserEntity.isSelect()) {
-            createUserEntities.add(createUserEntity);
+            mSelectUserList.add(createUserEntity);
         }
         mSelectInfoAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void delCreateUserEvent(SelectUserDelEvent createUserEntity) {
+        for (int i = 0; i < mAllUserNameInfo.size(); i++) {
+            CreateUserEntity entity = mAllUserNameInfo.get(i);
+            if (entity.getUserId() == createUserEntity.getCreateUserEntity().getUserId()) {
+                entity.setAt(false);
+                entity.setSelect(false);
+                break;
+            }
+        }
+        mAllUserListAdapter.notifyDataSetChanged();
     }
 
 
@@ -127,6 +156,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.white));
         dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(5));
+
         mSearchList.getRecyclerView().addItemDecoration(dividerItemDecoration);
         mSearchList.getRecyclerView().setAdapter(mSearchAdapter);
         mSearchList.setEmptyView(R.layout.placeholder_empty_view);
@@ -134,34 +164,61 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
         initTest();
         mItemUserListTitle.setText("已选成员");
         mItemUserListTip.setText("向右滑动查看更多");
-        mSelectInfoAdapter = new CommonAdapter(createUserEntities);
-        mTeamGroupList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
+
+        mSelectInfoAdapter = new CommonAdapter(mSelectUserList);
         mSelectInfoAdapter.register(CreateUserItemView.class);
-        mTeamGroupList.setAdapter(mSelectInfoAdapter);
+        mSelectRcycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
+        mSelectRcycler.setAdapter(mSelectInfoAdapter);
 
     }
 
     private void initTest() {
-        mTeamEntityList = new ArrayList<>();
-        for (int i = 1, len = 6; i < len; i++) {
-            CompanyTeamEntity temp = new CompanyTeamEntity();
-            temp.setTeamName("业务部" + i);
+        mAllUserNameInfo = new ArrayList<>();
+        Flowable.fromCallable(() -> SQLite.select().from(CompanyUserGroupTable.class)
+                .queryList())
+                .flatMap(Flowable::fromIterable)
+                .map(this::getCompanyTeamData)
+                .toList()
+                .toFlowable()
+                .compose(Network.netorkIO())
+                .subscribe(companyTeamEntities -> {
+                    mTeamEntityList = companyTeamEntities;
+                    mAllUserListAdapter = new CommonAdapter(companyTeamEntities).register(SelectTeamItemView.class)
+                            .register(SelectTeamUserItemView.class);
+                    mUserGroupList.setAdapter(mAllUserListAdapter);
+                }, throwable -> {
+                    throwable.printStackTrace();
+                });
 
-            List<CreateUserEntity> userList = new ArrayList<>();
-            for (int j = 1, l = 7; j < l; j++) {
-                userList.add(new CreateUserEntity("用户" + i, imageUrls[i], j * i));
+    }
+
+    @NonNull
+    private CompanyTeamEntity getCompanyTeamData(CompanyUserGroupTable group) {
+        CompanyTeamEntity companyTeamEntity = new CompanyTeamEntity();
+        companyTeamEntity.setTeamName(group.getGroupName());
+        List<CompanyUserData> userDataList = SQLite.select().from(CompanyUserData.class).where(CompanyUserData_Table.id.in(group.getUserList())).queryList();
+        List<CreateUserEntity> createUserEntities = new ArrayList<>();
+        for (int i = 0; i < userDataList.size(); i++) {
+            CreateUserEntity entity = new CreateUserEntity().convertUser(userDataList.get(i));
+            for (int j = 0; j < mSelectUserList.size(); j++) {
+                CreateUserEntity b = mSelectUserList.get(j);
+                if (b.getUserId() == entity.getUserId()) {
+                    entity.setAt(b.isAt());
+                    entity.setSelect(b.isSelect());
+                    break;
+                }
             }
-            temp.setTeamUserEntities(userList);
-            mTeamEntityList.add(temp);
+            createUserEntities.add(entity);
         }
-        CommonAdapter list = new CommonAdapter(mTeamEntityList).register(SelectTeamItemView.class).register(SelectTeamUserItemView.class);
-        mTempList.setAdapter(list);
+        mAllUserNameInfo.addAll(createUserEntities);
+        companyTeamEntity.setTeamUserEntities(createUserEntities);
+        return companyTeamEntity;
     }
 
     @Override
     public void showInputMethod() {
         this.isInput = true;
-        hideTeamGroupView();
+//        hideTeamGroupView();
         mBottom.setVisibility(View.GONE);
     }
 
@@ -173,12 +230,12 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     private void showTeamGroupView() {
         mSearchList.setVisibility(View.GONE);
-        mTeamGroupList.setVisibility(View.VISIBLE);
+        mSelectRcycler.setVisibility(View.VISIBLE);
     }
 
     private void hideTeamGroupView() {
         mSearchList.setVisibility(View.VISIBLE);
-        mTeamGroupList.setVisibility(View.GONE);
+        mSelectRcycler.setVisibility(View.GONE);
     }
 
     @Override
@@ -196,8 +253,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     }
 
     private void searchTeamEntityList(String search) {
-        Flowable.fromIterable(mTeamEntityList)
-                .flatMap(companyTeamEntity -> Flowable.fromIterable(companyTeamEntity.getTeamUserEntities()))
+        Flowable.fromIterable(mAllUserNameInfo)
                 .filter(createUserEntity -> createUserEntity.getUserName().contains(search))
                 .toList()
                 .toFlowable()

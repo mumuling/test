@@ -1,7 +1,11 @@
 package com.zhongtie.work.ui.safe;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
-import com.zhongtie.work.model.CompanyUnitEntity;
+import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.event.SelectCompanyEvent;
+import com.zhongtie.work.model.WorkTeamEntity;
 import com.zhongtie.work.ui.safe.dialog.SelectDateTimeDialog;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.ProjectTeamSelectFragment;
+import com.zhongtie.work.util.TimeUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * 创建头部数据
@@ -23,6 +34,8 @@ import com.zhongtie.work.ui.select.ProjectTeamSelectFragment;
  */
 
 public class SafeCreateEditHeadView extends LinearLayout implements View.OnClickListener, SelectDateTimeDialog.OnSelectDateTimeListener {
+    public static final int UNIT = 0;
+    public static final int WORK_TEAM = 1;
     /**
      * 创建时间
      */
@@ -43,6 +56,9 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
      */
     private TextView mCreateCompanyWork;
 
+    private ProjectTeamEntity unitEntity;
+    private ProjectTeamEntity workTeamEntity;
+    private String mSelectTime;
 
     private SelectDateTimeDialog mSelectDateTimeDialog;
 
@@ -60,22 +76,29 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
         mCreateCompanyWork = findViewById(R.id.create_company_work);
         findViewById(R.id.create_time_select).setOnClickListener(this);
         mCreateCompanySelect.setOnClickListener(this);
+        mCreateCompanyWorkSelect.setOnClickListener(this);
+        setCreateTime(TimeUtils.formatYDate(System.currentTimeMillis()));
     }
+
+
+    private void setCreateTime(String time) {
+        mSelectTime = time;
+        mCreateTime.setText(mSelectTime);
+    }
+
 
     /**
      * @return 所属单位
      */
-    public CompanyUnitEntity getCompanyUnitEntity() {
-        //todo
-        return null;
+    public ProjectTeamEntity getCompanyUnitEntity() {
+        return unitEntity;
     }
 
     /**
      * @return 劳务关系公司
      */
-    public CompanyUnitEntity getCompanyOfferEntity() {
-        //todo
-        return null;
+    public ProjectTeamEntity getCompanyOfferEntity() {
+        return workTeamEntity;
     }
 
     /**
@@ -100,12 +123,37 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        EventBus.getDefault().register(this);
+        initWorkTeam();
     }
+
+    private void initWorkTeam() {
+        //没有劳务公司 不展示选择
+        long workTeamCount = SQLite.selectCountOf().from(WorkTeamEntity.class).count();
+        if (workTeamCount <= 0) {
+            mCreateCompanyWorkSelect.setVisibility(GONE);
+        } else {
+            mCreateCompanyWorkSelect.setVisibility(VISIBLE);
+        }
+    }
+
+    @Subscribe
+    public void selectCompanyEvent(SelectCompanyEvent selectCompanyEvent) {
+        if (selectCompanyEvent.getType() == UNIT) {
+            unitEntity = selectCompanyEvent.getData();
+            mCreateCompany.setText(unitEntity.getProjectTeamName());
+        } else {
+            workTeamEntity = selectCompanyEvent.getData();
+            mCreateCompanyWork.setText(workTeamEntity.getProjectTeamName());
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -114,12 +162,31 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
                 showSelectDateTime();
                 break;
             case R.id.create_company_select:
-                CommonSelectSearchActivity.newInstance(getContext(), ProjectTeamSelectFragment.class, "输入单位名称");
+                startSelectCompany(UNIT);
                 break;
             case R.id.create_company_work_select:
+                startSelectCompany(WORK_TEAM);
                 break;
             default:
         }
+    }
+
+    private Fragment getFragment(Context activity) {
+        if (activity instanceof FragmentActivity) {
+            FragmentActivity fragmentActivity = (FragmentActivity) activity;
+            FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+            return fragmentManager.getFragments().get(0);
+        }
+        return null;
+    }
+
+    /**
+     * @param type 0选择单位 1选择劳务公司
+     */
+    private void startSelectCompany(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ProjectTeamSelectFragment.TYPE, type);
+        CommonSelectSearchActivity.newInstance(getFragment(getContext()), ProjectTeamSelectFragment.class, "输入名称", bundle);
     }
 
     /**
@@ -132,13 +199,14 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
             build.setSelectDateTime(new SelectDateTimeDialog.OnSelectDateTimeListener() {
                 @Override
                 public void setTimeDate(String datetime, int type) {
+                    setCreateTime(datetime);
                 }
 
                 @Override
                 public void setSelectType(int[] type, int buildType) {
                 }
             });
-            build.setType(SelectDateTimeDialog.BIRTH_DATE);
+            build.setType(SelectDateTimeDialog.BIRTH_DATE).setDataModel(SelectDateTimeDialog.Build.BIRTH);
             mSelectDateTimeDialog = build.create();
         }
         mSelectDateTimeDialog.show();

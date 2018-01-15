@@ -2,24 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="34dp"
+              android:gravity="center_vertical"
               android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatCheckBox
         android:id="@+id/item_title_check"
         android:layout_width="0px"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:checked="false"
-        android:paddingLeft="4dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="-1dp"
         android:textColor="@color/text_color2"
         tools:text="安全防护"/>
 
     <android.support.v7.widget.AppCompatCheckBox
         android:id="@+id/item_notice_check"
         android:layout_width="0px"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:checked="false"
+        android:paddingLeft="10dp"
+        android:paddingTop="-1dp"
         android:text="\u0040"
         android:textColor="@color/text_color2"
         android:visibility="gone"
