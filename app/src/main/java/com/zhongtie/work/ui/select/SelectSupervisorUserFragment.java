@@ -2,18 +2,27 @@ package com.zhongtie.work.ui.select;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.CompanyTeamEntity;
 import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.db.CompanyUserData;
+import com.zhongtie.work.db.CompanyUserData_Table;
+import com.zhongtie.work.db.CompanyUserGroupTable;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.select.item.SelectSupervisorGroupItemView;
+import com.zhongtie.work.ui.select.item.SelectSupervisorUserItemView;
+import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.widget.EmptyFragment;
 import com.zhongtie.work.widget.InputMethodRelativeLayout;
 
@@ -26,7 +35,6 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 import static android.app.Activity.RESULT_OK;
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.LIST;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.TITLE;
 
@@ -38,16 +46,16 @@ import static com.zhongtie.work.ui.setting.CommonFragmentActivity.TITLE;
 
 public class SelectSupervisorUserFragment extends BaseFragment implements InputMethodRelativeLayout.OnInputMethodChangedListener, OnSearchContentListener {
 
-    private CommonAdapter mSelectInfoAdapter;
-    private List<CreateUserEntity> createUserEntities = new ArrayList<>();
-    private InputMethodRelativeLayout mInput;
+    private List<CreateUserEntity> mSelectUserList = new ArrayList<>();
 
     private List<CompanyTeamEntity> mTeamEntityList;
 
     private CommonAdapter mSearchAdapter;
+
+    private List<CreateUserEntity> mSearchListData = new ArrayList<>();
     private boolean isInput;
 
-
+    private InputMethodRelativeLayout mInput;
     private LinearLayout mBottom;
     private LinearLayout mBottomBtn;
     private TextView mCancel;
@@ -55,15 +63,24 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
     private EmptyFragment mSearchList;
     private RecyclerView mTeamList;
 
+    private CommonAdapter mCommonAdapter;
+
+    private List<CreateUserEntity> mAllUserNameInfo;
 
     @Override
     public int getLayoutViewId() {
-        createUserEntities = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
+//        mSelectUserList = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
         return R.layout.select_user_supervise_fragment;
     }
 
     @Override
     public void initView() {
+        mInput = (InputMethodRelativeLayout) findViewById(R.id.input);
+        mBottom = (LinearLayout) findViewById(R.id.bottom);
+        mBottomBtn = (LinearLayout) findViewById(R.id.bottom_btn);
+        mCancel = (TextView) findViewById(R.id.cancel);
+        mConfirm = (TextView) findViewById(R.id.confirm);
+        mTeamList = (RecyclerView) findViewById(R.id.team_list);
         mInput = (InputMethodRelativeLayout) findViewById(R.id.input);
         mBottom = (LinearLayout) findViewById(R.id.bottom);
         mBottomBtn = (LinearLayout) findViewById(R.id.bottom_btn);
@@ -80,6 +97,11 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
             //点击确定返回数据
             resultList();
         });
+        mSearchList.getRecyclerView().setLayoutManager(new GridLayoutManager(getAppContext(), 2));
+
+        mSearchAdapter = new CommonAdapter(mSearchListData).register(SelectSupervisorUserItemView.class);
+        mSearchList.getRecyclerView().setAdapter(mSearchAdapter);
+        mSearchList.setEmptyView(R.layout.placeholder_empty_view);
     }
 
     private void resultList() {
@@ -127,42 +149,49 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
 
     @Override
     protected void initData() {
-//        mSearchAdapter = new CommonAdapter().register(SelectTeamUserItemView.class);
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), VERTICAL_LIST);
-//        dividerItemDecoration.setLineColor(Util.getColor(R.color.white));
-//        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(5));
-//        mSearchList.getRecyclerView().addItemDecoration(dividerItemDecoration);
-//        mSearchList.getRecyclerView().setAdapter(mSearchAdapter);
-//        mSearchList.setEmptyView(R.layout.placeholder_empty_view);
-
-        initTest();
-//        mSelectInfoAdapter = new CommonAdapter(createUserEntities);
-//        mSelectInfoAdapter.register(SelectSupervisorGroupItemView.class);
-//        mTeamList.setAdapter(mSelectInfoAdapter);
-
+        mAllUserNameInfo = new ArrayList<>();
+        Flowable.fromCallable(() -> SQLite.select().from(CompanyUserGroupTable.class)
+                .queryList())
+                .flatMap(Flowable::fromIterable)
+                .map(this::getCompanyTeamData)
+                .toList()
+                .toFlowable()
+                .compose(Network.netorkIO())
+                .subscribe(companyTeamEntities -> {
+                    mTeamEntityList = companyTeamEntities;
+                    mCommonAdapter = new CommonAdapter(companyTeamEntities).register(SelectSupervisorGroupItemView.class).register(SelectSupervisorUserItemView.class);
+                    mTeamList.setAdapter(mCommonAdapter);
+                }, throwable -> {
+                    throwable.printStackTrace();
+                });
     }
 
-    private void initTest() {
-        mTeamEntityList = new ArrayList<>();
-        for (int i = 1, len = 6; i < len; i++) {
-            CompanyTeamEntity temp = new CompanyTeamEntity();
-            temp.setTeamName("业务部" + i);
-
-            List<CreateUserEntity> userList = new ArrayList<>();
-            for (int j = 1, l = 7; j < l; j++) {
-                userList.add(new CreateUserEntity("用户" + i, imageUrls[i], j * i));
+    @WorkerThread
+    @NonNull
+    private CompanyTeamEntity getCompanyTeamData(CompanyUserGroupTable group) {
+        CompanyTeamEntity companyTeamEntity = new CompanyTeamEntity();
+        companyTeamEntity.setTeamName(group.getGroupName());
+        List<CompanyUserData> userDataList = SQLite.select().from(CompanyUserData.class).where(CompanyUserData_Table.id.in(group.getUserList())).queryList();
+        List<CreateUserEntity> createUserEntities = new ArrayList<>();
+        for (int i = 0; i < userDataList.size(); i++) {
+            CreateUserEntity entity = new CreateUserEntity().convertUser(userDataList.get(i));
+            for (int j = 0; j < mSelectUserList.size(); j++) {
+                CreateUserEntity b = mSelectUserList.get(j);
+                if (b.getUserId() == entity.getUserId()) {
+                    entity.setSelect(true);
+                    break;
+                }
             }
-            temp.setTeamUserEntities(userList);
-            mTeamEntityList.add(temp);
+            createUserEntities.add(entity);
         }
-        CommonAdapter list = new CommonAdapter(mTeamEntityList).register(SelectSupervisorGroupItemView.class);
-        mTeamList.setAdapter(list);
+        mAllUserNameInfo.addAll(createUserEntities);
+        companyTeamEntity.setTeamUserEntities(createUserEntities);
+        return companyTeamEntity;
     }
 
     @Override
     public void showInputMethod() {
         this.isInput = true;
-//        hideTeamGroupView();
         mBottom.setVisibility(View.GONE);
     }
 
@@ -172,26 +201,27 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
         mBottom.setVisibility(View.VISIBLE);
     }
 
-    private void showTeamGroupView() {
-        mSearchList.setVisibility(View.GONE);
-    }
-
-    private void hideTeamGroupView() {
-        mSearchList.setVisibility(View.VISIBLE);
-    }
-
 
     @Override
     public void onSearch(String searchContent) {
-//        Flowable.fromIterable(mTeamEntityList)
-//                .flatMap(companyTeamEntity -> Flowable.fromIterable(companyTeamEntity.getTeamUserEntities()))
-//                .filter(createUserEntity -> createUserEntity.getUserName().contains(searchContent))
-//                .toList()
-//                .toFlowable()
-//                .subscribe(createUserEntities -> {
-//                    mSearchAdapter.setListData(createUserEntities);
-//                    mSearchAdapter.notifyDataSetChanged();
-//                }, throwable -> {
-//                });
+        if (TextUtil.isEmpty(searchContent)) {
+            mSearchList.setVisibility(View.GONE);
+            mTeamList.setVisibility(View.VISIBLE);
+        } else {
+            mSearchList.setVisibility(View.VISIBLE);
+            mTeamList.setVisibility(View.GONE);
+        }
+
+        Flowable.fromIterable(mTeamEntityList)
+                .flatMap(companyTeamEntity -> Flowable.fromIterable(companyTeamEntity.getTeamUserEntities()))
+                .filter(createUserEntity -> createUserEntity.getUserName().contains(searchContent))
+                .toList()
+                .toFlowable()
+                .subscribe(createUserEntities -> {
+                    mSearchListData.clear();
+                    mSearchListData.addAll(createUserEntities);
+                    mSearchAdapter.notifyDataSetChanged();
+                }, throwable -> {
+                });
     }
 }

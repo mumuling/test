@@ -18,6 +18,8 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CommonItemType;
+import com.zhongtie.work.list.CommonAdapterDataObserver;
+import com.zhongtie.work.ui.safe.item.SafeCommonItemView;
 import com.zhongtie.work.ui.safe.item.TeamNameItemView;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.SelectLookGroupFragment;
@@ -78,13 +80,8 @@ public class RPCommonItemView extends AbstractItemView<CommonItemType, RPCommonI
             if (vh.mCheckExamineList.getTag() != null) {
                 adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
             }
-            RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onItemRangeRemoved(int positionStart, int itemCount) {
-                    super.onItemRangeRemoved(positionStart, itemCount);
-                    changeItemView(vh, data);
-                }
-            };
+            RecyclerView.AdapterDataObserver observer = new CommonAdapterDataObserver(vh, commonViewHolder ->
+                    changeItemView((RPCommonItemView.ViewHolder) commonViewHolder, (CommonItemType) getCommonAdapter().getListData(commonViewHolder.getItemPosition())));
             adapter.registerAdapterDataObserver(observer);
             vh.mCheckExamineList.setAdapter(adapter);
         } else {

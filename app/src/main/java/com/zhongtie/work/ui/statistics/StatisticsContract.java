@@ -21,6 +21,9 @@ public interface StatisticsContract {
         void setCompany(List<StatisticsLineData> statisticsData);
 
         void setSafeList(List<PieEntry> statisticsData);
+
+        void showNoData();
+        void showContent();
     }
 
     interface Presenter extends BasePresenter<View> {

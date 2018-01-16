@@ -11,10 +11,10 @@ import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.SyncApi;
+import com.zhongtie.work.network.api.UploadApi;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.safe.SafeCreateContract;
-import com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment;
+import com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
@@ -54,9 +54,9 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeCreateCon
     private RecyclerView mList;
 
 
-    public static SafeSupervisionCreate2Fragment newInstance(int id) {
+    public static SafeSupervisionCreateFragment newInstance(int id) {
         Bundle args = new Bundle();
-        SafeSupervisionCreate2Fragment fragment = new SafeSupervisionCreate2Fragment();
+        SafeSupervisionCreateFragment fragment = new SafeSupervisionCreateFragment();
         args.putInt(ID, id);
         fragment.setArguments(args);
         return fragment;
@@ -81,7 +81,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeCreateCon
         mApprove = (TextView) findViewById(R.id.approve);
         mList = (RecyclerView) findViewById(R.id.list);
 
-        mModify.setOnClickListener(view -> SafeSupervisionCreateActivity.newInstance(getActivity(), SafeSupervisionCreate2Fragment.class, getString(R.string.safe_supervision_title)));
+        mModify.setOnClickListener(view -> SafeSupervisionCreateActivity.newInstance(getActivity(), SafeSupervisionCreateFragment.class, getString(R.string.safe_supervision_title)));
         mReply.setOnClickListener(view -> CommonFragmentActivity.newInstance(getActivity(), ReplyEditFragment.class, "回复"));
 
 
@@ -136,7 +136,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeCreateCon
     @Override
     public void onSignature(String imagePath) {
 
-        Http.netSetver(SyncApi.class)
+        Http.netServer(UploadApi.class)
                 .uploadPic(Cache.getUserID(),imagePath)
                 .compose(Network.networkConvertDialog(this))
                 .subscribe(new Consumer<String>() {

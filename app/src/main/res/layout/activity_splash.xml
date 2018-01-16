@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical">
 
     <TextView
@@ -57,19 +58,26 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
-        <ProgressBar
-            android:id="@+id/loading_view_image"
-            style="@style/ProgressBarSmall"
-            android:layout_width="24dp"
-            android:layout_height="24dp"/>
 
+
+        <com.zhongtie.work.widget.ProgressWheel
+            android:id="@+id/loading_view_image"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center|left"
+            app:matProg_barColor="@color/colorPrimary"
+            app:matProg_barWidth="2dp"
+            app:matProg_fillRadius="true"
+            app:matProg_progressIndeterminate="true"/>
         <TextView
             android:id="@+id/mzw_loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="@string/sync_loading"
-            android:textColor="@color/text_color3"
+            android:textColor="@color/text_color2"
             android:textSize="14sp"/>
     </LinearLayout>
 

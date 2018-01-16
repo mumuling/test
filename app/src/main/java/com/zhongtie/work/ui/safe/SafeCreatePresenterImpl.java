@@ -142,4 +142,9 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
             itemType.setTypeItemList(createUserEntities);
         }
     }
+
+    @Override
+    public void createSafeOrder() {
+
+    }
 }

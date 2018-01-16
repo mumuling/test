@@ -1,7 +1,5 @@
 package com.zhongtie.work.ui.user;
 
-import android.util.Pair;
-
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.KeyValueEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity;
@@ -36,7 +34,7 @@ public class UserPresenterImpl extends BasePresenterImpl<UserContract.View> impl
             return;
         }
 
-        addDispose(Http.netSetver(UserApi.class)
+        addDispose(Http.netServer(UserApi.class)
                 .modifyPassword(Cache.getUserID(), passWord)
                 .delay(200, TimeUnit.MILLISECONDS)
                 .compose(Network.networkConvertDialog(mView, "正在修改密码"))
@@ -54,7 +52,7 @@ public class UserPresenterImpl extends BasePresenterImpl<UserContract.View> impl
                 mapUserInfoList(Cache.getUser());
             }
             mView.initLoading();
-            Http.netSetver(UserApi.class).userInfo(Cache.getUserID())
+            Http.netServer(UserApi.class).userInfo(Cache.getUserID())
                     .map(new NetWorkFunc1<>())
                     .map(loginUserInfoEntity -> {
                         loginUserInfoEntity.save();

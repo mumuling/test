@@ -12,6 +12,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Cache;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -54,13 +55,9 @@ class SignInterceptor implements Interceptor {
             baseData.put("wfversion", "V1.0");
             baseData.put("wfos", "Android");
 
-
             for (int i = 0, len = body.size(); i < len; i++) {
                 baseData.put(body.encodedName(i), body.encodedValue(i));
             }
-
-
-
 
 
             for (String key : baseData.keySet()) {

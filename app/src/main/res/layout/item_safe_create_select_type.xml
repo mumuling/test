@@ -15,6 +15,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="-1dp"
         android:textColor="@color/text_color2"
+        android:textSize="14dp"
         tools:text="安全防护"/>
 
     <android.support.v7.widget.AppCompatCheckBox
@@ -27,6 +28,7 @@
         android:paddingTop="-1dp"
         android:text="\u0040"
         android:textColor="@color/text_color2"
+        android:textSize="14dp"
         android:visibility="gone"
         />
 </LinearLayout>

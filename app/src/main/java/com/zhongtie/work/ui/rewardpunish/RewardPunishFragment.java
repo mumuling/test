@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
-import com.zhongtie.work.model.SafeSupervisionEntity;
+import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RewardPunishItemView;

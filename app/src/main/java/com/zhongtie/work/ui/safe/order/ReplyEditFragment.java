@@ -13,7 +13,7 @@ import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.SyncApi;
+import com.zhongtie.work.network.api.UploadApi;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
@@ -123,7 +123,7 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
     @Override
     public void onSignature(String imagePath) {
 
-        Http.netSetver(SyncApi.class)
+        Http.netServer(UploadApi.class)
                 .uploadPic(Cache.getUserID(),imagePath)
                 .compose(Network.networkConvertDialog(this))
                 .subscribe(new Consumer<String>() {

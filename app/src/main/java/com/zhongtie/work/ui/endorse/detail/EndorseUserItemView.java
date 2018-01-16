@@ -12,7 +12,7 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.widget.BaseImageView;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 签认人

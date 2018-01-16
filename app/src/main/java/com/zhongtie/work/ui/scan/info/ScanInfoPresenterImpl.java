@@ -45,7 +45,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
 
     @Override
     public void addWrong(String content) {
-        addDispose(Http.netSetver(UserApi.class)
+        addDispose(Http.netServer(UserApi.class)
                 .addWrong(userId, Cache.getUserID(), content)
                 .compose(Network.networkConvertDialog(mView))
                 .subscribe(s -> {

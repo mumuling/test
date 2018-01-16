@@ -16,7 +16,7 @@ import com.zhongtie.work.ui.safe.SafeCreateContract;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * Auth: Chaek
@@ -110,4 +110,11 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeCreateContrac
             itemType.setTypeItemList(createUserEntities);
         }
     }
+
+    @Override
+    public void createSafeOrder() {
+
+    }
+
+
 }

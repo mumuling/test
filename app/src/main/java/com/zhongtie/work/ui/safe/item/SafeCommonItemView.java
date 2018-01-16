@@ -91,12 +91,8 @@ public class SafeCommonItemView extends AbstractItemView<CommonItemType, SafeCom
         if (vh.mCheckExamineList.getTag() != null) {
             adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
         }
-        RecyclerView.AdapterDataObserver observer = new CommonAdapterDataObserver(vh, new CommonAdapterDataObserver.OnAdapterDataChangedListener() {
-            @Override
-            public void onChanged(CommonViewHolder commonViewHolder) {
-                changeItemView((ViewHolder) commonViewHolder, (CommonItemType) getCommonAdapter().getListData(commonViewHolder.getItemPosition()));
-            }
-        });
+        RecyclerView.AdapterDataObserver observer = new CommonAdapterDataObserver(vh, commonViewHolder ->
+                changeItemView((ViewHolder) commonViewHolder, (CommonItemType) getCommonAdapter().getListData(commonViewHolder.getItemPosition())));
         adapter.registerAdapterDataObserver(observer);
     }
 

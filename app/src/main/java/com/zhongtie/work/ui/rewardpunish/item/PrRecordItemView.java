@@ -12,7 +12,7 @@ import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.BaseImageView;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 安全监察的操作 记录

@@ -45,7 +45,7 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         this.companyEntityList = companyEntityList;
         this.context = context;
 
-        Http.netSetver(UserApi.class).fetchCompanyList(0)
+        Http.netServer(UserApi.class).fetchCompanyList(0)
                 .map(new NetWorkFunc1<>())
                 .map(companyEntities -> {
 //                    FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->

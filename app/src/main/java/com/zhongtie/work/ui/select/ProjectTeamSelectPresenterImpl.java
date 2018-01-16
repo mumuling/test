@@ -4,22 +4,17 @@ import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.model.CompanyUnitEntity;
-import com.zhongtie.work.model.WorkTeamEntity;
+import com.zhongtie.work.db.CompanyUnitEntity;
+import com.zhongtie.work.db.WorkTeamEntity;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.util.HanziToPinyin;
-import com.zhongtie.work.util.JsonUtil;
 import com.zhongtie.work.util.TextUtil;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * Auth: Chaek

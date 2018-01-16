@@ -22,5 +22,7 @@ public interface SafeCreateContract {
         void setSelectImageList(List<String> selectImgList);
 
         void setSelectUserInfoList(String title, List createUserEntities);
+
+        void createSafeOrder();
     }
 }

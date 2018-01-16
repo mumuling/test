@@ -32,7 +32,7 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
     public void initSync() {
         mView.showSync();
         //同步
-        addDispose(Http.netSetver(UserApi.class).fetchCompanyList(0)
+        addDispose(Http.netServer(UserApi.class).fetchCompanyList(0)
                 .map(new NetWorkFunc1<>())
                 .flatMap(Flowable::fromIterable)
                 .map(companyEntity -> {

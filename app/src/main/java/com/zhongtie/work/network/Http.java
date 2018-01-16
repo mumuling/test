@@ -14,7 +14,7 @@ public class Http {
     private static ZtRetrofit retrofit;
     private List<Class> apiList;
 
-    public static <T> T netSetver(Class<T> cl) {
+    public static <T> T netServer(Class<T> cl) {
         if (retrofit == null) {
             synchronized (Http.class) {
                 retrofit = new ZtRetrofit();

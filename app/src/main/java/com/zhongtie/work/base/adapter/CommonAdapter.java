@@ -82,7 +82,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
         positionTypeMap = new ArrayMap<>();
         if (listData != null) {
             mListData = listData;
-        }else {
+        } else {
             mListData = new ArrayList<>();
         }
     }
@@ -267,7 +267,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
      * 获取item data
      */
     private Object obtainListItemData(CommonViewHolder holder) {
-        return mListData.isEmpty() || (holder.getItemPosition() - getHeaderCount()) >= mListData.size() ? null : mListData.get(holder.getItemPosition());
+        return mListData.isEmpty() || (holder.getItemPosition()) >= mListData.size() ? null : mListData.get(holder.getItemPosition());
     }
 
 
@@ -485,7 +485,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
      * @return true是 false不是
      */
     private boolean isHeadFootViewType(int viewType) {
-        return viewType < HEADERS_START + MAX_ITEM_TYPE * 2;
+        return viewType < 0;
     }
 
     /**

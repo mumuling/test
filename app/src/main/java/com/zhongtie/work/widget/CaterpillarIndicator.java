@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.support.annotation.ArrayRes;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -326,6 +327,18 @@ public class CaterpillarIndicator extends LinearLayout implements View.OnClickLi
     }
 
     public void initTitle(ViewPager mViewPager, String... list) {
+        int len = list.length;
+        List<TitleInfo> tabs = new ArrayList<>();
+        if (len > 0) {
+            for (String aList : list) {
+                tabs.add(new TitleInfo(aList));
+            }
+        }
+        initTitle(0, tabs, mViewPager);
+    }
+
+    public void initTitle(ViewPager mViewPager, @ArrayRes int titleList) {
+        String[] list = getResources().getStringArray(titleList);
         int len = list.length;
         List<TitleInfo> tabs = new ArrayList<>();
         if (len > 0) {

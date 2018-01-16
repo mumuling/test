@@ -18,7 +18,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.event.SelectCompanyEvent;
-import com.zhongtie.work.model.WorkTeamEntity;
+import com.zhongtie.work.db.WorkTeamEntity;
 import com.zhongtie.work.ui.safe.dialog.SelectDateTimeDialog;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.ProjectTeamSelectFragment;
@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 /**
- * 创建头部数据
+ * 安全督导创建创建头部输入数据
  * Auth: Chaek
  * Date: 2018/1/11
  */
@@ -219,6 +219,5 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
 
     @Override
     public void setSelectType(int[] type, int buildType) {
-
     }
 }

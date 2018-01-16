@@ -535,15 +535,23 @@ public class TimeUtils {
         return deadLineTime + "";
     }
 
-    public static String formatWalletTime(String createTime) {
-        SimpleDateFormat sdf = createTime.contains("/") ? new SimpleDateFormat("yyyy/MM/dd HH:mm:ss") : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+    public static String getEventTime(String day) {
         try {
-            Date d2 = sdf.parse(createTime);
-            return df.format(d2);
-        } catch (ParseException e) {
+            if (day != null) {
+                if (day.contains("-")) {
+                    String[] date = day.split("-");
+                    int y = Integer.valueOf(date[0]);
+                    int m = Integer.valueOf(date[1]);
+                    int d = Integer.valueOf(date[2]);
+                    return y + "-" + m + "-" + d;
+                }
+            }
+        } catch (NumberFormatException e) {
             e.printStackTrace();
+            return day;
         }
-        return createTime;
+        return day;
     }
+
+
 }

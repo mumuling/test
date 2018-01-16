@@ -10,7 +10,7 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.EndorseEntity;
 import com.zhongtie.work.ui.rewardpunish.item.RewardPunishItemView;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * Auth:Cheek

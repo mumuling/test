@@ -12,7 +12,7 @@ import retrofit2.http.POST;
  * Date: 2018/1/15
  */
 
-public interface SyncApi {
+public interface UploadApi {
     /**
      * 获取下载地址
      */

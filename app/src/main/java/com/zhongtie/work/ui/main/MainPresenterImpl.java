@@ -66,7 +66,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
     }
 
     private void fetchCompanyList() {
-        addDispose(Http.netSetver(UserApi.class).fetchCompanyList(0)
+        addDispose(Http.netServer(UserApi.class).fetchCompanyList(0)
                 .map(new NetWorkFunc1<>())
                 .flatMap(Flowable::fromIterable)
                 .map(companyEntity -> {

@@ -15,7 +15,7 @@ import com.zhongtie.work.ui.file.select.NormalFile;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * Auth: Chaek

@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.statistics;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.ArrayMap;
 
 import com.github.mikephil.charting.data.PieEntry;
 import com.zhongtie.work.data.StatisticsLineData;
@@ -15,7 +16,7 @@ import com.zhongtie.work.util.TimeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.Flowable;
 
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY;
 
@@ -25,102 +26,92 @@ import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY;
  */
 
 public class PresenterImpl extends BasePresenterImpl<StatisticsContract.View> implements StatisticsContract.Presenter {
-    private StatisticsData workTeam;
-    private StatisticsData company;
-    private ChartData mCharData;
 
-    private String year;
     private String[] title = {"安全防护", "文明施工", "操作规程", "临时用电", "消防管理", "高处作业", "安全管理", "其他"};
+
+    public ArrayMap<String, Object[]> mCacheData;
 
     @Override
     public void fetchInitData() {
+        mCacheData = new ArrayMap<>();
         String year = TimeUtils.getCurrentYear();
-        int position = 1;
+        int position = 4;
         fetchYearData(year, position);
-        this.year = year;
-//        setver.SafetyWorkerteamStatistics(company, year)
-//                .map(statisticsData -> getStatisticsLineData(position, statisticsData))
-//                .compose(Network.netorkIO())
-//                .subscribe(statisticsData -> {
-//                    mView.setWorkTeam(statisticsData);
-//                });
-//        setver.SafetyUnitStatistics(company, year)
-//                .map(statisticsData -> getStatisticsLineData(position, statisticsData))
-//                .compose(Network.netorkIO())
-//                .subscribe(statisticsData -> {
-//                    mView.setCompany(statisticsData);
-//                }, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) throws Exception {
-//
-//                    }
-//                });
-//
-//        setver.SafetyStatistics(company, year)
-//                .map(chartData -> {
-//                    mCharData = chartData;
-//                    return chartData.getPart(position).all;
-//                })
-//                .map(strings -> {
-//                    List<PieEntry> pieEntries = new ArrayList<>();
-//                    for (int i = 0; i < strings.size(); i++) {
-//                        PieEntry pieEntry = new PieEntry(Integer.valueOf(strings.get(i)), title[i]);
-//                        pieEntries.add(pieEntry);
-//                    }
-//                    return pieEntries;
-//                }).compose(Network.netorkIO())
-//                .subscribe(pieEntries -> mView.setSafeList(pieEntries), throwable -> {
-//                });
-
     }
 
     @Override
     public void fetchYearData(String year, int position) {
-        StatisticsApi setver = Http.netSetver(StatisticsApi.class);
+
+        StatisticsApi netServer = Http.netServer(StatisticsApi.class);
         int company = SharePrefUtil.getUserPre().getInt(LOGIN_USER_COMPANY, 0);
+        Object[] cacheList = mCacheData.get(year);
+        if (cacheList == null) {
+            mView.initLoading();
+            Object[] temp = new Object[3];
+            //劳务公司信息
+            Flowable<List<StatisticsLineData>> workTeamObservable = netServer.SafetyWorkerteamStatistics(company, year)
+                    .map(statisticsData -> {
+                        temp[0] = statisticsData;
+                        return getStatisticsLineData(position, statisticsData);
+                    });
+            //所属单位信息
+            Flowable<List<StatisticsLineData>> companyObservable = netServer.SafetyUnitStatistics(company, year)
+                    .map(statisticsData -> {
+                        temp[1] = statisticsData;
+                        return getStatisticsLineData(position, statisticsData);
+                    });
+            //统计信息
+            Flowable<List<PieEntry>> statisticsObservable = netServer.SafetyStatistics(company, year)
+                    .map(chartData -> {
+                        temp[2] = chartData;
+                        return getPieEntries(position, chartData);
+                    });
+            Flowable.zip(workTeamObservable, companyObservable, statisticsObservable, (statisticsLineData, statisticsLineData2, pieEntries) ->
+                    new Object[]{statisticsLineData, statisticsLineData2, pieEntries})
+                    .compose(Network.netorkIO())
+                    .subscribe(o -> {
+                        mCacheData.put(year, temp);
+                        setStatisticsData(o);
+                    }, throwable -> mView.initFail());
+        } else {
+            List<StatisticsLineData> workTeamStatistics = getStatisticsLineData(position, (StatisticsData) cacheList[0]);
+            List<StatisticsLineData> companyStatistics = getStatisticsLineData(position, (StatisticsData) cacheList[1]);
+            List<PieEntry> mPieList = getPieEntries(position, (ChartData) cacheList[2]);
+            setStatisticsData(new Object[]{workTeamStatistics, companyStatistics, mPieList});
+        }
+    }
 
-        setver.SafetyWorkerteamStatistics(company, year)
-                .map(statisticsData -> getStatisticsLineData(position, statisticsData))
-                .compose(Network.netorkIO())
-                .subscribe(statisticsData -> {
-                    mView.setWorkTeam(statisticsData);
-                });
-        setver.SafetyUnitStatistics(company, year)
-                .map(statisticsData -> getStatisticsLineData(position, statisticsData))
-                .compose(Network.netorkIO())
-                .subscribe(statisticsData -> {
-                    mView.setCompany(statisticsData);
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+    private void setStatisticsData(Object[] cacheList) {
+        List<StatisticsLineData> w = (List<StatisticsLineData>) cacheList[0];
+        List<StatisticsLineData> c = (List<StatisticsLineData>) cacheList[1];
+        List<PieEntry> p = (List<PieEntry>) cacheList[2];
+        if (w.isEmpty() && c.isEmpty() && p.isEmpty()) {
+            mView.showNoData();
+        } else {
+            mView.showContent();
+            mView.setWorkTeam(w);
+            mView.setCompany(c);
+            mView.setSafeList(p);
+        }
+    }
 
-                    }
-                });
-
-        setver.SafetyStatistics(company, year)
-                .map(chartData -> {
-                    mCharData = chartData;
-                    return chartData.getPart(position).all;
-                })
-                .map(strings -> {
-                    List<PieEntry> pieEntries = new ArrayList<>();
-                    for (int i = 0; i < strings.size(); i++) {
-                        int l = Integer.valueOf(strings.get(i));
-                        if (l <= 0)
-                            continue;
-                        PieEntry pieEntry = new PieEntry(l, title[i]);
-                        pieEntries.add(pieEntry);
-                    }
-                    return pieEntries;
-                }).compose(Network.netorkIO())
-                .subscribe(pieEntries -> mView.setSafeList(pieEntries), throwable -> {
-                });
-
+    @NonNull
+    private List<PieEntry> getPieEntries(int position, ChartData chartData) {
+        List<String> strings = chartData.getPart(position).all;
+        List<PieEntry> pieEntries = new ArrayList<>();
+        for (int i = 0; i < strings.size(); i++) {
+            int l = Integer.valueOf(strings.get(i));
+            if (l <= 0) {
+                continue;
+            }
+            PieEntry pieEntry = new PieEntry(l, title[i]);
+            pieEntries.add(pieEntry);
+        }
+        return pieEntries;
     }
 
     @NonNull
     private List<StatisticsLineData> getStatisticsLineData(int position, StatisticsData statisticsData) {
-        workTeam = statisticsData;
         List<StatisticsLineData> statisticsLineData = new ArrayList<>();
         StatisticsData.ValuesBean valuesBean = statisticsData.values.get(position);
         String[] len = valuesBean.data.split(",");
@@ -137,6 +128,9 @@ public class PresenterImpl extends BasePresenterImpl<StatisticsContract.View> im
         for (int i = 0; i < statisticsData.names.size(); i++) {
             StatisticsLineData lineDat = new StatisticsLineData();
             int itemCount = Integer.valueOf(len[i].trim());
+            if (itemCount <= 0) {
+                continue;
+            }
             lineDat.setTotal(itemCount);
             lineDat.setCompany(statisticsData.names.get(i));
             lineDat.setPercent((float) itemCount / (float) count);

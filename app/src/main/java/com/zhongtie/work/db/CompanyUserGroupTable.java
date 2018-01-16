@@ -3,6 +3,7 @@ package com.zhongtie.work.db;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.zhongtie.work.db.conver.ListStringTypeConverter;
 
 import java.util.List;
 

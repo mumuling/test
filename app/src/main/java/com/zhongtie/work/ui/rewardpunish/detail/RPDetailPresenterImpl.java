@@ -10,19 +10,18 @@ import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.ui.safe.SafeCreateContract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * Auth: Chaek
  * Date: 2018/1/12
  */
 
-public class RPDetailPresenterImpl extends BasePresenterImpl<SafeCreateContract.View> implements SafeCreateContract.Presenter {
+public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.View> implements RPDetailContract.Presenter {
 
 
     /**

@@ -1,6 +1,6 @@
 package com.zhongtie.work.ui.safe;
 
-import com.zhongtie.work.model.SafeSupervisionEntity;
+import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
 
@@ -19,5 +19,7 @@ public interface SafeSupervisionContract {
 
     interface Presenter extends BasePresenter<View> {
         void fetchPageList(String date, int type, int page);
+
+        void fetchInit();
     }
 }

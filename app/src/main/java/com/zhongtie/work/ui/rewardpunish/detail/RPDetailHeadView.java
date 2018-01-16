@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.widget.BaseImageView;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 创建头部数据

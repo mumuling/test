@@ -196,6 +196,17 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.empty_retry_view:
+            case R.id.error_view_tv:
+                onClickRefresh();
+                break;
+            default:
+        }
+    }
+
+    public void onClickRefresh() {
+
     }
 
     /**

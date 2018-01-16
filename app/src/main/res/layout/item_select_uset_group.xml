@@ -56,7 +56,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/background"/>
+        android:layout_marginLeft="16dp"
+        android:background="@color/line2"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/check_examine_list"

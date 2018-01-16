@@ -1,4 +1,4 @@
-package com.zhongtie.work.db;
+package com.zhongtie.work.db.conver;
 
 import com.raizlabs.android.dbflow.converter.TypeConverter;
 import com.zhongtie.work.util.TimeUtils;

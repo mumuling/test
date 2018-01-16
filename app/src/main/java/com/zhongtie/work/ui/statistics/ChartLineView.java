@@ -67,18 +67,16 @@ public class ChartLineView extends LinearLayout {
     }
 
     public void setStatisticsLineDataList(List<StatisticsLineData> statisticsLineDataList) {
-        this.statisticsLineDataList = statisticsLineDataList;
+        this.statisticsLineDataList.clear();
+        this.statisticsLineDataList.addAll(statisticsLineDataList);
         if (commonAdapter == null) {
-            commonAdapter = new CommonAdapter().register(ChartLineItemView.class);
-            commonAdapter.setListData(statisticsLineDataList);
+            commonAdapter = new CommonAdapter(this.statisticsLineDataList).register(ChartLineItemView.class);
             commonAdapter.addFooterView(mFooterView);
             commonAdapter.addHeaderView(mChartHeadView);
             mList.setAdapter(commonAdapter);
         }
-        commonAdapter.setListData(this.statisticsLineDataList);
         commonAdapter.notifyDataSetChanged();
-
-        if (statisticsLineDataList.isEmpty()) {
+        if (this.statisticsLineDataList.isEmpty()) {
             mEmptyView.setVisibility(VISIBLE);
             mList.setVisibility(GONE);
         } else {
@@ -91,8 +89,6 @@ public class ChartLineView extends LinearLayout {
 
     @BindItemData(StatisticsLineData.class)
     public static class ChartLineItemView extends AbstractItemView<StatisticsLineData, ChartLineItemView.ViewHolder> {
-
-
         int width;
 
         @Override
@@ -102,7 +98,7 @@ public class ChartLineView extends LinearLayout {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull StatisticsLineData data) {
-            vh.mChartPercent.setText(vh.mContext.getString(R.string.station_line_format, data.getTotal(), data.getPercent()));
+            vh.mChartPercent.setText(vh.mContext.getString(R.string.station_line_format, data.getTotal(), data.getPercent() * 100));
             vh.mChartTitle.setText(data.getCompany());
             if (width == 0) {
                 width = ViewUtils.getScreenWidth(vh.mContext) - ViewUtils.dip2px(80);

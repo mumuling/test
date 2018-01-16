@@ -39,7 +39,6 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     private TextView mCalendarDate;
     private AppCompatImageView mNext;
 
-
     private OnSelectDateCallback mOnSelectDateCallback;
 
     public CalendarDialog(@NonNull Context context, OnSelectDateCallback onSelectDateCallback) {

@@ -10,11 +10,11 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.RewardPunishCreateFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
-import com.zhongtie.work.ui.safe.SafeCreateContract;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
+import com.zhongtie.work.ui.safe.order.SafeDetailPresenterImpl;
 import com.zhongtie.work.ui.safe.order.SafeDividerItemDecoration;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
@@ -29,7 +29,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  * date:2018.1.9
  */
 
-public class RPOrderDetailFragment extends BasePresenterFragment<SafeCreateContract.Presenter> implements SafeCreateContract.View, OnSignatureListener, OnApproveListener, SendBackDialog.OnSendBackListener {
+public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContract.Presenter> implements RPDetailContract.View, OnSignatureListener, OnApproveListener, SendBackDialog.OnSendBackListener {
     public static final String ID = "id";
     private int mSafeOrderID;
     private RPDetailHeadView mHeadInfoView;
@@ -104,7 +104,7 @@ public class RPOrderDetailFragment extends BasePresenterFragment<SafeCreateContr
     }
 
     @Override
-    protected SafeCreateContract.Presenter getPresenter() {
+    protected RPDetailContract.Presenter getPresenter() {
         return new RPDetailPresenterImpl();
     }
 

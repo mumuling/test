@@ -1,4 +1,4 @@
-package com.zhongtie.work.model;
+package com.zhongtie.work.db;
 
 /**
  * Auth:Cheek

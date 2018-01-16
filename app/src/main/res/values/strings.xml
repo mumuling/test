@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ZhongTie</string>
     <string name="login">登录</string>
-    <string name="not_any_data">没有任何内容</string>
+    <string name="not_any_data">没有数据</string>
     <string name="error_net">糟糕，加载失败了</string>
     <string name="common_retry_text">刷新试试</string>
     <string name="exit_app">再按一次退出程序</string>
@@ -78,7 +78,6 @@
     <string name="seven">日</string>
     <string name="select_date" formatted="true">%d年%02d月</string>
     <string name="safe_select_title_date" formatted="true">%d-%02d-%02d</string>
-    <string name="select_all">全选</string>
     <string name="aite_select">\u0040已选</string>
     <string name="look_group_title">查阅组</string>
     <string name="add">添加</string>
@@ -144,4 +143,7 @@
     <string name="title">标题</string>
     <string name="title_edit_hint">请输入标题</string>
     <string name="modify_password">修改密码</string>
+    <string name="select_all">全选</string>
+    <string name="un_select_all">取消全选</string>
+    <string name="create_title">发起</string>
 </resources>

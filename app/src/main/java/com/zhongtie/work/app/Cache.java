@@ -4,6 +4,7 @@ import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.TextUtil;
 
+import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY;
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_ID;
 
 /**
@@ -30,6 +31,12 @@ public class Cache {
      */
     public static String getUserID() {
         return SharePrefUtil.getUserPre().getString(LOGIN_USER_ID, "");
+    }
+    public static int getUserUserCompany() {
+        return SharePrefUtil.getUserPre().getInt(LOGIN_USER_COMPANY, 0);
+    }
+    public static int getSelectCompany() {
+        return SharePrefUtil.getUserPre().getInt(LOGIN_USER_COMPANY, 0);
     }
 
     public static LoginUserInfoEntity getUser() {

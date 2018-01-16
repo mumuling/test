@@ -44,10 +44,10 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
             return;
         }
 
-//        addDispose(Http.netSetver(Api.class).login(user, pw)
+//        addDispose(Http.netServer(Api.class).login(user, pw)
 //                .delay(500, TimeUnit.MILLISECONDS)
 //                .map(new NetWorkFunc1<>())
-//                .concatMap(userId -> Http.netSetver(Api.class).userInfo(userId))
+//                .concatMap(userId -> Http.netServer(Api.class).userInfo(userId))
 //                .compose(Network.networkDialog(mView, "正在登录..."))
 //                .map(new SwitchUserCompany())
 //                .compose(Network.netorkIO())
@@ -61,7 +61,7 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
 //                        }));
         addDispose(Flowable.just("1")
                 .delay(500, TimeUnit.MILLISECONDS)
-                .concatMap(userId -> Http.netSetver(UserApi.class).userInfo(userId))
+                .concatMap(userId -> Http.netServer(UserApi.class).userInfo(userId))
                 .map(new NetWorkFunc1<>())
                 .map(new SwitchUserCompany())
                 .compose(Network.networkDialog(mView, "正在登录..."))

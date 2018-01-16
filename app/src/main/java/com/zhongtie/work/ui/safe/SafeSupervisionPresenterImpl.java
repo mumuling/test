@@ -1,10 +1,18 @@
 package com.zhongtie.work.ui.safe;
 
-import com.zhongtie.work.model.SafeSupervisionEntity;
+import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.model.EventCountData;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.NetWorkFunc1;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Auth:Cheek
@@ -19,5 +27,27 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
             safeSupervisionEnities.add(new SafeSupervisionEntity());
         }
         mView.setSafeSupervisionList(safeSupervisionEnities);
+    }
+
+    @Override
+    public void fetchInit() {
+        int company=Cache.getUserUserCompany();
+        Http.netServer(SafeApi.class)
+                .safeEventListMonthCount(Cache.getUserID(),company)
+                .map(new NetWorkFunc1<>())
+                .compose(Network.netorkIO())
+                .subscribe(new Consumer<List<EventCountData>>() {
+                    @Override
+                    public void accept(List<EventCountData> eventCountData) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+
+
     }
 }

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="8dip"
-        android:drawableTop="@drawable/not_any_data"
+        android:drawableTop="@drawable/ic_gray_zhongtie"
         android:gravity="center"
         android:text="@string/not_any_data"
         android:textColor="#cbcbcb"

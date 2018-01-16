@@ -57,6 +57,8 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  */
 
 public class SelectUserFragment extends BaseFragment implements InputMethodRelativeLayout.OnInputMethodChangedListener, TextWatcher {
+    public static final String MAX_SELECT_COUNT = "max_select_count";
+
     private LinearLayout mBottom;
     private TextView mItemUserListTitle;
     private TextView mItemUserListTip;
@@ -79,9 +81,19 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     private List<CreateUserEntity> mAllUserNameInfo;
     private boolean isInput;
 
+    private String mTitle;
+
+    private String mTip;
+    private int maxSelectCount = -1;
 
     @Override
     public int getLayoutViewId() {
+        mTitle = getArguments().getString(TITLE, "已选成员");
+        mTip = "向右滑动查看更多";
+        if (mTitle.equals("验证人")) {
+            maxSelectCount = 2;
+            mTip="最多可选择2人";
+        }
         mSelectUserList = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
         return R.layout.select_user_fragment;
     }
@@ -123,6 +135,13 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     @Subscribe
     public void userEntityEvent(CreateUserEntity createUserEntity) {
+        if (maxSelectCount != -1 && mSelectUserList.size() >= maxSelectCount) {
+            showToast("最多可选择" + maxSelectCount + "人");
+            createUserEntity.setSelect(false);
+            createUserEntity.setAt(false);
+            mSelectInfoAdapter.notifyDataSetChanged();
+            return;
+        }
         Iterator iterator = mSelectUserList.iterator();
         while (iterator.hasNext()) {
             CreateUserEntity userEntity = (CreateUserEntity) iterator.next();
@@ -160,16 +179,22 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
         mSearchList.getRecyclerView().addItemDecoration(dividerItemDecoration);
         mSearchList.getRecyclerView().setAdapter(mSearchAdapter);
         mSearchList.setEmptyView(R.layout.placeholder_empty_view);
-
         initTest();
-        mItemUserListTitle.setText("已选成员");
-        mItemUserListTip.setText("向右滑动查看更多");
+        mItemUserListTitle.setText(mTitle);
+        mItemUserListTip.setText(mTip);
 
         mSelectInfoAdapter = new CommonAdapter(mSelectUserList);
         mSelectInfoAdapter.register(CreateUserItemView.class);
         mSelectRcycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
         mSelectRcycler.setAdapter(mSelectInfoAdapter);
+        onChangeSelectView();
+    }
 
+    private void onChangeSelectView() {
+        mItemUserListTitle.setText(mTitle);
+        if (!mSelectUserList.isEmpty()) {
+            mItemUserListTitle.append("(" + mSelectUserList.size() + ")");
+        }
     }
 
     private void initTest() {
@@ -230,12 +255,12 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     private void showTeamGroupView() {
         mSearchList.setVisibility(View.GONE);
-        mSelectRcycler.setVisibility(View.VISIBLE);
+        mUserGroupList.setVisibility(View.VISIBLE);
     }
 
     private void hideTeamGroupView() {
         mSearchList.setVisibility(View.VISIBLE);
-        mSelectRcycler.setVisibility(View.GONE);
+        mUserGroupList.setVisibility(View.GONE);
     }
 
     @Override

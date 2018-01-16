@@ -9,10 +9,10 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.model.SafeSupervisionEntity;
+import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.widget.BaseImageView;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreate2Fragment.imageUrls;
+import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 创建类别选择

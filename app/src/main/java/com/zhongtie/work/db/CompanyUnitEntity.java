@@ -1,4 +1,4 @@
-package com.zhongtie.work.model;
+package com.zhongtie.work.db;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -8,18 +8,18 @@ import com.zhongtie.work.db.CompanyDB;
 import com.zhongtie.work.util.HanziToPinyin;
 
 /**
- * 劳务公司
+ * 工作单位
  * Auth: Chaek
- * Date: 2018/1/15
+ * Date: 2018/1/11
  */
-@Table(database = CompanyDB.class, name = "work_s_workerteam")
-public class WorkTeamEntity {
+@Table(database = CompanyDB.class, name = "work_s_unit")
+public class CompanyUnitEntity {
 
     @PrimaryKey
     private int id;
-    @Column(name = "workerteam_name")
+    @Column(name = "unit_name")
     private String name;
-    @Column(name = "workerteam_companyid")
+    @Column(name = "unit_companyid")
     private int company;
 
     public int getId() {
@@ -37,6 +37,7 @@ public class WorkTeamEntity {
     public void setName(String name) {
         this.name = name;
     }
+
 
     public int getCompany() {
         return company;

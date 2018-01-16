@@ -2,16 +2,19 @@ package com.zhongtie.work.ui.safe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewPager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ldf.calendar.model.CalendarDate;
 import com.zhongtie.work.R;
+import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.ui.adapter.ZtFragmentAdapter;
-import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.ui.base.BasePresenterActivity;
 import com.zhongtie.work.ui.safe.calendar.CalendarDialog;
+import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.CaterpillarIndicator;
 
 import java.util.ArrayList;
@@ -22,7 +25,8 @@ import java.util.List;
  * date:2018.1.9
  */
 
-public class SafeSupervisionActivity extends BaseActivity implements CalendarDialog.OnSelectDateCallback {
+public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisionContract.Presenter> implements CalendarDialog.OnSelectDateCallback,
+        OnSelectDateListener, SafeSupervisionContract.View {
     private TextView mSelectDate;
     private ImageView mSelectDateImg;
     private CaterpillarIndicator mProjectTitleBar;
@@ -40,12 +44,16 @@ public class SafeSupervisionActivity extends BaseActivity implements CalendarDia
     @Override
     protected void initView() {
         setTitle(getString(R.string.safe_supervision_title));
-        setRightText("发起");
-        mSelectDate = (TextView) findViewById(R.id.select_date);
-        mSelectDateImg = (ImageView) findViewById(R.id.select_date_img);
-        mProjectTitleBar = (CaterpillarIndicator) findViewById(R.id.project_title_bar);
-        mViewPage = (ViewPager) findViewById(R.id.view_page);
+        setRightText(getString(R.string.create_title));
 
+        Drawable drawable = getResources().getDrawable(R.drawable.btn_talk);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        mMenuTitle.setCompoundDrawablePadding(ViewUtils.dip2px(5));
+        mMenuTitle.setCompoundDrawables(drawable, null, null, null);
+        mSelectDate = findViewById(R.id.select_date);
+        mSelectDateImg = findViewById(R.id.select_date_img);
+        mProjectTitleBar = findViewById(R.id.project_title_bar);
+        mViewPage = findViewById(R.id.view_page);
         mSelectDateImg.setOnClickListener(v -> showSelectDate());
     }
 
@@ -66,9 +74,10 @@ public class SafeSupervisionActivity extends BaseActivity implements CalendarDia
 
         ZtFragmentAdapter adapter = new ZtFragmentAdapter(getSupportFragmentManager(), supervisionFragments);
         mViewPage.setAdapter(adapter);
-        mProjectTitleBar.initTitle(mViewPage, "全部", "未完结", "已完结");
-
+        mProjectTitleBar.initTitle(mViewPage, R.array.safe_list_title);
         initDate();
+
+//        mPresenter.fetchPageList();
     }
 
     private void initDate() {
@@ -79,11 +88,26 @@ public class SafeSupervisionActivity extends BaseActivity implements CalendarDia
     @Override
     protected void onClickRight() {
         super.onClickRight();
-        SafeSupervisionCreateActivity.newInstance(this, SafeSupervisionCreate2Fragment.class, getString(R.string.safe_supervision_title));
+        SafeSupervisionCreateActivity.newInstance(this, SafeSupervisionCreateFragment.class, getString(R.string.safe_supervision_title));
     }
 
     @Override
     public void onSelectDate(String date) {
         mSelectDate.setText(date);
+    }
+
+    @Override
+    public String getSelectDate() {
+        return mSelectDate.getText().toString();
+    }
+
+    @Override
+    protected SafeSupervisionContract.Presenter getPresenter() {
+        return null;
+    }
+
+    @Override
+    public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
+
     }
 }

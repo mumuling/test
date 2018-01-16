@@ -46,6 +46,11 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
                     createUserEntity.post();
                 }
                 data.setSelect(!data.isSelect());
+                if (data.isSelect()) {
+                    vh.mItemTeamSelectAll.setText(R.string.un_select_all);
+                } else {
+                    vh.mItemTeamSelectAll.setText(R.string.select_all);
+                }
                 if (!data.isExpansion()) {
                     data.setExpansion(true);
                 }
@@ -70,13 +75,6 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
         if (vh.mCheckExamineList.getAdapter() == null) {
             CommonAdapter adapter = new CommonAdapter(data.getTeamUserEntities());
             adapter.register(SelectTeamUserItemView.class);
-//            adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-//                @Override
-//                public void onChanged() {
-//                    super.onChanged();
-//                    getCommonAdapter().notifyDataSetChanged();
-//                }
-//            });
             vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
             //用户信息
             vh.mCheckExamineList.setAdapter(adapter);
@@ -86,6 +84,11 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
             adapter.notifyDataSetChanged();
         }
 
+        if (data.isSelect()) {
+            vh.mItemTeamSelectAll.setText(R.string.un_select_all);
+        } else {
+            vh.mItemTeamSelectAll.setText(R.string.select_all);
+        }
 
         if (data.getTeamUserEntities() == null || data.getTeamUserEntities().isEmpty()) {
             vh.mCheckExamineList.setVisibility(View.GONE);
