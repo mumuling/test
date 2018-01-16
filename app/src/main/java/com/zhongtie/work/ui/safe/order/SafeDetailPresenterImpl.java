@@ -11,7 +11,7 @@ import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.ui.safe.SafeCreateContract;
+import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -34,7 +34,7 @@ public class Network {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static <T> ObservableTransformer<Result<T>, T> convertIO() {
+    public static <T> FlowableTransformer<Result<T>, T> convertIO() {
         return network -> network.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new NetWorkFunc1<>())

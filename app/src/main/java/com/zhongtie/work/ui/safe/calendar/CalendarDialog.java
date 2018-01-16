@@ -40,6 +40,7 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     private AppCompatImageView mNext;
 
     private OnSelectDateCallback mOnSelectDateCallback;
+    private HashMap<String, String> mEventCountList;
 
     public CalendarDialog(@NonNull Context context, OnSelectDateCallback onSelectDateCallback) {
         super(context);
@@ -99,9 +100,10 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
             public void onCalendarTypeChanged(CalendarAttr.CalendarType type) {
             }
         });
-        HashMap<String, String> markData = new HashMap<>();
-        markData.put("2018-1-10", "0");
-        mCalendarViewAdapter.setMarkData(markData);
+
+        if (mEventCountList != null) {
+            mCalendarViewAdapter.setMarkData(mEventCountList);
+        }
 
         mCalendarView.setAdapter(mCalendarViewAdapter);
         mCalendarView.setCurrentItem(MonthPager.CURRENT_DAY_INDEX);
@@ -145,6 +147,14 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     public void onSelectOtherMonth(int offset) {
         //偏移量 -1表示刷新成上一个月数据 ， 1表示刷新成下一个月数据
         mCalendarView.selectOtherMonth(offset);
+    }
+
+    public void setEventCountList(HashMap<String, String> eventCountList) {
+        mEventCountList = eventCountList;
+        if (mCalendarViewAdapter != null) {
+            mCalendarViewAdapter.setMarkData(mEventCountList);
+            mCalendarViewAdapter.notifyDataChanged();
+        }
     }
 
     public interface OnSelectDateCallback {

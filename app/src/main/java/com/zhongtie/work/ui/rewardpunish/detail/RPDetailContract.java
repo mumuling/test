@@ -1,7 +1,7 @@
 package com.zhongtie.work.ui.rewardpunish.detail;
 
 import com.zhongtie.work.ui.base.BasePresenter;
-import com.zhongtie.work.ui.safe.SafeCreateContract;
+import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 
 import java.util.List;
 

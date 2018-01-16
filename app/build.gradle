@@ -69,6 +69,9 @@ dependencies {
         exclude group: 'com.android.support'
     })
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
+    compile 'com.orhanobut:logger:2.1.1'
+
+
 
 //    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
 //        exclude group: 'com.android.support', module: 'support-annotations'

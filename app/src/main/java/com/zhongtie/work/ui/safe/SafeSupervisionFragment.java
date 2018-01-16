@@ -1,5 +1,6 @@
 package com.zhongtie.work.ui.safe;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
@@ -7,7 +8,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.db.SafeSupervisionEntity;
-import com.zhongtie.work.ui.base.BasePresenterFragment;
+import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.item.SafeSupervisionItemView;
 import com.zhongtie.work.ui.safe.order.SafeOrderDetailFragment;
 import com.zhongtie.work.widget.RefreshRecyclerView;
@@ -15,16 +16,21 @@ import com.zhongtie.work.widget.RefreshRecyclerView;
 import java.util.List;
 
 /**
- * Auth:Cheek
+ * 安全督导列表几个类别
  * date:2018.1.9
+ *
+ * @author Chaek
  */
 
-public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisionContract.Presenter> implements SafeSupervisionContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
+public class SafeSupervisionFragment extends BaseFragment implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
 
     public static final String TYPE = "type";
 
     private RefreshRecyclerView mList;
     private CommonAdapter commonAdapter;
+    private OnSafePageListener mOnSafePageListener;
+
+    private int mEventType;
 
     public static SafeSupervisionFragment newInstance(int type) {
         Bundle args = new Bundle();
@@ -35,18 +41,22 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnSafePageListener) {
+            mOnSafePageListener = (OnSafePageListener) context;
+        }
+    }
+
+    @Override
     public int getLayoutViewId() {
+        mEventType = getArguments().getInt(TYPE);
         return R.layout.safe_supervision_fragment;
     }
 
     @Override
     public void initView() {
         mList = (RefreshRecyclerView) findViewById(R.id.list);
-
-    }
-
-    @Override
-    protected void initData() {
         commonAdapter = new CommonAdapter().register(SafeSupervisionItemView.class);
         mList.setDivider(true);
         mList.initConfig(this);
@@ -55,18 +65,22 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
     }
 
     @Override
-    protected SafeSupervisionContract.Presenter getPresenter() {
-        return new SafeSupervisionPresenterImpl();
+    protected void initData() {
     }
 
-    @Override
+    public void onRefresh() {
+        mList.onRefresh();
+    }
+
     public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
         mList.setListData(supervisionList);
+        mList.setLoading(false);
+
     }
 
     @Override
     public void fetchPageListData(int page) {
-        mPresenter.fetchPageList("", 0, page);
+        mOnSafePageListener.getSafeTypeList(mEventType);
     }
 
     @Override
@@ -77,5 +91,9 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
     @Override
     public void onClick(Object t, int index) {
         SafeSupervisionCreateActivity.newInstance(getActivity(), SafeOrderDetailFragment.class, getString(R.string.safe_supervision_title));
+    }
+
+    public void fetchPageFail() {
+        mList.onFail("");
     }
 }

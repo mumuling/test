@@ -14,23 +14,33 @@ import com.zhongtie.work.ui.adapter.ZtFragmentAdapter;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
 import com.zhongtie.work.ui.safe.calendar.CalendarDialog;
+import com.zhongtie.work.ui.safe.presenter.SafeSupervisionContract;
+import com.zhongtie.work.ui.safe.presenter.SafeSupervisionPresenterImpl;
 import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.CaterpillarIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * Auth:Cheek
+ * 安全督导列表切换
  * date:2018.1.9
+ *
+ * @author Chaek
  */
 
 public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisionContract.Presenter> implements CalendarDialog.OnSelectDateCallback,
-        OnSelectDateListener, SafeSupervisionContract.View {
+        OnSafePageListener, SafeSupervisionContract.View {
     private TextView mSelectDate;
     private ImageView mSelectDateImg;
     private CaterpillarIndicator mProjectTitleBar;
     private ViewPager mViewPage;
+    private List<BaseFragment> supervisionFragments;
+
+    private String mSelectTime;
+    private HashMap<String, String> mOrderEventCountList;
+    private CalendarDialog calendarDialog;
 
     public static void newInstance(Context context) {
         context.startActivity(new Intent(context, SafeSupervisionActivity.class));
@@ -61,13 +71,22 @@ public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisi
      * 筛选日期选择
      */
     private void showSelectDate() {
-        CalendarDialog calendarDialog = new CalendarDialog(this, this);
+        calendarDialog = new CalendarDialog(this, this);
+        calendarDialog.setEventCountList(mOrderEventCountList);
         calendarDialog.show();
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (calendarDialog != null) {
+            calendarDialog.cancel();
+        }
+    }
+
+    @Override
     protected void initData() {
-        List<BaseFragment> supervisionFragments = new ArrayList<>();
+        supervisionFragments = new ArrayList<>();
         supervisionFragments.add(SafeSupervisionFragment.newInstance(0));
         supervisionFragments.add(SafeSupervisionFragment.newInstance(1));
         supervisionFragments.add(SafeSupervisionFragment.newInstance(2));
@@ -77,12 +96,13 @@ public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisi
         mProjectTitleBar.initTitle(mViewPage, R.array.safe_list_title);
         initDate();
 
-//        mPresenter.fetchPageList();
+        mPresenter.fetchInit();
     }
 
     private void initDate() {
         CalendarDate calendarDate = new CalendarDate();
-        mSelectDate.setText(getString(R.string.safe_select_title_date, calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay()));
+        mSelectTime = getString(R.string.safe_select_title_date, calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay());
+        mSelectDate.setText(mSelectTime);
     }
 
     @Override
@@ -94,20 +114,43 @@ public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisi
     @Override
     public void onSelectDate(String date) {
         mSelectDate.setText(date);
+        mSelectTime = date;
+        for (int i = 0; i < 3; i++) {
+            SafeSupervisionFragment fragment = (SafeSupervisionFragment) supervisionFragments.get(i);
+            fragment.onRefresh();
+//            mPresenter.fetchPageList(mSelectTime, i, 0);
+        }
+
     }
 
-    @Override
-    public String getSelectDate() {
-        return mSelectDate.getText().toString();
-    }
 
     @Override
     protected SafeSupervisionContract.Presenter getPresenter() {
-        return null;
+        return new SafeSupervisionPresenterImpl();
     }
 
     @Override
-    public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
+    public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList, int type) {
+        SafeSupervisionFragment fragment = (SafeSupervisionFragment) supervisionFragments.get(type);
+        fragment.setSafeSupervisionList(supervisionList);
+    }
 
+    @Override
+    public void setSafeEventCountList(HashMap<String, String> eventCountData) {
+        mOrderEventCountList = eventCountData;
+        if (calendarDialog != null) {
+            calendarDialog.setEventCountList(mOrderEventCountList);
+        }
+    }
+
+    @Override
+    public void fetchPageFail(int type) {
+        SafeSupervisionFragment fragment = (SafeSupervisionFragment) supervisionFragments.get(type);
+        fragment.fetchPageFail();
+    }
+
+    @Override
+    public void getSafeTypeList(int type) {
+        mPresenter.fetchPageList(mSelectTime, type, 0);
     }
 }

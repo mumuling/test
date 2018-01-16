@@ -15,9 +15,10 @@ import com.zhongtie.work.widget.BaseImageView;
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
- * 创建类别选择
- * Auth: Chaek
+ * 安全督导item
  * Date: 2018/1/11
+ *
+ * @author Chaek
  */
 @BindItemData(SafeSupervisionEntity.class)
 public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEntity, SafeSupervisionItemView.ViewHolder> {
@@ -26,15 +27,13 @@ public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEnt
         return R.layout.item_safe_supervision_order;
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SafeSupervisionEntity data) {
-        vh.mSafeOrderHead.loadImage(imageUrls[vh.getItemPosition() % imageUrls.length]);
-        vh.mSafeOrderName.setText("测试" + vh.getItemPosition());
-        vh.mSafeOrderState.setText("已阅");
-        vh.mSafeOrderContent.setText("2018-01-12");
+        vh.mSafeOrderHead.loadImage(data.getUserPicture());
+        vh.mSafeOrderName.setText(data.getUserName());
+        vh.mSafeOrderState.setText(data.getState());
+        vh.mSafeOrderContent.setText(data.getCompanyName());
     }
-
 
     @Override
     public CommonViewHolder onCreateViewHolder(@NonNull View view, int viewType) {
@@ -43,18 +42,16 @@ public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEnt
 
     public static class ViewHolder extends CommonViewHolder {
         private BaseImageView mSafeOrderHead;
-        private ImageView mArrow;
         private TextView mSafeOrderState;
         private TextView mSafeOrderName;
         private TextView mSafeOrderContent;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mSafeOrderHead = (BaseImageView) findViewById(R.id.safe_order_head);
-            mArrow = (ImageView) findViewById(R.id.arrow);
-            mSafeOrderState = (TextView) findViewById(R.id.safe_order_state);
-            mSafeOrderName = (TextView) findViewById(R.id.safe_order_name);
-            mSafeOrderContent = (TextView) findViewById(R.id.safe_order_content);
+            mSafeOrderHead = findViewById(R.id.safe_order_head);
+            mSafeOrderState = findViewById(R.id.safe_order_state);
+            mSafeOrderName = findViewById(R.id.safe_order_name);
+            mSafeOrderContent = findViewById(R.id.safe_order_content);
         }
 
     }

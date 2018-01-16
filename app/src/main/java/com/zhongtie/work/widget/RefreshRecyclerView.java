@@ -167,12 +167,11 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
         return list == null || list.size() <= 0;
     }
 
-    private void onFail(String message) {
+    public void onFail(String message) {
         setRefreshing(false);
-        ToastUtil.showToast(message);
         setLoading(false);
         onChanged();
-        notifyDataSetChanged();
+        refreshAdapter.notifyDataSetChanged();
     }
 
 

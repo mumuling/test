@@ -87,13 +87,13 @@ class SignInterceptor implements Interceptor {
             }
             stringBuffer.delete(stringBuffer.length() - 2, stringBuffer.length());
 
-            if (actionName.equals("UploadPic")) {
+            if ("UploadPic".equals(actionName) || "UploadSignPic".equals(actionName)) {
                 String upload = URLDecoder.decode(baseData.get("picfile"));
                 MultipartBody.Builder newBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 newBuilder.addFormDataPart("ref", stringBuffer.toString());
-
-                RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), new File(upload));
-                MultipartBody.Part part = MultipartBody.Part.createFormData("picfile", "file.jpg", requestBody);
+                String fileName = "UploadPic".equals(actionName) ? "file.jpg" : "file.png";
+                RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), new File(upload));
+                MultipartBody.Part part = MultipartBody.Part.createFormData("picfile", fileName, requestBody);
                 newBuilder.addPart(part);
                 requestBuilder.post(newBuilder.build());
             } else {

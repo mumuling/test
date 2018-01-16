@@ -86,7 +86,7 @@ public class SignatureDialog extends Dialog {
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(imageFile);
-            mSignaturePad.getSignatureBitmap().compress(Bitmap.CompressFormat.JPEG, 100, out);
+            mSignaturePad.getTransparentSignatureBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {

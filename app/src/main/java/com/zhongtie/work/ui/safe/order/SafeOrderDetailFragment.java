@@ -9,11 +9,12 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.data.Result;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.UploadApi;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.safe.SafeCreateContract;
+import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
@@ -26,6 +27,8 @@ import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.ToastUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.upload.UploadData;
+import com.zhongtie.work.util.upload.UploadUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,19 +139,19 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeCreateCon
     @Override
     public void onSignature(String imagePath) {
 
-        Http.netServer(UploadApi.class)
-                .uploadPic(Cache.getUserID(),imagePath)
-                .compose(Network.networkConvertDialog(this))
-                .subscribe(new Consumer<String>() {
+        UploadUtil.uploadJPG(imagePath)
+                .compose(Network.netorkIO())
+                .subscribe(new Consumer<UploadData>() {
                     @Override
-                    public void accept(String s) throws Exception {
-                        ToastUtil.showToast(s);
+                    public void accept(UploadData uploadData) throws Exception {
+                        ToastUtil.showToast(uploadData.getPicname());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
+
                     }
                 });
+
     }
 }

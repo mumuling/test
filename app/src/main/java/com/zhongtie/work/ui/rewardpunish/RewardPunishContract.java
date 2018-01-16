@@ -1,20 +1,18 @@
-package com.zhongtie.work.ui.safe;
+package com.zhongtie.work.ui.rewardpunish;
 
 import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
 
+import java.util.HashMap;
 import java.util.List;
 
-/**
- * Auth:Cheek
- * date:2018.1.9
- */
-
-public interface SafeSupervisionContract {
+public interface RewardPunishContract {
     interface View extends BaseView {
 
         void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList);
+
+        void setSafeEventCountList(HashMap<String, String> eventCountData);
     }
 
     interface Presenter extends BasePresenter<View> {

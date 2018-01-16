@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe;
+package com.zhongtie.work.ui.safe.view;
 
 import android.content.Context;
 import android.os.Bundle;

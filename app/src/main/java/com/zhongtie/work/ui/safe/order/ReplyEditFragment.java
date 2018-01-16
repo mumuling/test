@@ -21,6 +21,8 @@ import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CreatePicItemView;
 import com.zhongtie.work.util.ToastUtil;
+import com.zhongtie.work.util.upload.UploadData;
+import com.zhongtie.work.util.upload.UploadUtil;
 import com.zhongtie.work.widget.AdapterDataObserver;
 
 import java.util.ArrayList;
@@ -123,21 +125,19 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
     @Override
     public void onSignature(String imagePath) {
 
-        Http.netServer(UploadApi.class)
-                .uploadPic(Cache.getUserID(),imagePath)
-                .compose(Network.networkConvertDialog(this))
-                .subscribe(new Consumer<String>() {
+        UploadUtil.uploadSignPNG(imagePath)
+                .compose(Network.networkDialog(this,"正在上传"))
+                .subscribe(new Consumer<UploadData>() {
                     @Override
-                    public void accept(String s) throws Exception {
-                        ToastUtil.showToast(s);
+                    public void accept(UploadData uploadData) throws Exception {
+                        showToast(uploadData.getPicname());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
+
                     }
                 });
-
     }
 
     @Override

@@ -11,11 +11,10 @@ import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RewardPunishItemView;
 import com.zhongtie.work.ui.rewardpunish.item.RewardPunishLookItemView;
-import com.zhongtie.work.ui.safe.SafeSupervisionContract;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
-import com.zhongtie.work.ui.safe.SafeSupervisionPresenterImpl;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ import java.util.List;
  * date:2018.1.9
  */
 
-public class RewardPunishFragment extends BasePresenterFragment<SafeSupervisionContract.Presenter> implements SafeSupervisionContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
+public class RewardPunishFragment extends BasePresenterFragment<RewardPunishContract.Presenter> implements RewardPunishContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
 
     public static final String TYPE = "type";
 
@@ -65,13 +64,18 @@ public class RewardPunishFragment extends BasePresenterFragment<SafeSupervisionC
     }
 
     @Override
-    protected SafeSupervisionContract.Presenter getPresenter() {
-        return new SafeSupervisionPresenterImpl();
+    protected RewardPunishContract.Presenter getPresenter() {
+        return new PresenterImpl();
     }
 
     @Override
     public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
         mList.setListData(supervisionList);
+    }
+
+    @Override
+    public void setSafeEventCountList(HashMap<String, String> eventCountData) {
+
     }
 
     @Override

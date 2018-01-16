@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe;
+package com.zhongtie.work.ui.safe.presenter;
 
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;

@@ -1,6 +1,7 @@
 package com.zhongtie.work.network.api;
 
 import com.zhongtie.work.data.Result;
+import com.zhongtie.work.util.upload.UploadData;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Field;
@@ -18,6 +19,16 @@ public interface UploadApi {
      */
     @FormUrlEncoded
     @POST("?action=UploadPic")
-    Flowable<Result<String>> uploadPic(@Field("userid") String userId, @Field("picfile") String picFile);
+    Flowable<Result<UploadData>> uploadPic(@Field("userid") String userId, @Field("picfile") String picFile);
+
+    /**
+     * 上传png
+     * @param userId
+     * @param picFile
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("?action=UploadSignPic")
+    Flowable<Result<UploadData>> uploadSignPng(@Field("userid") String userId, @Field("picfile") String picFile);
 
 }

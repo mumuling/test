@@ -7,9 +7,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.fastjson.FastJsonConverterFactory;
 
-/**
- * Created by O on 2017.5.17.
- */
 
 class ZtRetrofit {
 
@@ -20,6 +17,7 @@ class ZtRetrofit {
     ZtRetrofit() {
         client = new OkHttpClient.Builder()
                 .addInterceptor(new SignInterceptor())
+                .addNetworkInterceptor(new RequestInterceptor())
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
