@@ -10,6 +10,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.data.CompanyEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.db.CompanyUserData;
+import com.zhongtie.work.list.OnRefreshListener;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
 
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.List;
 /**
  * @author Chaek
  */
-public class MainActivity extends BasePresenterActivity<MainContract.Presenter> implements CompanySelectPopup.OnCompanySelectListener ,MainContract.View {
+public class MainActivity extends BasePresenterActivity<MainContract.Presenter> implements CompanySelectPopup.OnCompanySelectListener, MainContract.View
+        , OnRefreshListener {
 
     private static final String TAG = "MainActivity";
 
@@ -32,7 +34,9 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
     private ImageView mArrowView;
     public DrawerLayout mDrawerLayout;
 
-    private  List<CompanyEntity> companyEntityList;
+    private List<CompanyEntity> companyEntityList;
+
+    private MainFragment mainFragment;
 
 
     @Override
@@ -57,8 +61,8 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
         mLvHomeTitle.setOnClickListener(view -> showSelectCompany());
 
 
-        showToast( SQLite.selectCountOf().from(CompanyUserData.class)
-                .count()+"条");
+        showToast(SQLite.selectCountOf().from(CompanyUserData.class)
+                .count() + "条");
     }
 
 
@@ -75,7 +79,7 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
     protected void initData() {
         mPresenter.fetchInitData();
 
-        Fragments.with(this)
+        mainFragment = (MainFragment) Fragments.with(this)
                 .fragment(MainFragment.class)
                 .single(false)
                 .into(R.id.fragment_content);
@@ -99,16 +103,41 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
 
     @Override
     public void setAllCompanyList(List<com.zhongtie.work.data.CompanyEntity> allCompanyList) {
-        this.companyEntityList=allCompanyList;
+        this.companyEntityList = allCompanyList;
+        if (mainFragment != null) {
+            mainFragment.onRefreshComplete();
+        }
     }
 
     @Override
     public void setUserInfo(LoginUserInfoEntity userInfo) {
+    }
 
+    @Override
+    public void onSyncCompanySuccess() {
+        if (mainFragment != null) {
+            mainFragment.onRefreshComplete();
+        }
+    }
+
+    @Override
+    public void onSyncCompanyFail() {
+        if (mainFragment != null) {
+            mainFragment.onRefreshComplete();
+        }
     }
 
     @Override
     protected MainContract.Presenter getPresenter() {
         return new MainPresenterImpl();
+    }
+
+    @Override
+    public void onRefresh() {
+        mPresenter.fetchInitData();
+    }
+
+    @Override
+    public void onRefreshComplete() {
     }
 }

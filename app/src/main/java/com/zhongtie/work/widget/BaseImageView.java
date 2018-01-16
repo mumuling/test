@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhongtie.work.R;
+import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.image.ImageLoader;
 import com.zhongtie.work.util.image.ImageLoaderUtil;
 
@@ -34,6 +35,9 @@ public class BaseImageView extends SimpleDraweeView {
     }
 
     public void loadImage(String data, int width) {
+        if (TextUtil.isEmpty(data)) {
+            data = "";
+        }
         ImageLoader imageLoader = new ImageLoader.Builder().url(data.startsWith(HTTP) ? data : "file://" + data).placeHolder(R.drawable.portrait).
                 imgView(this).size(width, width).build();
         ImageLoaderUtil.getInstance().loadImage(getContext(), imageLoader);

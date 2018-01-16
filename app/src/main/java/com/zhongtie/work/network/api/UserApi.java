@@ -66,7 +66,7 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("?action=AddWrong")
-    Flowable<Result<String>> addWrong(@Field("wronguserid") String wronguserid, @Field("wrongByid") String wrongByid, @Field("detail") String detail);
+    Flowable<Result<Integer>> addWrong(@Field("wronguserid") int wronguserid, @Field("wrongByid") String wrongByid, @Field("detail") String detail);
 
 
 }

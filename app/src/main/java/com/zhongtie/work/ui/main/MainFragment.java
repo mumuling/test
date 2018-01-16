@@ -8,6 +8,7 @@ import android.util.Pair;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
+import com.zhongtie.work.list.OnRefreshListener;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.endorse.EndorseListActivity;
 import com.zhongtie.work.ui.file.FileShareActivity;
@@ -16,6 +17,7 @@ import com.zhongtie.work.ui.rewardpunish.RewardPunishActivity;
 import com.zhongtie.work.ui.safe.SafeSupervisionActivity;
 import com.zhongtie.work.ui.scan.ScanQRCodeActivity;
 import com.zhongtie.work.ui.statistics.StatisticsActivity;
+import com.zhongtie.work.widget.SwipeRefreshRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ import io.reactivex.Observable;
  */
 
 public class MainFragment extends BaseFragment implements OnRecyclerItemClickListener {
+    private SwipeRefreshRecyclerView mSwipeRefreshRecyclerView;
     private RecyclerView mList;
 
     private List<Pair<String, Integer>> mHomeItemList = new ArrayList<>();
@@ -40,8 +43,11 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
 
     @Override
     public void initView() {
-        mList = (RecyclerView) findViewById(R.id.list);
+        mSwipeRefreshRecyclerView = (SwipeRefreshRecyclerView) findViewById(R.id.list);
+        mList = mSwipeRefreshRecyclerView.getRecyclerView();
         mList.setLayoutManager(new GridLayoutManager(getAppContext(), 3));
+
+        mSwipeRefreshRecyclerView.setOnRefreshListener((OnRefreshListener) getActivity());
     }
 
     @Override
@@ -64,6 +70,12 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
                 .toList()
                 .blockingGet();
         arr.recycle();
+    }
+
+    public void onRefreshComplete() {
+        if (mSwipeRefreshRecyclerView != null) {
+            mSwipeRefreshRecyclerView.setRefreshing(false);
+        }
     }
 
     @Override

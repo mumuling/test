@@ -3,10 +3,10 @@ package com.zhongtie.work.widget;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.util.L;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -18,7 +18,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executors;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,6 +30,7 @@ import okhttp3.Response;
  * @author Chaek
  */
 public class DownloadManager {
+    private static final String TAG = "DownloadManager";
 
     private static DownloadManager downloadManager;
 
@@ -48,7 +48,7 @@ public class DownloadManager {
     public DownloadManager(Context context, CompanyEntity versionBean) {
 //        this.context = context;
 //        this.company = versionBean;
-       ;
+        ;
     }
 
     /**
@@ -87,65 +87,74 @@ public class DownloadManager {
     public void download(CompanyEntity company, final BaseResultCallback callback) {
         downLen = 0;
         //文件夹名称
-        File file = App.getInstance().getDatabasePath("company_" + company.getId()+".db");
+        File file = App.getInstance().getDatabasePath("company_" + company.getId() + ".db");
         String downUrl = company.getDburl();
         final Request request = new Request.Builder()
                 .get()
                 .url(downUrl)
                 .build();
         downCall = getOkHttpClient().newCall(request);
-        downCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-//                sendFailedStringCallback(request, e, callback);
-                throw new NullPointerException("");
-            }
+        Call call = getOkHttpClient().newCall(request);
+        try {
+            Response response = call.execute();
 
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            if (response.isSuccessful()) {
                 InputStream is = null;
                 byte[] buf = new byte[10 * 1024];
                 int len;
                 FileOutputStream fos = null;
-                try {
-                    double total = response.body().contentLength();
-                    if (total <= 0) {
-                        sendFailedStringCallback(response.request(), new NullPointerException(""), callback);
-                        return;
-                    }
-                    is = response.body().byteStream();
-                    fos = new FileOutputStream(file, false);
-                    BufferedInputStream input = new BufferedInputStream(is);
-                    while ((len = input.read(buf)) != -1) {
-                        fos.write(buf, 0, len);
-                        downLen += len;
-                        sendProgressCallBack(total, downLen, callback);
-                    }
-
-                    input.close();
-                    fos.flush();
-                    is.close();
-                    fos.close();
-
-                    try {
-                        //修改文件读取权限 避免4.0手机安装 解析失败
-                        String command = "chmod 666 " + file.toString();
-                        Runtime runtime = Runtime.getRuntime();
-                        runtime.exec(command);
-                        Thread.sleep(100);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    sendSuccessResultCallback(file, callback);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new NullPointerException("");
-//                    sendFailedStringCallback(response.request(), e, callback);
-                } finally {
-
+                double total = response.body().contentLength();
+                if (total <= 0) {
+                    sendFailedStringCallback(response.request(), new NullPointerException(""), callback);
+                    return;
                 }
+                is = response.body().byteStream();
+                fos = new FileOutputStream(file, false);
+                BufferedInputStream input = new BufferedInputStream(is);
+                while ((len = input.read(buf)) != -1) {
+                    fos.write(buf, 0, len);
+                    downLen += len;
+                }
+                input.close();
+                fos.flush();
+                is.close();
+                fos.close();
+            } else {
+                L.e(TAG,"下载失败---------");
+                throw new NullPointerException("同步失败");
             }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+//        downCall.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+////                sendFailedStringCallback(request, e, callback);
+//                L.e("-----------", "下载失败");
+//                throw new NullPointerException("");
+//            }
+//
+//            @Override
+//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//                L.e("-----------", "正在下载");
+//
+//
+//                sendSuccessResultCallback(file, callback);
+//            } catch(
+//            Exception e)
+//
+//            {
+//                e.printStackTrace();
+//                throw new NullPointerException("");
+////                    sendFailedStringCallback(response.request(), e, callback);
+//            } finally
+//
+//            {
+//
+//            }
+//        }
     }
 
     /**
@@ -178,6 +187,7 @@ public class DownloadManager {
         public abstract void onResponse(T response);
 
         public abstract void onProgress(double total, double current);
+
     }
 
 

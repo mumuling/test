@@ -2,7 +2,6 @@ package com.zhongtie.work.ui.safe.item;
 
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
@@ -11,8 +10,6 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.widget.BaseImageView;
-
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 安全督导item
@@ -29,10 +26,10 @@ public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEnt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SafeSupervisionEntity data) {
-        vh.mSafeOrderHead.loadImage(data.getUserPicture());
-        vh.mSafeOrderName.setText(data.getUserName());
-        vh.mSafeOrderState.setText(data.getState());
-        vh.mSafeOrderContent.setText(data.getCompanyName());
+//        vh.mSafeOrderHead.loadImage(data.getUserPicture());
+//        vh.mSafeOrderName.setText(data.getUserName());
+//        vh.mSafeOrderState.setText(data.getState());
+//        vh.mSafeOrderContent.setText(data.getCompanyName());
     }
 
     @Override

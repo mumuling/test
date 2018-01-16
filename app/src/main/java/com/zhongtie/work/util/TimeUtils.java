@@ -282,20 +282,6 @@ public class TimeUtils {
         return total_time;
     }
 
-    // 计算考试的剩余时间
-    public static String examRemainTime(String startTime, String endTime)
-            throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
-        Date outdate = sdf.parse(endTime);
-        Date indate = sdf.parse(startTime);
-        long totalminutes = (outdate.getTime() - indate.getTime())
-                / (1000 * 60);// 分
-        long totalseconds = (outdate.getTime() - indate.getTime()) / (1000)
-                - totalminutes * 60;// 秒
-        String remainTime = totalminutes + "#" + totalseconds;
-        return remainTime;
-    }
-
     public static boolean getVocherTime(String endTime) throws ParseException {
         // 设定时间的模板
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -309,70 +295,6 @@ public class TimeUtils {
             return true;
     }
 
-    public static String getNextTenTime(String time) {
-        String times[] = time.split(":");
-        String fromtime = "%02d:%02d";
-        int hour = Integer.valueOf(times[0]);
-        int minute = Integer.valueOf(times[1]);
-        if (minute == 50) {
-            hour++;
-            if (hour >= 23) {
-                hour = 0;
-            }
-            minute = 0;
-        } else {
-            minute += 10;
-        }
-        return String.format(fromtime, hour, minute);
-
-    }
-
-
-    /**
-     * 比较小时大小
-     *
-     * @param date 12:00 格式时间
-     * @return 布尔值
-     */
-    public static boolean isSignTimeMax(String date) {
-        return !isCheckTime(date, getFormatDate("HH:mm"));
-    }
-
-    /**
-     * 判断时间上班
-     *
-     * @param start 传递时间
-     * @param end   系统时间
-     * @return
-     */
-    public static boolean isCheckTime(String start, String end) {
-        try {
-            String[] times = start.split(":");
-            String[] endtimes = end.split(":");
-            int start1 = Integer.valueOf(times[0].trim());
-            int start2 = Integer.valueOf((times[1]));
-            int end1 = Integer.valueOf((endtimes[0]));
-            int end2 = Integer.valueOf((endtimes[1]));
-            return end1 > start1 || end1 == start1 && end2 >= start2;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean isCheckTime(String start, int deLine) {
-        try {
-            String end = getProjectDeadTime(start, deLine);
-            String last = getCurrentDate();
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-            Date endDate = new Date(String.valueOf(sf.parse(end)));
-            Date lastDate = new Date(String.valueOf(sf.parse(last)));
-            long time = dateMinus(lastDate, endDate);
-            return time > 0;
-
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     public static String getTemporaryDate(String date) {
         if (date == null || date.equals(""))
@@ -404,91 +326,6 @@ public class TimeUtils {
             return time;
         }
     }
-
-    public static Long farmatTime(String string) {
-        Date date = null;
-        try {
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            date = new Date(String.valueOf(sf.parse(string)));
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return date.getTime();
-    }
-//
-//    public static String time(String time) {
-//        return time(time, (SimpleDateFormat) TemporaryDate);
-//    }
-//
-//    public static String time(String time, SimpleDateFormat df) {
-//        //获取当前时间
-//        Calendar cal = Calendar.getInstance();
-//        int year = cal.get(Calendar.YEAR);//当前年份
-//        int month = cal.get(Calendar.MONTH) + 1;//当前月份
-//        int data = cal.get(Calendar.DATE);//当前日期
-//        try {
-//            //时间
-//            Date timeDate = df.parse(time);
-//            Calendar now = Calendar.getInstance();
-//            now.setTime(timeDate);
-//            int y = now.get(Calendar.YEAR);//当前年份
-//            int m = now.get(Calendar.MONTH) + 1;//当前月份
-//            int d = now.get(Calendar.DATE);//当前日期
-//            long mx = getDaysBetween(timeDate, cal.getTime());
-//            if (year == y && m == month && d == data) {
-//                return StringUtil.getString(R.string.chat_minute_time, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE));
-//            } else if (mx <= 7 && mx > 0) {
-//                return StringUtil.getString(R.string.chat_month_time, getTimeWeeK(now.getTime()), now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE));
-//            } else if (year != y) {
-//                return StringUtil.getString(R.string.chat_year_time, y, m, d, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE));
-//            } else {
-//                return StringUtil.getString(R.string.chat_yue_time, m, d, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE));
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return time;
-//    }
-
-//    /**
-//     * 需求发布时间 格式化
-//     *
-//     * @param demandTime 需求发布时间 y-m-d h:m
-//     */
-//    public static String demandFeedTime(String demandTime) {
-//        try {
-//            if (demandTime == null)
-//                return "";
-//            Date dt = TemporaryDate.parse(demandTime);
-//            Calendar dtCalendar = Calendar.getInstance();
-//            dtCalendar.setTime(dt);
-//
-//            Calendar cal = Calendar.getInstance();
-//            Date nowTime = cal.getTime();
-//            long t = dateMinus(dt, nowTime) / 1000;
-//            if (t <= 60 * 5) {
-//                return "刚刚";
-//            } else if (t >= 5 * 60 && t < 60 * 60) {
-//                return t / 60 + "分钟前";
-//            } else if (t >= 60 * 60 && t < 24 * 60 * 60) {
-//                return t / (60 * 60) + "小时前";
-//            } else if (t >= 24 * 60 * 60 && t < 30 * 24 * 60 * 60) {
-//                return t / (60 * 60 * 24) + "天前";
-//            } else if (t > 30 * 24 * 60 * 60) {
-//                if (dtCalendar.get(Calendar.YEAR) == cal.get(Calendar.YEAR)) {
-//                    return StringUtil.getString(R.string.demand_yue_time, (dtCalendar.get(Calendar.MONTH) + 1), dtCalendar.get(Calendar.DAY_OF_MONTH));
-//                } else {
-//                    return StringUtil.getString(R.string.demand_year_time, dtCalendar.get(Calendar.YEAR), (dtCalendar.get(Calendar.MONTH) + 1), dtCalendar.get(Calendar.DAY_OF_MONTH));
-//                }
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return demandTime;
-//    }
 
 
     public static Long getDaysBetween(Date startDate, Date endDate) {
@@ -554,4 +391,34 @@ public class TimeUtils {
     }
 
 
+    public static String formatWrongTime(String time) {
+        // 设定时间的模板
+        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // 得到指定模范的时间
+        Date d2 = null;
+        try {
+            d2 = oldTimeFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return time;
+        }
+        return newTimeFormat.format(d2);
+
+    }
+    public static String formatWrongTime2(String time) {
+        // 设定时间的模板
+        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // 得到指定模范的时间
+        Date d2 = null;
+        try {
+            d2 = oldTimeFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return time;
+        }
+        return newTimeFormat.format(d2);
+
+    }
 }

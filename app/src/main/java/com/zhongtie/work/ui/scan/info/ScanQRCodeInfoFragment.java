@@ -1,7 +1,6 @@
 package com.zhongtie.work.ui.scan.info;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -138,6 +137,11 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
     }
 
     @Override
+    public void setUserWrongMessage(String wrong) {
+        mInfoErrorList.setText(wrong);
+    }
+
+    @Override
     protected ScanQRCodeInfoContract.Presenter getPresenter() {
         return new ScanInfoPresenterImpl();
     }
@@ -168,13 +172,12 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
         mImg1 = (ImageView) findViewById(R.id.img1);
 //        mInfoErrTitle = (TextView) findViewById(R.id.info_err_title);
 
+        mInfoErrorList = (TextView) findViewById(R.id.info_error_list);
         mInfoViolateTitle = (TextView) findViewById(R.id.info_violate_title);
         mAddViolate = (Button) findViewById(R.id.add_violate);
-        mAddViolate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addViolateDialog = new AddViolateDialog(getActivity(), ScanQRCodeInfoFragment.this);
-            }
+        mAddViolate.setOnClickListener(view -> {
+            addViolateDialog = new AddViolateDialog(getActivity(), ScanQRCodeInfoFragment.this);
+            addViolateDialog.show();
         });
 
     }

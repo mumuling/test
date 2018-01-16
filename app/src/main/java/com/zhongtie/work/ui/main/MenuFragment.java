@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
@@ -81,6 +82,7 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
         mList = (RecyclerView) findViewById(R.id.list);
         mHeadView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_home_left_head, mList, false);
         mHead = mHeadView.findViewById(R.id.head);
+        mHead.loadImage(App.getInstance().getUser().getPicture());
         if (mUserHead != null) {
             mHead.setImageURI(Uri.parse(mUserHead));
         }

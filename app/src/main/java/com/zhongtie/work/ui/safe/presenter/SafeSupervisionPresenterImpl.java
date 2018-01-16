@@ -1,7 +1,6 @@
 package com.zhongtie.work.ui.safe.presenter;
 
 import com.zhongtie.work.app.Cache;
-import com.zhongtie.work.data.Result;
 import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.model.EventCountData;
 import com.zhongtie.work.network.Http;
@@ -14,8 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
-
 /**
  * Auth:Cheek
  * date:2018.1.9
@@ -25,12 +22,17 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
     @Override
     public void fetchPageList(String date, int type, int page) {
         int state = type - 1;
-        addDispose(Http.netServer(SafeApi.class)
-                .safeEventList(Cache.getUserID(), Cache.getSelectCompany(), date, state)
-                .compose(Network.convertIO())
-                .subscribe(safeSupervisionEntities -> mView.setSafeSupervisionList(safeSupervisionEntities, type), throwable -> {
-                    mView.fetchPageFail(type);
-                }));
+        List<SafeSupervisionEntity> safeSupervisionEnities = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            safeSupervisionEnities.add(new SafeSupervisionEntity());
+        }
+        mView.setSafeSupervisionList(safeSupervisionEnities,type);
+//        addDispose(Http.netServer(SafeApi.class)
+//                .safeEventList(Cache.getUserID(), Cache.getSelectCompany(), date, state)
+//                .compose(Network.convertIO())
+//                .subscribe(safeSupervisionEntities -> mView.setSafeSupervisionList(safeSupervisionEntities, type), throwable -> {
+//                    mView.fetchPageFail(type);
+//                }));
 
     }
 

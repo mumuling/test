@@ -42,6 +42,7 @@ public interface ScanQRCodeInfoContract {
 
         void addWrongSuccess();
 
+        void setUserWrongMessage(String wrong);
     }
 
     interface Presenter extends BasePresenter<View> {

@@ -19,6 +19,10 @@ public interface MainContract {
         void setAllCompanyList(List<CompanyEntity> allCompanyList);
 
         void setUserInfo(LoginUserInfoEntity userInfo);
+
+        void onSyncCompanySuccess();
+
+        void onSyncCompanyFail();
     }
 
 
