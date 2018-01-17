@@ -71,10 +71,7 @@ public class BaseImageView extends SimpleDraweeView {
     public void loadImag(int userId) {
 //        String userName=
         String card = "";
-        if (getTag() != null) {
-            card = (String) getTag();
-            loadUserCard(card);
-        } else {
+
             Flowable.zip(Flowable.just(userId).map(integer -> SQLite.select().from(CompanyUserData.class)
                     .where(CompanyUserData_Table.id.eq(integer))
                     .querySingle()), Flowable.just(this), new BiFunction<CompanyUserData, BaseImageView, Object>() {
@@ -95,7 +92,7 @@ public class BaseImageView extends SimpleDraweeView {
                 }
             });
 
-        }
+
 
     }
 
