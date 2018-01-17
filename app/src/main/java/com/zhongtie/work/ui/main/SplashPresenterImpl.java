@@ -17,7 +17,7 @@ import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.SyncUtil;
 import com.zhongtie.work.util.TextUtil;
-import com.zhongtie.work.widget.DownloadManager;
+import com.zhongtie.work.util.DownloadManager;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;

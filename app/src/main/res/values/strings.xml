@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ZhongTie</string>
+    <string name="app_name">城铁安捷</string>
     <string name="login">登录</string>
     <string name="not_any_data">没有数据</string>
     <string name="error_net">糟糕，加载失败了</string>

@@ -1,4 +1,4 @@
-package com.zhongtie.work.widget;
+package com.zhongtie.work.util;
 
 import android.content.Context;
 import android.os.Handler;
@@ -6,7 +6,7 @@ import android.os.Looper;
 
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.CompanyEntity;
-import com.zhongtie.work.util.L;
+import com.zhongtie.work.network.HttpException;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -45,11 +45,6 @@ public class DownloadManager {
         mDelivery = new Handler(Looper.getMainLooper());
     }
 
-    public DownloadManager(Context context, CompanyEntity versionBean) {
-//        this.context = context;
-//        this.company = versionBean;
-        ;
-    }
 
     /**
      * 主线程返回
@@ -93,7 +88,6 @@ public class DownloadManager {
                 .get()
                 .url(downUrl)
                 .build();
-        downCall = getOkHttpClient().newCall(request);
         Call call = getOkHttpClient().newCall(request);
         try {
             Response response = call.execute();
@@ -120,41 +114,16 @@ public class DownloadManager {
                 is.close();
                 fos.close();
             } else {
-                L.e(TAG,"下载失败---------");
-                throw new NullPointerException("同步失败");
+                L.e(TAG, "下载失败---------");
+//                new HttpException(result.getMsg(), result.getCode())
+                throw new HttpException("同步失败", 0);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            throw new HttpException("同步失败", 0);
         }
 
 
-//        downCall.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-////                sendFailedStringCallback(request, e, callback);
-//                L.e("-----------", "下载失败");
-//                throw new NullPointerException("");
-//            }
-//
-//            @Override
-//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-//                L.e("-----------", "正在下载");
-//
-//
-//                sendSuccessResultCallback(file, callback);
-//            } catch(
-//            Exception e)
-//
-//            {
-//                e.printStackTrace();
-//                throw new NullPointerException("");
-////                    sendFailedStringCallback(response.request(), e, callback);
-//            } finally
-//
-//            {
-//
-//            }
-//        }
     }
 
     /**
@@ -203,29 +172,6 @@ public class DownloadManager {
     }
 
 
-    /**
-     * 下载文件
-     *
-     * @param callback 回调
-     */
-    void downloadFile(BaseResultCallback callback) {
-        try {
-            Executors.newSingleThreadExecutor().execute(() -> {
-                try {
-//                    download(callback);
-                } catch (Exception e) {
-                    if (callback != null) {
-                        callback.onError(null, null);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (callback != null) {
-                callback.onError(null, null);
-            }
-        }
-    }
 
 
     /**

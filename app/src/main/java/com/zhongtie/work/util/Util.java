@@ -5,6 +5,9 @@ import android.support.v4.content.ContextCompat;
 
 import com.zhongtie.work.app.App;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Auth: Chaek
  * Date: 2018/1/9
@@ -98,6 +101,7 @@ public class Util {
             return "";
         }
     }
+
     public static String getPrintSize(long size) {
         //如果字节数少于1024，则直接以B为单位，否则先除于1024，后3位因太少无意义
         if (size < 1024) {
@@ -126,4 +130,30 @@ public class Util {
                     + String.valueOf((size % 100)) + "GB";
         }
     }
+
+
+    public static String md532(String sourceStr) {
+        String result = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(sourceStr.getBytes());
+            byte b[] = md.digest();
+            int i;
+            StringBuilder buf = new StringBuilder("");
+            for (byte aB : b) {
+                i = aB;
+                if (i < 0) {
+                    i += 256;
+                }
+                if (i < 16) {
+                    buf.append("0");
+                }
+                buf.append(Integer.toHexString(i));
+            }
+            result = buf.toString();
+        } catch (NoSuchAlgorithmException ignored) {
+        }
+        return result.toLowerCase();
+    }
+
 }

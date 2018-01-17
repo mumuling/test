@@ -51,6 +51,7 @@ public class ImageConfigFactory {
                 Integer.MAX_VALUE);                    // Max cache entry size
         configBuilder.setBitmapMemoryCacheParamsSupplier(
                 new Supplier<MemoryCacheParams>() {
+                    @Override
                     public MemoryCacheParams get() {
                         return bitmapCacheParams;
                     }

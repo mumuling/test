@@ -12,6 +12,7 @@ import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.UserApi;
+import com.zhongtie.work.sync.UserPicSync;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.SyncUtil;
@@ -38,7 +39,13 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
             mView.setUserInfo(userInfoEntity);
             fetchCompanyList();
             syncUserWrongLocalData();
+
+            syncUserPic();
         }
+    }
+
+    private void syncUserPic() {
+        UserPicSync.getInstance().startDownload();
     }
 
     /**

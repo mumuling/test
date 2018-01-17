@@ -14,7 +14,6 @@ import com.zhongtie.work.db.ZhongtieDb;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.api.UserApi;
-import com.zhongtie.work.widget.DownloadManager;
 
 import java.util.List;
 
