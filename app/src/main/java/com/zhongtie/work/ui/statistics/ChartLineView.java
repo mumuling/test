@@ -35,6 +35,7 @@ public class ChartLineView extends LinearLayout {
 
     private CommonAdapter commonAdapter;
     private View mEmptyView;
+    private int mLineColor;
 
 
     public ChartLineView(Context context) {
@@ -52,6 +53,7 @@ public class ChartLineView extends LinearLayout {
     }
 
     private void initView() {
+        mLineColor = getResources().getColor(R.color.app_color);
         setOrientation(VERTICAL);
         View v = LayoutInflater.from(getContext()).inflate(R.layout.base_recyclerview, this, true);
         mList = v.findViewById(R.id.list);
@@ -70,7 +72,8 @@ public class ChartLineView extends LinearLayout {
         this.statisticsLineDataList.clear();
         this.statisticsLineDataList.addAll(statisticsLineDataList);
         if (commonAdapter == null) {
-            commonAdapter = new CommonAdapter(this.statisticsLineDataList).register(ChartLineItemView.class);
+            ChartLineItemView lineItemView = new ChartLineItemView(mLineColor);
+            commonAdapter = new CommonAdapter(this.statisticsLineDataList).register(lineItemView);
             commonAdapter.addFooterView(mFooterView);
             commonAdapter.addHeaderView(mChartHeadView);
             mList.setAdapter(commonAdapter);
@@ -86,10 +89,23 @@ public class ChartLineView extends LinearLayout {
         requestLayout();
     }
 
+    public void setLineColor(int lineColor) {
+        mLineColor = lineColor;
+    }
+
 
     @BindItemData(StatisticsLineData.class)
     public static class ChartLineItemView extends AbstractItemView<StatisticsLineData, ChartLineItemView.ViewHolder> {
         int width;
+
+        private int lineColor;
+
+        public ChartLineItemView() {
+        }
+
+        public ChartLineItemView(int lineColor) {
+            this.lineColor = lineColor;
+        }
 
         @Override
         public int getLayoutId(int viewType) {
@@ -103,6 +119,7 @@ public class ChartLineView extends LinearLayout {
             if (width == 0) {
                 width = ViewUtils.getScreenWidth(vh.mContext) - ViewUtils.dip2px(80);
             }
+
             vh.mChartView.getLayoutParams().width = (int) (width * data.getPercent());
             vh.mChartView.requestLayout();
         }
@@ -123,7 +140,7 @@ public class ChartLineView extends LinearLayout {
                 mChartPercent = findViewById(R.id.chart_percent);
                 mChartView = findViewById(R.id.chart_view);
                 mChartTitle = findViewById(R.id.chart_title);
-
+                mChartView.setBackgroundColor(lineColor);
             }
         }
     }

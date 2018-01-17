@@ -8,8 +8,9 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseActivity;
 
 /**
- * Auth: Chaek
  * Date: 2018/1/10
+ *
+ * @author Chaek
  */
 
 public class StatisticsActivity extends BaseActivity {
@@ -24,7 +25,7 @@ public class StatisticsActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        setTitle("报表统计");
+        setTitle(getString(R.string.statistics_title));
         Fragments.with(this)
                 .fragment(StatisticsFragment.class)
                 .into(R.id.fragment_content);
@@ -32,6 +33,5 @@ public class StatisticsActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
     }
 }

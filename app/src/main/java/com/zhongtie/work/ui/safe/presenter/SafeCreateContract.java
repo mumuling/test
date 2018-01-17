@@ -1,19 +1,46 @@
 package com.zhongtie.work.ui.safe.presenter;
 
+import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
 
 import java.util.List;
 
 /**
- * Auth:Cheek
  * date:2018.1.9
+ * @author Chaek
  */
-
 public interface SafeCreateContract {
     interface View extends BaseView {
-
+        /**
+         * 设置安全督导显示的ITEM
+         *
+         * @param itemList item数据源
+         */
         void setItemList(List<Object> itemList);
+
+        /**
+         * 选择日期
+         * @return
+         */
+        String getSelectDate();
+
+        /**
+         * @return 所属单位
+         */
+        ProjectTeamEntity getCompanyUnitEntity();
+
+        /**
+         * @return 劳务关系公司
+         */
+        ProjectTeamEntity getCompanyTeamEntity();
+
+
+        /**
+         * 获取输入的地址
+         * @return 地址
+         */
+        String getEditSite();
     }
 
     interface Presenter extends BasePresenter<View> {

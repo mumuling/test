@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
@@ -45,8 +46,10 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
      * 要是修改则带入ID 添加ID参数
      */
     private int mSafeOrderID;
-    private View mHeadInfoView;
+
+    private SafeCreateEditHeadView mHeadInfoView;
     private RecyclerView mList;
+
     private CommonAdapter mCommonAdapter;
     private List<Object> mInfoList = new ArrayList<>();
 
@@ -115,6 +118,26 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     public void setItemList(List<Object> itemList) {
         mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public String getSelectDate() {
+        return mHeadInfoView.getSelectDateTime();
+    }
+
+    @Override
+    public ProjectTeamEntity getCompanyUnitEntity() {
+        return mHeadInfoView.getCompanyUnitEntity();
+    }
+
+    @Override
+    public ProjectTeamEntity getCompanyTeamEntity() {
+        return mHeadInfoView.getCompanyOfferEntity();
+    }
+
+    @Override
+    public String getEditSite() {
+        return mHeadInfoView.getEditSite();
     }
 
     @Override

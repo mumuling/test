@@ -23,7 +23,7 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
  * Date: 2018/1/12
  */
 
-public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeCreateContract.View> implements SafeCreateContract.Presenter {
+public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContract.View> implements SafeDetailContract.Presenter {
 
 
     /**
@@ -111,10 +111,7 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeCreateContrac
         }
     }
 
-    @Override
-    public void createSafeOrder() {
 
-    }
 
 
 }

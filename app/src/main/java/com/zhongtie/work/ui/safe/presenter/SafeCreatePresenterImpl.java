@@ -5,27 +5,29 @@ import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.create.CategoryData;
-import com.zhongtie.work.data.create.CreateTypeItem;
+import com.zhongtie.work.data.create.EventTypeEntity;
+import com.zhongtie.work.data.create.SelectEventTypeItem;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
+import com.zhongtie.work.util.TextUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Auth: Chaek
+ * 安全督导创建的实现
  * Date: 2018/1/12
+ *
+ * @author Chaek
  */
-
 public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContract.View> implements SafeCreateContract.Presenter {
 
     /**
      * 选择类型
      */
-    private CreateTypeItem mCommonItemType;
-
+    private SelectEventTypeItem mCommonItemType;
     /**
      * 描述编辑数据
      */
@@ -34,62 +36,49 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
      * 整改内容
      */
     private EditContentEntity mRectifyEditContent;
-
     /**
      * 图片信息
      */
     private CommonItemType<String> mPicItemType;
-//    /**
-//     * 检查人
-//     */
-//    private CommonItemType<CreateUserEntity> mExamineItemType;
-//    /**
-//     * 验证人
-//     */
-//    private CommonItemType<CreateUserEntity> mVerifyItemType;
-//    /**
-//     * 整改人
-//     */
-//    private CommonItemType<CreateUserEntity> mRectifyItemType;
-//    /**
-//     * 查阅组
-//     */
-//    private CommonItemType<TeamNameEntity> mLookGroupItemType;
-
-    private ArrayMap<String, CommonItemType> mTypeArrayMap;
+    /**
+     * map 储存为
+     */
+    private ArrayMap<String, CommonItemType> mGroupTypeArrayMap;
 
     /**
-     * @return 获取类型
+     * 获取输入安全督导的基本类型
+     *
+     * @return 获取类型list
      */
     private List<CommonItemType> fetchCommonItemTypeList() {
         String[] titleList = App.getInstance().getResources().getStringArray(R.array.create_item_title);
         String[] tip = App.getInstance().getResources().getStringArray(R.array.create_item_tip);
         List<CommonItemType> list = new ArrayList<>();
-        int size = titleList.length;
-        for (int i = 0; i < size; i++) {
-            CommonItemType item = new CommonItemType<>(titleList[i], tip[i], R.drawable.plus, true);
-            mTypeArrayMap.put(titleList[i], item);
+        for (int i = 0, size = titleList.length; i < size; i++) {
+            String title = titleList[i];
+            CommonItemType item = new CommonItemType<>(title, tip[i], R.drawable.plus, true);
+            mGroupTypeArrayMap.put(title, item);
             list.add(item);
         }
         return list;
     }
 
-    private CreateTypeItem fetchSelectTypeItemData() {
-        CreateTypeItem selectTypeItem = new CreateTypeItem("问题类型");
+    private SelectEventTypeItem fetchSelectTypeItemData() {
+        mCommonItemType = new SelectEventTypeItem("问题类型");
         String[] typeList = App.getInstance().getResources().getStringArray(R.array.type_list);
-        List<CategoryData> list = new ArrayList<>();
+        List<EventTypeEntity> list = new ArrayList<>();
         int size = typeList.length;
         for (int i = 0; i < size; i++) {
-            list.add(new CategoryData(typeList[i], i, false));
+            list.add(new EventTypeEntity(typeList[i], i, false));
         }
-        selectTypeItem.setTypeItemList(list);
-        return selectTypeItem;
+        mCommonItemType.setTypeItemList(list);
+        return mCommonItemType;
     }
 
     @Override
     public void getItemList(int safeOrderID) {
         List<Object> itemList = new ArrayList<>();
-        mTypeArrayMap = new ArrayMap<>();
+        mGroupTypeArrayMap = new ArrayMap<>();
 
         mCommonItemType = fetchSelectTypeItemData();
         itemList.add(fetchSelectTypeItemData());
@@ -104,23 +93,6 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         mPicItemType = new CommonItemType<String>("上传照片", "最多12张", R.drawable.ic_cam, true);
         itemList.add(mPicItemType);
         itemList.addAll(fetchCommonItemTypeList());
-
-//        mExamineItemType = new CommonItemType<>("检查人", "向右滑动查看更多", R.drawable.plus, true);
-//        mTypeArrayMap.put("检查人", mExamineItemType);
-//        itemList.add(mExamineItemType);
-//
-//        mVerifyItemType = new CommonItemType<>("验证人", "最多两人", R.drawable.plus, true);
-//        mTypeArrayMap.put("验证人", mVerifyItemType);
-//        itemList.add(mVerifyItemType);
-//
-//        mRectifyItemType = new CommonItemType<>("整改人", "向右滑动查看更多", R.drawable.plus, true);
-//        mTypeArrayMap.put("整改人", mRectifyItemType);
-//        itemList.add(mRectifyItemType);
-//
-//        mLookGroupItemType = new CommonItemType<>("查阅组", "向右滑动查看更多", R.drawable.plus, true);
-//        mTypeArrayMap.put("查阅组", mLookGroupItemType);
-//        itemList.add(mLookGroupItemType);
-
         mView.setItemList(itemList);
     }
 
@@ -137,7 +109,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
 
     @Override
     public void setSelectUserInfoList(String title, List createUserEntities) {
-        CommonItemType itemType = mTypeArrayMap.get(title);
+        CommonItemType itemType = mGroupTypeArrayMap.get(title);
         if (itemType != null) {
             itemType.setTypeItemList(createUserEntities);
         }
@@ -145,6 +117,51 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
 
     @Override
     public void createSafeOrder() {
+        String site = mView.getEditSite();
+        if (TextUtil.isEmpty(site)) {
+            mView.showToast(R.string.safe_create_input_site);
+            return;
+        }
+        ProjectTeamEntity unit = mView.getCompanyUnitEntity();
+        if (unit == null) {
+            mView.showToast("请选择单位");
+            return;
+        }
+        ProjectTeamEntity companyTeam = mView.getCompanyTeamEntity();
+        if (companyTeam == null) {
+            mView.showToast("请选择劳务公司");
+            return;
+        }
+        List<EventTypeEntity> typeList = mCommonItemType.getCheckEventTypeList();
+        if (typeList.isEmpty()) {
+            mView.showToast("请选择问题类型");
+            return;
+        }
+        String describe = mDescribeEditContent.getContent();
+        if (TextUtil.isEmpty(describe)) {
+            mView.showToast("请输入问题描述");
+            return;
+        }
+        String rectify = mRectifyEditContent.getContent();
+        if (TextUtil.isEmpty(rectify)) {
+            mView.showToast("请输入整改内容");
+            return;
+        }
+
+        List<String> picList = mPicItemType.getTypeItemList();
+        if (picList.isEmpty()) {
+            mView.showToast("请至少选择一张图片");
+            return;
+        }
+
+        for (String key : mGroupTypeArrayMap.keySet()) {
+            CommonItemType itemType = mGroupTypeArrayMap.get(key);
+            if (itemType.getTypeItemList().isEmpty()) {
+                mView.showToast("请选择" + itemType.getTitle());
+                return;
+            }
+        }
+
 
     }
 }

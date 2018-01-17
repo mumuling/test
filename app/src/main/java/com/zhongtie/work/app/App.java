@@ -10,10 +10,18 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 import com.raizlabs.android.dbflow.config.DatabaseConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.BuildConfig;
 import com.zhongtie.work.data.LoginUserInfoEntity;
+import com.zhongtie.work.data.LoginUserInfoEntity_Table;
+import com.zhongtie.work.network.Network;
 import com.zhongtie.work.util.ImageConfigFactory;
 import com.zhongtie.work.util.ToastUtil;
+
+import java.util.concurrent.Callable;
+
+import io.reactivex.Flowable;
+import io.reactivex.functions.Consumer;
 
 import static com.raizlabs.android.dbflow.config.FlowManager.destroy;
 
@@ -46,11 +54,28 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        initUser();
         initUtil();
         initDataBase();
         initNetwork();
         initServer();
         initPush();
+    }
+
+    private void initUser() {
+        Flowable.fromCallable(() -> {
+            if (Cache.isUserLogin()) {
+                LoginUserInfoEntity userInfoEntity = SQLite.select().from(LoginUserInfoEntity.class)
+                        .where(LoginUserInfoEntity_Table.id.eq(Cache.getUserID())).querySingle();
+                setUserInfo(userInfoEntity);
+                return userInfoEntity;
+            }
+            return null;
+        }).compose(Network.netorkIO())
+                .subscribe(loginUserInfoEntity -> {
+                }, throwable -> {
+
+                });
     }
 
     private void initPush() {
@@ -91,7 +116,6 @@ public class App extends Application {
         FlowManager.init(flowConfig);
 
     }
-
 
 
     private void initNetwork() {

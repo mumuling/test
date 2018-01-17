@@ -5,13 +5,13 @@ package com.zhongtie.work.data.create;
  * Date: 2018/1/11
  */
 
-public class CategoryData {
+public class EventTypeEntity {
     private String category;
     private int categoryId;
     private boolean isCheck;
 
 
-    public CategoryData(String category, int categoryId, boolean isCheck) {
+    public EventTypeEntity(String category, int categoryId, boolean isCheck) {
         this.category = category;
         this.categoryId = categoryId;
         this.isCheck = isCheck;

@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.safe.order;
 
 import com.zhongtie.work.ui.base.BasePresenter;
+import com.zhongtie.work.ui.base.BaseView;
 import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 
 import java.util.List;
@@ -11,8 +12,11 @@ import java.util.List;
  */
 
 public interface SafeDetailContract {
-    interface View extends SafeCreateContract.View {
-
+    interface View extends BaseView {
+        /**
+         * @param itemList item数据源
+         */
+        void setItemList(List<Object> itemList);
     }
 
     interface Presenter extends BasePresenter<View> {

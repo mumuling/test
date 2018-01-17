@@ -2,42 +2,38 @@ package com.zhongtie.work.ui.main;
 
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
 import com.zhongtie.work.data.CompanyEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity;
-import com.zhongtie.work.db.CompanyUserData;
+import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.list.OnRefreshListener;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
+import com.zhongtie.work.util.L;
 
 import java.util.List;
 
 /**
+ * 主界面
+ *
  * @author Chaek
  */
-public class MainActivity extends BasePresenterActivity<MainContract.Presenter> implements CompanySelectPopup.OnCompanySelectListener, MainContract.View
-        , OnRefreshListener {
-
+public class MainActivity extends BasePresenterActivity<MainContract.Presenter> implements CompanySelectPopup.OnCompanySelectListener,
+        MainContract.View, OnRefreshListener {
     private static final String TAG = "MainActivity";
-
-    private android.widget.LinearLayout mLvHomeMenu;
-    private android.widget.LinearLayout mLvHomeTitle;
-    private android.widget.TextView mUserCompanyName;
-    private android.widget.LinearLayout mBottom;
-    private android.widget.LinearLayout mQrCodeScan;
-    private android.widget.LinearLayout mWordFeed;
-    private android.widget.FrameLayout mFragmentContent;
-
+    public static final int EXIT_LOAD_TIME = 2000;
+    private TextView mUserCompanyName;
     private ImageView mArrowView;
     public DrawerLayout mDrawerLayout;
-
     private List<CompanyEntity> companyEntityList;
-
     private MainFragment mainFragment;
 
+    private long mExitTime = 0;
 
     @Override
     protected int getLayoutViewId() {
@@ -46,23 +42,15 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
 
     @Override
     protected void initView() {
-        mLvHomeMenu = findViewById(R.id.lv_home_menu);
-        mLvHomeTitle = findViewById(R.id.lv_home_title);
+        LinearLayout lvHomeMenu = findViewById(R.id.lv_home_menu);
+        LinearLayout lvHomeTitle = findViewById(R.id.lv_home_title);
         mUserCompanyName = findViewById(R.id.user_company_name);
-        mBottom = findViewById(R.id.bottom);
-        mFragmentContent = findViewById(R.id.fragment_content);
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
-        mArrowView = (ImageView) findViewById(R.id.arrowView);
+        mArrowView = findViewById(R.id.arrowView);
 
         //点击按钮打开菜单
-        mLvHomeMenu.setOnClickListener(v -> mDrawerLayout.openDrawer(Gravity.LEFT));
-
-        mLvHomeTitle.setOnClickListener(view -> showSelectCompany());
-
-
-        showToast(SQLite.selectCountOf().from(CompanyUserData.class)
-                .count() + "条");
+        lvHomeMenu.setOnClickListener(v -> mDrawerLayout.openDrawer(Gravity.START));
+        lvHomeTitle.setOnClickListener(view -> showSelectCompany());
     }
 
 
@@ -88,7 +76,6 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
                 .fragment(MenuFragment.class)
                 .single(false)
                 .into(R.id.nav_view);
-
     }
 
     @Override
@@ -115,6 +102,7 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
 
     @Override
     public void onSyncCompanySuccess() {
+        L.d(TAG, "onSyncCompanySuccess: 同步刷新成功");
         if (mainFragment != null) {
             mainFragment.onRefreshComplete();
         }
@@ -139,5 +127,21 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
 
     @Override
     public void onRefreshComplete() {
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > EXIT_LOAD_TIME) {
+                showToast(R.string.exit_app);
+                mExitTime = System.currentTimeMillis();
+            } else {
+                new ExitEvent().post();
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

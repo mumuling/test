@@ -111,7 +111,7 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
     /**
      * @return 获取输入的地址
      */
-    public String getInputAddress() {
+    public String getEditSite() {
         return mCreateAddress.getText().toString();
     }
 
@@ -186,7 +186,14 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
     private void startSelectCompany(int type) {
         Bundle bundle = new Bundle();
         bundle.putInt(ProjectTeamSelectFragment.TYPE, type);
+        if (type == 0) {
+            bundle.putString(CommonSelectSearchActivity.SEARCH_HINT, "输入单位名称");
+        } else {
+            bundle.putString(CommonSelectSearchActivity.SEARCH_HINT, "输入公司名称");
+        }
         CommonSelectSearchActivity.newInstance(getFragment(getContext()), ProjectTeamSelectFragment.class, "输入名称", bundle);
+
+
     }
 
     /**

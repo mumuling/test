@@ -5,9 +5,9 @@ import android.support.v4.util.ArrayMap;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.RPRecordEntity;
-import com.zhongtie.work.data.create.CategoryData;
+import com.zhongtie.work.data.create.EventTypeEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.create.CreateTypeItem;
+import com.zhongtie.work.data.create.SelectEventTypeItem;
 import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
@@ -47,13 +47,13 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         return list;
     }
 
-    private CreateTypeItem fetchSelectTypeItemData() {
-        CreateTypeItem selectTypeItem = new CreateTypeItem("问题类型");
+    private SelectEventTypeItem fetchSelectTypeItemData() {
+        SelectEventTypeItem selectTypeItem = new SelectEventTypeItem("问题类型");
         String[] typeList = App.getInstance().getResources().getStringArray(R.array.type_list);
-        List<CategoryData> list = new ArrayList<>();
+        List<EventTypeEntity> list = new ArrayList<>();
         int size = typeList.length;
         for (int i = 0; i < size; i++) {
-            list.add(new CategoryData(typeList[i], i, false));
+            list.add(new EventTypeEntity(typeList[i], i, false));
         }
         selectTypeItem.setTypeItemList(list);
         return selectTypeItem;

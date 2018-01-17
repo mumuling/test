@@ -7,14 +7,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
-import com.zhongtie.work.data.Result;
-import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.UploadApi;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
@@ -42,7 +37,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  * date:2018.1.9
  */
 
-public class SafeOrderDetailFragment extends BasePresenterFragment<SafeCreateContract.Presenter> implements SafeCreateContract.View, OnSignatureListener {
+public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailContract.Presenter> implements SafeDetailContract.View, OnSignatureListener {
     public static final String ID = "id";
     private int mSafeOrderID;
     private SafeDetailHeadView mHeadInfoView;
@@ -125,7 +120,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeCreateCon
     }
 
     @Override
-    protected SafeCreateContract.Presenter getPresenter() {
+    protected SafeDetailContract.Presenter getPresenter() {
         return new SafeDetailPresenterImpl();
     }
 

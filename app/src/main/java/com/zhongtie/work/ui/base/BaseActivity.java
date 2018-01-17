@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.util.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,11 +20,10 @@ import org.greenrobot.eventbus.Subscribe;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-/**
- * Auth: Chaek
- * Date: 2017/11/27
- */
 
+/**
+ * @author Chaek
+ */
 public abstract class BaseActivity extends AppCompatActivity implements BaseView, View.OnClickListener {
 
     protected CompositeDisposable mDisposable;
@@ -63,7 +63,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Subscribe
     public void baseEvent() {
+    }
 
+    @Subscribe
+    public void exitLoginAppEvent(ExitEvent exitEvent) {
+        finish();
     }
 
     private void initTitle() {
@@ -165,8 +169,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void cancelDialog() {
-        if (mLoadingDialog != null && mLoadingDialog.isShowing())
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.cancel();
+        }
     }
 
     @Override

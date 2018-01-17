@@ -33,6 +33,7 @@ import static com.zhongtie.work.ui.setting.CommonFragmentActivity.USER_SELECT_CO
 
 public class CommonSelectSearchActivity extends BaseActivity implements TextWatcher {
 
+    public final static String SEARCH_HINT = "search_hint";
     private LinearLayout mTitleLayoutView;
     private View mTitleBarTransparent;
     private LinearLayout mTitleBack;
@@ -104,7 +105,7 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
 
     @Override
     protected void initData() {
-        mSearch.setHint(getIntent().getStringExtra(TITLE));
+        mSearch.setHint(getIntent().getStringExtra(SEARCH_HINT));
         try {
             mFragment = Fragments.with(this)
                     .fragment(Class.forName(getIntent().getStringExtra(FRAGMENT)))

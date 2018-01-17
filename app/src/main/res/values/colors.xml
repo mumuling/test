@@ -18,30 +18,21 @@
     <!--小标题、副标题-->
     <color name="text_middle">#585858</color>
 
-    <!--次要文字-->
-
-    <!--分割线-->
     <color name="view_divider">#eaeaea</color>
     <color name="view_pressed">#18000000</color>
 
-    <!--MainActivity底部按钮字体颜色-->
     <color name="main_bottom_text_pressed">#185a9d</color>
     <color name="main_bottom_text_normal">#666666</color>
-    <!--搜索框相关颜色-->
     <color name="search_text_color">#185a9d</color>
     <color name="search_bg_start">#d9f3ed</color>
     <color name="search_bg_end">#d2e1eb</color>
-    <!--定位相关颜色-->
     <color name="location_text_theme_color">#43cea2</color>
     <color name="loaction_container_theme_bg">#d9f5ec</color>
     <color name="enabled_gray_bg">#cccccc</color>
-    <!--忘记密码字体颜色-->
 
 
-    <!--一般按钮的颜色渐变值-->
     <color name="normal_btn_start_color">#3dc0a1</color>
     <color name="normal_btn_end_color">#1d699d</color>
-    <!--微信登陆按钮的颜色渐变值-->
     <color name="wechat_login_btn_start_color">#9beb66</color>
     <color name="wechat_login_btn_end_color">#2ba245</color>
 

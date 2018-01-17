@@ -12,22 +12,22 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.data.create.CreateTypeItem;
+import com.zhongtie.work.data.create.SelectEventTypeItem;
 
 /**
  * 创建类别选择
  * Auth: Chaek
  * Date: 2018/1/11
  */
-@BindItemData(CreateTypeItem.class)
-public class CreateSelectTypeItemView extends AbstractItemView<CreateTypeItem, CreateSelectTypeItemView.ViewHolder> {
+@BindItemData(SelectEventTypeItem.class)
+public class CreateSelectTypeItemView extends AbstractItemView<SelectEventTypeItem, CreateSelectTypeItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_create_add_user;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CreateTypeItem data) {
+    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SelectEventTypeItem data) {
         vh.mItemUserListTitle.setText(data.getTitle());
         vh.mItemUserListTip.setVisibility(View.GONE);
         vh.mItemUserAddImg.setVisibility(View.GONE);

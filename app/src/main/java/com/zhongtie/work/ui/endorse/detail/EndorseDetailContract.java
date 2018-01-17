@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.endorse.detail;
 
 import com.zhongtie.work.ui.base.BasePresenter;
+import com.zhongtie.work.ui.base.BaseView;
 import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 
 import java.util.List;
@@ -11,8 +12,12 @@ import java.util.List;
  */
 
 public interface EndorseDetailContract {
-    interface View extends SafeCreateContract.View {
-
+    interface View extends BaseView{
+        /**
+         *
+         * @param itemList item数据源
+         */
+        void setItemList(List<Object> itemList);
     }
 
     interface Presenter extends BasePresenter<View> {

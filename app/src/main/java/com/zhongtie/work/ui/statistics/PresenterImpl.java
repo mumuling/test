@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import com.github.mikephil.charting.data.PieEntry;
+import com.zhongtie.work.R;
+import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.StatisticsLineData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
@@ -14,6 +16,7 @@ import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -35,7 +38,8 @@ public class PresenterImpl extends BasePresenterImpl<StatisticsContract.View> im
     public void fetchInitData() {
         mCacheData = new ArrayMap<>();
         String year = TimeUtils.getCurrentYear();
-        int position = 4;
+        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        int position = month / 3;
         fetchYearData(year, position);
     }
 

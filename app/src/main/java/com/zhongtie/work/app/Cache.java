@@ -1,6 +1,7 @@
 package com.zhongtie.work.app;
 
 import com.zhongtie.work.data.LoginUserInfoEntity;
+import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.TextUtil;
 
@@ -44,6 +45,7 @@ public class Cache {
     }
 
     public static void exitLogin() {
+        new ExitEvent().post();
         SharePrefUtil.getUserPre().putString(LOGIN_USER_ID, "");
     }
 }

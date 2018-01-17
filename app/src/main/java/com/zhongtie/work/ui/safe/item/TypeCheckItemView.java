@@ -9,27 +9,27 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.data.create.CategoryData;
+import com.zhongtie.work.data.create.EventTypeEntity;
 
 /**
  * 创建类别选择
  * Auth: Chaek
  * Date: 2018/1/11
  */
-@BindItemData(CategoryData.class)
-public class TypeCheckItemView extends AbstractItemView<CategoryData, TypeCheckItemView.ViewHolder> {
+@BindItemData(EventTypeEntity.class)
+public class TypeCheckItemView extends AbstractItemView<EventTypeEntity, TypeCheckItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_create_select_type;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CategoryData data) {
-        if (data.isCheck() != vh.mItemTitleCheck.isChecked()) {
+    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull EventTypeEntity data) {
+        if (data.isCheck() && !vh.mItemTitleCheck.isChecked()) {
             vh.mItemTitleCheck.setChecked(data.isCheck());
         }
         vh.mItemTitleCheck.setText(data.getCategory());
-        vh.mItemTitleCheck.setOnCheckedChangeListener((buttonView, isChecked) -> data.setCheck(isChecked));
+        vh.mItemTitleCheck.setOnClickListener(v -> data.setCheck(vh.mItemTitleCheck.isChecked()));
     }
 
 

@@ -147,4 +147,7 @@
     <string name="un_select_all">取消全选</string>
     <string name="create_title">发起</string>
     <string name="not_wrong_text">无违规情况</string>
+    <string name="safe_create_input_site">请输入事件地点</string>
+    <string name="statistics_title">报表统计</string>
+    <string name="notice_setting">设置成功</string>
 </resources>

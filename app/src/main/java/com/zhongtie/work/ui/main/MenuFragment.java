@@ -15,6 +15,7 @@ import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
+import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.login.LoginActivity;
 import com.zhongtie.work.ui.main.adapter.MenuItemView;
@@ -147,7 +148,7 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
                 .positiveText("退出")
                 .negativeText("取消")
                 .onPositive((dialog, which) -> {
-                    getActivity().finish();
+                    new ExitEvent().post();
                 }).onNegative((dialog, which) -> dialog.dismiss())
                 .build().show();
 
@@ -161,7 +162,6 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
                 .negativeText("取消")
                 .onPositive((dialog, which) -> {
                     Cache.exitLogin();
-                    getActivity().finish();
                     LoginActivity.newInstance(getActivity());
                 }).onNegative((dialog, which) -> dialog.dismiss()).build().show();
 

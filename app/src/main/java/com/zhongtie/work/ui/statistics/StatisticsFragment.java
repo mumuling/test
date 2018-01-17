@@ -25,6 +25,7 @@ import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.widget.MultipleStatusView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -71,7 +72,7 @@ public class StatisticsFragment extends BasePresenterFragment<StatisticsContract
         mSafeRatioChart = (PieChart) findViewById(R.id.safe_ratio_chart);
         mCompanyWorkLine = (ChartLineView) findViewById(R.id.company_work_line);
         mCompanyBelongLine = (ChartLineView) findViewById(R.id.company_belong_line);
-
+        mCompanyBelongLine.setLineColor(getResources().getColor(R.color.wechat_login_btn_start_color));
         mStatisticsYearView = (RelativeLayout) findViewById(R.id.statistics_year_view);
         mStatisticsYear = (TextView) findViewById(R.id.statistics_year);
         mStatisticsQuarterView = (RelativeLayout) findViewById(R.id.statistics_quarter_view);
@@ -90,8 +91,11 @@ public class StatisticsFragment extends BasePresenterFragment<StatisticsContract
 
         mStatisticsYear.setText(mSelectYear);
         mStatisticsYear.append("年");
-        mStatisticsQuarter.setText("全部");
 
+        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        String[] name = getResources().getStringArray(R.array.year_position);
+        mPosition = month / 3 ;
+        mStatisticsQuarter.setText(name[mPosition]);
     }
 
     private void showSelectQuarterPopup() {
@@ -109,13 +113,10 @@ public class StatisticsFragment extends BasePresenterFragment<StatisticsContract
             year[i] = nowYear - (YEAR_COUNT - 1 - i) + "年";
         }
 
-        ListPopupWindowUtil.showListPopupWindow(mStatisticsYearView, Gravity.BOTTOM, year, new OnListPopupListener() {
-            @Override
-            public void onItemClick(String item, int position) {
-                mStatisticsYear.setText(item);
-                mSelectYear = item.replace("年", "");
-                mPresenter.fetchYearData(mSelectYear, mPosition);
-            }
+        ListPopupWindowUtil.showListPopupWindow(mStatisticsYearView, Gravity.BOTTOM, year, (item, position) -> {
+            mStatisticsYear.setText(item);
+            mSelectYear = item.replace("年", "");
+            mPresenter.fetchYearData(mSelectYear, mPosition);
         });
 
     }
