@@ -27,7 +27,6 @@ import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.item.CreateUserItemView;
 import com.zhongtie.work.ui.select.item.SelectTeamItemView;
 import com.zhongtie.work.ui.select.item.SelectTeamUserItemView;
-import com.zhongtie.work.ui.user.UserInfoActivity;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
@@ -43,7 +42,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.LIST;
@@ -92,7 +90,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
         mTip = "向右滑动查看更多";
         if (mTitle.equals("验证人")) {
             maxSelectCount = 2;
-            mTip="最多可选择2人";
+            mTip = "最多可选择2人";
         }
         mSelectUserList = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
         return R.layout.select_user_fragment;
@@ -135,21 +133,28 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     @Subscribe
     public void userEntityEvent(CreateUserEntity createUserEntity) {
-        if (maxSelectCount != -1 && mSelectUserList.size() >= maxSelectCount) {
+        Iterator iterator = mSelectUserList.iterator();
+        boolean isModify = false;
+        while (iterator.hasNext()) {
+            CreateUserEntity userEntity = (CreateUserEntity) iterator.next();
+            if (userEntity.getUserId() == createUserEntity.getUserId()) {
+                isModify = true;
+                if (!createUserEntity.isSelect()) {
+                    iterator.remove();
+                }
+                userEntity.setAt(createUserEntity.isAt());
+            }
+        }
+
+        if (!isModify&&maxSelectCount != -1 && mSelectUserList.size() >= maxSelectCount) {
             showToast("最多可选择" + maxSelectCount + "人");
             createUserEntity.setSelect(false);
             createUserEntity.setAt(false);
             mSelectInfoAdapter.notifyDataSetChanged();
             return;
         }
-        Iterator iterator = mSelectUserList.iterator();
-        while (iterator.hasNext()) {
-            CreateUserEntity userEntity = (CreateUserEntity) iterator.next();
-            if (userEntity.getUserId() == createUserEntity.getUserId()) {
-                iterator.remove();
-            }
-        }
-        if (createUserEntity.isSelect()) {
+
+        if (!isModify && createUserEntity.isSelect()) {
             mSelectUserList.add(createUserEntity);
         }
         mSelectInfoAdapter.notifyDataSetChanged();

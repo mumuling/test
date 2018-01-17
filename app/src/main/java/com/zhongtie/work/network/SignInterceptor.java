@@ -54,15 +54,17 @@ class SignInterceptor implements Interceptor {
             baseData.put("wfversion", BuildConfig.VERSION_NAME);
             baseData.put("wfos", ANDROID);
 
-            if (BuildConfig.DEBUG) {
-                L.e(TAG, baseData.toString());
-            }
+
             if (body != null) {
                 //将传递过来的参数加入
                 for (int i = 0, len = body.size(); i < len; i++) {
-                    baseData.put(body.encodedName(i), body.encodedValue(i));
+                    baseData.put(body.encodedName(i), body.value(i));
                 }
             }
+            if (BuildConfig.DEBUG) {
+                L.e(TAG, baseData.toString());
+            }
+
             //拼接字符串
             for (String key : baseData.keySet()) {
                 //提取action 参数

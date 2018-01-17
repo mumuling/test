@@ -76,12 +76,6 @@ public class CreateUserEntity implements BaseEvent, Serializable {
 
     @Override
     public String toString() {
-        return "CreateUserEntity{" +
-                "userName='" + userName + '\'' +
-                ", userPic='" + userPic + '\'' +
-                ", userId=" + userId +
-                ", isSelect=" + isSelect +
-                ", isAt=" + isAt +
-                '}';
+        return userId + "";
     }
 }

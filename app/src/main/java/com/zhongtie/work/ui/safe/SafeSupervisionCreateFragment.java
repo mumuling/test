@@ -10,13 +10,12 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
-import com.zhongtie.work.ui.safe.item.SafeCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
+import com.zhongtie.work.ui.safe.item.SafeCommonItemView;
 import com.zhongtie.work.ui.safe.order.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 import com.zhongtie.work.ui.safe.presenter.SafeCreatePresenterImpl;
@@ -116,7 +115,8 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
 
     @Override
     public void setItemList(List<Object> itemList) {
-        mCommonAdapter.setListData(itemList);
+        this.mInfoList.clear();
+        this.mInfoList.addAll(itemList);
         mCommonAdapter.notifyDataSetChanged();
     }
 
@@ -141,16 +141,21 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     }
 
     @Override
+    public void createSuccess() {
+        getActivity().finish();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == MultiImageSelector.REQUEST_CODE) {
                 List<String> selectImgList = data.getStringArrayListExtra(MultiImageSelectorActivity.BASE_RESULT);
                 mPresenter.setSelectImageList(selectImgList);
-                mCommonAdapter.notifyItemChanged(4);
+                mCommonAdapter.notifyDataSetChanged();
             } else if (requestCode == CommonFragmentActivity.USER_SELECT_CODE) {
                 String title = data.getStringExtra(TITLE);
-                List<CreateUserEntity> createUserEntities = (List<CreateUserEntity>) data.getSerializableExtra(LIST);
+                List createUserEntities = (List) data.getSerializableExtra(LIST);
                 mPresenter.setSelectUserInfoList(title, createUserEntities);
                 mCommonAdapter.notifyDataSetChanged();
             }

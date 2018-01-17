@@ -38,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:singleLine="true"
             android:textColor="@color/text_color2"
             android:textSize="10dp"
             tools:text="渝中区某地 单位名称单位名称单位名称单..." />
@@ -56,10 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="4dp"
+        android:layout_marginRight="5dp"
         android:layout_toLeftOf="@id/arrow"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
         android:textSize="14dp"
         tools:text="新进展" />
 

@@ -41,6 +41,8 @@ public interface SafeCreateContract {
          * @return 地址
          */
         String getEditSite();
+
+        void createSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {

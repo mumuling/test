@@ -9,18 +9,23 @@ import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.CompanyEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity_Table;
+import com.zhongtie.work.data.Result;
 import com.zhongtie.work.db.SwitchCompanyUtil;
+import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SyncApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
+import com.zhongtie.work.util.DownloadManager;
 import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.SyncUtil;
 import com.zhongtie.work.util.TextUtil;
-import com.zhongtie.work.util.DownloadManager;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY;
 
@@ -34,6 +39,21 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
     public void initSync() {
         mView.showSync();
         //同步
+        Http.netServer(SyncApi.class)
+                .createLocalData(1)
+                .compose(Network.netorkIO())
+                .subscribe(new Consumer<Result<String>>() {
+                    @Override
+                    public void accept(Result<String> stringResult) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
+
         addDispose(SyncUtil.syncCompanyList()
                 .delay(1000, TimeUnit.MILLISECONDS)
                 .onErrorReturn(throwable -> new ArrayList<>())

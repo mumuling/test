@@ -55,7 +55,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
     @Override
     public void addWrong(String content) {
         CacheAddWrongTable addWrongTable = new CacheAddWrongTable();
-        addWrongTable.setId(userId);
+        addWrongTable.setUserId(userId);
         addWrongTable.setByUserId(Integer.valueOf(Cache.getUserID()));
         addWrongTable.setContent(content);
         addWrongTable.setTime(TimeUtils.getFormatDateTime());
@@ -126,6 +126,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
                     continue;
                 }
                 builder.append(item.getContent());
+                builder.append("\t");
                 builder.append(TimeUtils.formatWrongTime2(item.getTime()));
                 builder.append("\n");
             }

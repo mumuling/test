@@ -40,4 +40,5 @@ public class EventTypeEntity {
     public void setCheck(boolean check) {
         isCheck = check;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.safe.order;
 
 import android.content.Intent;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,16 +12,17 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.event.ReplyEvent;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.UploadApi;
+import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CreatePicItemView;
-import com.zhongtie.work.util.ToastUtil;
+import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.upload.UploadData;
 import com.zhongtie.work.util.upload.UploadUtil;
 import com.zhongtie.work.widget.AdapterDataObserver;
@@ -28,7 +30,7 @@ import com.zhongtie.work.widget.AdapterDataObserver;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.Flowable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.image.MultiImageSelector.REQUEST_CODE;
@@ -40,6 +42,8 @@ import static com.zhongtie.work.ui.image.MultiImageSelector.REQUEST_CODE;
 
 public class ReplyEditFragment extends BaseFragment implements OnSignatureListener, AdapterDataObserver.OnAdapterDataChangedListener {
 
+    public static final String EVENT_ID = "event_id";
+    private int mSafeEventId;
     private TextView mEditTitle;
     private EditText mCreateModifyContent;
     private TextView mItemUserListTitle;
@@ -53,6 +57,7 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
 
     @Override
     public int getLayoutViewId() {
+        mSafeEventId = getArguments().getInt(EVENT_ID, 0);
         return R.layout.reply_edit_fragment;
     }
 
@@ -74,26 +79,27 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
 
         mItemUserAddImg.setImageResource(R.drawable.ic_cam);
         mItemUserAddImg.setVisibility(View.VISIBLE);
-        mItemUserAddImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int count = MultiImageSelector.MAX_COUNT - mPicList.size();
-                MultiImageSelector.create().count(count).start(ReplyEditFragment.this, REQUEST_CODE);
-            }
+        mItemUserAddImg.setOnClickListener(view -> {
+            int count = MultiImageSelector.MAX_COUNT - mPicList.size();
+            MultiImageSelector.create().count(count).start(ReplyEditFragment.this, REQUEST_CODE);
         });
         mCheckExamineList.setLayoutManager(new LinearLayoutManager(getAppContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new SignatureDialog(getActivity(), ReplyEditFragment.this).show();
-            }
-        });
+        mSubmit.setOnClickListener(view -> replyEvent());
+    }
+
+    private void replyEvent() {
+        String content = mCreateModifyContent.getText().toString();
+        if (TextUtil.isEmpty(content)) {
+            showToast(getString(R.string.input_reply_content));
+            return;
+        }
+        new SignatureDialog(getActivity(), ReplyEditFragment.this).show();
     }
 
     @Override
     protected void initData() {
-        commonAdapter = new CommonAdapter(mPicList).register(new CreatePicItemView(false));
+        commonAdapter = new CommonAdapter(mPicList).register(new CreatePicItemView(true));
         mCheckExamineList.setAdapter(commonAdapter);
         commonAdapter.registerAdapterDataObserver(new AdapterDataObserver(this));
         onChanged();
@@ -118,26 +124,44 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
                 mPicList.add(selectImgList.get(i));
             }
         }
-        commonAdapter.setListData(mPicList);
         commonAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onSignature(String imagePath) {
 
+        ArrayMap<String, Object> postDataList = new ArrayMap<>();
+        postDataList.put("event_detail", mCreateModifyContent.getText().toString());
+        postDataList.put("event_userid", Cache.getUserID());
+        postDataList.put("id", mSafeEventId);
         UploadUtil.uploadSignPNG(imagePath)
-                .compose(Network.networkDialog(this,"正在上传"))
-                .subscribe(new Consumer<UploadData>() {
-                    @Override
-                    public void accept(UploadData uploadData) throws Exception {
-                        showToast(uploadData.getPicname());
+                .flatMap(uploadData -> {
+                    postDataList.put("event_sign", uploadData.getPicname());
+                    return Flowable.fromIterable(mPicList).
+                            flatMap(s -> UploadUtil.uploadSignPNG(imagePath))
+                            .toList().toFlowable();
+                })
+                .flatMap(uploadData -> {
+                    StringBuilder builder = new StringBuilder();
+                    for (UploadData data : uploadData) {
+                        builder.append(data.getPicid());
+                        builder.append(",");
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    if (builder.length() > 0)
+                        builder.delete(builder.length() - 1, builder.length());
+                    postDataList.put("event_pic", builder.toString());
+                    return Http.netServer(SafeApi.class).replyEvent(postDataList);
+                })
+                .compose(Network.networkConvertDialog(ReplyEditFragment.this))
+                .subscribe(integer -> {
+                    showToast(getString(R.string.reply_success));
+                    new ReplyEvent().post();
+                    getActivity().finish();
 
-                    }
+                }, throwable -> {
+
                 });
+
     }
 
     @Override

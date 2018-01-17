@@ -1,5 +1,8 @@
 package com.zhongtie.work.data.create;
 
+import com.alibaba.fastjson.JSON;
+import com.zhongtie.work.data.TeamNameEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +66,35 @@ public class CommonItemType<T> {
         }
         return mTypeItemList;
     }
+
+    public String getSelectUserIDList() {
+        StringBuilder builder = new StringBuilder();
+        List<String> strings=new ArrayList<>();
+        for (T data : mTypeItemList) {
+            CreateUserEntity userEntity = (CreateUserEntity) data;
+            builder.append(userEntity.getUserId());
+            builder.append(",");
+            strings.add(userEntity.getUserId()+"");
+        }
+        if (builder.length() > 0)
+            builder.delete(builder.length() - 1, builder.length());
+
+
+        return JSON.toJSONString(strings);
+    }
+
+    public String getTeamIDList() {
+        StringBuilder builder = new StringBuilder();
+        for (T data : mTypeItemList) {
+            TeamNameEntity userEntity = (TeamNameEntity) data;
+            builder.append(userEntity.getTeamId());
+            builder.append(",");
+        }
+        if (builder.length() > 0)
+            builder.delete(builder.length() - 1, builder.length());
+        return builder.toString();
+    }
+
 
     public void setTypeItemList(List<T> typeItemList) {
         mTypeItemList = typeItemList;

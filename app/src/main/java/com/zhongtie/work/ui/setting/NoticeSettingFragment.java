@@ -35,7 +35,7 @@ public class NoticeSettingFragment extends BaseFragment {
         boolean isCheckNotice = SharePrefUtil.getInstance().getBoolean("notice", true);
         mNoticeCheck.setChecked(isCheckNotice);
         mModifyPassword.setOnClickListener(v -> {
-            SharePrefUtil.getInstance().getBoolean(IS_NOTICE, mNoticeCheck.isChecked());
+            SharePrefUtil.getInstance().putBoolean(IS_NOTICE, mNoticeCheck.isChecked());
             showToast(R.string.notice_setting);
             getActivity().finish();
         });

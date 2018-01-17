@@ -26,7 +26,7 @@ public class SelectTeamNameItemView extends AbstractItemView<TeamNameEntity, Sel
     public void onBindViewHolder(@NonNull SelectTeamNameItemView.ViewHolder vh, @NonNull TeamNameEntity data) {
         vh.mItemTitleCheck.setText( data.getTeamName());
         vh.mItemTitleCheck.setChecked(data.isSelect());
-        vh.setOnClickListener(v -> {
+        vh.mItemTitleCheck.setOnClickListener(v -> {
             data.setSelect(true);
             data.post();
         });

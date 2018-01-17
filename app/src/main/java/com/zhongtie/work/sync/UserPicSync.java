@@ -6,9 +6,9 @@ import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.NetworkUtil;
 import com.zhongtie.work.network.api.SyncApi;
 import com.zhongtie.work.util.L;
-import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.Util;
 
 import java.io.BufferedInputStream;
@@ -18,10 +18,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Flowable;
@@ -93,35 +90,40 @@ public class UserPicSync {
 
     public void startDownload() {
         if (!isRun) {
-            L.e(TAG, "正在开始下载....");
-            isRun = true;
-            this.companyId = Cache.getSelectCompany();
-            Flowable<List<String>> picList = Http.netServer(SyncApi.class).syncHeadPortraitUrl(companyId)
-                    .map(new NetWorkFunc1<>());
-            Flowable<List<String>> cacheList = Flowable.just(cacheFolderName)
-                    .map(File::listFiles)
-                    .flatMap(Flowable::fromArray)
-                    .map(File::getName)
-                    .toList()
-                    .toFlowable();
 
-            //执行下载 并比对本地是否存在
-            Flowable.zip(picList, cacheList, (imgUrl, strings2) -> Flowable.fromIterable(imgUrl)
-                    .filter(s -> {
-                        String md5 = Util.md532(Util.extractFileNameWithoutSuffix(s));
-                        return !strings2.contains(md5);
-                    })
-                    .toList()
-                    .toFlowable()
-                    .blockingSingle()).compose(Network.netorkIO())
-                    .subscribe(this::executeDownload, throwable -> isRun = false);
+            if (NetworkUtil.isWifi()) {
+                L.e(TAG, "正在开始下载....");
+                isRun = true;
+                this.companyId = Cache.getSelectCompany();
+                Flowable<List<String>> picList = Http.netServer(SyncApi.class).syncHeadPortraitUrl(companyId)
+                        .map(new NetWorkFunc1<>());
+                Flowable<List<String>> cacheList = Flowable.just(cacheFolderName)
+                        .map(File::listFiles)
+                        .flatMap(Flowable::fromArray)
+                        .map(File::getName)
+                        .toList()
+                        .toFlowable();
+
+                //执行下载 并比对本地是否存在
+                Flowable.zip(picList, cacheList, (imgUrl, strings2) -> Flowable.fromIterable(imgUrl)
+                        .filter(s -> {
+                            String md5 = Util.md532(Util.extractFileNameWithoutSuffix(s));
+                            return !strings2.contains(md5);
+                        })
+                        .toList()
+                        .toFlowable()
+                        .blockingSingle()).compose(Network.netorkIO())
+                        .subscribe(this::executeDownload, throwable -> isRun = false);
+            } else {
+                L.e(TAG, "不是wifi连接不进行照片同步");
+            }
         }
 
     }
 
     private void executeDownload(List<String> strings) {
         L.e(TAG, "正在开始下载...." + strings.size() + "条数据");
-        for (int i = 0, count = Math.min(4, strings.size()); i < count; i++) {
+        for (int i = 0, count = Math.min(2, strings.size()); i < count; i++) {
             mDownloadServer.execute(new DownRunnable(strings.get(i), new OnDownLoadCallBack() {
                 @Override
                 public void onDownComplete() {
@@ -131,6 +133,7 @@ public class UserPicSync {
                 private void nextDown() {
                     synchronized (this) {
                         downPosition++;
+                        L.e(TAG, "正在开始下载第" + downPosition + "条数据");
                         if (downPosition < strings.size()) {
                             mDownloadServer.execute(new DownRunnable(strings.get(downPosition), this));
                         } else {
@@ -165,8 +168,7 @@ public class UserPicSync {
         @Override
         public void run() {
             L.e(TAG, downUrl + "正在下载");
-            //文件夹名称
-            File file = new File(cacheFolderName, Util.md532(Util.extractFileNameWithoutSuffix(downUrl)));
+
             String url = downUrl.replace(".jpg", "_mini.jpg");
             final Request request = new Request.Builder()
                     .get()
@@ -176,6 +178,8 @@ public class UserPicSync {
             try {
                 Response response = call.execute();
                 if (response.isSuccessful()) {
+                    //文件夹名称
+                    File file = new File(cacheFolderName, Util.md532(Util.extractFileNameWithoutSuffix(downUrl)));
                     InputStream is;
                     byte[] buf = new byte[10 * 1024];
                     int len;
@@ -191,8 +195,12 @@ public class UserPicSync {
                     fos.flush();
                     is.close();
                     fos.close();
+                    response.close();
                     mOnDownLoadCallBack.onDownComplete();
+                    L.e(TAG, downUrl + "下载成功、、、、、、、、");
                 } else {
+                    L.e(TAG, downUrl + "下载失败、、、、、、、、");
+                    response.close();
                     mOnDownLoadCallBack.onDownFail();
                 }
             } catch (Exception e) {

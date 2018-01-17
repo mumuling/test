@@ -57,7 +57,7 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
     @Override
     public void initView() {
         mList = (RefreshRecyclerView) findViewById(R.id.list);
-        commonAdapter = new CommonAdapter().register(SafeSupervisionItemView.class);
+        commonAdapter = new CommonAdapter(mList.getListData()).register(SafeSupervisionItemView.class);
         mList.setDivider(true);
         mList.initConfig(this);
         mList.setEmptyView(R.layout.placeholder_empty_view);
@@ -73,8 +73,9 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
     }
 
     public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
-        mList.setListData(supervisionList);
-        mList.setLoading(false);
+        if (mList != null) {
+            mList.setListData(supervisionList);
+        }
 
     }
 

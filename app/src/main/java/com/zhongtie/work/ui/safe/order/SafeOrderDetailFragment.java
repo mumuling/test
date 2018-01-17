@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.event.ReplyEvent;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment;
@@ -24,6 +25,8 @@ import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.util.upload.UploadData;
 import com.zhongtie.work.util.upload.UploadUtil;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +72,13 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         return R.layout.safe_order_info_fragment;
     }
 
+
+    @Subscribe
+    public void replyEvent(ReplyEvent replyEvent) {
+
+
+    }
+
     @Override
     public void initView() {
         mList = (RecyclerView) findViewById(R.id.list);
@@ -80,7 +90,15 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mList = (RecyclerView) findViewById(R.id.list);
 
         mModify.setOnClickListener(view -> SafeSupervisionCreateActivity.newInstance(getActivity(), SafeSupervisionCreateFragment.class, getString(R.string.safe_supervision_title)));
-        mReply.setOnClickListener(view -> CommonFragmentActivity.newInstance(getActivity(), ReplyEditFragment.class, "回复"));
+        mReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(ReplyEditFragment.EVENT_ID, mSafeOrderID);
+                CommonFragmentActivity.newInstance(SafeOrderDetailFragment.this, ReplyEditFragment.class, "回复", bundle);
+
+            }
+        });
 
 
         mApprove.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +151,6 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
 
     @Override
     public void onSignature(String imagePath) {
-
         UploadUtil.uploadJPG(imagePath)
                 .compose(Network.netorkIO())
                 .subscribe(new Consumer<UploadData>() {

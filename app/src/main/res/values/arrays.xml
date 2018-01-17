@@ -7,6 +7,10 @@
         <item>扫二维码</item>
         <item>统计图表</item>
         <item>文件下载</item>
+        <item>质量督导</item>
+        <item>安全培训</item>
+        <item>会务系统</item>
+        <item>亮点展示</item>
     </string-array>
     <integer-array name="home_items_icon">
         <item>@drawable/home1</item>
@@ -15,6 +19,10 @@
         <item>@drawable/home4</item>
         <item>@drawable/home5</item>
         <item>@drawable/home6</item>
+        <item>@drawable/ic_home_quality</item>
+        <item>@drawable/ic_home_safe_train</item>
+        <item>@drawable/ic_home_system</item>
+        <item>@drawable/ic_home_show</item>
     </integer-array>
 
     <string-array name="menu_item_name">

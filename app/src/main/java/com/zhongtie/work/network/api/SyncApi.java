@@ -21,4 +21,13 @@ public interface SyncApi {
     @POST("?action=GetHeadPortraitUrl")
     Flowable<Result<List<String>>> syncHeadPortraitUrl(@Field("companyid") int companyid);
 
+    /**
+     * 创建本地数
+     * @param companyid
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("?action=GetHeadPortraitUrl")
+    Flowable<Result<String>> createLocalData(@Field("companyid") int companyid);
+
 }

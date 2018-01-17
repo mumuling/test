@@ -69,4 +69,8 @@
     <color name="pen_bg_color">#eeeeee</color>
     <color name="line_color">#C7C7C7</color>
     <color name="image_bottom">#252525</color>
+    <color name="status_at">#ffe7343a</color>
+    <color name="status_new_next">#ff2a77b6</color>
+    <color name="status_read">#ff999999</color>
+    <color name="status_over">#fff38900</color>
 </resources>

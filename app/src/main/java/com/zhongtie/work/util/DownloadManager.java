@@ -1,6 +1,5 @@
 package com.zhongtie.work.util;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -11,11 +10,9 @@ import com.zhongtie.work.network.HttpException;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.Executors;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -91,7 +88,6 @@ public class DownloadManager {
         Call call = getOkHttpClient().newCall(request);
         try {
             Response response = call.execute();
-
             if (response.isSuccessful()) {
                 InputStream is = null;
                 byte[] buf = new byte[10 * 1024];
@@ -113,9 +109,11 @@ public class DownloadManager {
                 fos.flush();
                 is.close();
                 fos.close();
+                response.close();
             } else {
                 L.e(TAG, "下载失败---------");
-//                new HttpException(result.getMsg(), result.getCode())
+                response.close();
+                call.cancel();
                 throw new HttpException("同步失败", 0);
             }
         } catch (Exception e) {

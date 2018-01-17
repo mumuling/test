@@ -43,4 +43,17 @@ public class SelectEventTypeItem {
     public void setTypeItemList(List<EventTypeEntity> typeItemList) {
         mTypeItemList = typeItemList;
     }
+
+    public String getCheckEventTypeString() {
+        StringBuilder builder = new StringBuilder();
+        for (EventTypeEntity data : mTypeItemList) {
+            if (data.isCheck()) {
+                builder.append(data.getCategory());
+                builder.append(",");
+            }
+        }
+        if (builder.length() > 0)
+            builder.delete(builder.length() - 1, builder.length());
+        return builder.toString();
+    }
 }

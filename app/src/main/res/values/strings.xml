@@ -150,4 +150,6 @@
     <string name="safe_create_input_site">请输入事件地点</string>
     <string name="statistics_title">报表统计</string>
     <string name="notice_setting">设置成功</string>
+    <string name="input_reply_content">请输入回复内容</string>
+    <string name="reply_success">回复成功</string>
 </resources>
