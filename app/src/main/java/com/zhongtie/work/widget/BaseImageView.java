@@ -1,5 +1,6 @@
 package com.zhongtie.work.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Network;
 import android.net.Uri;
@@ -24,7 +25,9 @@ import java.io.File;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 import static com.zhongtie.work.ui.safe.item.CreatePicItemView.HTTP;
 
@@ -72,27 +75,45 @@ public class BaseImageView extends SimpleDraweeView {
             card = (String) getTag();
             loadUserCard(card);
         } else {
-            Flowable.fromCallable(() -> SQLite.select().from(CompanyUserData.class)
-                    .where(CompanyUserData_Table.id.eq(userId))
-                    .querySingle())
-                    .compose(com.zhongtie.work.network.Network.netorkIO())
-                    .subscribe(companyUserData -> loadUserCard(companyUserData.getIdencode()));
+            Flowable.zip(Flowable.just(userId).map(integer -> SQLite.select().from(CompanyUserData.class)
+                    .where(CompanyUserData_Table.id.eq(integer))
+                    .querySingle()), Flowable.just(this), new BiFunction<CompanyUserData, BaseImageView, Object>() {
+                @Override
+                public Object apply(CompanyUserData companyUserData, BaseImageView baseImageView) throws Exception {
+                    baseImageView.loadUserCard(companyUserData.getIdencode());
+                    return "";
+                }
+            }).subscribe(new Consumer<Object>() {
+                @Override
+                public void accept(Object o) throws Exception {
+
+                }
+            }, new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) throws Exception {
+
+                }
+            });
+
         }
 
     }
 
-    private void loadUserCard(String card) {
-        String file = Environment.getExternalStorageDirectory().getPath() + "/zhongtie/user_image/";
-        File file2 = new File(file, Util.md532(card));
-        Uri lowResUri, highResUri;
-        lowResUri = Uri.parse("file://" + file2.toString());
-        highResUri = Uri.parse("file://" + file2.toString());
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setLowResImageRequest(ImageRequest.fromUri(lowResUri))
-                .setImageRequest(ImageRequest.fromUri(highResUri))
-                .setOldController(getController())
-                .build();
-        setController(controller);
-        setTag(card);
+    public void loadUserCard(String card) {
+        ((Activity) getContext()).runOnUiThread(() -> {
+            String file = Environment.getExternalStorageDirectory().getPath() + "/zhongtie/user_image/";
+            File file2 = new File(file, Util.md532(card));
+            Uri lowResUri, highResUri;
+            lowResUri = Uri.parse("file://" + file2.toString());
+            highResUri = Uri.parse("file://" + file2.toString());
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setLowResImageRequest(ImageRequest.fromUri(lowResUri))
+                    .setImageRequest(ImageRequest.fromUri(highResUri))
+                    .setOldController(getController())
+                    .build();
+            setController(controller);
+            setTag(card);
+        });
+
     }
 }
