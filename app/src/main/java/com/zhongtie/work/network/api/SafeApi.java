@@ -61,4 +61,27 @@ public interface SafeApi {
     Flowable<Result<Integer>> replyEvent(@FieldMap ArrayMap<String, Object> data);
 
 
+    /**
+     * 签名接口
+     *
+     * @param userId  用户编号
+     * @param eventid 用户编号
+     * @param signurl 签名文件地址
+     */
+    @FormUrlEncoded
+    @POST("?action=EventSign")
+    Flowable<Result<Integer>> eventSign(@Field("userid") String userId, @Field("eventid") int eventid, @Field("signurl") String signurl);
+
+    /**
+     * 验证接口
+     *
+     * @param userId  用户编号
+     * @param eventid 用户编号
+     * @param signurl 签名文件地址
+     */
+    @FormUrlEncoded
+    @POST("?action=ValidateEvent")
+    Flowable<Result<Integer>> validateEvent(@Field("userid") String userId, @Field("eventid") int eventid, @Field("signurl") String signurl);
+
+
 }

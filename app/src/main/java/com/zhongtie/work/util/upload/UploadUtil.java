@@ -75,9 +75,9 @@ public class UploadUtil {
     }
 
     /**
-     * 上传JPG图片 发布任务
+     * 上传签名文件
      *
-     * @param filePath 图片地址
+     * @param filePath 本地图片地址
      * @return 返回上传成功的图片信息
      */
     public static Flowable<UploadData> uploadSignPNG(String filePath) {
