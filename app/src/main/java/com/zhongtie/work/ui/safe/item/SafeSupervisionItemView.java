@@ -26,28 +26,28 @@ public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEnt
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SafeSupervisionEntity data) {
-        vh.mSafeOrderHead.loadImage(data.getUserPicture());
-        vh.mSafeOrderName.setText(data.getUserName());
-        vh.mSafeOrderState.setText(data.getState());
-        vh.mSafeOrderContent.setText(data.getCompanyName());
-
-
-        int statusColor = vh.mContext.getResources().getColor(R.color.status_read);
-        switch (data.getState()) {
-            case "新进展":
-                statusColor = vh.mContext.getResources().getColor(R.color.status_new_next);
-                break;
-            case "@我":
-                statusColor = vh.mContext.getResources().getColor(R.color.status_at);
-                break;
-            case "完结":
-                statusColor = vh.mContext.getResources().getColor(R.color.status_over);
-                break;
-            case "已阅":
-                statusColor = vh.mContext.getResources().getColor(R.color.status_read);
-                break;
-        }
-        vh.mSafeOrderState.setTextColor(statusColor);
+//        vh.mSafeOrderHead.loadImage(data.getUserPicture());
+//        vh.mSafeOrderName.setText(data.getUserName());
+//        vh.mSafeOrderState.setText(data.getState());
+//        vh.mSafeOrderContent.setText(data.getCompanyName());
+//
+//
+//        int statusColor = vh.mContext.getResources().getColor(R.color.status_read);
+//        switch (data.getState()) {
+//            case "新进展":
+//                statusColor = vh.mContext.getResources().getColor(R.color.status_new_next);
+//                break;
+//            case "@我":
+//                statusColor = vh.mContext.getResources().getColor(R.color.status_at);
+//                break;
+//            case "完结":
+//                statusColor = vh.mContext.getResources().getColor(R.color.status_over);
+//                break;
+//            case "已阅":
+//                statusColor = vh.mContext.getResources().getColor(R.color.status_read);
+//                break;
+//        }
+//        vh.mSafeOrderState.setTextColor(statusColor);
 
     }
 

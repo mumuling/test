@@ -105,8 +105,14 @@ public class SafeCommonItemView extends AbstractItemView<CommonItemType, SafeCom
         }
         if (data.getTypeItemList() == null || data.getTypeItemList().isEmpty()) {
             vh.mCheckExamineList.setVisibility(View.GONE);
+            if (data.getTitle().contains("图片")) {
+                vh.mSlideLookMore.setVisibility(View.GONE);
+            }
         } else {
             vh.mCheckExamineList.setVisibility(View.VISIBLE);
+            if (data.getTitle().contains("图片")) {
+                vh.mSlideLookMore.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -121,9 +127,12 @@ public class SafeCommonItemView extends AbstractItemView<CommonItemType, SafeCom
         private TextView mItemUserListTip;
         private ImageView mItemUserAddImg;
         private RecyclerView mCheckExamineList;
+        private TextView mSlideLookMore;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mSlideLookMore = (TextView) findViewById(R.id.slide_look_more);
             mItemUserListTitle = findViewById(R.id.item_user_list_title);
             mItemUserListTip = findViewById(R.id.item_user_list_tip);
             mItemUserAddImg = findViewById(R.id.item_user_add_img);

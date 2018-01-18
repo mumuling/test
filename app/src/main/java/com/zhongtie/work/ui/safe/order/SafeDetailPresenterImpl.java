@@ -6,12 +6,12 @@ import android.support.v4.util.ArrayMap;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.ApproveEntity;
+import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.data.ReplyEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,19 +49,28 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
         String[] titleList = App.getInstance().getResources().getStringArray(R.array.create_item_title);
         String[] tip = App.getInstance().getResources().getStringArray(R.array.create_item_tip);
         List<CommonItemType> list = new ArrayList<>();
-        List<CreateUserEntity> createUserEntities=new ArrayList<>();
+        List<CreateUserEntity> createUserEntities = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            CreateUserEntity c=new CreateUserEntity();
+            CreateUserEntity c = new CreateUserEntity();
             c.setUserId(i);
-            c.setUserName("测试"+1);
+            c.setUserName("测试" + 1);
             c.setUserPic(imageUrls[i]);
             createUserEntities.add(c);
 
         }
         int size = titleList.length;
+        List<EndorseUserEntity> files = new ArrayList<>();
+        for (int j = 0; j < 10; j++) {
+            files.add(new EndorseUserEntity());
+        }
+
         for (int i = 0; i < size; i++) {
             CommonItemType item = new CommonItemType<>(titleList[i], tip[i], R.drawable.plus, false);
-            item.setTypeItemList(createUserEntities);
+            if (titleList[i].contains("检查")) {
+                item.setTypeItemList(files);
+            } else {
+                item.setTypeItemList(createUserEntities);
+            }
             mTypeArrayMap.put(titleList[i], item);
             list.add(item);
         }
@@ -110,8 +119,6 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
             itemType.setTypeItemList(createUserEntities);
         }
     }
-
-
 
 
 }

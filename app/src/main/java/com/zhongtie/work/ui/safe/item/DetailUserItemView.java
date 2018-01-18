@@ -21,7 +21,7 @@ import com.zhongtie.work.widget.BaseImageView;
 public class DetailUserItemView extends AbstractItemView<CreateUserEntity, DetailUserItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
-        return R.layout.item_safe_detail_user_head;
+        return R.layout.item_safe_create_user_head;
     }
 
     @Override

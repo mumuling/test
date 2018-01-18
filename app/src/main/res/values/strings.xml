@@ -105,7 +105,7 @@
     <string name="image_select_btn">完成(%1$d/%2$d)</string>
     <string name="select_title">选择图片</string>
     <string name="kt_fileProvider">com.zhongtie.work.fileProvider</string>
-    <string name="photo">照片</string>
+    <string name="photo">图片</string>
     <string name="at_user_name">\@%s</string>
     <string name="modify">修改</string>
     <string name="reply">回复</string>
@@ -156,4 +156,5 @@
     <string name="create_safe_event_title">正在发布任务</string>
     <string name="create_success">发布成功</string>
     <string name="user_card_code">身份证号:</string>
+    <string name="slide_look_more_title">向右滑动查看更多图片</string>
 </resources>

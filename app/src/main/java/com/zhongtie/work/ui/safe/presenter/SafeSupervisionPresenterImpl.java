@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.safe.presenter;
 
 import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.db.SafeSupervisionEntity;
 import com.zhongtie.work.model.EventCountData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
@@ -8,7 +9,9 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * date:2018.1.9
@@ -26,12 +29,18 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
             //领导者传0 获取所有
             companyId = 0;
         }
-        addDispose(Http.netServer(SafeApi.class)
-                .safeEventList(Cache.getUserID(), companyId, date, state)
-                .compose(Network.convertIO())
-                .subscribe(safeSupervisionEntities -> mView.setSafeSupervisionList(safeSupervisionEntities, type), throwable -> {
-                    mView.fetchPageFail(type);
-                }));
+        List<SafeSupervisionEntity> safeSupervisionEnities = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            safeSupervisionEnities.add(new SafeSupervisionEntity());
+        }
+        mView.setSafeSupervisionList(safeSupervisionEnities,type);
+
+//        addDispose(Http.netServer(SafeApi.class)
+//                .safeEventList(Cache.getUserID(), companyId, date, state)
+//                .compose(Network.convertIO())
+//                .subscribe(safeSupervisionEntities -> mView.setSafeSupervisionList(safeSupervisionEntities, type), throwable -> {
+//                    mView.fetchPageFail(type);
+//                }));
     }
 
     @Override

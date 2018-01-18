@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,17 +14,27 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CommonItemType;
+import com.zhongtie.work.ui.endorse.detail.EndorseUserItemView;
 
 /**
- * 创建类别选择
+ * 安全督导详情
  * Auth: Chaek
  * Date: 2018/1/11
  */
 @BindItemData(CommonItemType.class)
 public class DetailCommonItemView extends AbstractItemView<CommonItemType, DetailCommonItemView.ViewHolder> {
     @Override
+    public int getItemViewType(int position, @NonNull CommonItemType data) {
+        if (data.getTitle().contains("查阅"))
+            return 1;
+        return super.getItemViewType(position, data);
+    }
+
+    @Override
     public int getLayoutId(int viewType) {
-        return R.layout.item_safe_detail_view;
+        if (viewType == 1)
+            return R.layout.item_safe_detail_view;
+        return R.layout.item_safe_create_add_user;
     }
 
 
@@ -33,18 +44,24 @@ public class DetailCommonItemView extends AbstractItemView<CommonItemType, Detai
         if (data.getTypeItemList().size() > 0) {
             vh.mItemUserListTitle.append("\t(" + data.getTypeItemList().size() + ")");
         }
-//        if (vh.mCheckExamineList.getAdapter() == null) {
+        if (vh.mCheckExamineList.getAdapter() == null) {
             CommonAdapter adapter = new CommonAdapter(data.getTypeItemList());
-            vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, true));
+            if (vh.getItemPosition() == 1) {
+                vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
+            } else {
+                vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, true));
+            }
             adapter.register(new CreatePicItemView(false));
             //用户信息
             adapter.register(DetailUserItemView.class);
+            adapter.register(EndorseUserItemView.class);
             vh.mCheckExamineList.setAdapter(adapter);
-//        } else {
-//            CommonAdapter adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
-//            adapter.setListData(data.getTypeItemList());
-//            vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
-//        }
+        } else {
+            CommonAdapter adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
+            adapter.setListData(data.getTypeItemList());
+            adapter.notifyDataSetChanged();
+        }
+
         if (data.getTypeItemList() == null || data.getTypeItemList().isEmpty()) {
             vh.mCheckExamineList.setVisibility(View.GONE);
         } else {
@@ -60,13 +77,26 @@ public class DetailCommonItemView extends AbstractItemView<CommonItemType, Detai
 
     public static class ViewHolder extends CommonViewHolder {
         private TextView mItemUserListTitle;
+        private TextView mItemUserListTip;
+        private ImageView mItemUserAddImg;
         private RecyclerView mCheckExamineList;
+        private TextView mSlideLookMore;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mSlideLookMore = (TextView) findViewById(R.id.slide_look_more);
             mItemUserListTitle = findViewById(R.id.item_user_list_title);
+            mItemUserListTip = findViewById(R.id.item_user_list_tip);
+            mItemUserAddImg = findViewById(R.id.item_user_add_img);
             mCheckExamineList = findViewById(R.id.check_examine_list);
+            if (mItemUserListTip != null) {
+                mItemUserListTip.setVisibility(View.GONE);
+                mItemUserAddImg.setVisibility(View.GONE);
+                mSlideLookMore.setVisibility(View.GONE);
+            }
         }
+
 
     }
 }

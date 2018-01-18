@@ -100,7 +100,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         itemList.add(mRectifyEditContent);
 
         //添加图片
-        mPicItemType = new CommonItemType<String>("上传照片", "最多12张", R.drawable.ic_cam, true);
+        mPicItemType = new CommonItemType<String>("传图片", "最多12张", R.drawable.ic_cam, true);
         itemList.add(mPicItemType);
         itemList.addAll(fetchCommonItemTypeList());
         mView.setItemList(itemList);
