@@ -52,8 +52,9 @@ public class SelectEventTypeItem {
                 builder.append(",");
             }
         }
-        if (builder.length() > 0)
+        if (builder.length() > 0) {
             builder.delete(builder.length() - 1, builder.length());
+        }
         return builder.toString();
     }
 }

@@ -1,6 +1,8 @@
 package com.zhongtie.work.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -10,7 +12,10 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 
 /**
@@ -94,12 +99,26 @@ public class RSASignature {
 
     private static final int MAX_ENCRYPT_BLOCK = 117;
 
-    public String encryptByPublicKey(String data)
-            throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, publicK);
-        // 传入编码数据并返回编码结果
-        return android.util.Base64.encodeToString(cipher.doFinal(data.getBytes("utf-8")),android.util.Base64.NO_WRAP);
+    public String encryptByPublicKey(String data) {
+        try {
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, publicK);
+            // 传入编码数据并返回编码结果
+            return android.util.Base64.encodeToString(cipher.doFinal(data.getBytes("utf-8")), android.util.Base64.NO_WRAP);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 
@@ -120,13 +139,7 @@ public class RSASignature {
     }
 
     public String sign(String content) {
-//        try {
-//            return encryptByPublicKey(content);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         try {
-//            content = new String(content.getBytes(), "ISO-8859-1");
             byte[] data = content.getBytes("utf-8");
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, publicK);
@@ -148,7 +161,6 @@ public class RSASignature {
             }
             byte[] encryptedData = out.toByteArray();
             out.close();
-
             return Base64.encode(encryptedData);
         } catch (Exception e) {
             e.printStackTrace();

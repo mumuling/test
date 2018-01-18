@@ -1,8 +1,15 @@
 package com.zhongtie.work.db;
 
+import android.support.v4.util.ArrayMap;
+
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.zhongtie.work.db.conver.ListImgTypeConverter;
+import com.zhongtie.work.util.TextUtil;
+
+import java.util.List;
 
 /**
  * Auth:Cheek
@@ -10,7 +17,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
  */
 
 @Table(database = ZhongtieDb.class, name = "cache_create_event_table")
-public class CacheSafeEventTable {
+public class CacheSafeEventTable extends BaseModel {
     @PrimaryKey(autoincrement = true)
     private int id;
     @Column
@@ -48,6 +55,12 @@ public class CacheSafeEventTable {
     private String at;
     @Column
     private String read;
+
+    /**
+     * 选择的文件路径
+     */
+    @Column(typeConverter = ListImgTypeConverter.class)
+    private List<String> imageList;
 
     @Column
     private int uploadStatus;
@@ -136,8 +149,9 @@ public class CacheSafeEventTable {
         return pic;
     }
 
-    public void setPic(String pic) {
+    public CacheSafeEventTable setPic(String pic) {
         this.pic = pic;
+        return this;
     }
 
     public String getChecker() {
@@ -194,5 +208,52 @@ public class CacheSafeEventTable {
 
     public void setTroubletype(String troubletype) {
         this.troubletype = troubletype;
+    }
+
+    public List<String> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<String> imageList) {
+        this.imageList = imageList;
+    }
+
+    public ArrayMap<String, Object> getOfficeEventMap() {
+        ArrayMap<String, Object> postMap = new ArrayMap<>();
+        //当前登录用户
+        postMap.put("event_userid", userid);
+        //选择所属公司
+        postMap.put("event_company", company);
+        //选择时间因为默认赋值所以不做验证
+        postMap.put("event_time", time);
+        //输入的地点
+        postMap.put("event_local", local);
+
+        if (!TextUtil.isEmpty(troubletype)) {
+            //选择的问题类型
+            postMap.put("event_troubletype", troubletype);
+            //劳务公司
+            if (workerteam == 0) {
+                postMap.put("event_workerteam", "");
+            } else {
+                postMap.put("event_workerteam", workerteam);
+            }
+            //整个要求
+            postMap.put("event_changemust", changemust);
+            //整改人
+            postMap.put("event_related", eventId);
+        }
+        //描述
+        postMap.put("event_detail", detail);
+        //检查人
+        postMap.put("event_checker", checker);
+        //验证
+        postMap.put("event_review", review);
+        //at的人
+        postMap.put("event_at", at);
+        if (!TextUtil.isEmpty(pic)) {
+            postMap.put("event_pic", pic);
+        }
+        return postMap;
     }
 }

@@ -3,6 +3,7 @@ package com.zhongtie.work.ui.safe;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
@@ -23,7 +24,6 @@ import java.util.List;
  */
 
 public class SafeSupervisionFragment extends BaseFragment implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
-
     public static final String TYPE = "type";
 
     private RefreshRecyclerView mList;
@@ -64,12 +64,15 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
         commonAdapter.setOnItemClickListener(this);
     }
 
+
     @Override
     protected void initData() {
     }
 
     public void onRefresh() {
-        mList.onRefresh();
+        if (mList != null) {
+            mList.onRefresh();
+        }
     }
 
     public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {

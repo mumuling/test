@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import com.github.mikephil.charting.data.PieEntry;
-import com.zhongtie.work.R;
-import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.StatisticsLineData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
@@ -21,7 +19,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 
-import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY;
+import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_ID;
 
 /**
  * Auth:Cheek
@@ -47,7 +45,7 @@ public class PresenterImpl extends BasePresenterImpl<StatisticsContract.View> im
     public void fetchYearData(String year, int position) {
 
         StatisticsApi netServer = Http.netServer(StatisticsApi.class);
-        int company = SharePrefUtil.getUserPre().getInt(LOGIN_USER_COMPANY, 0);
+        int company = SharePrefUtil.getUserPre().getInt(SELECT_COMPANY_ID, 0);
         Object[] cacheList = mCacheData.get(year);
         if (cacheList == null) {
             mView.initLoading();

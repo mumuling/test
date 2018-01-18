@@ -5,24 +5,22 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.CompanyEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity;
-import com.zhongtie.work.db.CacheAddWrongTable;
-import com.zhongtie.work.db.CacheAddWrongTable_Table;
 import com.zhongtie.work.db.SwitchCompanyUtil;
-import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.UserApi;
-import com.zhongtie.work.sync.UserPicSync;
+import com.zhongtie.work.sync.SyncUserPic;
+import com.zhongtie.work.task.SyncOfficeEventTask;
+import com.zhongtie.work.task.SyncWrongTask;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.SharePrefUtil;
-import com.zhongtie.work.util.SyncUtil;
+import com.zhongtie.work.sync.SyncCompanyUtil;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 
-import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY;
-import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY_NAME;
+import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_ID;
+import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_NAME;
 
 /**
  * Auth:Cheek
@@ -34,47 +32,24 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
     public void fetchInitData() {
         if (App.getInstance().getUser() != null) {
             LoginUserInfoEntity userInfoEntity = App.getInstance().getUser();
-            String company = SharePrefUtil.getUserPre().getString(LOGIN_USER_COMPANY_NAME, "");
+            String company = SharePrefUtil.getUserPre().getString(SELECT_COMPANY_NAME, "");
             mView.setUserCompany(company);
             mView.setUserInfo(userInfoEntity);
             fetchCompanyList();
-            syncUserWrongLocalData();
-
             syncUserPic();
+            SyncOfficeEventTask.execute();
+            SyncWrongTask.execute();
         }
     }
 
     private void syncUserPic() {
-        UserPicSync.getInstance().startDownload();
+        SyncUserPic.getInstance().startDownload();
     }
 
-    /**
-     * 上传本地未上传违规
-     */
-    private void syncUserWrongLocalData() {
-        Flowable.fromCallable(() -> SQLite.select().from(CacheAddWrongTable.class).where(CacheAddWrongTable_Table.status.eq(0)).queryList())
-                .flatMap(Flowable::fromIterable)
-                .flatMap(cacheAddWrongTable -> Http.netServer(UserApi.class)
-                        .addWrong(cacheAddWrongTable.getUserId(), cacheAddWrongTable.getByUserId() + "", cacheAddWrongTable.getContent())
-                        .map(integerResult -> {
-                            cacheAddWrongTable.setAddWrongId(integerResult.getData());
-                            cacheAddWrongTable.setStatus(1);
-                            cacheAddWrongTable.save();
-                            return integerResult.getCode();
-                        }))
-                .toList()
-                .toFlowable()
-                .compose(Network.netorkIO())
-                .subscribe(objects -> {
-                }, throwable -> {
-                });
-
-
-    }
 
     @Override
     public void switchSelectCompany(CompanyEntity companyEntity) {
-        int companyId = SharePrefUtil.getUserPre().getInt(LOGIN_USER_COMPANY, 0);
+        int companyId = SharePrefUtil.getUserPre().getInt(SELECT_COMPANY_ID, 0);
         if (companyId != companyEntity.getId()) {
             SwitchCompanyUtil.switchCompany(companyEntity.getId())
                     .map(s -> {
@@ -84,15 +59,15 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
                     .delay(500, TimeUnit.MILLISECONDS)
                     .compose(Network.networkDialog(mView, "正在切换公司"))
                     .subscribe(s -> {
-                        SharePrefUtil.getUserPre().putString(LOGIN_USER_COMPANY_NAME, companyEntity.getName());
-                        SharePrefUtil.getUserPre().putInt(LOGIN_USER_COMPANY, companyEntity.getId());
+                        SharePrefUtil.getUserPre().putString(SELECT_COMPANY_NAME, companyEntity.getName());
+                        SharePrefUtil.getUserPre().putInt(SELECT_COMPANY_ID, companyEntity.getId());
                         mView.setUserCompany(companyEntity.getName());
                     }, throwable -> mView.showToast("切换失败"));
         }
     }
 
     private void fetchCompanyList() {
-        addDispose(SyncUtil.syncCompanyList()
+        addDispose(SyncCompanyUtil.syncCompanyList()
                 .compose(Network.netorkIO())
                 .subscribe(lists -> mView.onSyncCompanySuccess(), throwable -> {
                     throwable.printStackTrace();

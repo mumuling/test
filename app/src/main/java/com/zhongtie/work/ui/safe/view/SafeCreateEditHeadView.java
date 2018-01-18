@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.event.SelectCompanyEvent;
 import com.zhongtie.work.db.WorkTeamEntity;
@@ -78,6 +79,7 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
         mCreateCompanySelect.setOnClickListener(this);
         mCreateCompanyWorkSelect.setOnClickListener(this);
         setCreateTime(TimeUtils.formatYDate(System.currentTimeMillis()));
+        initWorkTeam();
     }
 
 
@@ -130,13 +132,12 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         EventBus.getDefault().register(this);
-        initWorkTeam();
     }
 
     private void initWorkTeam() {
         //没有劳务公司 不展示选择
         long workTeamCount = SQLite.selectCountOf().from(WorkTeamEntity.class).count();
-        if (workTeamCount <= 0) {
+        if (workTeamCount <= 0 && Cache.isLeader()) {
             mCreateCompanyWorkSelect.setVisibility(GONE);
         } else {
             mCreateCompanyWorkSelect.setVisibility(VISIBLE);
@@ -192,8 +193,6 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
             bundle.putString(CommonSelectSearchActivity.SEARCH_HINT, "输入公司名称");
         }
         CommonSelectSearchActivity.newInstance(getFragment(getContext()), ProjectTeamSelectFragment.class, "输入名称", bundle);
-
-
     }
 
     /**

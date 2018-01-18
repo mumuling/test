@@ -9,12 +9,12 @@ import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.UserApi;
+import com.zhongtie.work.sync.SyncCompanyUtil;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.SharePrefUtil;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 
 
@@ -27,8 +27,22 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
 
     public static final String LOGIN_USER_NAME = "login_user_name";
     public static final String LOGIN_USER_ID = "login_user_id";
-    public static final String LOGIN_USER_COMPANY = "login_user_company";
-    public static final String LOGIN_USER_COMPANY_NAME = "login_user_company_name";
+    /**
+     * 选择的公司ID
+     */
+    public static final String SELECT_COMPANY_ID = "login_user_company";
+    /**
+     * 切换的公司ID
+     */
+    public static final String SELECT_COMPANY_NAME = "login_user_company_name";
+    /**
+     * 登录用户的公司ID
+     */
+    public static final String USER_COMPANY_ID = "user_company";
+    /**
+     * 登录用户的公司名称
+     */
+    public static final String USER_COMPANY_NAME = "";
 
     @Override
     public void login() {
@@ -44,23 +58,9 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
             return;
         }
 
-//        addDispose(Http.netServer(Api.class).login(user, pw)
-//                .delay(500, TimeUnit.MILLISECONDS)
-//                .map(new NetWorkFunc1<>())
-//                .concatMap(userId -> Http.netServer(Api.class).userInfo(userId))
-//                .compose(Network.networkDialog(mView, "正在登录..."))
-//                .map(new SwitchUserCompany())
-//                .compose(Network.netorkIO())
-//                .subscribe(data -> {
-//                            SharePrefUtil.getUserPre().putString(LOGIN_USER_NAME, user);
-//                            SharePrefUtil.getUserPre().putString(LOGIN_USER_ID, String.valueOf(data.getId()));
-//                            SharePrefUtil.getUserPre().putInt(LOGIN_USER_COMPANY, data.getCompany());
-//                            mView.loginSuccess();
-//                        }
-//                        , throwable -> {
-//                        }));
-        addDispose(Flowable.just("1")
+        addDispose(Http.netServer(UserApi.class).login(user, pw)
                 .delay(500, TimeUnit.MILLISECONDS)
+                .map(new NetWorkFunc1<>())
                 .concatMap(userId -> Http.netServer(UserApi.class).userInfo(userId))
                 .map(new NetWorkFunc1<>())
                 .map(new SwitchUserCompany())
@@ -68,14 +68,14 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
                 .subscribe(data -> {
                             SharePrefUtil.getUserPre().putString(LOGIN_USER_NAME, user);
                             SharePrefUtil.getUserPre().putString(LOGIN_USER_ID, String.valueOf(data.getId()));
-                            SharePrefUtil.getUserPre().putString(LOGIN_USER_COMPANY_NAME, data.companyname);
-                            SharePrefUtil.getUserPre().putInt(LOGIN_USER_COMPANY, data.getCompany());
+                            SharePrefUtil.getUserPre().putString(SELECT_COMPANY_NAME, data.companyname);
+                            SharePrefUtil.getUserPre().putInt(SELECT_COMPANY_ID, data.getCompany());
+                            SharePrefUtil.getUserPre().putString(USER_COMPANY_NAME, data.companyname);
+                            SharePrefUtil.getUserPre().putInt(USER_COMPANY_ID, data.getCompany());
                             App.getInstance().setUserInfo(data);
                             mView.loginSuccess();
                         }
-                        , throwable -> {
-                            mView.loginFail();
-                        }));
+                        , throwable -> mView.loginFail()));
     }
 
     @Override
@@ -91,10 +91,13 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
         @Override
         public LoginUserInfoEntity apply(LoginUserInfoEntity companyUserData) throws Exception {
             companyUserData.save();
-            int oldCompany = SharePrefUtil.getUserPre().getInt(LOGIN_USER_COMPANY, 0);
+            int oldCompany = SharePrefUtil.getUserPre().getInt(SELECT_COMPANY_ID, 0);
             if (oldCompany != companyUserData.getCompany()) {
-                new SwitchCompanyUtil().changeCompany(companyUserData.getCompany());
+                SwitchCompanyUtil.changeCompany(companyUserData.getCompany());
             }
+            //登录则开始遍历数据库 确定是否是领导组
+            SyncCompanyUtil.findUserLeaderGroup(Integer.valueOf(companyUserData.getId()));
+
             return companyUserData;
         }
     }

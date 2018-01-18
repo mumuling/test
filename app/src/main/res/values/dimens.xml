@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="padding_len">15dp</dimen>
+    <dimen name="padding_len">16dp</dimen>
+    <dimen name="padding_left">16dp</dimen>
+    <dimen name="padding_right">16dp</dimen>
     <dimen name="mis_image_size">120dp</dimen>
     <dimen name="mis_space_size">2dp</dimen>
     <dimen name="mis_folder_cover_size">72dp</dimen>

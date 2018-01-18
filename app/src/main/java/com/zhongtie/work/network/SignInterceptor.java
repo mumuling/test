@@ -54,7 +54,6 @@ class SignInterceptor implements Interceptor {
             baseData.put("wfversion", BuildConfig.VERSION_NAME);
             baseData.put("wfos", ANDROID);
 
-
             if (body != null) {
                 //将传递过来的参数加入
                 for (int i = 0, len = body.size(); i < len; i++) {
@@ -72,7 +71,8 @@ class SignInterceptor implements Interceptor {
                 signSource.append("=");
                 //遍历用base64加密参数
                 String value = baseData.get(key);
-                signSource.append(Base64.encode(value.getBytes()).trim());
+                //gb2312 编码 不然服务器存入的字符为乱码
+                signSource.append(Base64.encode(value.getBytes("GB2312")).trim());
                 signSource.append("&");
             }
             signSource.delete(signSource.length() - 1, signSource.length());
@@ -84,7 +84,7 @@ class SignInterceptor implements Interceptor {
                 if (min == 0) {
                     continue;
                 }
-                String signData = RSASignature.getInstance().sign(signSource.substring(0, min));
+                String signData = RSASignature.getInstance().encryptByPublicKey(signSource.substring(0, min));
                 signDataList.add(signData);
                 signSource.delete(0, min);
             }

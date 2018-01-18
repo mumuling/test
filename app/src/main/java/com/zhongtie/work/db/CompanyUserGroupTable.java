@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  * 用户分组
- * Auth: Chaek
  * Date: 2018/1/15
+ * @author Chaek
  */
 
 @Table(database = CompanyDB.class, name = "work_u_usergroup")

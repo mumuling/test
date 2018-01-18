@@ -18,8 +18,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Flowable;
 import okhttp3.Call;
@@ -28,42 +26,33 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Auth: Chaek
  * Date: 2018/1/17
+ * @author Chaek
  */
 
-public class UserPicSync {
+public class SyncUserPic {
 
     private static final String TAG = "UserPicSync";
-    private static UserPicSync sUserPicSync;
+    private static SyncUserPic sUserPicSync;
 
     private ExecutorService mDownloadServer;
     private int companyId;
     private volatile boolean isRun;
     private File cacheFolderName;
     private volatile int downPosition;
+    private String cacheFile = Environment.getExternalStorageDirectory().getPath() + "/zhongtie/user_image/";
 
-    public static UserPicSync getInstance() {
+    public static SyncUserPic getInstance() {
         if (sUserPicSync == null) {
-            synchronized (UserPicSync.class) {
-                sUserPicSync = new UserPicSync();
+            synchronized (SyncUserPic.class) {
+                sUserPicSync = new SyncUserPic();
             }
         }
         return sUserPicSync;
     }
 
-    public UserPicSync() {
-        //手动创建线程线程池
-        ThreadFactory namedThreadFactory = new ThreadFactory() {
-            private final AtomicInteger mCount = new AtomicInteger(1);
-
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, "UserPicSync #" + mCount.getAndIncrement());
-            }
-        };
+    public SyncUserPic() {
         mDownloadServer = Executors.newFixedThreadPool(3);
-        String cacheFile = Environment.getExternalStorageDirectory().getPath() + "/zhongtie/user_image/";
         cacheFolderName = new File(cacheFile);
         if (!cacheFolderName.exists()) {
             cacheFolderName.mkdirs();
@@ -123,31 +112,31 @@ public class UserPicSync {
 
     private void executeDownload(List<String> strings) {
         L.e(TAG, "正在开始下载...." + strings.size() + "条数据");
-        for (int i = 0, count = Math.min(2, strings.size()); i < count; i++) {
-            mDownloadServer.execute(new DownRunnable(strings.get(i), new OnDownLoadCallBack() {
-                @Override
-                public void onDownComplete() {
-                    nextDown();
-                }
-
-                private void nextDown() {
-                    synchronized (this) {
-                        downPosition++;
-                        L.e(TAG, "正在开始下载第" + downPosition + "条数据");
-                        if (downPosition < strings.size()) {
-                            mDownloadServer.execute(new DownRunnable(strings.get(downPosition), this));
-                        } else {
-                            isRun = false;
-                        }
-                    }
-                }
-
-                @Override
-                public void onDownFail() {
-                    nextDown();
-                }
-            }));
-        }
+//        for (int i = 0, count = Math.min(2, strings.size()); i < count; i++) {
+//            mDownloadServer.execute(new DownRunnable(strings.get(i), new OnDownLoadCallBack() {
+//                @Override
+//                public void onDownComplete() {
+//                    nextDown();
+//                }
+//
+//                private void nextDown() {
+//                    synchronized (this) {
+//                        downPosition++;
+//                        L.e(TAG, "正在开始下载第" + downPosition + "条数据");
+//                        if (downPosition < strings.size()) {
+//                            mDownloadServer.execute(new DownRunnable(strings.get(downPosition), this));
+//                        } else {
+//                            isRun = false;
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onDownFail() {
+//                    nextDown();
+//                }
+//            }));
+//        }
     }
 
     private interface OnDownLoadCallBack {

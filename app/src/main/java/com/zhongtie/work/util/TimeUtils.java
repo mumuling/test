@@ -262,48 +262,10 @@ public class TimeUtils {
             }
             Date createTime = TemporaryDate.parse(time);
             return createTime.getTime();
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
-    }
-
-
-    // 计算两个string类的时间差
-    public static String time(String startTime, String endTime)
-            throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
-        Date outdate = sdf.parse(endTime);
-        Date indate = sdf.parse(startTime);
-        long totalhours = (outdate.getTime() - indate.getTime()) / (1000 * 60 * 60);// 时
-        long totalminutes = (outdate.getTime() - indate.getTime()) / (1000 * 60) - totalhours * 60;// 分
-        long totalseconds = (outdate.getTime() - indate.getTime()) / (1000) - totalminutes * 60;// 秒
-        String total_time = totalhours + "时" + totalminutes + "分" + totalseconds + "秒";
-        return total_time;
-    }
-
-    public static boolean getVocherTime(String endTime) throws ParseException {
-        // 设定时间的模板
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // 得到指定模范的时间
-        Date d1 = sdf.parse(getFormatDateAll());
-        Date d2 = sdf.parse(endTime);
-        // 比较
-        if ((d1.getTime() > d2.getTime())) {
-            return false;
-        } else
-            return true;
-    }
-
-
-    public static String getTemporaryDate(String date) {
-        if (date == null || date.equals(""))
-            return "";
-        try {
-            return formatPinJia.format(TemporaryDate.parse(date));
-        } catch (ParseException e) {
-            return date;
-        }
     }
 
 
@@ -391,6 +353,12 @@ public class TimeUtils {
     }
 
 
+    /**
+     * 转换违规情况时间
+     *
+     * @param time 时间格式yyyy/MM/dd HH:mm
+     * @return 返回时间格式只需要展示年月日
+     */
     public static String formatWrongTime(String time) {
         // 设定时间的模板
         SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -406,6 +374,7 @@ public class TimeUtils {
         return newTimeFormat.format(d2);
 
     }
+
     public static String formatWrongTime2(String time) {
         // 设定时间的模板
         SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");

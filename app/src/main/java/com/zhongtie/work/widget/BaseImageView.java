@@ -32,9 +32,9 @@ import io.reactivex.functions.Function;
 import static com.zhongtie.work.ui.safe.item.CreatePicItemView.HTTP;
 
 /**
- * +
- * Auth: Chaek
  * Date: 2018/1/9
+ *
+ * @author Chaek
  */
 
 public class BaseImageView extends SimpleDraweeView {
@@ -64,38 +64,29 @@ public class BaseImageView extends SimpleDraweeView {
     }
 
     /**
-     * 加载本地文件夹
+     * 根据用户ID加载本地文件夹照片
      *
-     * @param userId
+     * @param userId 用户ID
      */
-    public void loadImag(int userId) {
-//        String userName=
-        String card = "";
-
-            Flowable.zip(Flowable.just(userId).map(integer -> SQLite.select().from(CompanyUserData.class)
-                    .where(CompanyUserData_Table.id.eq(integer))
-                    .querySingle()), Flowable.just(this), new BiFunction<CompanyUserData, BaseImageView, Object>() {
-                @Override
-                public Object apply(CompanyUserData companyUserData, BaseImageView baseImageView) throws Exception {
-                    baseImageView.loadUserCard(companyUserData.getIdencode());
-                    return "";
-                }
-            }).subscribe(new Consumer<Object>() {
-                @Override
-                public void accept(Object o) throws Exception {
-
-                }
-            }, new Consumer<Throwable>() {
-                @Override
-                public void accept(Throwable throwable) throws Exception {
-
-                }
-            });
-
+    public void loadImage(int userId) {
+        //数据库查询出身份证号码
+        Flowable.zip(Flowable.just(userId).map(integer -> SQLite.select().from(CompanyUserData.class)
+                .where(CompanyUserData_Table.id.eq(integer))
+                .querySingle()), Flowable.just(this), (BiFunction<CompanyUserData, BaseImageView, Object>) (companyUserData, baseImageView) -> {
+            baseImageView.loadUserCard(companyUserData.getIdencode());
+            return "";
+        }).subscribe(o -> {
+        }, throwable -> {
+        });
 
 
     }
 
+    /**
+     * 根据身份证号码获取离线图片
+     *
+     * @param card 身份证号码
+     */
     public void loadUserCard(String card) {
         ((Activity) getContext()).runOnUiThread(() -> {
             String file = Environment.getExternalStorageDirectory().getPath() + "/zhongtie/user_image/";

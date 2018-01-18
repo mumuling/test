@@ -25,11 +25,12 @@ import com.zhongtie.work.event.SelectUserDelEvent;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.item.CreateUserItemView;
-import com.zhongtie.work.ui.select.item.SelectTeamItemView;
-import com.zhongtie.work.ui.select.item.SelectTeamUserItemView;
+import com.zhongtie.work.ui.select.item.SelectUserGroupItemView;
+import com.zhongtie.work.ui.select.item.SelectUserItemView;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.widget.AdapterDataObserver;
 import com.zhongtie.work.widget.DividerItemDecoration;
 import com.zhongtie.work.widget.EmptyFragment;
 import com.zhongtie.work.widget.InputMethodRelativeLayout;
@@ -54,7 +55,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  * date:2018.1.11
  */
 
-public class SelectUserFragment extends BaseFragment implements InputMethodRelativeLayout.OnInputMethodChangedListener, TextWatcher {
+public class SelectUserFragment extends BaseFragment implements InputMethodRelativeLayout.OnInputMethodChangedListener, TextWatcher, AdapterDataObserver.OnAdapterDataChangedListener {
     public static final String MAX_SELECT_COUNT = "max_select_count";
 
     private LinearLayout mBottom;
@@ -176,7 +177,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     @Override
     protected void initData() {
-        mSearchAdapter = new CommonAdapter().register(SelectTeamUserItemView.class);
+        mSearchAdapter = new CommonAdapter().register(SelectUserItemView.class);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.white));
         dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(5));
@@ -190,6 +191,8 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
         mSelectInfoAdapter = new CommonAdapter(mSelectUserList);
         mSelectInfoAdapter.register(CreateUserItemView.class);
+        mSelectInfoAdapter.registerAdapterDataObserver(new AdapterDataObserver(this));
+
         mSelectRcycler.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.HORIZONTAL, false));
         mSelectRcycler.setAdapter(mSelectInfoAdapter);
         onChangeSelectView();
@@ -213,8 +216,8 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
                 .compose(Network.netorkIO())
                 .subscribe(companyTeamEntities -> {
                     mTeamEntityList = companyTeamEntities;
-                    mAllUserListAdapter = new CommonAdapter(companyTeamEntities).register(SelectTeamItemView.class)
-                            .register(SelectTeamUserItemView.class);
+                    mAllUserListAdapter = new CommonAdapter(companyTeamEntities).register(SelectUserGroupItemView.class)
+                            .register(SelectUserItemView.class);
                     mUserGroupList.setAdapter(mAllUserListAdapter);
                 }, throwable -> {
                     throwable.printStackTrace();
@@ -298,5 +301,10 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @Override
+    public void onChanged() {
+        onChangeSelectView();
     }
 }

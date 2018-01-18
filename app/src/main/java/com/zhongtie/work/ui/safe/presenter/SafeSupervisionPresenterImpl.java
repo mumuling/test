@@ -11,26 +11,27 @@ import com.zhongtie.work.ui.base.BasePresenterImpl;
 import java.util.HashMap;
 
 /**
- * Auth:Cheek
  * date:2018.1.9
+ *
+ * @author Chaek
  */
 
 public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervisionContract.View> implements SafeSupervisionContract.Presenter {
     @Override
     public void fetchPageList(String date, int type, int page) {
         int state = type - 1;
-//        List<SafeSupervisionEntity> safeSupervisionEnities = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            safeSupervisionEnities.add(new SafeSupervisionEntity());
-//        }
-//        mView.setSafeSupervisionList(safeSupervisionEnities,type);
+        //选择的公司
+        int companyId = Cache.getSelectCompany();
+        if (!Cache.isLeader()) {
+            //领导者传0 获取所有
+            companyId = 0;
+        }
         addDispose(Http.netServer(SafeApi.class)
-                .safeEventList(Cache.getUserID(), Cache.getSelectCompany(), date, state)
+                .safeEventList(Cache.getUserID(), companyId, date, state)
                 .compose(Network.convertIO())
                 .subscribe(safeSupervisionEntities -> mView.setSafeSupervisionList(safeSupervisionEntities, type), throwable -> {
                     mView.fetchPageFail(type);
                 }));
-
     }
 
     @Override

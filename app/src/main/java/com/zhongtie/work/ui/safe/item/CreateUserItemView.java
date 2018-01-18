@@ -37,7 +37,7 @@ public class CreateUserItemView extends AbstractItemView<CreateUserEntity, Creat
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CreateUserEntity data) {
-        vh.mItemUserHead.loadImag(data.getUserId());
+        vh.mItemUserHead.loadImage(data.getUserId());
         if (data.isAt()) {
             vh.mItemUserName.setTextColor(vh.mContext.getResources().getColor(R.color.state_red_color));
             vh.mItemUserName.setText(vh.mContext.getString(R.string.at_user_name, data.getUserName()));

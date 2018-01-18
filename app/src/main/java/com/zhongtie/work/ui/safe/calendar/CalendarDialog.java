@@ -139,7 +139,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     public void onSelectDate(CalendarDate calendarDate) {
         dismiss();
         if (mOnSelectDateCallback != null) {
-            mOnSelectDateCallback.onSelectDate(calendarDate.toString());
+            String date = getContext().getResources().getString(R.string.safe_select_title_date, calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay());
+            mOnSelectDateCallback.onSelectDate(date);
         }
     }
 

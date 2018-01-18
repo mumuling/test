@@ -3,6 +3,7 @@ package com.zhongtie.work.list;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 
 /**
@@ -11,7 +12,7 @@ import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
  */
 
 public class OnCreateTextWatcher implements TextWatcher {
-    private CreateEditContentItemView.ViewHolder mViewHolder;
+    public CommonViewHolder mViewHolder;
 
     public OnCreateTextWatcher(CreateEditContentItemView.ViewHolder viewHolder) {
         mViewHolder = viewHolder;

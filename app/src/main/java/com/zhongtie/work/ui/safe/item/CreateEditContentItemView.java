@@ -12,6 +12,8 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.EditContentEntity;
+import com.zhongtie.work.list.OnCreateTextWatcher;
+import com.zhongtie.work.util.TextUtil;
 
 /**
  * 创建 输入文字提交
@@ -49,6 +51,7 @@ public class CreateEditContentItemView extends AbstractItemView<EditContentEntit
             public void afterTextChanged(Editable s) {
             }
         };
+        vh.mCreateModifyContent.setTag(pwTextWatcher);
         vh.mCreateModifyContent.addTextChangedListener(pwTextWatcher);
     }
 

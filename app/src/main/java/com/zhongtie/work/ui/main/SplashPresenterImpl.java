@@ -19,7 +19,7 @@ import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.DownloadManager;
 import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.SharePrefUtil;
-import com.zhongtie.work.util.SyncUtil;
+import com.zhongtie.work.sync.SyncCompanyUtil;
 import com.zhongtie.work.util.TextUtil;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
 
-import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_COMPANY;
+import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_ID;
 
 /**
  * Auth:Cheek
@@ -54,7 +54,7 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
                     }
                 });
 
-        addDispose(SyncUtil.syncCompanyList()
+        addDispose(SyncCompanyUtil.syncCompanyList()
                 .delay(1000, TimeUnit.MILLISECONDS)
                 .onErrorReturn(throwable -> new ArrayList<>())
                 .map(companyEntities -> {
@@ -90,7 +90,7 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
         if (!TextUtil.isEmpty(companyEntity.getDburl())) {
             L.e("-----------", "正在下载" + companyEntity.getDburl());
             DownloadManager.getInstance().download(companyEntity, null);
-            int companyId = SharePrefUtil.getUserPre().getInt(LOGIN_USER_COMPANY, 0);
+            int companyId = SharePrefUtil.getUserPre().getInt(SELECT_COMPANY_ID, 0);
             if (companyId == companyEntity.getId()) {
                 SwitchCompanyUtil.switchCompany(companyEntity.getId())
                         .map(s -> {

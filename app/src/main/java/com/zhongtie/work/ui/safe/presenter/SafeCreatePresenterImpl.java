@@ -19,7 +19,6 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.TextUtil;
-import com.zhongtie.work.util.upload.UploadData;
 import com.zhongtie.work.util.upload.UploadUtil;
 
 import java.util.ArrayList;
@@ -128,6 +127,9 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
 
     @Override
     public void createSafeOrder() {
+
+        boolean isLeader = Cache.isLeader();
+
         String site = mView.getEditSite();
         if (TextUtil.isEmpty(site)) {
             mView.showToast(R.string.safe_create_input_site);
@@ -138,26 +140,40 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
             mView.showToast("请选择单位");
             return;
         }
+
+        //////////////////////////////
+        boolean isCheckValue = checkValue();
         ProjectTeamEntity companyTeam = mView.getCompanyTeamEntity();
-        if (companyTeam == null) {
+        //领导不验证不验证 劳务公司
+        if (companyTeam == null && !isLeader && isCheckValue) {
             mView.showToast("请选择劳务公司");
             return;
         }
+
+
         List<EventTypeEntity> typeList = mCommonItemType.getCheckEventTypeList();
-        if (typeList.isEmpty()) {
+        if (typeList.isEmpty() && isCheckValue) {
             mView.showToast("请选择问题类型");
             return;
         }
 
+        String rectify = mRectifyEditContent.getContent();
+        if (TextUtil.isEmpty(rectify) && isCheckValue) {
+            mView.showToast("请输入整改内容");
+            return;
+        }
+
+        CommonItemType<CreateUserEntity> relatedUser = mGroupTypeArrayMap.get("整改人");
+        if (rectify.isEmpty() && isCheckValue) {
+            mView.showToast("请选择整改人");
+            return;
+        }
+
+        ////////////////////////////////////
 
         String describe = mDescribeEditContent.getContent();
         if (TextUtil.isEmpty(describe)) {
             mView.showToast("请输入问题描述");
-            return;
-        }
-        String rectify = mRectifyEditContent.getContent();
-        if (TextUtil.isEmpty(rectify)) {
-            mView.showToast("请输入整改内容");
             return;
         }
 
@@ -167,73 +183,112 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
             return;
         }
 
-        for (String key : mGroupTypeArrayMap.keySet()) {
-            CommonItemType itemType = mGroupTypeArrayMap.get(key);
-            if (itemType.getTypeItemList().isEmpty()) {
-                mView.showToast("请选择" + itemType.getTitle());
-                return;
-            }
-        }
 
         CacheSafeEventTable cache = new CacheSafeEventTable();
+        //整改人
+        String related = !isCheckValue ? "" : relatedUser.getSelectUserIDList();
 
-        ArrayMap<String, Object> postDataList = new ArrayMap<>();
-        //当前登录用户
-        postDataList.put("event_userid", Cache.getUserID());
+        cache.setRead(related);
+        cache.setImageList(picList);
         cache.setUserid(Integer.valueOf(Cache.getUserID()));
-        //选择所属公司
-        postDataList.put("event_company", unit.getProjectTeamID());
         cache.setCompany(unit.getProjectTeamID());
-
-        //选择时间因为默认赋值所以不做验证
-        postDataList.put("event_time", mView.getSelectDate());
         cache.setTime(mView.getSelectDate());
-
-        //输入的地点
-        postDataList.put("event_local", site);
         cache.setLocal(site);
-
-        //劳务公司
-        postDataList.put("event_workerteam", companyTeam.getProjectTeamID());
-        cache.setWorkerteam(companyTeam.getProjectTeamID());
-
+        if (companyTeam == null) {
+            cache.setWorkerteam(0);
+        } else {
+            cache.setWorkerteam(companyTeam.getProjectTeamID());
+        }
         String type = mCommonItemType.getCheckEventTypeString();
-        //选择的问题类型
-        postDataList.put("event_troubletype", type);
         cache.setTroubletype(type);
-
-        //描述
-        postDataList.put("event_detail", describe);
         cache.setDetail(describe);
-
-        //整个要求
-        postDataList.put("event_changemust", rectify);
         cache.setChangemust(rectify);
 
 
         CommonItemType<CreateUserEntity> checkUser = mGroupTypeArrayMap.get("检查人");
+        if (checkUser.getTypeItemList().isEmpty()) {
+            mView.showToast("请选择检查人");
+            return;
+        }
         String check = checkUser.getSelectUserIDList();
-        postDataList.put("event_checker", check);
         cache.setChecker(check);
 
         CommonItemType<CreateUserEntity> reviewUser = mGroupTypeArrayMap.get("验证人");
-//        postDataList.put("event_review", reviewUser.getSelectUserIDList());
-        postDataList.put("event_review", "12,12");
-        cache.setReview("");
 
+        if (reviewUser.getTypeItemList().size() != 2) {
+            mView.showToast("验证人有且只能有2个人");
+            return;
+        }
+        cache.setReview(reviewUser.getSelectUserIDList());
+
+
+        //计算所有AT人数
+        String atUser = getAtListString(checkUser, reviewUser, relatedUser);
+        cache.setAt(atUser);
+
+        //查阅组
+        CommonItemType<TeamNameEntity> temLis = mGroupTypeArrayMap.get("查阅组");
+        if (temLis.getTypeItemList().isEmpty()) {
+            mView.showToast("请选择查阅组");
+            return;
+        }
+        String read = temLis.getTeamIDList();
+        cache.setRead(read);
+
+        UploadUtil.uploadListJPGIDList(cache.getImageList())
+                .map(s -> {
+                    cache.setPic(s);
+                    return cache;
+                })
+                .map(CacheSafeEventTable::getOfficeEventMap)
+                .flatMap(officeMap -> Http.netServer(SafeApi.class)
+                        .createEventList(officeMap))
+                .compose(Network.networkConvertDialog(mView))
+                .onErrorReturn(throwable -> {
+                    cache.setUploadStatus(0);
+                    cache.save();
+                    return 0;
+                })
+                .subscribe(integer -> mView.createSuccess(), throwable -> {
+                });
+
+    }
+
+    /**
+     * 是否要验证参数值
+     *
+     * @return true 存在一项有数据 则会验证 如下几个参数 false 则不会验证 可以传空
+     */
+    private boolean checkValue() {
+        ProjectTeamEntity companyTeam = mView.getCompanyTeamEntity();
+        boolean isLeader = Cache.isLeader();
+        if (companyTeam != null && !isLeader) {
+            return true;
+        }
+        List<EventTypeEntity> typeList = mCommonItemType.getCheckEventTypeList();
+        if (!typeList.isEmpty()) {
+            return true;
+        }
+
+        String rectify = mRectifyEditContent.getContent();
+        if (!TextUtil.isEmpty(rectify)) {
+            return true;
+        }
 
         CommonItemType<CreateUserEntity> relatedUser = mGroupTypeArrayMap.get("整改人");
-        String related = relatedUser.getSelectUserIDList();
-        postDataList.put("event_related", relatedUser.getSelectUserIDList());
-        cache.setRelated(related);
+        if (!relatedUser.getTypeItemList().isEmpty()) {
+            return true;
+        }
 
+        return false;
+    }
 
-        //集合
+    private String getAtListString(CommonItemType<CreateUserEntity> checkUser, CommonItemType<CreateUserEntity> reviewUser, CommonItemType<CreateUserEntity> relatedUser) {
         List<CreateUserEntity> entities = new ArrayList<>();
         entities.addAll(checkUser.getTypeItemList());
         entities.addAll(reviewUser.getTypeItemList());
         entities.addAll(relatedUser.getTypeItemList());
-        String atUser = Flowable.fromIterable(entities)
+        return Flowable.fromIterable(entities)
                 .filter(CreateUserEntity::isAt)
                 .map(CreateUserEntity::getUserId)
                 .distinct()
@@ -244,41 +299,12 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
                     for (String data : strings) {
                         builder.append(data);
                     }
-                    if (builder.length() > 0)
+                    if (builder.length() > 0) {
                         builder.delete(builder.length() - 1, builder.length());
+                    }
                     return builder.toString();
                 }).toFlowable()
                 .blockingSingle();
-        postDataList.put("event_at", atUser);
-        cache.setAt(atUser);
-
-        CommonItemType<TeamNameEntity> temLis = mGroupTypeArrayMap.get("查阅组");
-        String read = temLis.getTeamIDList();
-        postDataList.put("event_read", temLis.getTeamIDList());
-        cache.setRead(read);
-
-
-        Flowable.fromIterable(picList)
-                .flatMap(UploadUtil::uploadJPG)
-                .toList()
-                .toFlowable()
-                .flatMap(uploadData -> {
-                    StringBuilder builder = new StringBuilder();
-                    for (UploadData data : uploadData) {
-                        builder.append(data.getPicid());
-                        builder.append(",");
-                    }
-                    if (builder.length() > 0)
-                        builder.delete(builder.length() - 1, builder.length());
-                    postDataList.put("event_pic", builder.toString());
-                    cache.setPic(builder.toString());
-                    return Http.netServer(SafeApi.class).createEventList(postDataList);
-                })
-                .compose(Network.networkConvertDialog(mView))
-                .subscribe(integer -> mView.createSuccess(), throwable -> {
-                });
-
-
     }
 
 }

@@ -77,7 +77,6 @@ public class LoginActivity extends BasePresenterActivity<LoginContract.Presenter
         mLoginPassword = (EditText) findViewById(R.id.login_password);
         mLogin = (TextView) findViewById(R.id.login);
 
-
     }
 
     @Override

@@ -14,51 +14,46 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.CompanyTeamEntity;
 import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.list.SelectUserAdapterDataObserver;
 
 /**
- * Auth:Cheek
  * date:2018.1.11
+ * @author Chaek
  */
 
 @BindItemData(CompanyTeamEntity.class)
-public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, SelectTeamItemView.ViewHolder> {
+public class SelectUserGroupItemView extends AbstractItemView<CompanyTeamEntity, SelectUserGroupItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_select_uset_group;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SelectTeamItemView.ViewHolder vh, @NonNull CompanyTeamEntity data) {
-
+    public void onBindViewHolder(@NonNull SelectUserGroupItemView.ViewHolder vh, @NonNull CompanyTeamEntity data) {
+        changeItemView(vh, data);
         vh.mItemTeamTitle.setText(data.getTeamName());
-        vh.setOnClickListener(view -> {
+
+        //点击头部隐藏和伸缩
+        vh.mTeamTitle.setOnClickListener(view -> {
             data.setExpansion(!data.isExpansion());
             getCommonAdapter().notifyItemChanged(vh.getItemPosition());
         });
-        vh.mItemTeamSelectAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
-                    createUserEntity.setSelect(!data.isSelect());
-                    if (!createUserEntity.isSelect()) {
-                        createUserEntity.setAt(false);
-                    }
-                    createUserEntity.post();
-                }
-                data.setSelect(!data.isSelect());
-                if (data.isSelect()) {
-                    vh.mItemTeamSelectAll.setText(R.string.un_select_all);
-                } else {
-                    vh.mItemTeamSelectAll.setText(R.string.select_all);
-                }
-                if (!data.isExpansion()) {
-                    data.setExpansion(true);
-                }
 
-                getCommonAdapter().notifyItemChanged(vh.getLayoutPosition());
-//                vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
+        //选择全部
+        vh.mItemTeamSelectAll.setOnClickListener(view -> {
+            for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
+                createUserEntity.setSelect(!data.isSelect());
+                if (!createUserEntity.isSelect()) {
+                    createUserEntity.setAt(false);
+                }
+                createUserEntity.post();
             }
+            if (!data.isExpansion()) {
+                data.setExpansion(true);
+            }
+            getCommonAdapter().notifyItemChanged(vh.getLayoutPosition());
         });
+        //@已经勾选的所有
         vh.mItemTeamSelectAT.setOnClickListener(view -> {
             for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
                 if (!data.isAt() && createUserEntity.isSelect()) {
@@ -72,24 +67,47 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
             vh.mCheckExamineList.getAdapter().notifyDataSetChanged();
         });
 
+        //设置人员适配适配器
+        CommonAdapter adapter;
         if (vh.mCheckExamineList.getAdapter() == null) {
-            CommonAdapter adapter = new CommonAdapter(data.getTeamUserEntities());
-            adapter.register(SelectTeamUserItemView.class);
+            adapter = new CommonAdapter(data.getTeamUserEntities()).register(SelectUserItemView.class);
             vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
-            //用户信息
             vh.mCheckExamineList.setAdapter(adapter);
         } else {
-            CommonAdapter adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
+            adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
             adapter.setListData(data.getTeamUserEntities());
             adapter.notifyDataSetChanged();
         }
 
+        if (vh.mCheckExamineList.getTag() != null) {
+            adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
+        }
+        //设置adapter更改改变View界面
+        RecyclerView.AdapterDataObserver observer = new SelectUserAdapterDataObserver(vh, commonViewHolder ->
+                changeItemView((SelectUserGroupItemView.ViewHolder) commonViewHolder, (CompanyTeamEntity) getCommonAdapter().getListData(commonViewHolder.getItemPosition())));
+        adapter.registerAdapterDataObserver(observer);
+        vh.mCheckExamineList.setTag(observer);
+
+    }
+
+
+    private void changeItemView(SelectUserGroupItemView.ViewHolder vh, CompanyTeamEntity data) {
+
+        //遍历查看是否全选
+        boolean isSelectAll = true;
+        for (CreateUserEntity entity : data.getTeamUserEntities()) {
+            if (!entity.isSelect()) {
+                isSelectAll = false;
+            }
+        }
+        data.setSelect(isSelectAll && !data.getTeamUserEntities().isEmpty());
         if (data.isSelect()) {
             vh.mItemTeamSelectAll.setText(R.string.un_select_all);
         } else {
             vh.mItemTeamSelectAll.setText(R.string.select_all);
         }
 
+        //是否隐藏RecyclerView
         if (data.getTeamUserEntities() == null || data.getTeamUserEntities().isEmpty()) {
             vh.mCheckExamineList.setVisibility(View.GONE);
         } else {
@@ -111,7 +129,7 @@ public class SelectTeamItemView extends AbstractItemView<CompanyTeamEntity, Sele
         private TextView mItemTeamTitle;
         private TextView mItemTeamSelectAT;
         private TextView mItemTeamSelectAll;
-        private RecyclerView mCheckExamineList;
+        public RecyclerView mCheckExamineList;
         private RelativeLayout mTeamTitle;
 
 

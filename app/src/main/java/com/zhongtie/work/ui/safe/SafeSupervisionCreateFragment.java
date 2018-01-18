@@ -34,8 +34,8 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
 /**
  * 安全督导创建界面
- * Auth:Cheek
- * date:2018.1.9
+ * @author Chaek
+ * @date:2018.1.9
  */
 
 public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCreateContract.Presenter> implements SafeCreateContract.View {

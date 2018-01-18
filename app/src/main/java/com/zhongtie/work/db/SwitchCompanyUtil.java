@@ -22,7 +22,6 @@ public class SwitchCompanyUtil {
 
     public static Flowable<String> switchCompany(int company) {
         FlowManager.getDatabase(CompanyDB.NAME).destroy();
-
         return Flowable.fromCallable(() -> { //公司文纪念
             File dbFile = App.getInstance().getDatabasePath("company.db");
             if (dbFile.exists()) {
