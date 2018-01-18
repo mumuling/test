@@ -13,7 +13,6 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.TeamNameEntity;
-import com.zhongtie.work.data.create.CreateUserEntity;
 import com.zhongtie.work.db.CompanyUserGroupTable;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BaseFragment;
@@ -23,16 +22,12 @@ import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.DividerItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
-import org.reactivestreams.Publisher;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.LIST;
@@ -140,7 +135,7 @@ public class SelectLookGroupFragment extends BaseFragment implements OnRecyclerI
                     return teamNameEntity;
                 }).toList()
                 .toFlowable()
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(teamNameEntities -> {
                     mAllTeamList = teamNameEntities;
                     mCommonAdapter.setListData(teamNameEntities);

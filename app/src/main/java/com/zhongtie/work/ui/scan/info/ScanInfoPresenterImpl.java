@@ -4,17 +4,21 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.data.CompanyEntity;
 import com.zhongtie.work.data.CompanyEntity_Table;
 import com.zhongtie.work.db.CacheAddWrongTable;
 import com.zhongtie.work.db.CacheAddWrongTable_Table;
 import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.db.CompanyUserData_Table;
 import com.zhongtie.work.db.CompanyUserWrongTable;
+import com.zhongtie.work.db.WorkTeamEntity;
+import com.zhongtie.work.db.WorkTeamEntity_Table;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.UserApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
+import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
 
 import java.util.List;
@@ -36,9 +40,9 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
             userId = Integer.valueOf(qrcodeinfo.substring(idIndex + 3, qrcodeinfo.length()));
             addDispose(Flowable.just(userId)
                     .map(s -> SQLite.select().from(CompanyUserData.class)
-                            .where(CompanyUserData_Table.id.eq(1))
+                            .where(CompanyUserData_Table.id.eq(userId))
                             .querySingle())
-                    .compose(Network.netorkIO())
+                    .compose(Network.networkIO())
                     .subscribe(companyUserData -> {
                         if (companyUserData == null) {
                             mView.noFindUserInfo();
@@ -48,6 +52,8 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
                     }, throwable -> {
                         mView.noFindUserInfo();
                     }));
+        } else {
+            mView.noFindUserInfo();
         }
 
     }
@@ -67,13 +73,13 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
                     addWrongTable.save();
                     return integerResult;
                 })
-                .compose(Network.networkConvertDialog(mView))
+                .compose(Network.convertDialogTip(mView))
                 .onErrorReturn(throwable -> {
                     addWrongTable.setStatus(0);
                     addWrongTable.save();
                     return 0;
                 })
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(s -> {
                     mView.showToast("添加成功");
                     mView.addWrongSuccess();
@@ -81,17 +87,70 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
                 }, throwable -> mView.showToast(HttpException.getErrorMessage(throwable))));
     }
 
+    private String getInsure(String insure) {
+        String[] date = insure.split(",");
+        if (date.length > 0) {
+            StringBuffer string = new StringBuffer();
+            for (int i = 0; i < date.length; i += 2) {
+                string.append(date[i].trim());
+                if (i + 1 < date.length) {
+                    string.append("~");
+                    string.append(date[i + 1].trim());
+                    string.append("\n");
+                }
+            }
+            if (string.length() > 0) {
+                string.delete(string.length() - 2, string.length());
+            }
+            return string.toString();
+        }
+        return insure;
+    }
+
+    private void getCompanyName(int companyId) {
+        addDispose(Flowable.fromCallable(() -> {
+            CompanyEntity company = SQLite.select().from(CompanyEntity.class).where(CompanyEntity_Table.id.eq(companyId)).querySingle();
+            if (company == null) {
+                return "未知";
+            }
+            return company.getName();
+        }).compose(Network.networkIO()).subscribe(s -> mView.setUserWorkTeam(s), throwable -> {
+
+        }));
+    }
+
+    /**
+     * 获取劳务公司
+     *
+     * @param companyId
+     */
+    private void getCompanyWorkName(String companyId) {
+        if (TextUtil.isEmpty(companyId)) {
+            mView.setUserUnit("");
+            return;
+        }
+        addDispose(Flowable.fromCallable(() -> {
+            WorkTeamEntity company = SQLite.select().from(WorkTeamEntity.class).where(WorkTeamEntity_Table.id.eq(Integer.valueOf(companyId))).querySingle();
+            if (company == null) {
+                return "未知";
+            }
+            return company.getName();
+        }).compose(Network.networkIO()).subscribe(s -> mView.setUserUnit(s), throwable -> {
+        }));
+    }
+
     private void setUserInfo(CompanyUserData userData) {
         mView.setUserCardCode(userData.getIdencode());
         mView.setUserDuty(userData.getDuty());
-        mView.setUserHead(userData.getPhoto());
+//        mView.setUserHead(userData.getPhoto());
         mView.setUserHealth(userData.getHealth());
-        mView.setUserInsure(userData.getInsure());
-        mView.setUserLearn(userData.getLearn());
+        mView.setUserInsure(getInsure(userData.getInsure()));
+        mView.setUserLearn(TimeUtils.formatWrongTime(userData.getLearn()) + "至" + TimeUtils.formatWrongTime(userData.getLearn2()));
         mView.setUserName(userData.getName());
         mView.setUserOnJob(userData.getOnjob() == 1 ? "在职" : "离职");
-        mView.setUserUnit(userData.getUnit());
-        mView.setUserWorkTeam(userData.getWorkteam());
+
+        getCompanyName(userData.getCompany());
+        getCompanyWorkName(userData.getWorkteam());
         mView.setUserWorkType(userData.getWorktype());
         mView.initSuccess();
         getUserWrongMessage();
@@ -110,8 +169,11 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
             for (int i = 0; i < companyUserWrongTables.size(); i++) {
                 CompanyUserWrongTable userWrongTable = companyUserWrongTables.get(i);
                 builder.append(userWrongTable.getContent());
+                builder.append("\t\t(");
                 builder.append(TimeUtils.formatWrongTime(userWrongTable.getTime()));
+                builder.append(")\n");
                 builder.append("\n");
+
             }
             for (int i = 0; i < cacheAddWrongTables.size(); i++) {
                 CacheAddWrongTable item = cacheAddWrongTables.get(i);
@@ -126,15 +188,16 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
                     continue;
                 }
                 builder.append(item.getContent());
-                builder.append("\t");
+                builder.append("\t\t(");
                 builder.append(TimeUtils.formatWrongTime2(item.getTime()));
+                builder.append(")\n");
                 builder.append("\n");
             }
             if (builder.length() == 0) {
                 builder.append(App.getInstance().getString(R.string.not_wrong_text));
             }
             return builder.toString();
-        }).compose(Network.netorkIO())
+        }).compose(Network.networkIO())
                 .subscribe(s -> mView.setUserWrongMessage(s), throwable -> {
                     mView.setUserWrongMessage(App.getInstance().getString(R.string.not_wrong_text));
                 }));

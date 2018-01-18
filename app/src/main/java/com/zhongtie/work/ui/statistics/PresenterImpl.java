@@ -70,7 +70,7 @@ public class PresenterImpl extends BasePresenterImpl<StatisticsContract.View> im
                     });
             Flowable.zip(workTeamObservable, companyObservable, statisticsObservable, (statisticsLineData, statisticsLineData2, pieEntries) ->
                     new Object[]{statisticsLineData, statisticsLineData2, pieEntries})
-                    .compose(Network.netorkIO())
+                    .compose(Network.networkIO())
                     .subscribe(o -> {
                         mCacheData.put(year, temp);
                         setStatisticsData(o);

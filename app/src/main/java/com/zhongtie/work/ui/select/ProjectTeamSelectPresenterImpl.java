@@ -49,7 +49,7 @@ class ProjectTeamSelectPresenterImpl extends BasePresenterImpl<ProjectTeamSelect
                 .concatMap(this::convertList)
                 .toList()
                 .toFlowable()
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(projectTeamEntities -> mView.setProjectTeamListData(projectTeamEntities), throwable -> {
                 }));
     }
@@ -86,7 +86,7 @@ class ProjectTeamSelectPresenterImpl extends BasePresenterImpl<ProjectTeamSelect
                 .concatMap(this::convertList)
                 .toList()
                 .toFlowable()
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(projectTeamEntities -> mView.setProjectTeamListData(projectTeamEntities), throwable -> {
                 }));
 

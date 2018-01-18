@@ -37,7 +37,7 @@ public class UserPresenterImpl extends BasePresenterImpl<UserContract.View> impl
         addDispose(Http.netServer(UserApi.class)
                 .modifyPassword(Cache.getUserID(), passWord)
                 .delay(200, TimeUnit.MILLISECONDS)
-                .compose(Network.networkConvertDialog(mView, "正在修改密码"))
+                .compose(Network.convertDialogTip(mView, "正在修改密码"))
                 .subscribe(s -> mView.modifyPasswordSuccess(), throwable -> {
                             mView.modifyPasswordFail();
                         }
@@ -58,7 +58,7 @@ public class UserPresenterImpl extends BasePresenterImpl<UserContract.View> impl
                         loginUserInfoEntity.save();
                         return loginUserInfoEntity;
                     })
-                    .compose(Network.netorkIO())
+                    .compose(Network.networkIO())
                     .subscribe(this::mapUserInfoList
                             , throwable -> {
                             });

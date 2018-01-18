@@ -53,7 +53,7 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
 //                                    addAll(companyEntities).build().execute(databaseWrapper));
                     return companyEntities;
                 })
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(new Consumer<List<CompanyEntity>>() {
                     @Override
                     public void accept(List<CompanyEntity> companyEntities) throws Exception {

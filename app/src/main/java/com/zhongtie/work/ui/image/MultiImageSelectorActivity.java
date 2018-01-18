@@ -173,7 +173,7 @@ public class MultiImageSelectorActivity extends BaseActivity implements MultiIma
                     public String apply(String s) throws Exception {
                         return compressedImage.compressToFile(new File(s)).toString();
                     }
-                }).compose(com.zhongtie.work.network.Network.netorkIO())
+                }).compose(com.zhongtie.work.network.Network.networkIO())
                 .toList().toFlowable()
                 .subscribe(new Consumer<List<String>>() {
                     @Override

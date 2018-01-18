@@ -22,7 +22,7 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
         int state = type - 1;
         //选择的公司
         int companyId = Cache.getSelectCompany();
-        if (!Cache.isLeader()) {
+        if (Cache.isLeader()) {
             //领导者传0 获取所有
             companyId = 0;
         }
@@ -45,7 +45,7 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
         addDispose(Http.netServer(SafeApi.class)
                 .safeEventListMonthCount(Cache.getUserID(), company)
                 .map(new NetWorkFunc1<>())
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .map(eventCountData -> {
                     HashMap<String, String> map = new HashMap<>(eventCountData.size());
                     for (int i = 0; i < eventCountData.size(); i++) {
@@ -54,7 +54,7 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
                     }
                     return map;
                 })
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(eventCountData -> {
                     mView.setSafeEventCountList(eventCountData);
                 }, throwable -> {

@@ -213,7 +213,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
                 .map(this::getCompanyTeamData)
                 .toList()
                 .toFlowable()
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(companyTeamEntities -> {
                     mTeamEntityList = companyTeamEntities;
                     mAllUserListAdapter = new CommonAdapter(companyTeamEntities).register(SelectUserGroupItemView.class)

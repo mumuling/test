@@ -38,11 +38,11 @@
     <string name="search_hint">输入搜索内容</string>
     <string name="info_duty_title">职务：</string>
     <string name="info_type_work_title">工种：</string>
-    <string name="info_belong_company_title">所属公司：</string>
+    <string name="info_belong_company_title">所属单位：</string>
     <string name="info_company_offer_title">劳务公司：</string>
     <string name="info_study_date_title">三级安全培训有效期：</string>
     <string name="info_health_state_title">体检情况：</string>
-    <string name="info_work_state_title">在职状态：</string>
+    <string name="info_work_state_title">在岗状态：</string>
     <string name="user_base_info_title">基本信息</string>
     <string name="info_insurance_title">保险情况</string>
     <string name="info_violate_title">违规情况</string>
@@ -152,4 +152,8 @@
     <string name="notice_setting">设置成功</string>
     <string name="input_reply_content">请输入回复内容</string>
     <string name="reply_success">回复成功</string>
+    <string name="loading_title">请稍后</string>
+    <string name="create_safe_event_title">正在发布任务</string>
+    <string name="create_success">发布成功</string>
+    <string name="user_card_code">身份证号:</string>
 </resources>

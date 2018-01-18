@@ -235,29 +235,28 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         String read = temLis.getTeamIDList();
         cache.setRead(read);
 
-        UploadUtil.uploadListJPGIDList(cache.getImageList())
+        addDispose(UploadUtil.uploadListJPGIDList(cache.getImageList())
                 .map(s -> {
                     cache.setPic(s);
                     return cache;
                 })
                 .map(CacheSafeEventTable::getOfficeEventMap)
-                .flatMap(officeMap -> Http.netServer(SafeApi.class)
-                        .createEventList(officeMap))
-                .compose(Network.networkConvertDialog(mView))
+                .flatMap(officeMap -> Http.netServer(SafeApi.class).createEventList(officeMap))
+                .compose(Network.convertDialog(mView, R.string.create_safe_event_title))
                 .onErrorReturn(throwable -> {
                     cache.setUploadStatus(0);
                     cache.save();
                     return 0;
                 })
                 .subscribe(integer -> mView.createSuccess(), throwable -> {
-                });
+                }));
 
     }
 
     /**
      * 是否要验证参数值
      *
-     * @return true 存在一项有数据 则会验证 如下几个参数 false 则不会验证 可以传空
+     * @return true 存在一项有数据 则会验证下面所有的参数是否为空 如下几个参数 false 则不会验证 可以传空
      */
     private boolean checkValue() {
         ProjectTeamEntity companyTeam = mView.getCompanyTeamEntity();

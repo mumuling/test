@@ -139,7 +139,7 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
                 })
                 .toList()
                 .toFlowable()
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(createUserEntities -> {
                     mTeamList.getAdapter().notifyDataSetChanged();
                 }, throwable -> {
@@ -156,7 +156,7 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
                 .map(this::getCompanyTeamData)
                 .toList()
                 .toFlowable()
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(companyTeamEntities -> {
                     mTeamEntityList = companyTeamEntities;
                     mCommonAdapter = new CommonAdapter(companyTeamEntities).register(SelectSupervisorGroupItemView.class).register(SelectSupervisorUserItemView.class);

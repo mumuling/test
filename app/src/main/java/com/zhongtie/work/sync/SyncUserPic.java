@@ -101,7 +101,7 @@ public class SyncUserPic {
                         })
                         .toList()
                         .toFlowable()
-                        .blockingSingle()).compose(Network.netorkIO())
+                        .blockingSingle()).compose(Network.networkIO())
                         .subscribe(this::executeDownload, throwable -> isRun = false);
             } else {
                 L.e(TAG, "不是wifi连接不进行照片同步");

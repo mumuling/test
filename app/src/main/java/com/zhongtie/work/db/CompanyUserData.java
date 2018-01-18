@@ -32,6 +32,8 @@ public class CompanyUserData extends BaseModel {
     public String unit;
     @Column(name = "user_learn")
     public String learn;
+    @Column(name = "user_learning")
+    public String learn2;
     @Column(name = "user_health")
     public String health;
     @Column(name = "user_onjob")
@@ -120,6 +122,14 @@ public class CompanyUserData extends BaseModel {
 
     public String getLearn() {
         return learn;
+    }
+
+    public String getLearn2() {
+        return learn2;
+    }
+
+    public void setLearn2(String learn2) {
+        this.learn2 = learn2;
     }
 
     public void setLearn(String learn) {

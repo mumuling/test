@@ -34,6 +34,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
 /**
  * 安全督导创建界面
+ *
  * @author Chaek
  * @date:2018.1.9
  */
@@ -46,18 +47,16 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
      */
     private int mSafeOrderID;
 
-    private SafeCreateEditHeadView mHeadInfoView;
     private RecyclerView mList;
-
     private CommonAdapter mCommonAdapter;
+    private SafeCreateEditHeadView mHeadInfoView;
     private List<Object> mInfoList = new ArrayList<>();
 
-    public static SafeSupervisionCreateFragment newInstance(int id) {
+
+    public static Bundle newInstance(int id) {
         Bundle args = new Bundle();
-        SafeSupervisionCreateFragment fragment = new SafeSupervisionCreateFragment();
         args.putInt(ID, id);
-        fragment.setArguments(args);
-        return fragment;
+        return args;
     }
 
 
@@ -142,6 +141,7 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
 
     @Override
     public void createSuccess() {
+        showToast(R.string.create_success);
         getActivity().finish();
     }
 

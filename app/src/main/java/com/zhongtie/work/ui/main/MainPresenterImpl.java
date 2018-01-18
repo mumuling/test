@@ -68,14 +68,14 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
 
     private void fetchCompanyList() {
         addDispose(SyncCompanyUtil.syncCompanyList()
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(lists -> mView.onSyncCompanySuccess(), throwable -> {
                     throwable.printStackTrace();
                     mView.onSyncCompanyFail();
                     mView.showToast(HttpException.getErrorMessage(throwable));
                 }));
 
-        Flowable.fromCallable(() -> SQLite.select().from(CompanyEntity.class).queryList()).compose(Network.netorkIO())
+        Flowable.fromCallable(() -> SQLite.select().from(CompanyEntity.class).queryList()).compose(Network.networkIO())
                 .subscribe(companyEntities -> mView.setAllCompanyList(companyEntities), throwable -> {
                 });
     }

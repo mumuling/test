@@ -18,12 +18,7 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.util.ImageConfigFactory;
 import com.zhongtie.work.util.ToastUtil;
 
-import java.util.concurrent.Callable;
-
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
-
-import static com.raizlabs.android.dbflow.config.FlowManager.destroy;
 
 /**
  * Auth:Cheek
@@ -71,7 +66,7 @@ public class App extends Application {
                 return userInfoEntity;
             }
             return null;
-        }).compose(Network.netorkIO())
+        }).compose(Network.networkIO())
                 .subscribe(loginUserInfoEntity -> {
                 }, throwable -> {
 

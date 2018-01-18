@@ -41,7 +41,7 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
         //同步
         Http.netServer(SyncApi.class)
                 .createLocalData(1)
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(new Consumer<Result<String>>() {
                     @Override
                     public void accept(Result<String> stringResult) throws Exception {
@@ -66,7 +66,7 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
                     }
                     return "";
                 })
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(item -> {
                     if (Cache.isUserLogin()) {
                         mView.startMainView();

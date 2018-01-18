@@ -86,7 +86,9 @@ public class ScanQRCodeInfoFragment extends BasePresenterFragment<ScanQRCodeInfo
 
     @Override
     public void setUserCardCode(String userCardCode) {
-        mUserInfoCard.setText(userCardCode);
+        mUserInfoCard.setText(R.string.user_card_code);
+        mUserInfoCard.append(userCardCode);
+        mUserInfoHead.loadUserCard(userCardCode);
     }
 
     @Override

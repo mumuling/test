@@ -114,7 +114,7 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                 data.close();
                 return directories;
             }
-        }).compose(Network.netorkIO())
+        }).compose(Network.networkIO())
                 .subscribe(directories -> {
                     if (resultCallback != null) {
                         resultCallback.onResult(directories);

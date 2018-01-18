@@ -152,7 +152,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     @Override
     public void onSignature(String imagePath) {
         UploadUtil.uploadJPG(imagePath)
-                .compose(Network.netorkIO())
+                .compose(Network.networkIO())
                 .subscribe(new Consumer<UploadData>() {
                     @Override
                     public void accept(UploadData uploadData) throws Exception {

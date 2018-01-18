@@ -152,7 +152,7 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
                     postDataList.put("event_pic", builder.toString());
                     return Http.netServer(SafeApi.class).replyEvent(postDataList);
                 })
-                .compose(Network.networkConvertDialog(ReplyEditFragment.this))
+                .compose(Network.convertDialogTip(ReplyEditFragment.this))
                 .subscribe(integer -> {
                     showToast(getString(R.string.reply_success));
                     new ReplyEvent().post();

@@ -12,6 +12,6 @@
         android:drawableTop="@drawable/ic_gray_zhongtie"
         android:gravity="center"
         android:text="@string/not_any_data"
-        android:textColor="#cbcbcb"
+        android:textColor="@color/text_color3"
         android:textSize="15sp" />
 </LinearLayout>
