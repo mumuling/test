@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
@@ -30,7 +30,7 @@ import io.reactivex.functions.Consumer;
 
 public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemClickListener {
 
-    private List<CompanyEntity> companyEntityList;
+    private List<CacheCompanyTable> companyEntityList;
     private Context context;
     private RecyclerView mList;
 
@@ -40,7 +40,7 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         this.onCompanySelectListener = onCompanySelectListener;
     }
 
-    public CompanySelectPopup(Context context, List<CompanyEntity> companyEntityList) {
+    public CompanySelectPopup(Context context, List<CacheCompanyTable> companyEntityList) {
         super(context);
         this.companyEntityList = companyEntityList;
         this.context = context;
@@ -54,9 +54,9 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
                     return companyEntities;
                 })
                 .compose(Network.networkIO())
-                .subscribe(new Consumer<List<CompanyEntity>>() {
+                .subscribe(new Consumer<List<CacheCompanyTable>>() {
                     @Override
-                    public void accept(List<CompanyEntity> companyEntities) throws Exception {
+                    public void accept(List<CacheCompanyTable> companyEntities) throws Exception {
 
                     }
                 }, new Consumer<Throwable>() {
@@ -95,12 +95,12 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
     @Override
     public void onClick(Object t, int index) {
         if (onCompanySelectListener != null) {
-            onCompanySelectListener.onSelectCompany((CompanyEntity) t, index);
+            onCompanySelectListener.onSelectCompany((CacheCompanyTable) t, index);
         }
         dismiss();
     }
 
     public interface OnCompanySelectListener {
-        void onSelectCompany(CompanyEntity companyEntity, int position);
+        void onSelectCompany(CacheCompanyTable companyEntity, int position);
     }
 }

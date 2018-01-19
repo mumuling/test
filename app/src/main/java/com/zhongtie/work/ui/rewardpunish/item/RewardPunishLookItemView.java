@@ -7,7 +7,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
@@ -16,8 +16,8 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
  * Auth: Chaek
  * Date: 2018/1/11
  */
-@BindItemData(SafeSupervisionEntity.class)
-public class RewardPunishLookItemView extends AbstractItemView<SafeSupervisionEntity, RewardPunishItemView.ViewHolder> {
+@BindItemData(SupervisorInfoEntity.SafeSupervisionEntity.class)
+public class RewardPunishLookItemView extends AbstractItemView<SupervisorInfoEntity.SafeSupervisionEntity, RewardPunishItemView.ViewHolder> {
 
     @Override
     public int getLayoutId(int viewType) {
@@ -25,7 +25,7 @@ public class RewardPunishLookItemView extends AbstractItemView<SafeSupervisionEn
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RewardPunishItemView.ViewHolder vh, @NonNull SafeSupervisionEntity data) {
+    public void onBindViewHolder(@NonNull RewardPunishItemView.ViewHolder vh, @NonNull SupervisorInfoEntity.SafeSupervisionEntity data) {
         vh.mOrderUserPic.setVisibility(View.VISIBLE);
         vh.mOrderUserPic.loadImage(imageUrls[0]);
         vh.mOrderCode.setText("张连英");

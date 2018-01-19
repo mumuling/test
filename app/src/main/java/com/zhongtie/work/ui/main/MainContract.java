@@ -1,6 +1,6 @@
 package com.zhongtie.work.ui.main;
 
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
@@ -16,7 +16,7 @@ public interface MainContract {
     interface View extends BaseView {
         void setUserCompany(String company);
 
-        void setAllCompanyList(List<CompanyEntity> allCompanyList);
+        void setAllCompanyList(List<CacheCompanyTable> allCompanyList);
 
         void setUserInfo(LoginUserInfoEntity userInfo);
 
@@ -30,7 +30,7 @@ public interface MainContract {
 
         void fetchInitData();
 
-        void switchSelectCompany(CompanyEntity companyEntity);
+        void switchSelectCompany(CacheCompanyTable companyEntity);
     }
 
 }

@@ -9,7 +9,7 @@ import com.zhongtie.work.data.ApproveEntity;
 import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.data.ReplyEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
@@ -49,9 +49,9 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
         String[] titleList = App.getInstance().getResources().getStringArray(R.array.create_item_title);
         String[] tip = App.getInstance().getResources().getStringArray(R.array.create_item_tip);
         List<CommonItemType> list = new ArrayList<>();
-        List<CreateUserEntity> createUserEntities = new ArrayList<>();
+        List<CommonUserEntity> createUserEntities = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            CreateUserEntity c = new CreateUserEntity();
+            CommonUserEntity c = new CommonUserEntity();
             c.setUserId(i);
             c.setUserName("测试" + 1);
             c.setUserPic(imageUrls[i]);

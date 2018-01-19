@@ -4,7 +4,7 @@ package com.zhongtie.work.network.api;
 import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.data.Result;
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.model.EventCountData;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public interface SafeApi {
      */
     @FormUrlEncoded
     @POST("?action=GetEventList")
-    Flowable<Result<List<SafeSupervisionEntity>>> safeEventList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("time") String time, @Field("state") int state);
+    Flowable<Result<List<SupervisorInfoEntity.SafeSupervisionEntity>>> safeEventList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("time") String time, @Field("state") int state);
 
     /**
      * 创建安全督导

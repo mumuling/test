@@ -8,7 +8,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.widget.BaseImageView;
 
 /**
@@ -16,8 +16,8 @@ import com.zhongtie.work.widget.BaseImageView;
  * Auth: Chaek
  * Date: 2018/1/11
  */
-@BindItemData(SafeSupervisionEntity.class)
-public class RewardPunishItemView extends AbstractItemView<SafeSupervisionEntity, RewardPunishItemView.ViewHolder> {
+@BindItemData(SupervisorInfoEntity.SafeSupervisionEntity.class)
+public class RewardPunishItemView extends AbstractItemView<SupervisorInfoEntity.SafeSupervisionEntity, RewardPunishItemView.ViewHolder> {
 
 
     @Override
@@ -26,7 +26,7 @@ public class RewardPunishItemView extends AbstractItemView<SafeSupervisionEntity
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SafeSupervisionEntity data) {
+    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SupervisorInfoEntity.SafeSupervisionEntity data) {
         vh.mOrderCode.setText("编号：重庆-2017-61");
         vh.mOrderContent.setText("被处理对象：十号线供电线路项目分部十号线供...");
         vh.mOrderCreateTime.setText("11-20 11:49");

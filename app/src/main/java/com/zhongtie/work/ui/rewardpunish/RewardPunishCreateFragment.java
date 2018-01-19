@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
@@ -107,7 +107,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
         if (resultCode == RESULT_OK) {
             if (requestCode == CommonFragmentActivity.USER_SELECT_CODE) {
                 String title = data.getStringExtra(TITLE);
-                List<CreateUserEntity> createUserEntities = (List<CreateUserEntity>) data.getSerializableExtra(LIST);
+                List<CommonUserEntity> createUserEntities = (List<CommonUserEntity>) data.getSerializableExtra(LIST);
                 mPresenter.setSelectUserInfoList(title, createUserEntities);
                 mCommonAdapter.notifyDataSetChanged();
             }

@@ -6,6 +6,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 /**
+ * 公司数据库员工表
  * Auth:Cheek
  * date:2018.1.8
  */

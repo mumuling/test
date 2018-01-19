@@ -12,7 +12,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
  */
 
 @Table(database = ZhongtieDb.class, name = "company_syn_time_table")
-public class CompanySync  extends BaseModel{
+public class SyncCompanyTimeTable extends BaseModel{
     @PrimaryKey
     private int companyID;
     @Column

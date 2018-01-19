@@ -8,22 +8,22 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 
 /**
  * Auth:Cheek
  * date:2018.1.11
  */
 
-@BindItemData(CreateUserEntity.class)
-public class SelectSupervisorUserItemView extends AbstractItemView<CreateUserEntity, SelectSupervisorUserItemView.ViewHolder> {
+@BindItemData(CommonUserEntity.class)
+public class SelectSupervisorUserItemView extends AbstractItemView<CommonUserEntity, SelectSupervisorUserItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_create_select_type;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SelectSupervisorUserItemView.ViewHolder vh, @NonNull CreateUserEntity data) {
+    public void onBindViewHolder(@NonNull SelectSupervisorUserItemView.ViewHolder vh, @NonNull CommonUserEntity data) {
         vh.mItemTitleCheck.setChecked(data.isSelect());
         vh.mItemTitleCheck.setText(data.getUserName());
 

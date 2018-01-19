@@ -7,8 +7,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
-import com.zhongtie.work.data.CompanyEntity;
-import com.zhongtie.work.db.CompanySync;
+import com.zhongtie.work.db.CacheCompanyTable;
+import com.zhongtie.work.db.SyncCompanyTimeTable;
 import com.zhongtie.work.db.CompanySync_Table;
 import com.zhongtie.work.db.CompanyUserGroupTable;
 import com.zhongtie.work.db.SwitchCompanyUtil;
@@ -40,19 +40,19 @@ public class SyncCompanyUtil {
      * 同步公司数据
      * 并同步下载数据库文件
      */
-    public static Flowable<List<CompanyEntity>> syncCompanyList() {
+    public static Flowable<List<CacheCompanyTable>> syncCompanyList() {
         L.e(TAG, "正在同步公司信息--------");
         return Http.netServer(UserApi.class).fetchCompanyList(0)
                 .map(new NetWorkFunc1<>())
                 .flatMap(companyEntities -> {
                     FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->
-                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CompanyEntity.class)).
+                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CacheCompanyTable.class)).
                                     addAll(companyEntities).build().execute(databaseWrapper));
                     return Flowable.fromIterable(companyEntities);
                 })
                 .map(companyEntity -> {
                     //读取数据库同步时间
-                    CompanySync companySyn = SQLite.select().from(CompanySync.class).where(CompanySync_Table.companyID.eq(companyEntity.getId())).querySingle();
+                    SyncCompanyTimeTable companySyn = SQLite.select().from(SyncCompanyTimeTable.class).where(CompanySync_Table.companyID.eq(companyEntity.getId())).querySingle();
                     if (companySyn != null) {
                         long oldTime = companySyn.getSynTime();
                         long newTime = TimeUtils.converter(companyEntity.getDbupdatetime());
@@ -60,13 +60,13 @@ public class SyncCompanyUtil {
                         if (newTime > oldTime) {
                             downCompanyDB(companyEntity);
                         }
-                        SQLite.update(CompanySync.class)
+                        SQLite.update(SyncCompanyTimeTable.class)
                                 .set(CompanySync_Table.synTime.eq(newTime))
                                 .where(CompanySync_Table.companyID.eq(companySyn.getCompanyID()))
                                 .execute();
                     } else {
                         downCompanyDB(companyEntity);
-                        companySyn = new CompanySync();
+                        companySyn = new SyncCompanyTimeTable();
                         companySyn.setCompanyID(companyEntity.getId());
                         companySyn.setSynTime(System.currentTimeMillis());
                         companySyn.save();
@@ -82,7 +82,7 @@ public class SyncCompanyUtil {
      * @param companyEntity 公司信息
      */
     @WorkerThread
-    private static void downCompanyDB(CompanyEntity companyEntity) {
+    private static void downCompanyDB(CacheCompanyTable companyEntity) {
         if (!TextUtil.isEmpty(companyEntity.getDburl())) {
             L.e("-----------", "正在下载" + companyEntity.getDburl());
             DownloadManager.getInstance().download(companyEntity, null);

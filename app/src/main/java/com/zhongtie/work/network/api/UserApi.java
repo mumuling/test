@@ -1,6 +1,6 @@
 package com.zhongtie.work.network.api;
 
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.data.Result;
 
@@ -43,7 +43,7 @@ public interface UserApi {
      */
     @FormUrlEncoded
     @POST("?action=CompanyList")
-    Flowable<Result<List<CompanyEntity>>> fetchCompanyList(@Field("userId") int userId);
+    Flowable<Result<List<CacheCompanyTable>>> fetchCompanyList(@Field("userId") int userId);
 
 
     /**

@@ -1,8 +1,5 @@
 package com.zhongtie.work.data;
 
-import com.zhongtie.work.data.create.CreateUserEntity;
-import com.zhongtie.work.db.CompanyUserData;
-
 import java.util.List;
 
 /**
@@ -15,13 +12,13 @@ public class CompanyTeamEntity {
     private boolean isSelect;
     private boolean isExpansion;
     private boolean isAt;
-    private List<CreateUserEntity> teamUserEntities;
+    private List<CommonUserEntity> teamUserEntities;
 
-    public List<CreateUserEntity> getTeamUserEntities() {
+    public List<CommonUserEntity> getTeamUserEntities() {
         return teamUserEntities;
     }
 
-    public void setTeamUserEntities(List<CreateUserEntity> teamUserEntities) {
+    public void setTeamUserEntities(List<CommonUserEntity> teamUserEntities) {
         this.teamUserEntities = teamUserEntities;
     }
 

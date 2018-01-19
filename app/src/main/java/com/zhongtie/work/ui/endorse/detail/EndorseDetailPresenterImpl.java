@@ -8,7 +8,7 @@ import com.zhongtie.work.app.App;
 import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.ui.file.select.NormalFile;
 
@@ -35,9 +35,9 @@ public class EndorseDetailPresenterImpl extends BasePresenterImpl<EndorseDetailC
         String[] tip = App.getInstance().getResources().getStringArray(R.array.create_file_sign_detail_tip);
         List<CommonItemType> list = new ArrayList<>();
         int size = titleList.length;
-        List<CreateUserEntity> createUserEntities = new ArrayList<>();
+        List<CommonUserEntity> createUserEntities = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            CreateUserEntity c = new CreateUserEntity();
+            CommonUserEntity c = new CommonUserEntity();
             c.setUserId(i);
             c.setUserName("测试" + 1);
             c.setUserPic(imageUrls[i]);

@@ -1,4 +1,4 @@
-package com.zhongtie.work.data;
+package com.zhongtie.work.db;
 
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -12,7 +12,7 @@ import com.zhongtie.work.db.ZhongtieDb;
  */
 
 @Table(database = ZhongtieDb.class, name = "company_list_table")
-public class CompanyEntity extends BaseModel {
+public class CacheCompanyTable extends BaseModel {
 
     /**
      * id : 1

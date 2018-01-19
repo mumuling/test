@@ -13,7 +13,7 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.CompanyTeamEntity;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.list.SelectUserAdapterDataObserver;
 
 /**
@@ -41,7 +41,7 @@ public class SelectUserGroupItemView extends AbstractItemView<CompanyTeamEntity,
 
         //选择全部
         vh.mItemTeamSelectAll.setOnClickListener(view -> {
-            for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
+            for (CommonUserEntity createUserEntity : data.getTeamUserEntities()) {
                 createUserEntity.setSelect(!data.isSelect());
                 if (!createUserEntity.isSelect()) {
                     createUserEntity.setAt(false);
@@ -55,7 +55,7 @@ public class SelectUserGroupItemView extends AbstractItemView<CompanyTeamEntity,
         });
         //@已经勾选的所有
         vh.mItemTeamSelectAT.setOnClickListener(view -> {
-            for (CreateUserEntity createUserEntity : data.getTeamUserEntities()) {
+            for (CommonUserEntity createUserEntity : data.getTeamUserEntities()) {
                 if (!data.isAt() && createUserEntity.isSelect()) {
                     createUserEntity.setAt(true);
                 } else {
@@ -95,7 +95,7 @@ public class SelectUserGroupItemView extends AbstractItemView<CompanyTeamEntity,
 
         //遍历查看是否全选
         boolean isSelectAll = true;
-        for (CreateUserEntity entity : data.getTeamUserEntities()) {
+        for (CommonUserEntity entity : data.getTeamUserEntities()) {
             if (!entity.isSelect()) {
                 isSelectAll = false;
             }

@@ -8,7 +8,7 @@ import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.data.create.EventTypeEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.SelectEventTypeItem;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
@@ -82,7 +82,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
             if (!title.contains("查阅")) {
                 List<RPRecordEntity> list = new ArrayList<>();
                 for (int i = 0; i < createUserEntities.size(); i++) {
-                    CreateUserEntity createUserEntity = (CreateUserEntity) createUserEntities.get(i);
+                    CommonUserEntity createUserEntity = (CommonUserEntity) createUserEntities.get(i);
                     RPRecordEntity rpRecordEntity = new RPRecordEntity();
                     rpRecordEntity.setEdit(true);
                     list.add(rpRecordEntity);

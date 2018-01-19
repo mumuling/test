@@ -8,7 +8,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.util.L;
 
 /**
@@ -18,8 +18,8 @@ import com.zhongtie.work.util.L;
  * @author Chaek
  */
 
-@BindItemData(CreateUserEntity.class)
-public class SelectUserItemView extends AbstractItemView<CreateUserEntity, SelectUserItemView.ViewHolder> {
+@BindItemData(CommonUserEntity.class)
+public class SelectUserItemView extends AbstractItemView<CommonUserEntity, SelectUserItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_create_select_type;
@@ -28,7 +28,7 @@ public class SelectUserItemView extends AbstractItemView<CreateUserEntity, Selec
 
     private View.OnClickListener onUserNoticeListener = v -> {
         ViewHolder vh = (ViewHolder) v.getTag();
-        CreateUserEntity data = (CreateUserEntity) getCommonAdapter().getListData(vh.getItemPosition());
+        CommonUserEntity data = (CommonUserEntity) getCommonAdapter().getListData(vh.getItemPosition());
         data.setAt(vh.mItemNoticeCheck.isChecked());
         if (vh.mItemNoticeCheck.isChecked()) {
             data.setSelect(true);
@@ -38,7 +38,7 @@ public class SelectUserItemView extends AbstractItemView<CreateUserEntity, Selec
     };
     private View.OnClickListener onUserSelectListener = v -> {
         ViewHolder vh = (ViewHolder) v.getTag();
-        CreateUserEntity data = (CreateUserEntity) getCommonAdapter().getListData(vh.getItemPosition());
+        CommonUserEntity data = (CommonUserEntity) getCommonAdapter().getListData(vh.getItemPosition());
         boolean isSelect = vh.mItemTitleCheck.isChecked();
         if (!isSelect) {
             data.setAt(false);
@@ -49,7 +49,7 @@ public class SelectUserItemView extends AbstractItemView<CreateUserEntity, Selec
     };
 
     @Override
-    public void onBindViewHolder(@NonNull SelectUserItemView.ViewHolder vh, @NonNull CreateUserEntity data) {
+    public void onBindViewHolder(@NonNull SelectUserItemView.ViewHolder vh, @NonNull CommonUserEntity data) {
         L.e("----------------------", data.toString());
         vh.mItemTitleCheck.setText(data.getUserName());
         vh.mItemTitleCheck.setChecked(data.isSelect());

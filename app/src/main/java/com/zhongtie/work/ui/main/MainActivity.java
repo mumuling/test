@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.list.OnRefreshListener;
@@ -30,7 +30,7 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
     private TextView mUserCompanyName;
     private ImageView mArrowView;
     public DrawerLayout mDrawerLayout;
-    private List<CompanyEntity> companyEntityList;
+    private List<CacheCompanyTable> companyEntityList;
     private MainFragment mainFragment;
 
     private long mExitTime = 0;
@@ -79,7 +79,7 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
     }
 
     @Override
-    public void onSelectCompany(CompanyEntity companyEntity, int position) {
+    public void onSelectCompany(CacheCompanyTable companyEntity, int position) {
         mPresenter.switchSelectCompany(companyEntity);
     }
 
@@ -89,7 +89,7 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
     }
 
     @Override
-    public void setAllCompanyList(List<com.zhongtie.work.data.CompanyEntity> allCompanyList) {
+    public void setAllCompanyList(List<CacheCompanyTable> allCompanyList) {
         this.companyEntityList = allCompanyList;
         if (mainFragment != null) {
             mainFragment.onRefreshComplete();

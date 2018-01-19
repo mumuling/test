@@ -9,7 +9,7 @@ import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.data.create.EventTypeEntity;
 import com.zhongtie.work.data.create.SelectEventTypeItem;
@@ -163,7 +163,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
             return;
         }
 
-        CommonItemType<CreateUserEntity> relatedUser = mGroupTypeArrayMap.get("整改人");
+        CommonItemType<CommonUserEntity> relatedUser = mGroupTypeArrayMap.get("整改人");
         if (rectify.isEmpty() && isCheckValue) {
             mView.showToast("请选择整改人");
             return;
@@ -205,7 +205,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         cache.setChangemust(rectify);
 
 
-        CommonItemType<CreateUserEntity> checkUser = mGroupTypeArrayMap.get("检查人");
+        CommonItemType<CommonUserEntity> checkUser = mGroupTypeArrayMap.get("检查人");
         if (checkUser.getTypeItemList().isEmpty()) {
             mView.showToast("请选择检查人");
             return;
@@ -213,7 +213,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         String check = checkUser.getSelectUserIDList();
         cache.setChecker(check);
 
-        CommonItemType<CreateUserEntity> reviewUser = mGroupTypeArrayMap.get("验证人");
+        CommonItemType<CommonUserEntity> reviewUser = mGroupTypeArrayMap.get("验证人");
 
         if (reviewUser.getTypeItemList().size() != 2) {
             mView.showToast("验证人有且只能有2个人");
@@ -274,7 +274,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
             return true;
         }
 
-        CommonItemType<CreateUserEntity> relatedUser = mGroupTypeArrayMap.get("整改人");
+        CommonItemType<CommonUserEntity> relatedUser = mGroupTypeArrayMap.get("整改人");
         if (!relatedUser.getTypeItemList().isEmpty()) {
             return true;
         }
@@ -282,14 +282,14 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         return false;
     }
 
-    private String getAtListString(CommonItemType<CreateUserEntity> checkUser, CommonItemType<CreateUserEntity> reviewUser, CommonItemType<CreateUserEntity> relatedUser) {
-        List<CreateUserEntity> entities = new ArrayList<>();
+    private String getAtListString(CommonItemType<CommonUserEntity> checkUser, CommonItemType<CommonUserEntity> reviewUser, CommonItemType<CommonUserEntity> relatedUser) {
+        List<CommonUserEntity> entities = new ArrayList<>();
         entities.addAll(checkUser.getTypeItemList());
         entities.addAll(reviewUser.getTypeItemList());
         entities.addAll(relatedUser.getTypeItemList());
         return Flowable.fromIterable(entities)
-                .filter(CreateUserEntity::isAt)
-                .map(CreateUserEntity::getUserId)
+                .filter(CommonUserEntity::isAt)
+                .map(CommonUserEntity::getUserId)
                 .distinct()
                 .map(integer -> integer + ",")
                 .toList()

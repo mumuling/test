@@ -17,7 +17,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.CompanyTeamEntity;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.db.CompanyUserData_Table;
 import com.zhongtie.work.db.CompanyUserGroupTable;
@@ -69,7 +69,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     private RecyclerView mUserGroupList;
 
     private CommonAdapter mSelectInfoAdapter;
-    private List<CreateUserEntity> mSelectUserList = new ArrayList<>();
+    private List<CommonUserEntity> mSelectUserList = new ArrayList<>();
     private InputMethodRelativeLayout mInput;
 
     private List<CompanyTeamEntity> mTeamEntityList;
@@ -77,7 +77,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     private CommonAdapter mAllUserListAdapter;
     private CommonAdapter mSearchAdapter;
-    private List<CreateUserEntity> mAllUserNameInfo;
+    private List<CommonUserEntity> mAllUserNameInfo;
     private boolean isInput;
 
     private String mTitle;
@@ -93,7 +93,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
             maxSelectCount = 2;
             mTip = "最多可选择2人";
         }
-        mSelectUserList = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
+        mSelectUserList = (List<CommonUserEntity>) getArguments().getSerializable(LIST);
         return R.layout.select_user_fragment;
     }
 
@@ -133,11 +133,11 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     }
 
     @Subscribe
-    public void userEntityEvent(CreateUserEntity createUserEntity) {
+    public void userEntityEvent(CommonUserEntity createUserEntity) {
         Iterator iterator = mSelectUserList.iterator();
         boolean isModify = false;
         while (iterator.hasNext()) {
-            CreateUserEntity userEntity = (CreateUserEntity) iterator.next();
+            CommonUserEntity userEntity = (CommonUserEntity) iterator.next();
             if (userEntity.getUserId() == createUserEntity.getUserId()) {
                 isModify = true;
                 if (!createUserEntity.isSelect()) {
@@ -164,7 +164,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     @Subscribe
     public void delCreateUserEvent(SelectUserDelEvent createUserEntity) {
         for (int i = 0; i < mAllUserNameInfo.size(); i++) {
-            CreateUserEntity entity = mAllUserNameInfo.get(i);
+            CommonUserEntity entity = mAllUserNameInfo.get(i);
             if (entity.getUserId() == createUserEntity.getCreateUserEntity().getUserId()) {
                 entity.setAt(false);
                 entity.setSelect(false);
@@ -230,11 +230,11 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
         CompanyTeamEntity companyTeamEntity = new CompanyTeamEntity();
         companyTeamEntity.setTeamName(group.getGroupName());
         List<CompanyUserData> userDataList = SQLite.select().from(CompanyUserData.class).where(CompanyUserData_Table.id.in(group.getUserList())).queryList();
-        List<CreateUserEntity> createUserEntities = new ArrayList<>();
+        List<CommonUserEntity> createUserEntities = new ArrayList<>();
         for (int i = 0; i < userDataList.size(); i++) {
-            CreateUserEntity entity = new CreateUserEntity().convertUser(userDataList.get(i));
+            CommonUserEntity entity = new CommonUserEntity().convertUser(userDataList.get(i));
             for (int j = 0; j < mSelectUserList.size(); j++) {
-                CreateUserEntity b = mSelectUserList.get(j);
+                CommonUserEntity b = mSelectUserList.get(j);
                 if (b.getUserId() == entity.getUserId()) {
                     entity.setAt(b.isAt());
                     entity.setSelect(b.isSelect());

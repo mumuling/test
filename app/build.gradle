@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+Properties props = new Properties()
+File propertyFile = new File(rootDir.getAbsolutePath() + "/config/key.properties")
+props.load(propertyFile.newDataInputStream())
 
 android {
     compileSdkVersion 26
@@ -10,11 +13,35 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            'armeabi-v7a'
+        }
+        resConfigs "en", "zh-rCN"
     }
     buildTypes {
         release {
+            ndk {
+                abiFilters 'armeabi-v7a'
+            }
             minifyEnabled false
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_LOG", "false"
+        }
+        debug {
+            ndk {
+                abiFilters 'armeabi-v7a', 'x86'
+            }
+            signingConfig signingConfigs.debug
+            buildConfigField "boolean", "IS_LOG", "true"
+        }
+    }
+    signingConfigs {
+        debug {
+            storeFile file(rootDir.getAbsolutePath() + "/config/zhongtie.jks")
+            storePassword props['KEYSTORE_PASSWORD']
+            keyAlias props['KEY_ALIAS']
+            keyPassword props['KEY_PASSWORD']
         }
     }
     compileOptions {
@@ -68,10 +95,7 @@ dependencies {
     implementation('com.afollestad.material-dialogs:core:0.9.4.4', {
         exclude group: 'com.android.support'
     })
-    compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
     compile 'com.orhanobut:logger:2.1.1'
-
-
 
 //    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
 //        exclude group: 'com.android.support', module: 'support-annotations'

@@ -3,7 +3,7 @@ package com.zhongtie.work.ui.main;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.app.App;
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.db.SwitchCompanyUtil;
 import com.zhongtie.work.network.HttpException;
@@ -48,7 +48,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
 
 
     @Override
-    public void switchSelectCompany(CompanyEntity companyEntity) {
+    public void switchSelectCompany(CacheCompanyTable companyEntity) {
         int companyId = SharePrefUtil.getUserPre().getInt(SELECT_COMPANY_ID, 0);
         if (companyId != companyEntity.getId()) {
             SwitchCompanyUtil.switchCompany(companyEntity.getId())
@@ -75,7 +75,7 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
                     mView.showToast(HttpException.getErrorMessage(throwable));
                 }));
 
-        Flowable.fromCallable(() -> SQLite.select().from(CompanyEntity.class).queryList()).compose(Network.networkIO())
+        Flowable.fromCallable(() -> SQLite.select().from(CacheCompanyTable.class).queryList()).compose(Network.networkIO())
                 .subscribe(companyEntities -> mView.setAllCompanyList(companyEntities), throwable -> {
                 });
     }

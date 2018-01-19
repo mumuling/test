@@ -14,7 +14,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.CompanyTeamEntity;
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.db.CompanyUserData_Table;
 import com.zhongtie.work.db.CompanyUserGroupTable;
@@ -46,13 +46,13 @@ import static com.zhongtie.work.ui.setting.CommonFragmentActivity.TITLE;
 
 public class SelectSupervisorUserFragment extends BaseFragment implements InputMethodRelativeLayout.OnInputMethodChangedListener, OnSearchContentListener {
 
-    private List<CreateUserEntity> mSelectUserList = new ArrayList<>();
+    private List<CommonUserEntity> mSelectUserList = new ArrayList<>();
 
     private List<CompanyTeamEntity> mTeamEntityList;
 
     private CommonAdapter mSearchAdapter;
 
-    private List<CreateUserEntity> mSearchListData = new ArrayList<>();
+    private List<CommonUserEntity> mSearchListData = new ArrayList<>();
     private boolean isInput;
 
     private InputMethodRelativeLayout mInput;
@@ -65,7 +65,7 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
 
     private CommonAdapter mCommonAdapter;
 
-    private List<CreateUserEntity> mAllUserNameInfo;
+    private List<CommonUserEntity> mAllUserNameInfo;
 
     @Override
     public int getLayoutViewId() {
@@ -107,7 +107,7 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
     private void resultList() {
         Flowable.fromIterable(mTeamEntityList)
                 .flatMap(companyTeamEntity -> Flowable.fromIterable(companyTeamEntity.getTeamUserEntities()))
-                .filter(CreateUserEntity::isSelect)
+                .filter(CommonUserEntity::isSelect)
                 .toList()
                 .toFlowable()
                 .subscribe(createUserEntities -> {
@@ -128,7 +128,7 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
     }
 
     @Subscribe
-    public void userEntityEvent(CreateUserEntity createUserEntity) {
+    public void userEntityEvent(CommonUserEntity createUserEntity) {
         Flowable.fromIterable(mTeamEntityList)
                 .flatMap(companyTeamEntity -> Flowable.fromIterable(companyTeamEntity.getTeamUserEntities()))
                 .map(data -> {
@@ -172,11 +172,11 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
         CompanyTeamEntity companyTeamEntity = new CompanyTeamEntity();
         companyTeamEntity.setTeamName(group.getGroupName());
         List<CompanyUserData> userDataList = SQLite.select().from(CompanyUserData.class).where(CompanyUserData_Table.id.in(group.getUserList())).queryList();
-        List<CreateUserEntity> createUserEntities = new ArrayList<>();
+        List<CommonUserEntity> createUserEntities = new ArrayList<>();
         for (int i = 0; i < userDataList.size(); i++) {
-            CreateUserEntity entity = new CreateUserEntity().convertUser(userDataList.get(i));
+            CommonUserEntity entity = new CommonUserEntity().convertUser(userDataList.get(i));
             for (int j = 0; j < mSelectUserList.size(); j++) {
-                CreateUserEntity b = mSelectUserList.get(j);
+                CommonUserEntity b = mSelectUserList.get(j);
                 if (b.getUserId() == entity.getUserId()) {
                     entity.setSelect(true);
                     break;

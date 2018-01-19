@@ -8,7 +8,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.widget.BaseImageView;
 
 /**
@@ -17,15 +17,15 @@ import com.zhongtie.work.widget.BaseImageView;
  *
  * @author Chaek
  */
-@BindItemData(SafeSupervisionEntity.class)
-public class SafeSupervisionItemView extends AbstractItemView<SafeSupervisionEntity, SafeSupervisionItemView.ViewHolder> {
+@BindItemData(SupervisorInfoEntity.SafeSupervisionEntity.class)
+public class SafeSupervisionItemView extends AbstractItemView<SupervisorInfoEntity.SafeSupervisionEntity, SafeSupervisionItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_supervision_order;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SafeSupervisionEntity data) {
+    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SupervisorInfoEntity.SafeSupervisionEntity data) {
 //        vh.mSafeOrderHead.loadImage(data.getUserPicture());
 //        vh.mSafeOrderName.setText(data.getUserName());
 //        vh.mSafeOrderState.setText(data.getState());

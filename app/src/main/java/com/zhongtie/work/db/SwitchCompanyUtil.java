@@ -21,8 +21,9 @@ public class SwitchCompanyUtil {
     private static final String TAG = "SwitchCompanyUtil";
 
     public static Flowable<String> switchCompany(int company) {
+        //停止数据库
         FlowManager.getDatabase(CompanyDB.NAME).destroy();
-        return Flowable.fromCallable(() -> { //公司文纪念
+        return Flowable.fromCallable(() -> {
             File dbFile = App.getInstance().getDatabasePath("company.db");
             if (dbFile.exists()) {
                 dbFile.delete();

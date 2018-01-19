@@ -12,6 +12,7 @@ import com.zhongtie.work.util.TextUtil;
 import java.util.List;
 
 /**
+ * 缓存离线保存的数据
  * Auth:Cheek
  * date:2018.1.17
  */

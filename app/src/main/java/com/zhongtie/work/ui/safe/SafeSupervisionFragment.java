@@ -3,12 +3,11 @@ package com.zhongtie.work.ui.safe;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.item.SafeSupervisionItemView;
 import com.zhongtie.work.ui.safe.order.SafeOrderDetailFragment;
@@ -75,7 +74,7 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
         }
     }
 
-    public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList) {
+    public void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList) {
         if (mList != null) {
             mList.setListData(supervisionList);
         }

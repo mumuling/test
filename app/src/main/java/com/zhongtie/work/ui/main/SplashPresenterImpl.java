@@ -6,7 +6,7 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity_Table;
 import com.zhongtie.work.data.Result;
@@ -86,7 +86,7 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
      * @param companyEntity 公司信息
      */
     @WorkerThread
-    private void downCompanyDB(CompanyEntity companyEntity) {
+    private void downCompanyDB(CacheCompanyTable companyEntity) {
         if (!TextUtil.isEmpty(companyEntity.getDburl())) {
             L.e("-----------", "正在下载" + companyEntity.getDburl());
             DownloadManager.getInstance().download(companyEntity, null);

@@ -1,6 +1,6 @@
 package com.zhongtie.work.ui.rewardpunish;
 
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
 
@@ -10,7 +10,7 @@ import java.util.List;
 public interface RewardPunishContract {
     interface View extends BaseView {
 
-        void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList);
+        void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList);
 
         void setSafeEventCountList(HashMap<String, String> eventCountData);
     }

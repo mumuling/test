@@ -1,4 +1,4 @@
-package com.zhongtie.work.data.create;
+package com.zhongtie.work.data;
 
 import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.event.BaseEvent;
@@ -6,11 +6,12 @@ import com.zhongtie.work.event.BaseEvent;
 import java.io.Serializable;
 
 /**
- * Auth: Chaek
+ * 最基本的用户展示数据
  * Date: 2018/1/11
+ * @author Chaek
  */
 
-public class CreateUserEntity implements BaseEvent, Serializable {
+public class CommonUserEntity implements BaseEvent, Serializable {
     private String userName;
     private String userPic;
     private int userId;
@@ -34,10 +35,10 @@ public class CreateUserEntity implements BaseEvent, Serializable {
     }
 
 
-    public CreateUserEntity() {
+    public CommonUserEntity() {
     }
 
-    public CreateUserEntity(String userName, String userPic, int userId) {
+    public CommonUserEntity(String userName, String userPic, int userId) {
         this.userName = userName;
         this.userPic = userPic;
         this.userId = userId;
@@ -67,7 +68,7 @@ public class CreateUserEntity implements BaseEvent, Serializable {
         this.userId = userId;
     }
 
-    public CreateUserEntity convertUser(CompanyUserData companyUserData) {
+    public CommonUserEntity convertUser(CompanyUserData companyUserData) {
         userName = companyUserData.getName();
         userPic = companyUserData.getPhoto();
         userId = companyUserData.getId();

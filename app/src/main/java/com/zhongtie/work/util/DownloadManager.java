@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.zhongtie.work.app.App;
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.network.HttpException;
 
 import java.io.BufferedInputStream;
@@ -76,7 +76,7 @@ public class DownloadManager {
      *
      * @param callback
      */
-    public void download(CompanyEntity company, final BaseResultCallback callback) {
+    public void download(CacheCompanyTable company, final BaseResultCallback callback) {
         downLen = 0;
         //文件夹名称
         File file = App.getInstance().getDatabasePath("company_" + company.getId() + ".db");

@@ -1,6 +1,6 @@
 package com.zhongtie.work.event;
 
-import com.zhongtie.work.data.create.CreateUserEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 
 /**
  * Auth: Chaek
@@ -9,17 +9,17 @@ import com.zhongtie.work.data.create.CreateUserEntity;
 
 public class SelectUserDelEvent implements BaseEvent {
 
-    private CreateUserEntity mCreateUserEntity;
+    private CommonUserEntity mCreateUserEntity;
 
-    public SelectUserDelEvent(CreateUserEntity createUserEntity) {
+    public SelectUserDelEvent(CommonUserEntity createUserEntity) {
         mCreateUserEntity = createUserEntity;
     }
 
-    public CreateUserEntity getCreateUserEntity() {
+    public CommonUserEntity getCreateUserEntity() {
         return mCreateUserEntity;
     }
 
-    public void setCreateUserEntity(CreateUserEntity createUserEntity) {
+    public void setCreateUserEntity(CommonUserEntity createUserEntity) {
         mCreateUserEntity = createUserEntity;
     }
 }

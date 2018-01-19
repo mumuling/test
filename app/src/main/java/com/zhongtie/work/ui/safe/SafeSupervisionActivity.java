@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.ldf.calendar.model.CalendarDate;
 import com.zhongtie.work.R;
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.ui.adapter.ZtFragmentAdapter;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
@@ -130,7 +130,7 @@ public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisi
     }
 
     @Override
-    public void setSafeSupervisionList(List<SafeSupervisionEntity> supervisionList, int type) {
+    public void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList, int type) {
         SafeSupervisionFragment fragment = (SafeSupervisionFragment) supervisionFragments.get(type);
         fragment.setSafeSupervisionList(supervisionList);
     }

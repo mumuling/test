@@ -19,7 +19,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.event.SelectCompanyEvent;
-import com.zhongtie.work.db.WorkTeamEntity;
+import com.zhongtie.work.db.CompanyWorkTeamTable;
 import com.zhongtie.work.ui.safe.dialog.SelectDateTimeDialog;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.ProjectTeamSelectFragment;
@@ -136,7 +136,7 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
 
     private void initWorkTeam() {
         //没有劳务公司 不展示选择
-        long workTeamCount = SQLite.selectCountOf().from(WorkTeamEntity.class).count();
+        long workTeamCount = SQLite.selectCountOf().from(CompanyWorkTeamTable.class).count();
         if (workTeamCount <= 0 && Cache.isLeader()) {
             mCreateCompanyWorkSelect.setVisibility(GONE);
         } else {

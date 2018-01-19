@@ -5,7 +5,7 @@ import android.util.Log;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.db.CompanyUnitEntity;
-import com.zhongtie.work.db.WorkTeamEntity;
+import com.zhongtie.work.db.CompanyWorkTeamTable;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.TextUtil;
@@ -32,9 +32,9 @@ class ProjectTeamSelectPresenterImpl extends BasePresenterImpl<ProjectTeamSelect
                 .map(CompanyUnitEntity::convert);
 
         //劳务公司
-        Flowable<ProjectTeamEntity> workTeam = Flowable.fromCallable(() -> SQLite.select().from(WorkTeamEntity.class).queryList())
+        Flowable<ProjectTeamEntity> workTeam = Flowable.fromCallable(() -> SQLite.select().from(CompanyWorkTeamTable.class).queryList())
                 .flatMap(Flowable::fromIterable)
-                .map(WorkTeamEntity::convert);
+                .map(CompanyWorkTeamTable::convert);
 
         Flowable<ProjectTeamEntity> baseFlowable = mView.listType() == 0 ? unit : workTeam;
         addDispose(baseFlowable

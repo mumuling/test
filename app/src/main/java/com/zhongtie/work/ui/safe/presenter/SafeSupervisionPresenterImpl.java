@@ -1,7 +1,7 @@
 package com.zhongtie.work.ui.safe.presenter;
 
 import com.zhongtie.work.app.Cache;
-import com.zhongtie.work.db.SafeSupervisionEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.model.EventCountData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
@@ -29,9 +29,9 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
             //领导者传0 获取所有
             companyId = 0;
         }
-        List<SafeSupervisionEntity> safeSupervisionEnities = new ArrayList<>();
+        List<SupervisorInfoEntity.SafeSupervisionEntity> safeSupervisionEnities = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            safeSupervisionEnities.add(new SafeSupervisionEntity());
+            safeSupervisionEnities.add(new SupervisorInfoEntity.SafeSupervisionEntity());
         }
         mView.setSafeSupervisionList(safeSupervisionEnities,type);
 

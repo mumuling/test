@@ -13,7 +13,7 @@ import com.zhongtie.work.util.HanziToPinyin;
  * Date: 2018/1/15
  */
 @Table(database = CompanyDB.class, name = "work_s_workerteam")
-public class WorkTeamEntity {
+public class CompanyWorkTeamTable {
 
     @PrimaryKey
     private int id;

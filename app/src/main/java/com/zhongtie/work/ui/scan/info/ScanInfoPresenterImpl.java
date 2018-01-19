@@ -4,14 +4,14 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
-import com.zhongtie.work.data.CompanyEntity;
+import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.CompanyEntity_Table;
 import com.zhongtie.work.db.CacheAddWrongTable;
 import com.zhongtie.work.db.CacheAddWrongTable_Table;
 import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.db.CompanyUserData_Table;
 import com.zhongtie.work.db.CompanyUserWrongTable;
-import com.zhongtie.work.db.WorkTeamEntity;
+import com.zhongtie.work.db.CompanyWorkTeamTable;
 import com.zhongtie.work.db.WorkTeamEntity_Table;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.HttpException;
@@ -109,7 +109,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
 
     private void getCompanyName(int companyId) {
         addDispose(Flowable.fromCallable(() -> {
-            CompanyEntity company = SQLite.select().from(CompanyEntity.class).where(CompanyEntity_Table.id.eq(companyId)).querySingle();
+            CacheCompanyTable company = SQLite.select().from(CacheCompanyTable.class).where(CompanyEntity_Table.id.eq(companyId)).querySingle();
             if (company == null) {
                 return "未知";
             }
@@ -130,7 +130,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
             return;
         }
         addDispose(Flowable.fromCallable(() -> {
-            WorkTeamEntity company = SQLite.select().from(WorkTeamEntity.class).where(WorkTeamEntity_Table.id.eq(Integer.valueOf(companyId))).querySingle();
+            CompanyWorkTeamTable company = SQLite.select().from(CompanyWorkTeamTable.class).where(WorkTeamEntity_Table.id.eq(Integer.valueOf(companyId))).querySingle();
             if (company == null) {
                 return "未知";
             }
