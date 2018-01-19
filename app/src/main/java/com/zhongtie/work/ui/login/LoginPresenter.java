@@ -9,7 +9,7 @@ import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.UserApi;
-import com.zhongtie.work.sync.SyncCompanyUtil;
+import com.zhongtie.work.task.sync.SyncCompanyUtil;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.SharePrefUtil;
 

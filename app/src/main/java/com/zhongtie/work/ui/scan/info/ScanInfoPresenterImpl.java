@@ -1,18 +1,20 @@
 package com.zhongtie.work.ui.scan.info;
 
+import android.support.annotation.NonNull;
+
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.db.CacheCompanyTable;
-import com.zhongtie.work.data.CompanyEntity_Table;
 import com.zhongtie.work.db.CacheAddWrongTable;
 import com.zhongtie.work.db.CacheAddWrongTable_Table;
+import com.zhongtie.work.db.CacheCompanyTable_Table;
 import com.zhongtie.work.db.CompanyUserData;
 import com.zhongtie.work.db.CompanyUserData_Table;
 import com.zhongtie.work.db.CompanyUserWrongTable;
+import com.zhongtie.work.db.CompanyUserWrongTable_Table;
 import com.zhongtie.work.db.CompanyWorkTeamTable;
-import com.zhongtie.work.db.WorkTeamEntity_Table;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.network.Network;
@@ -21,6 +23,7 @@ import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -109,7 +112,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
 
     private void getCompanyName(int companyId) {
         addDispose(Flowable.fromCallable(() -> {
-            CacheCompanyTable company = SQLite.select().from(CacheCompanyTable.class).where(CompanyEntity_Table.id.eq(companyId)).querySingle();
+            CacheCompanyTable company = SQLite.select().from(CacheCompanyTable.class).where(CacheCompanyTable_Table.id.eq(companyId)).querySingle();
             if (company == null) {
                 return "未知";
             }
@@ -130,7 +133,7 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
             return;
         }
         addDispose(Flowable.fromCallable(() -> {
-            CompanyWorkTeamTable company = SQLite.select().from(CompanyWorkTeamTable.class).where(WorkTeamEntity_Table.id.eq(Integer.valueOf(companyId))).querySingle();
+            CompanyWorkTeamTable company = SQLite.select().from(CompanyWorkTeamTable.class).where(CacheCompanyTable_Table.id.eq(Integer.valueOf(companyId))).querySingle();
             if (company == null) {
                 return "未知";
             }
@@ -160,46 +163,57 @@ class ScanInfoPresenterImpl extends BasePresenterImpl<ScanQRCodeInfoContract.Vie
 
     private void getUserWrongMessage() {
         //读取=本地离线数据 以及离线添加未上次的信息
-        Flowable<List<CompanyUserWrongTable>> cache = Flowable.fromCallable(() -> SQLite.select().from(CompanyUserWrongTable.class).where(CompanyEntity_Table.id.eq(userId)).queryList());
-        Flowable<List<CacheAddWrongTable>> localCache = Flowable.fromCallable(() -> SQLite.select().from(CacheAddWrongTable.class).where(CacheAddWrongTable_Table.userId.eq(userId)).queryList());
+        Flowable<List<CompanyUserWrongTable>> cache = Flowable.fromCallable(() ->
+                SQLite.select().from(CompanyUserWrongTable.class).where(CompanyUserWrongTable_Table.wrong_userid.eq(userId)).queryList());
 
+        Flowable<List<CacheAddWrongTable>> localCache = Flowable.fromCallable(() ->
+                SQLite.select().from(CacheAddWrongTable.class).where(CacheAddWrongTable_Table.userId.eq(userId)).queryList());
 
         addDispose(Flowable.zip(cache, localCache, (companyUserWrongTables, cacheAddWrongTables) -> {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < companyUserWrongTables.size(); i++) {
-                CompanyUserWrongTable userWrongTable = companyUserWrongTables.get(i);
-                builder.append(userWrongTable.getContent());
-                builder.append("\t\t(");
-                builder.append(TimeUtils.formatWrongTime(userWrongTable.getTime()));
-                builder.append(")\n");
-                builder.append("\n");
-
-            }
-            for (int i = 0; i < cacheAddWrongTables.size(); i++) {
-                CacheAddWrongTable item = cacheAddWrongTables.get(i);
-                boolean exist = false;
-                for (int j = 0; j < companyUserWrongTables.size(); j++) {
-                    CompanyUserWrongTable userWrongTable = companyUserWrongTables.get(i);
-                    if (userWrongTable.getId() == item.getAddWrongId()) {
-                        exist = true;
-                    }
-                }
-                if (exist) {
-                    continue;
-                }
-                builder.append(item.getContent());
-                builder.append("\t\t(");
-                builder.append(TimeUtils.formatWrongTime2(item.getTime()));
-                builder.append(")\n");
-                builder.append("\n");
-            }
-            if (builder.length() == 0) {
-                builder.append(App.getInstance().getString(R.string.not_wrong_text));
-            }
+            StringBuilder builder = getUserWrongAllList(companyUserWrongTables, cacheAddWrongTables);
             return builder.toString();
         }).compose(Network.networkIO())
                 .subscribe(s -> mView.setUserWrongMessage(s), throwable -> {
                     mView.setUserWrongMessage(App.getInstance().getString(R.string.not_wrong_text));
                 }));
+    }
+
+    /**
+     * 获取违规情况 包括在线和离线情况
+     *
+     * @param onLineWrongList 在线的违规情况
+     * @param officeWrongList 离线的违规情况
+     * @return 获取去重之后的离线数据
+     */
+    @NonNull
+    private StringBuilder getUserWrongAllList(List<CompanyUserWrongTable> onLineWrongList, List<CacheAddWrongTable> officeWrongList) {
+        StringBuilder wrongSB = new StringBuilder();
+        List<Integer> onLineWrongIdList = new ArrayList<>();
+        for (int i = 0; i < onLineWrongList.size(); i++) {
+            CompanyUserWrongTable onLineWrong = onLineWrongList.get(i);
+            onLineWrongIdList.add(onLineWrong.getId());
+            wrongSB.append(onLineWrong.getContent());
+            wrongSB.append("\t\t(");
+            wrongSB.append(TimeUtils.formatWrongTime(onLineWrong.getTime()));
+            wrongSB.append(")\n");
+            wrongSB.append("\n");
+
+        }
+
+        for (int i = 0; i < officeWrongList.size(); i++) {
+            CacheAddWrongTable item = officeWrongList.get(i);
+            if (onLineWrongIdList.contains(item.getAddWrongId())) {
+                continue;
+            }
+            wrongSB.append(item.getContent());
+            wrongSB.append("\t\t(");
+            wrongSB.append(TimeUtils.formatWrongTime2(item.getTime()));
+            wrongSB.append(")\n");
+            wrongSB.append("\n");
+        }
+        if (wrongSB.length() == 0) {
+            wrongSB.append(App.getInstance().getString(R.string.not_wrong_text));
+        }
+        return wrongSB;
     }
 }

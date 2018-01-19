@@ -8,12 +8,12 @@ import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.db.SwitchCompanyUtil;
 import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.network.Network;
-import com.zhongtie.work.sync.SyncUserPic;
+import com.zhongtie.work.task.sync.SyncUserPic;
 import com.zhongtie.work.task.SyncOfficeEventTask;
 import com.zhongtie.work.task.SyncWrongTask;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.SharePrefUtil;
-import com.zhongtie.work.sync.SyncCompanyUtil;
+import com.zhongtie.work.task.sync.SyncCompanyUtil;
 
 import java.util.concurrent.TimeUnit;
 

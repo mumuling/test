@@ -1,4 +1,4 @@
-package com.zhongtie.work.sync;
+package com.zhongtie.work.task.sync;
 
 import android.support.annotation.WorkerThread;
 
@@ -9,9 +9,9 @@ import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.db.SyncCompanyTimeTable;
-import com.zhongtie.work.db.CompanySync_Table;
 import com.zhongtie.work.db.CompanyUserGroupTable;
 import com.zhongtie.work.db.SwitchCompanyUtil;
+import com.zhongtie.work.db.SyncCompanyTimeTable_Table;
 import com.zhongtie.work.db.ZhongtieDb;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
@@ -52,7 +52,7 @@ public class SyncCompanyUtil {
                 })
                 .map(companyEntity -> {
                     //读取数据库同步时间
-                    SyncCompanyTimeTable companySyn = SQLite.select().from(SyncCompanyTimeTable.class).where(CompanySync_Table.companyID.eq(companyEntity.getId())).querySingle();
+                    SyncCompanyTimeTable companySyn = SQLite.select().from(SyncCompanyTimeTable.class).where(SyncCompanyTimeTable_Table.companyID.eq(companyEntity.getId())).querySingle();
                     if (companySyn != null) {
                         long oldTime = companySyn.getSynTime();
                         long newTime = TimeUtils.converter(companyEntity.getDbupdatetime());
@@ -61,8 +61,8 @@ public class SyncCompanyUtil {
                             downCompanyDB(companyEntity);
                         }
                         SQLite.update(SyncCompanyTimeTable.class)
-                                .set(CompanySync_Table.synTime.eq(newTime))
-                                .where(CompanySync_Table.companyID.eq(companySyn.getCompanyID()))
+                                .set(SyncCompanyTimeTable_Table.synTime.eq(newTime))
+                                .where(SyncCompanyTimeTable_Table.companyID.eq(companySyn.getCompanyID()))
                                 .execute();
                     } else {
                         downCompanyDB(companyEntity);

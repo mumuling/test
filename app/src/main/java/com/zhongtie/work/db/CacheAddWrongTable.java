@@ -10,19 +10,16 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
  * date:2018.1.16
  */
 
-@Table(database = ZhongtieDb.class,name = "cache_user_wrong_table")
-public class CacheAddWrongTable extends BaseModel{
+@Table(database = ZhongtieDb.class, name = "cache_user_wrong_table")
+public class CacheAddWrongTable extends BaseModel {
     @PrimaryKey(autoincrement = true)
     private int id;
     @Column
     private int userId;
-
     @Column
     private int byUserId;
-
     @Column
     private String content;
-
     @Column
     private String time;
     @Column

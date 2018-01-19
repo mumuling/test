@@ -19,7 +19,7 @@ import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.DownloadManager;
 import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.SharePrefUtil;
-import com.zhongtie.work.sync.SyncCompanyUtil;
+import com.zhongtie.work.task.sync.SyncCompanyUtil;
 import com.zhongtie.work.util.TextUtil;
 
 import java.util.ArrayList;
