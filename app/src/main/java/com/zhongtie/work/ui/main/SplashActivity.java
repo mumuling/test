@@ -2,19 +2,17 @@ package com.zhongtie.work.ui.main;
 
 import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
 import com.zhongtie.work.ui.login.LoginActivity;
-import com.zhongtie.work.util.FileUtils;
+import com.zhongtie.work.ui.main.presenter.SplashContract;
+import com.zhongtie.work.ui.main.presenter.SplashPresenterImpl;
 import com.zhongtie.work.widget.ProgressWheel;
 
 import static com.zhongtie.work.util.ToastUtil.showToast;

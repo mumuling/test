@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.db.CacheCompanyTable;
+import com.zhongtie.work.db.ZhongtieDb;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
@@ -21,6 +24,7 @@ import com.zhongtie.work.ui.main.adapter.CompanyItemView;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -33,6 +37,7 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
     private List<CacheCompanyTable> companyEntityList;
     private Context context;
     private RecyclerView mList;
+    private CommonAdapter adapter;
 
     private OnCompanySelectListener onCompanySelectListener;
 
@@ -48,29 +53,21 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         Http.netServer(UserApi.class).fetchCompanyList(0)
                 .map(new NetWorkFunc1<>())
                 .map(companyEntities -> {
-//                    FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->
-//                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CompanyEntity.class)).
-//                                    addAll(companyEntities).build().execute(databaseWrapper));
+                    FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->
+                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CacheCompanyTable.class)).
+                                    addAll(companyEntities).build().execute(databaseWrapper));
                     return companyEntities;
                 })
                 .compose(Network.networkIO())
-                .subscribe(new Consumer<List<CacheCompanyTable>>() {
-                    @Override
-                    public void accept(List<CacheCompanyTable> companyEntities) throws Exception {
+                .subscribe(companyEntities -> {
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                    }
-                });
-
+                }, throwable -> throwable.printStackTrace());
         initView();
         initData();
     }
 
     private void initData() {
+
         CommonAdapter adapter = new CommonAdapter(companyEntityList).register(CompanyItemView.class);
         mList.setAdapter(adapter);
         adapter.setOnItemClickListener(this);

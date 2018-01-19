@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.main;
+package com.zhongtie.work.ui.main.presenter;
 
 import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.LoginUserInfoEntity;

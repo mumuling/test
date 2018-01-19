@@ -14,6 +14,8 @@ import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.list.OnRefreshListener;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
+import com.zhongtie.work.ui.main.presenter.MainContract;
+import com.zhongtie.work.ui.main.presenter.MainPresenterImpl;
 import com.zhongtie.work.util.L;
 
 import java.util.List;
