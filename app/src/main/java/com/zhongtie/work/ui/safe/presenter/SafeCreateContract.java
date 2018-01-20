@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.safe.presenter;
 
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
 
@@ -48,6 +49,8 @@ public interface SafeCreateContract {
         String getEditSite();
 
         void createSuccess();
+
+        void setModifyInfo(SafeEventEntity titleUserInfo);
     }
 
     interface Presenter extends BasePresenter<View> {

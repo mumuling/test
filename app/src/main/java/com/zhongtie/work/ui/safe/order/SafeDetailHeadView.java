@@ -15,9 +15,9 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.ui.safe.item.CreatePicItemView;
 import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.widget.BaseImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,6 +58,7 @@ public class SafeDetailHeadView extends LinearLayout {
         mSafeOrderState = findViewById(R.id.safe_order_state);
         mSafeOrderReplyHead = findViewById(R.id.safe_order_reply_head);
         mSafeOrderReplySign = findViewById(R.id.safe_order_reply_sign);
+        mSafeOrderReplySign.setVisibility(GONE);
         mSafeOrderName = findViewById(R.id.safe_order_name);
         mSafeOrderReplyTime = findViewById(R.id.safe_order_reply_time);
         mDetailSite = findViewById(R.id.detail_site);
@@ -83,20 +84,13 @@ public class SafeDetailHeadView extends LinearLayout {
         mSafeOrderName.setText(headInfo.user_name);
         mDetailSite.setText(headInfo.event_local);
         mProjectTeam.setText(headInfo.event_unit);
-        mProjectTeam.setText(headInfo.event_workerteam);
+        mInfoCompanyOffer.setText(headInfo.event_workerteam);
         mQuestionType.setText(headInfo.event_troubletype);
         mDetailContent.setText(headInfo.event_detail);
-        mSafeOrderReplyTime.setText(headInfo.event_publishtime);
-        mDetailTime.setText(headInfo.event_time);
+        mSafeOrderReplyTime.setText(TimeUtils.formatEventTime(headInfo.event_publishtime));
+        mDetailTime.setText(TimeUtils.formatEventSelectTime(headInfo.event_time));
         commonAdapter = new CommonAdapter().register(new CreatePicItemView(false));
-        List<String> list = new ArrayList<>();
-        String[] t = headInfo.event_pic.split(",");
-        for (String aT : t) {
-            if (TextUtil.isEmpty(aT)) {
-                continue;
-            }
-            list.add(aT);
-        }
+        List<String> list = TextUtil.getPicList(headInfo.getEvent_pic());
         commonAdapter.setListData(list);
         mList.setAdapter(commonAdapter);
 

@@ -7,13 +7,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.event.ReplyEvent;
+import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
+import com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
@@ -21,18 +24,14 @@ import com.zhongtie.work.ui.safe.item.DetailCommonItemView;
 import com.zhongtie.work.ui.safe.item.ReplyItemView;
 import com.zhongtie.work.ui.safe.item.SafeTitleItemView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
-import com.zhongtie.work.util.ToastUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
-import com.zhongtie.work.util.upload.UploadData;
 import com.zhongtie.work.util.upload.UploadUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.functions.Consumer;
 
 import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
@@ -53,6 +52,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private TextView mModify;
     private TextView mReply;
     private TextView mApprove;
+    private TextView mCheck;
     private RecyclerView mList;
 
 
@@ -70,16 +70,11 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         if (getArguments() != null) {
             mSafeOrderID = getArguments().getInt(ID);
         }
-        mSafeOrderID=1155;
+        mSafeOrderID = 1174;
+//        mSafeOrderID = 927;
         return R.layout.safe_order_info_fragment;
     }
 
-
-    @Subscribe
-    public void replyEvent(ReplyEvent replyEvent) {
-
-
-    }
 
     @Override
     public void initView() {
@@ -91,28 +86,37 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mApprove = (TextView) findViewById(R.id.approve);
         mList = (RecyclerView) findViewById(R.id.list);
 
-        mModify.setOnClickListener(view -> SafeSupervisionCreateActivity.newInstance(getActivity(), SafeSupervisionCreateFragment.class, getString(R.string.safe_supervision_title)));
-        mReply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(ReplyEditFragment.EVENT_ID, mSafeOrderID);
-                CommonFragmentActivity.newInstance(SafeOrderDetailFragment.this, ReplyEditFragment.class, "回复", bundle);
+        mCheck = (TextView) findViewById(R.id.check);
 
-            }
+        mModify.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt(SafeOrderDetailFragment.ID, mSafeOrderID);
+            SafeSupervisionCreateActivity.newInstance(SafeOrderDetailFragment.this, SafeSupervisionCreateFragment.class, getString(R.string.safe_supervision_title), bundle);
+
+        });
+        mReply.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt(ReplyEditFragment.EVENT_ID, mSafeOrderID);
+            CommonFragmentActivity.newInstance(SafeOrderDetailFragment.this, ReplyEditFragment.class, "回复", bundle);
         });
 
+        mCheck.setOnClickListener(view -> new SignatureDialog(getActivity(), mSignCheck).show());
 
-        mApprove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new SignatureDialog(getActivity(), SafeOrderDetailFragment.this).show();
-            }
-        });
+        mApprove.setOnClickListener(view -> new SignatureDialog(getActivity(), SafeOrderDetailFragment.this).show());
         mHeadInfoView = new SafeDetailHeadView(getActivity());
         mHeadInfoView.initData();
         initAdapter();
     }
+
+    private OnSignatureListener mSignCheck = imagePath -> {
+        addDispose(UploadUtil.uploadSignPNG(imagePath)
+                .flatMap(uploadData -> Http.netServer(SafeApi.class).validateEvent(Cache.getUserID(), mSafeOrderID, uploadData.getPicname()))
+                .compose(Network.convertDialogTip(this))
+                .subscribe(integer -> {
+                    mPresenter.getItemList(mSafeOrderID);
+                }, throwable -> {
+                }));
+    };
 
     private void initAdapter() {
         mCommonAdapter = new CommonAdapter(mInfoList)
@@ -139,6 +143,11 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mPresenter.getItemList(mSafeOrderID);
     }
 
+    @Subscribe
+    public void replyEvent(ReplyEvent replyEvent) {
+        mPresenter.getItemList(mSafeOrderID);
+    }
+
     @Override
     protected SafeDetailContract.Presenter getPresenter() {
         return new SafeDetailPresenterImpl();
@@ -155,22 +164,30 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mHeadInfoView.setHeadInfo(titleUserInfo);
     }
 
+    @Override
+    public void setEventStatus(SafeEventEntity.ButstateBean status) {
+        mModify.setVisibility(status.edit == 1 ? View.VISIBLE : View.GONE);
+        mReply.setVisibility(status.reply == 1 ? View.VISIBLE : View.GONE);
+        mApprove.setVisibility(status.sign == 1 ? View.VISIBLE : View.GONE);
+        mCheck.setVisibility(status.check == 1 ? View.VISIBLE : View.GONE);
+        findViewById(R.id.bottom).setVisibility(status.print == 1 ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void noLookAuthority() {
+        mStatusView.showEmpty();
+    }
+
 
     @Override
     public void onSignature(String imagePath) {
-        UploadUtil.uploadJPG(imagePath)
-                .compose(Network.networkIO())
-                .subscribe(new Consumer<UploadData>() {
-                    @Override
-                    public void accept(UploadData uploadData) throws Exception {
-                        ToastUtil.showToast(uploadData.getPicname());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
-                });
+        addDispose(UploadUtil.uploadSignPNG(imagePath)
+                .flatMap(uploadData -> Http.netServer(SafeApi.class).eventSign(Cache.getUserID(), mSafeOrderID, uploadData.getPicname()))
+                .compose(Network.convertDialogTip(this))
+                .subscribe(integer -> {
+                    mPresenter.getItemList(mSafeOrderID);
+                }, throwable -> {
+                }));
 
     }
 }

@@ -390,4 +390,34 @@ public class TimeUtils {
         return newTimeFormat.format(d2);
 
     }
+
+    public static String formatEventSelectTime(String time) {
+        // 设定时间的模板
+        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // 得到指定模范的时间
+        Date d2 = null;
+        try {
+            d2 = oldTimeFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return time;
+        }
+        return newTimeFormat.format(d2);
+    }
+
+    public static String formatEventTime(String time) {
+        // 设定时间的模板
+        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        // 得到指定模范的时间
+        Date d2 = null;
+        try {
+            d2 = oldTimeFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return time;
+        }
+        return newTimeFormat.format(d2);
+    }
 }

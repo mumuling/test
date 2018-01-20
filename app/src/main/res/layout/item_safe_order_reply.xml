@@ -17,7 +17,7 @@
         android:id="@+id/safe_order_reply_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="14dp"
         android:lineSpacingExtra="5dp"
         android:textColor="@color/text_color"
         android:textSize="14dp"

@@ -29,7 +29,7 @@ public class SupervisorInfoEntity implements BaseEvent {
          */
 
         @JSONField(name = "event_id")
-        private String eventId;
+        private int eventId;
         @JSONField(name = "user_name")
         private String userName;
         @JSONField(name = "user_picture")
@@ -44,12 +44,12 @@ public class SupervisorInfoEntity implements BaseEvent {
         @JSONField(name = "event_unit")
         private String eventUnit;
 
-        public String getEventId() {
-            return eventId;
+        public void setEventId(int eventId) {
+            this.eventId = eventId;
         }
 
-        public void setEventId(String eventId) {
-            this.eventId = eventId;
+        public int getEventId() {
+            return eventId;
         }
 
         public String getUserName() {

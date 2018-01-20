@@ -23,14 +23,11 @@ import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CreatePicItemView;
 import com.zhongtie.work.util.TextUtil;
-import com.zhongtie.work.util.upload.UploadData;
 import com.zhongtie.work.util.upload.UploadUtil;
 import com.zhongtie.work.widget.AdapterDataObserver;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Flowable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.image.MultiImageSelector.REQUEST_CODE;
@@ -129,7 +126,6 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
 
     @Override
     public void onSignature(String imagePath) {
-
         ArrayMap<String, Object> postDataList = new ArrayMap<>();
         postDataList.put("event_detail", mCreateModifyContent.getText().toString());
         postDataList.put("event_userid", Cache.getUserID());
@@ -137,27 +133,16 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
         UploadUtil.uploadSignPNG(imagePath)
                 .flatMap(uploadData -> {
                     postDataList.put("event_sign", uploadData.getPicname());
-                    return Flowable.fromIterable(mPicList).
-                            flatMap(s -> UploadUtil.uploadSignPNG(imagePath))
-                            .toList().toFlowable();
+                    return UploadUtil.uploadListJPGIDList(mPicList);
                 })
-                .flatMap(uploadData -> {
-                    StringBuilder builder = new StringBuilder();
-                    for (UploadData data : uploadData) {
-                        builder.append(data.getPicid());
-                        builder.append(",");
-                    }
-                    if (builder.length() > 0)
-                        builder.delete(builder.length() - 1, builder.length());
-                    postDataList.put("event_pic", builder.toString());
+                .flatMap(picList -> {
+                    postDataList.put("event_pic", picList);
                     return Http.netServer(SafeApi.class).replyEvent(postDataList);
-                })
-                .compose(Network.convertDialogTip(ReplyEditFragment.this))
+                }).compose(Network.convertDialogTip(ReplyEditFragment.this))
                 .subscribe(integer -> {
                     showToast(getString(R.string.reply_success));
                     new ReplyEvent().post();
                     getActivity().finish();
-
                 }, throwable -> {
 
                 });

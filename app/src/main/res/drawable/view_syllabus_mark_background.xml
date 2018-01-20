@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/view_syllabus_active_mark_background"
         android:state_enabled="true"></item>
-    <item android:drawable="@drawable/view_syllabus_unactive_mark_background"
+    <item android:drawable="@drawable/view_syllabus_active_mark_background"
         android:state_enabled="false"></item>
 </selector>

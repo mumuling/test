@@ -53,8 +53,8 @@ public class SafeEventEntity {
     public String event_read;
     public String state;
     public ButstateBean butstate;
-    public List<?> signlist;
-    public List<?> replylist;
+    public List<ApproveEntity> signlist;
+    public List<ReplyEntity> replylist;
     public List<ReviewlistBean> reviewlist;
 
     public static class ButstateBean {
@@ -241,19 +241,19 @@ public class SafeEventEntity {
         this.butstate = butstate;
     }
 
-    public List<?> getSignlist() {
+    public List<ApproveEntity> getSignlist() {
         return signlist;
     }
 
-    public void setSignlist(List<?> signlist) {
+    public void setSignlist(List<ApproveEntity> signlist) {
         this.signlist = signlist;
     }
 
-    public List<?> getReplylist() {
+    public List<ReplyEntity> getReplylist() {
         return replylist;
     }
 
-    public void setReplylist(List<?> replylist) {
+    public void setReplylist(List<ReplyEntity> replylist) {
         this.replylist = replylist;
     }
 

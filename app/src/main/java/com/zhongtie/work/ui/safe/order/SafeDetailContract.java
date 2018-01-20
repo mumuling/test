@@ -19,6 +19,10 @@ public interface SafeDetailContract {
         void setItemList(List<Object> itemList);
 
         void setSafeDetailInfo(SafeEventEntity titleUserInfo);
+
+        void setEventStatus(SafeEventEntity.ButstateBean status);
+
+        void noLookAuthority();
     }
 
     interface Presenter extends BasePresenter<View> {

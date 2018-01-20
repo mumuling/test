@@ -6,12 +6,16 @@ package com.zhongtie.work.data;
  */
 
 public class ReplyEntity {
+
+
     /**
-     * userid : 729
-     * username : 范建伟
-     * userpic : https://api.023ztjs.com/picture/410304197406261551.jpg
-     * time :
-     * url :
+     * userid : 1294
+     * username : 粟川
+     * userpic : https://api.023ztjs.com/picture/510202198810101322.jpg
+     * time : 2018-01-20 13:47:39
+     * url : 20180120134739080844.png
+     * detail : 你了哥哥哥哥哩哩啦啦
+     * pic : 3395
      */
 
     public int userid;
@@ -19,6 +23,8 @@ public class ReplyEntity {
     public String userpic;
     public String time;
     public String url;
+    public String detail;
+    public String pic;
 
     public int getUserid() {
         return userid;
@@ -58,5 +64,21 @@ public class ReplyEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
     }
 }

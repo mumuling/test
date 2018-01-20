@@ -15,6 +15,8 @@ import com.zhongtie.work.widget.RefreshRecyclerView;
 
 import java.util.List;
 
+import static com.zhongtie.work.ui.safe.order.SafeOrderDetailFragment.ID;
+
 /**
  * 安全督导列表几个类别
  * date:2018.1.9
@@ -22,7 +24,7 @@ import java.util.List;
  * @author Chaek
  */
 
-public class SafeSupervisionFragment extends BaseFragment implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
+public class SafeSupervisionFragment extends BaseFragment implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener<SupervisorInfoEntity.SafeSupervisionEntity> {
     public static final String TYPE = "type";
 
     private RefreshRecyclerView mList;
@@ -91,12 +93,15 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
         return commonAdapter;
     }
 
-    @Override
-    public void onClick(Object t, int index) {
-        SafeSupervisionCreateActivity.newInstance(getActivity(), SafeOrderDetailFragment.class, getString(R.string.safe_supervision_title));
-    }
 
     public void fetchPageFail() {
         mList.onFail("");
+    }
+
+    @Override
+    public void onClick(SupervisorInfoEntity.SafeSupervisionEntity safeSupervisionEntity, int index) {
+        Bundle args = new Bundle();
+        args.putInt(ID, safeSupervisionEntity.getEventId());
+        SafeSupervisionCreateActivity.newInstance(this, SafeOrderDetailFragment.class, getString(R.string.safe_supervision_title), args);
     }
 }

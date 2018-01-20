@@ -18,6 +18,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.db.CacheCompanyTable_Table;
 import com.zhongtie.work.db.CompanyWorkTeamTable;
@@ -67,6 +68,7 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
     private String mSelectTime;
 
     private SelectDateTimeDialog mSelectDateTimeDialog;
+    private SafeEventEntity modifyInfo;
 
     public SafeCreateEditHeadView(Context context) {
         this(context, null);
@@ -257,5 +259,17 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
 
     @Override
     public void setSelectType(int[] type, int buildType) {
+    }
+
+    public void setModifyInfo(SafeEventEntity modifyInfo) {
+        this.modifyInfo = modifyInfo;
+        mSelectTime = TimeUtils.formatEventSelectTime(modifyInfo.getEvent_time());
+        setCreateTime(mSelectTime);
+        mCreateAddress.setText(modifyInfo.getEvent_local());
+        unitEntity = new ProjectTeamEntity(modifyInfo.getEvent_unit());
+        mCreateCompany.setText(unitEntity.getProjectTeamName());
+        workTeamEntity = new ProjectTeamEntity(modifyInfo.getEvent_workerteam());
+        mCreateCompanyWork.setText(workTeamEntity.getProjectTeamName());
+
     }
 }

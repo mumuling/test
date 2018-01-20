@@ -6,18 +6,21 @@ import android.support.v4.util.ArrayMap;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.data.create.EventTypeEntity;
 import com.zhongtie.work.data.create.SelectEventTypeItem;
 import com.zhongtie.work.db.CacheSafeEventTable;
 import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
+import com.zhongtie.work.ui.safe.order.SafeEventModel;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.upload.UploadUtil;
 
@@ -55,31 +58,37 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
      */
     private ArrayMap<String, CommonItemType> mGroupTypeArrayMap;
 
+    private List<Object> itemList;
+
     /**
      * 获取输入安全督导的基本类型
      *
      * @return 获取类型list
      */
     private List<CommonItemType> fetchCommonItemTypeList() {
+        mGroupTypeArrayMap = new ArrayMap<>();
+
         String[] titleList = App.getInstance().getResources().getStringArray(R.array.create_item_title);
         String[] tip = App.getInstance().getResources().getStringArray(R.array.create_item_tip);
+
         List<CommonItemType> list = new ArrayList<>();
         for (int i = 0, size = titleList.length; i < size; i++) {
             String title = titleList[i];
-            CommonItemType item = new CommonItemType<>(title, tip[i], R.drawable.plus, true);
-            mGroupTypeArrayMap.put(title, item);
-            list.add(item);
+            CommonItemType itemType = new CommonItemType<>(title, tip[i], R.drawable.plus, true);
+            mGroupTypeArrayMap.put(title, itemType);
+            list.add(itemType);
         }
         return list;
     }
 
-    private SelectEventTypeItem fetchSelectTypeItemData() {
+    private SelectEventTypeItem fetchSelectTypeItemData(List<String> selectTypeList) {
         mCommonItemType = new SelectEventTypeItem("问题类型");
         String[] typeList = App.getInstance().getResources().getStringArray(R.array.type_list);
         List<EventTypeEntity> list = new ArrayList<>();
         int size = typeList.length;
         for (int i = 0; i < size; i++) {
-            list.add(new EventTypeEntity(typeList[i], i, false));
+            String typeTitle = typeList[i];
+            list.add(new EventTypeEntity(typeTitle, i, selectTypeList.contains(typeTitle)));
         }
         mCommonItemType.setTypeItemList(list);
         return mCommonItemType;
@@ -87,22 +96,81 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
 
     @Override
     public void getItemList(int safeOrderID) {
-        List<Object> itemList = new ArrayList<>();
-        mGroupTypeArrayMap = new ArrayMap<>();
+        if (safeOrderID > 0) {
+            fetchEventInfoData(safeOrderID);
+        } else {
+            itemList = new ArrayList<>();
+            mCommonItemType = fetchSelectTypeItemData(new ArrayList<>());
+            itemList.add(mCommonItemType);
+            addEventCommonTitleList();
 
-        mCommonItemType = fetchSelectTypeItemData();
-        itemList.add(fetchSelectTypeItemData());
+            itemList.addAll(fetchCommonItemTypeList());
+            mView.setItemList(itemList);
+        }
+    }
+
+    private void addEventCommonTitleList() {
         mDescribeEditContent = new EditContentEntity("描述", "请输入事件描述", "");
         //添加描述
         itemList.add(mDescribeEditContent);
         //添加修改要求
         mRectifyEditContent = new EditContentEntity("整改要求", "请输入整改要求", "");
         itemList.add(mRectifyEditContent);
-
         //添加图片
-        mPicItemType = new CommonItemType<String>("传图片", "最多12张", R.drawable.ic_cam, true);
+        mPicItemType = new CommonItemType<>("传图片", "最多12张", R.drawable.ic_cam, true);
         itemList.add(mPicItemType);
-        itemList.addAll(fetchCommonItemTypeList());
+    }
+
+    private void fetchEventInfoData(int safeOrderID) {
+        mView.initLoading();
+        addDispose(Http.netServer(SafeApi.class)
+                .eventDetails(Cache.getUserID(), safeOrderID)
+                .map(new NetWorkFunc1<>())
+                .compose(Network.networkIO())
+                .subscribe(safeEventEntity -> {
+                    setTitleUserInfo(safeEventEntity);
+                    initItemList(safeEventEntity);
+                    mView.initSuccess();
+                }, throwable -> {
+                    mView.initFail();
+                }));
+    }
+
+    public void setTitleUserInfo(SafeEventEntity titleUserInfo) {
+        mView.setModifyInfo(titleUserInfo);
+    }
+
+    /**
+     * 初始化编辑页面
+     *
+     * @param eventInfo 安全督导基本信息
+     */
+    private void initItemList(SafeEventEntity eventInfo) {
+        itemList = new ArrayList<>();
+        mCommonItemType = fetchSelectTypeItemData(TextUtil.getPicList(eventInfo.getEvent_troubletype()));
+        itemList.add(mCommonItemType);
+        addEventCommonTitleList();
+
+        mDescribeEditContent.setContent(eventInfo.getEvent_detail());
+        mRectifyEditContent.setContent(eventInfo.getEvent_changemust());
+        mPicItemType.setTypeItemList(TextUtil.getPicList(eventInfo.getEvent_pic()));
+
+        mGroupTypeArrayMap = new ArrayMap<>();
+
+        SafeEventModel safeEventModel = new SafeEventModel(eventInfo);
+        CommonItemType checkUser = safeEventModel.getModifyCheckList();
+        mGroupTypeArrayMap.put(checkUser.getTitle(), checkUser);
+        CommonItemType reviewUser = safeEventModel.getModifyReviewList();
+        mGroupTypeArrayMap.put(reviewUser.getTitle(), reviewUser);
+        CommonItemType relate = safeEventModel.getModifyRelatedList();
+        mGroupTypeArrayMap.put(relate.getTitle(), relate);
+        CommonItemType temLis = safeEventModel.fetchReadList();
+        mGroupTypeArrayMap.put(temLis.getTitle(), temLis);
+        itemList.add(checkUser);
+        itemList.add(reviewUser);
+        itemList.add(relate);
+        itemList.add(temLis);
+
         mView.setItemList(itemList);
     }
 
@@ -187,16 +255,17 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         //整改人
         String related = !isCheckValue ? "" : relatedUser.getSelectUserIDList();
 
-        cache.setRead(related);
+        cache.setUnit(unit.getProjectTeamName());
+        cache.setRelated(related);
         cache.setImageList(picList);
         cache.setUserid(Integer.valueOf(Cache.getUserID()));
         cache.setCompany(unit.getProjectTeamID());
         cache.setTime(mView.getSelectDate());
         cache.setLocal(site);
         if (companyTeam == null) {
-            cache.setWorkerteam(0);
+            cache.setWorkerteam("");
         } else {
-            cache.setWorkerteam(companyTeam.getProjectTeamID());
+            cache.setWorkerteam(companyTeam.getProjectTeamName());
         }
         String type = mCommonItemType.getCheckEventTypeString();
         cache.setTroubletype(type);
@@ -303,5 +372,6 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
                 }).toFlowable()
                 .blockingSingle();
     }
+
 
 }

@@ -25,6 +25,8 @@
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
+        app:placeholderImage="@drawable/ic_event_sign_place"
+        app:failureImage="@drawable/ic_event_sign_place"
         android:layout_centerVertical="true"
         tools:background="@color/line" />
 

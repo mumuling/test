@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
@@ -65,7 +66,7 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
         if (getArguments() != null) {
             mSafeOrderID = getArguments().getInt(ID);
         }
-        return R.layout.base_recyclerview;
+        return R.layout.common_status_list;
     }
 
     @Override
@@ -148,6 +149,11 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     public void createSuccess() {
         showToast(R.string.create_success);
         getActivity().finish();
+    }
+
+    @Override
+    public void setModifyInfo(SafeEventEntity titleUserInfo) {
+        mHeadInfoView.setModifyInfo(titleUserInfo);
     }
 
     @Override

@@ -12,15 +12,12 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.data.ReplyEntity;
 import com.zhongtie.work.data.ApproveEntity;
+import com.zhongtie.work.data.ReplyEntity;
+import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.widget.BaseImageView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * Auth: Chaek
@@ -50,29 +47,36 @@ public class ReplyItemView extends AbstractItemView<Object, ReplyItemView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull Object data) {
         if (data instanceof ReplyEntity) {
-            vh.safeOrderReplyHead.loadImage(imageUrls[0]);
-            vh.safeOrderReplySign.loadImage(imageUrls[4]);
-            vh.safeOrderName.setText("测试");
-            vh.safeOrderReplyTime.setText("2012-01-12");
-            vh.safeOrderReplyContent.setText("确定确定确定确定确定确定确定确定");
+            ReplyEntity replyEntity = (ReplyEntity) data;
+            vh.safeOrderReplyHead.loadImage(replyEntity.userpic);
+            vh.safeOrderReplySign.loadImageSign(replyEntity.url);
+            vh.safeOrderName.setText(replyEntity.username);
+            vh.safeOrderReplyTime.setText(replyEntity.getTime());
+            vh.safeOrderReplyContent.setText(replyEntity.detail);
+            List<String> list = TextUtil.getPicList(replyEntity.pic);
             if (vh.list.getAdapter() == null) {
                 vh.list.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayoutManager.HORIZONTAL, false));
                 CreatePicItemView createPicItemView = new CreatePicItemView(false);
                 CommonAdapter commonAdapter = new CommonAdapter().register(createPicItemView);
                 vh.list.setAdapter(commonAdapter);
-                List<String> list = new ArrayList<>();
-                list.addAll(Arrays.asList(imageUrls).subList(0, 10));
                 commonAdapter.setListData(list);
             }
 
+            if (list.isEmpty()) {
+                vh.list.setVisibility(View.GONE);
+                vh.mSlideLookMore.setVisibility(View.GONE);
+            } else {
+                vh.list.setVisibility(View.VISIBLE);
+                vh.mSlideLookMore.setVisibility(View.VISIBLE);
+            }
         } else {
-            vh.safeOrderReplyHead.loadImage(imageUrls[3]);
-            vh.safeOrderReplySign.loadImage(imageUrls[1]);
-            vh.safeOrderName.setText("测试");
-            vh.safeOrderReplyTime.setText("2012-01-12");
-//            vh.safeOrderReplyContent.setText("同意，注意安全注意安全注意安全");
+            //签认情况
+            ApproveEntity approve= (ApproveEntity) data;
+            vh.safeOrderReplyHead.loadImage(approve.getUserpic());
+            vh.safeOrderReplySign.loadImageSign(approve.getUrl());
+            vh.safeOrderName.setText(approve.getUsername());
+            vh.safeOrderReplyTime.setText(approve.getTime());
         }
-
     }
 
     @Override
@@ -89,7 +93,7 @@ public class ReplyItemView extends AbstractItemView<Object, ReplyItemView.ViewHo
         private TextView safeOrderReplyContent;
         private LinearLayout safeOrderReplyImgView;
         private RecyclerView list;
-
+        private TextView mSlideLookMore;
         public ViewHolder(View itemView) {
             super(itemView);
             safeOrderReplyHead = (BaseImageView) findViewById(R.id.safe_order_reply_head);
@@ -99,6 +103,9 @@ public class ReplyItemView extends AbstractItemView<Object, ReplyItemView.ViewHo
             safeOrderReplyContent = (TextView) findViewById(R.id.safe_order_reply_content);
             safeOrderReplyImgView = (LinearLayout) findViewById(R.id.safe_order_reply_img_view);
             list = (RecyclerView) findViewById(R.id.list);
+
+
+            mSlideLookMore = (TextView) findViewById(R.id.slide_look_more);
 
         }
     }

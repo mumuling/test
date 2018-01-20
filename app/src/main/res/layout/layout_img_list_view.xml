@@ -5,16 +5,15 @@
     android:id="@+id/safe_order_reply_img_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="15dp"
     android:orientation="vertical"
     android:visibility="visible">
 
     <include layout="@layout/base_recyclerview"/>
 
     <TextView
+        android:id="@+id/slide_look_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:text="@string/right_slide_look_more"
         android:textColor="@color/text_color3"
         android:textSize="12dp"/>

@@ -13,8 +13,10 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         app:roundingBorderColor="@color/line2"
+        app:placeholderImageScaleType="centerCrop"
+        app:failureImageScaleType="centerCrop"
         android:layout_marginBottom="10dp"
-        app:roundingBorderWidth="1px"
+        app:placeholderImage="@drawable/ic_pic_place_holder"
         tools:background="@color/line2"/>
 
 

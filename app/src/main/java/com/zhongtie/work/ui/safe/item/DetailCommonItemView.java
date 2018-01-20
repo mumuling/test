@@ -55,6 +55,7 @@ public class DetailCommonItemView extends AbstractItemView<CommonItemType, Detai
             //用户信息
             adapter.register(DetailUserItemView.class);
             adapter.register(EndorseUserItemView.class);
+            adapter.register(DetailTeamNameItemView.class);
             vh.mCheckExamineList.setAdapter(adapter);
         } else {
             CommonAdapter adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();

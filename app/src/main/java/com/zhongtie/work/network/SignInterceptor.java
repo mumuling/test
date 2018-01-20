@@ -60,9 +60,6 @@ class SignInterceptor implements Interceptor {
                     baseData.put(body.encodedName(i), body.value(i));
                 }
             }
-            if (BuildConfig.DEBUG) {
-                L.e(TAG, baseData.toString());
-            }
 
             //拼接字符串
             for (String key : baseData.keySet()) {
@@ -75,6 +72,12 @@ class SignInterceptor implements Interceptor {
                 signSource.append(Base64.encode(value.getBytes("GB2312")).trim());
                 signSource.append("&");
             }
+
+            if (BuildConfig.DEBUG) {
+                L.e(TAG, baseData.toString());
+            }
+
+
             signSource.delete(signSource.length() - 1, signSource.length());
 
             //分割数据

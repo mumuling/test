@@ -28,6 +28,7 @@ public class CacheSafeEventTable extends BaseModel {
     private int userid;
     @Column
     private int company;
+
     @Column
     private String time;
 
@@ -39,7 +40,7 @@ public class CacheSafeEventTable extends BaseModel {
     @Column
     private String troubletype;
     @Column
-    private int workerteam;
+    private String workerteam;
     @Column
     private String detail;
     @Column
@@ -122,11 +123,11 @@ public class CacheSafeEventTable extends BaseModel {
         this.unit = unit;
     }
 
-    public int getWorkerteam() {
+    public String getWorkerteam() {
         return workerteam;
     }
 
-    public void setWorkerteam(int workerteam) {
+    public void setWorkerteam(String workerteam) {
         this.workerteam = workerteam;
     }
 
@@ -229,20 +230,17 @@ public class CacheSafeEventTable extends BaseModel {
         postMap.put("event_time", time);
         //输入的地点
         postMap.put("event_local", local);
+        postMap.put("event_unit", unit);
 
         if (!TextUtil.isEmpty(troubletype)) {
             //选择的问题类型
             postMap.put("event_troubletype", troubletype);
             //劳务公司
-            if (workerteam == 0) {
-                postMap.put("event_workerteam", "");
-            } else {
-                postMap.put("event_workerteam", workerteam);
-            }
+            postMap.put("event_workerteam", workerteam);
             //整个要求
             postMap.put("event_changemust", changemust);
             //整改人
-            postMap.put("event_related", eventId);
+            postMap.put("event_related", related);
         }
         //描述
         postMap.put("event_detail", detail);
@@ -250,6 +248,7 @@ public class CacheSafeEventTable extends BaseModel {
         postMap.put("event_checker", checker);
         //验证
         postMap.put("event_review", review);
+        postMap.put("event_read", read);
         //at的人
         postMap.put("event_at", at);
         if (!TextUtil.isEmpty(pic)) {

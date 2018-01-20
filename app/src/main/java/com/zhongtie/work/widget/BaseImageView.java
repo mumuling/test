@@ -2,7 +2,6 @@ package com.zhongtie.work.widget;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Network;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -22,12 +21,9 @@ import com.zhongtie.work.util.image.ImageLoader;
 import com.zhongtie.work.util.image.ImageLoaderUtil;
 
 import java.io.File;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
 import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 import static com.zhongtie.work.ui.safe.item.CreatePicItemView.HTTP;
 
@@ -61,6 +57,24 @@ public class BaseImageView extends SimpleDraweeView {
         ImageLoader imageLoader = new ImageLoader.Builder().url(data.startsWith(HTTP) ? data : "file://" + data).placeHolder(R.drawable.portrait).
                 imgView(this).size(width, width).build();
         ImageLoaderUtil.getInstance().loadImage(getContext(), imageLoader);
+    }
+
+
+    public void loadImageSign(String data) {
+        if (TextUtil.isEmpty(data)) {
+            data = "";
+        }
+        ImageLoader imageLoader = new ImageLoader.Builder().url(data.startsWith(HTTP) ? data : "file://" + data).placeHolder(R.drawable.ic_event_sign_place).
+                imgView(this).build();
+        ImageLoaderUtil.getInstance().loadImage(getContext(), imageLoader);
+    }
+
+
+    public void loadImagePic(String data) {
+        if (TextUtil.isEmpty(data)) {
+            data = "";
+        }
+        setImageURI(Uri.parse(data.startsWith(HTTP) ? data : "file://" + data));
     }
 
     /**

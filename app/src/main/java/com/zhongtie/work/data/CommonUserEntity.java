@@ -8,6 +8,7 @@ import java.io.Serializable;
 /**
  * 最基本的用户展示数据
  * Date: 2018/1/11
+ *
  * @author Chaek
  */
 
@@ -17,6 +18,14 @@ public class CommonUserEntity implements BaseEvent, Serializable {
     private int userId;
     private boolean isSelect;
     private boolean isAt;
+
+
+    public CommonUserEntity(SafeEventEntity.ReviewlistBean review) {
+        setUserId(review.userid);
+        setUserPic(review.userpic);
+        setUserName(review.username);
+        setSelect(true);
+    }
 
     public boolean isSelect() {
         return isSelect;
@@ -53,6 +62,8 @@ public class CommonUserEntity implements BaseEvent, Serializable {
     }
 
     public String getUserPic() {
+        if (userPic == null)
+            return "";
         return userPic;
     }
 

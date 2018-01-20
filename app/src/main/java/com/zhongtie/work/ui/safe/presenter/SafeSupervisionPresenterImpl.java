@@ -1,7 +1,6 @@
 package com.zhongtie.work.ui.safe.presenter;
 
 import com.zhongtie.work.app.Cache;
-import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.model.EventCountData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
@@ -9,9 +8,7 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * date:2018.1.9
@@ -25,22 +22,12 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
         int state = type - 1;
         //选择的公司
         int companyId = Cache.getSelectCompany();
-        if (Cache.isLeader()) {
-            //领导者传0 获取所有
-            companyId = 0;
-        }
-        List<SupervisorInfoEntity.SafeSupervisionEntity> safeSupervisionEnities = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            safeSupervisionEnities.add(new SupervisorInfoEntity.SafeSupervisionEntity());
-        }
-        mView.setSafeSupervisionList(safeSupervisionEnities,type);
-
-//        addDispose(Http.netServer(SafeApi.class)
-//                .safeEventList(Cache.getUserID(), companyId, date, state)
-//                .compose(Network.convertIO())
-//                .subscribe(safeSupervisionEntities -> mView.setSafeSupervisionList(safeSupervisionEntities, type), throwable -> {
-//                    mView.fetchPageFail(type);
-//                }));
+        addDispose(Http.netServer(SafeApi.class)
+                .safeEventList(Cache.getUserID(), companyId, date, state)
+                .compose(Network.convertIO())
+                .subscribe(safeSupervisionEntities -> mView.setSafeSupervisionList(safeSupervisionEntities, type), throwable -> {
+                    mView.fetchPageFail(type);
+                }));
     }
 
     @Override
@@ -57,9 +44,11 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
                 .compose(Network.networkIO())
                 .map(eventCountData -> {
                     HashMap<String, String> map = new HashMap<>(eventCountData.size());
+
                     for (int i = 0; i < eventCountData.size(); i++) {
                         EventCountData data = eventCountData.get(i);
-                        map.put(data.getDay(), data.getCount() + "");
+                        String[] date = data.getDay().split("-");
+                        map.put(date[0] + "-" + Integer.valueOf(date[1]) + "-" + date[2], data.getCount() + "");
                     }
                     return map;
                 })
