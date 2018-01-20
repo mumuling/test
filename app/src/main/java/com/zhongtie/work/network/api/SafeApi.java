@@ -4,6 +4,7 @@ package com.zhongtie.work.network.api;
 import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.data.Result;
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.model.EventCountData;
 
@@ -82,6 +83,18 @@ public interface SafeApi {
     @FormUrlEncoded
     @POST("?action=ValidateEvent")
     Flowable<Result<Integer>> validateEvent(@Field("userid") String userId, @Field("eventid") int eventid, @Field("signurl") String signurl);
+
+
+    /**
+     * 安全督导事件详情
+     *
+     * @param userId  用户ID
+     * @param eventid 安全督导ID
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("?action=EventDetails")
+    Flowable<Result<SafeEventEntity>> eventDetails(@Field("userid") String userId, @Field("eventid") int eventid);
 
 
 }

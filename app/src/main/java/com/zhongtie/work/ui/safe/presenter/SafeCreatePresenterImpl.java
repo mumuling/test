@@ -144,8 +144,8 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         //////////////////////////////
         boolean isCheckValue = checkValue();
         ProjectTeamEntity companyTeam = mView.getCompanyTeamEntity();
-        //领导不验证不验证 劳务公司
-        if (companyTeam == null && !isLeader && isCheckValue) {
+        //领导不验证不验证 劳务公司 还有必须显示劳务公司才验证
+        if (mView.isShowWorkTeam() && companyTeam == null && !isLeader && isCheckValue) {
             mView.showToast("请选择劳务公司");
             return;
         }
@@ -182,7 +182,6 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
             mView.showToast("请至少选择一张图片");
             return;
         }
-
 
         CacheSafeEventTable cache = new CacheSafeEventTable();
         //整改人
@@ -278,7 +277,6 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         if (!relatedUser.getTypeItemList().isEmpty()) {
             return true;
         }
-
         return false;
     }
 

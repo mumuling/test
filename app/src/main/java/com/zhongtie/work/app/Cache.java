@@ -60,6 +60,15 @@ public class Cache {
     }
 
     /**
+     * 获取用户
+     *
+     * @return 用户ID
+     */
+    public static int getUserIntID() {
+        return Integer.valueOf(SharePrefUtil.getUserPre().getString(LOGIN_USER_ID, "0"));
+    }
+
+    /**
      * 获取登录用户的公司ID 只会在登录成功之后保存 之后只有切换账号才会更换
      *
      * @return 公司ID

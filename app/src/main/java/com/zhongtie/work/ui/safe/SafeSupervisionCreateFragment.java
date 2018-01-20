@@ -135,6 +135,11 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     }
 
     @Override
+    public boolean isShowWorkTeam() {
+        return mHeadInfoView.isShowCompanySelect();
+    }
+
+    @Override
     public String getEditSite() {
         return mHeadInfoView.getEditSite();
     }

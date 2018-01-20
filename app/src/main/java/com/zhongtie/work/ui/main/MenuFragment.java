@@ -148,7 +148,9 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
                 .positiveText("退出")
                 .negativeText("取消")
                 .onPositive((dialog, which) -> {
+                    dialog.cancel();
                     new ExitEvent().post();
+                    getActivity().finish();
                 }).onNegative((dialog, which) -> dialog.dismiss())
                 .build().show();
 

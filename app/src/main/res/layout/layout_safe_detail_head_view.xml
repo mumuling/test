@@ -7,13 +7,6 @@
     android:orientation="vertical"
     android:paddingBottom="16dp">
 
-    <ImageView
-        android:id="@+id/safe_order_state"
-        android:layout_width="94dp"
-        android:layout_height="94dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="15dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -208,4 +201,12 @@
             android:layout_marginTop="18dp" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/safe_order_state"
+        android:layout_width="94dp"
+        android:layout_height="94dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="15dp" />
 </RelativeLayout>

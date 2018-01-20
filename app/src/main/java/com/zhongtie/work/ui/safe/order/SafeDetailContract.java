@@ -1,8 +1,8 @@
 package com.zhongtie.work.ui.safe.order;
 
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
-import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ public interface SafeDetailContract {
          * @param itemList item数据源
          */
         void setItemList(List<Object> itemList);
+
+        void setSafeDetailInfo(SafeEventEntity titleUserInfo);
     }
 
     interface Presenter extends BasePresenter<View> {

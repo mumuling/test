@@ -35,6 +35,11 @@ public interface SafeCreateContract {
          */
         ProjectTeamEntity getCompanyTeamEntity();
 
+        /**
+         * @return true显示才验证劳务公司
+         */
+        boolean isShowWorkTeam();
+
 
         /**
          * 获取输入的地址

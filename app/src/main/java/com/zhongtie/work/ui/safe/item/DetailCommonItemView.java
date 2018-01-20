@@ -42,14 +42,14 @@ public class DetailCommonItemView extends AbstractItemView<CommonItemType, Detai
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CommonItemType data) {
         vh.mItemUserListTitle.setText(data.getTitle());
         if (data.getTypeItemList().size() > 0) {
-            vh.mItemUserListTitle.append("\t(" + data.getTypeItemList().size() + ")");
+            vh.mItemUserListTitle.append("(" + data.getTypeItemList().size() + ")");
         }
         if (vh.mCheckExamineList.getAdapter() == null) {
             CommonAdapter adapter = new CommonAdapter(data.getTypeItemList());
             if (vh.getItemPosition() == 1) {
                 vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
             } else {
-                vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, true));
+                vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, false));
             }
             adapter.register(new CreatePicItemView(false));
             //用户信息

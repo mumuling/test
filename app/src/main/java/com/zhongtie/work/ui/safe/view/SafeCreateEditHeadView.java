@@ -18,8 +18,11 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.event.SelectCompanyEvent;
+import com.zhongtie.work.db.CacheCompanyTable;
+import com.zhongtie.work.db.CacheCompanyTable_Table;
 import com.zhongtie.work.db.CompanyWorkTeamTable;
+import com.zhongtie.work.event.SelectCompanyEvent;
+import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.safe.dialog.SelectDateTimeDialog;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.ProjectTeamSelectFragment;
@@ -27,6 +30,8 @@ import com.zhongtie.work.util.TimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import io.reactivex.Flowable;
 
 /**
  * 安全督导创建创建头部输入数据
@@ -135,12 +140,39 @@ public class SafeCreateEditHeadView extends LinearLayout implements View.OnClick
     }
 
     private void initWorkTeam() {
-        //没有劳务公司 不展示选择
-        long workTeamCount = SQLite.selectCountOf().from(CompanyWorkTeamTable.class).count();
-        if (workTeamCount <= 0 && Cache.isLeader()) {
+
+        Flowable.fromCallable(() -> {
+            int selectCompany = Cache.getSelectCompany();
+            CacheCompanyTable companyTable = SQLite.select().from(CacheCompanyTable.class).where(CacheCompanyTable_Table.id.eq(selectCompany)).querySingle();
+            return companyTable != null && companyTable.getSign() > 0;
+        }).compose(Network.networkIO())
+                .subscribe(aBoolean -> {
+                    showCompanySelect(aBoolean);
+
+                }, throwable -> {
+                });
+
+    }
+
+
+    /**
+     * @return true 显示劳务公司选 false 没有显示 则不验证劳务公司
+     */
+    public boolean isShowCompanySelect() {
+        return mCreateCompanyWorkSelect.getVisibility() == VISIBLE;
+    }
+
+    private void showCompanySelect(Boolean aBoolean) {
+        if (aBoolean) {
             mCreateCompanyWorkSelect.setVisibility(GONE);
         } else {
-            mCreateCompanyWorkSelect.setVisibility(VISIBLE);
+            //没有劳务公司 不展示选择
+            long workTeamCount = SQLite.selectCountOf().from(CompanyWorkTeamTable.class).count();
+            if (workTeamCount <= 0 || Cache.isLeader()) {
+                mCreateCompanyWorkSelect.setVisibility(GONE);
+            } else {
+                mCreateCompanyWorkSelect.setVisibility(VISIBLE);
+            }
         }
     }
 

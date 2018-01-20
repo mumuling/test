@@ -5,16 +5,24 @@ import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.ApproveEntity;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.data.ReplyEntity;
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.create.EditContentEntity;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.NetWorkFunc1;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.functions.Function;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
@@ -50,7 +58,7 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
         String[] tip = App.getInstance().getResources().getStringArray(R.array.create_item_tip);
         List<CommonItemType> list = new ArrayList<>();
         List<CommonUserEntity> createUserEntities = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 2; i++) {
             CommonUserEntity c = new CommonUserEntity();
             c.setUserId(i);
             c.setUserName("测试" + 1);
@@ -60,7 +68,7 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
         }
         int size = titleList.length;
         List<EndorseUserEntity> files = new ArrayList<>();
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 2; j++) {
             files.add(new EndorseUserEntity());
         }
 
@@ -80,25 +88,56 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
 
     @Override
     public void getItemList(int safeOrderID) {
+        Http.netServer(SafeApi.class)
+                .eventDetails(Cache.getUserID(), safeOrderID)
+                .map(new NetWorkFunc1<>())
+                .compose(Network.networkIO())
+                .subscribe(safeEventEntity -> {
+                    setTitleUserInfo(safeEventEntity);
+                    initItemList(safeEventEntity);
+                }, throwable -> {
+                });
+    }
+
+
+    private void initItemList(SafeEventEntity safeEventEntity) {
         List<Object> itemList = new ArrayList<>();
         mTypeArrayMap = new ArrayMap<>();
-
         //添加修改要求
-        mRectifyEditContent = new EditContentEntity("整改要求", "请输入整改要求", "确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定确定");
+        mRectifyEditContent = new EditContentEntity("整改要求", "", safeEventEntity.event_detail);
         itemList.add(mRectifyEditContent);
+
+        //检查人
+//        CommonItemType item = new CommonItemType<>("检查人", "", R.drawable.plus, false);
+//        if (titleList[i].contains("检查")) {
+//            item.setTypeItemList(files);
+//        } else {
+//            item.setTypeItemList(createUserEntities);
+//        }
+//        mTypeArrayMap.put(titleList[i], item);
+//        list.add(item);
 
         itemList.addAll(fetchCommonItemTypeList());
 
-        itemList.add("回复(3)");
-        for (int i = 0; i < 3; i++) {
+        SafeEventModel safeEventModel=new SafeEventModel(safeEventEntity);
+
+        itemList.add(safeEventModel.fetchReviewUserList());
+
+
+        String replyTitle = "回复(" + safeEventEntity.replylist.size() + ")";
+        itemList.add(replyTitle);
+
+        for (int i = 0; i < safeEventEntity.replylist.size(); i++) {
             itemList.add(new ReplyEntity());
         }
+
         itemList.add("审批(4)");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             itemList.add(new ApproveEntity());
         }
 
         mView.setItemList(itemList);
+
     }
 
     @Override
@@ -117,6 +156,17 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
         CommonItemType itemType = mTypeArrayMap.get(title);
         if (itemType != null) {
             itemType.setTypeItemList(createUserEntities);
+        }
+    }
+
+    public void setTitleUserInfo(SafeEventEntity titleUserInfo) {
+        mView.setSafeDetailInfo(titleUserInfo);
+    }
+
+    private static class ConvertItemListFunc implements Function<SafeEventEntity, List<Object>> {
+        @Override
+        public List<Object> apply(SafeEventEntity safeEventEntity) throws Exception {
+            return null;
         }
     }
 

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.event.ReplyEvent;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
@@ -69,6 +70,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         if (getArguments() != null) {
             mSafeOrderID = getArguments().getInt(ID);
         }
+        mSafeOrderID=1155;
         return R.layout.safe_order_info_fragment;
     }
 
@@ -146,6 +148,11 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     public void setItemList(List<Object> itemList) {
         mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setSafeDetailInfo(SafeEventEntity titleUserInfo) {
+        mHeadInfoView.setHeadInfo(titleUserInfo);
     }
 
 
