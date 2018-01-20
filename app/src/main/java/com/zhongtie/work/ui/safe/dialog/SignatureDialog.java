@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,39 +45,27 @@ public class SignatureDialog extends Dialog {
 
     private void initView() {
 
-        mDialog = (LinearLayout) findViewById(R.id.dialog);
-        mClearSignature = (TextView) findViewById(R.id.clear_signature);
-        mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad);
-        mUpdateDownloadCancel = (TextView) findViewById(R.id.update_download_cancel);
-        mUpdateBackGroundDownload = (TextView) findViewById(R.id.update_back_ground_download);
+        mDialog = findViewById(R.id.dialog);
+        mClearSignature = findViewById(R.id.clear_signature);
+        mSignaturePad = findViewById(R.id.signature_pad);
+        mUpdateDownloadCancel = findViewById(R.id.update_download_cancel);
+        mUpdateBackGroundDownload = findViewById(R.id.update_back_ground_download);
 
-        mClearSignature.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mSignaturePad.clear();
+        mClearSignature.setOnClickListener(view -> mSignaturePad.clear());
+
+        mUpdateDownloadCancel.setOnClickListener(view -> dismiss());
+
+        mUpdateBackGroundDownload.setOnClickListener(view -> {
+            if (onSignatureListener != null) {
+                onSignatureListener.onSignature(saveSignaturePic());
             }
+            dismiss();
         });
 
-        mUpdateDownloadCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
-        mUpdateBackGroundDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onSignatureListener != null) {
-                    onSignatureListener.onSignature(saveSignaturePic());
-                }
-                dismiss();
-            }
-        });
-
-        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mDialog.getLayoutParams();
-        int width = (int) (ViewUtils.getScreenWidth(getContext()) * 9);
-        mDialog.setLayoutParams(linearParams);
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mSignaturePad.getLayoutParams();
+        linearParams.width = (int) (ViewUtils.getScreenWidth(getContext())*0.82);
+        linearParams.height = (int) (linearParams.width * 0.55f);
+        mSignaturePad.setLayoutParams(linearParams);
     }
 
     private String saveSignaturePic() {
