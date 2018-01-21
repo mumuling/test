@@ -24,9 +24,6 @@ import com.zhongtie.work.ui.main.adapter.CompanyItemView;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
-
 /**
  * Auth:Cheek
  * date:2018.1.9
