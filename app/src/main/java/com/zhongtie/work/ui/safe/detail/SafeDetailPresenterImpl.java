@@ -1,7 +1,8 @@
-package com.zhongtie.work.ui.safe.order;
+package com.zhongtie.work.ui.safe.detail;
 
 
 import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.data.ApproveEntity;
 import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.EditContentEntity;
@@ -70,9 +71,10 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
         itemList.add(replyTitle);
         itemList.addAll(safeEventEntity.replylist);
 
-        String approveTitle = "已审批(" + safeEventEntity.signlist.size() + ")";
+        List<ApproveEntity> approveEntities = safeEventModel.getDetailReviewUserList();
+        String approveTitle = "已审批(" + approveEntities.size() + ")";
         itemList.add(approveTitle);
-        itemList.addAll(safeEventEntity.signlist);
+        itemList.addAll(approveEntities);
 
         mView.setItemList(itemList);
 

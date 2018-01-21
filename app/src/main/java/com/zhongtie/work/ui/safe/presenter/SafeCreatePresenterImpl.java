@@ -20,7 +20,7 @@ import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.ui.safe.order.SafeEventModel;
+import com.zhongtie.work.ui.safe.detail.SafeEventModel;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.upload.UploadUtil;
 

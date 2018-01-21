@@ -1,6 +1,7 @@
-package com.zhongtie.work.ui.safe.order;
+package com.zhongtie.work.ui.safe.detail;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.data.ApproveEntity;
 import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.data.ReplyEntity;
@@ -32,9 +33,15 @@ public class SafeEventModel {
         List<EndorseUserEntity> endorseUserList = new ArrayList<>();
         //获取姓名list
         List<String> checkUserNameList = TextUtil.getPicList(eventEntity.getEvent_checker());
-        for (int j = 0; j < checkUserNameList.size(); j++) {
-            EndorseUserEntity endorseUserEntity=new EndorseUserEntity();
-            endorseUserEntity.setUsername(checkUserNameList.get(j));
+        for (int j = 0; j < eventEntity.signlist.size(); j++) {
+            ApproveEntity entity = eventEntity.signlist.get(j);
+            EndorseUserEntity endorseUserEntity = new EndorseUserEntity();
+            endorseUserEntity.setUsername(entity.username);
+            endorseUserEntity.setDetail(entity.detail);
+            endorseUserEntity.setPic(entity.pic);
+            endorseUserEntity.setTime(entity.time);
+            endorseUserEntity.setUrl(entity.url);
+            endorseUserEntity.setUserid(entity.userid);
             endorseUserList.add(endorseUserEntity);
         }
 
@@ -45,23 +52,17 @@ public class SafeEventModel {
     }
 
     /**
-     * 验证人
+     * 详情展示验证人就是审核人
      */
-    public CommonItemType fetchReviewUserList() {
-        List<CommonUserEntity> reviewUserList = new ArrayList<>();
+    public List<ApproveEntity> getDetailReviewUserList() {
+        List<ApproveEntity> reviewUserList = new ArrayList<>();
         for (int j = 0, count = eventEntity.reviewlist.size(); j < count; j++) {
-            SafeEventEntity.ReviewlistBean review = eventEntity.reviewlist.get(j);
-            CommonUserEntity userEntity = new CommonUserEntity();
-            userEntity.setUserId(review.userid);
-            userEntity.setUserPic(review.userpic);
-            userEntity.setUserName(review.username);
-            userEntity.setSelect(true);
-            reviewUserList.add(userEntity);
+            ApproveEntity review = eventEntity.reviewlist.get(j);
+            if (TextUtil.isEmpty(review.url))
+                continue;
+            reviewUserList.add(review);
         }
-        String reviewTitle = "验证人";
-        CommonItemType reviewUser = new CommonItemType<>(reviewTitle, "", R.drawable.plus, false);
-        reviewUser.setTypeItemList(reviewUserList);
-        return reviewUser;
+        return reviewUserList;
     }
 
     /**
@@ -70,7 +71,7 @@ public class SafeEventModel {
     public CommonItemType fetchRelatedUserList() {
         List<CommonUserEntity> reviewUserList = new ArrayList<>();
         for (int j = 0, count = eventEntity.reviewlist.size(); j < count; j++) {
-            SafeEventEntity.ReviewlistBean review = eventEntity.reviewlist.get(j);
+            ApproveEntity review = eventEntity.reviewlist.get(j);
             CommonUserEntity userEntity = new CommonUserEntity();
             userEntity.setUserId(review.userid);
             userEntity.setUserPic(review.userpic);
@@ -109,7 +110,7 @@ public class SafeEventModel {
     public CommonItemType getModifyReviewList() {
         List<CommonUserEntity> modifyReviewList = new ArrayList<>();
         for (int j = 0, count = eventEntity.reviewlist.size(); j < count; j++) {
-            SafeEventEntity.ReviewlistBean review = eventEntity.reviewlist.get(j);
+            ApproveEntity review = eventEntity.reviewlist.get(j);
             CommonUserEntity userEntity = new CommonUserEntity(review);
             modifyReviewList.add(userEntity);
         }

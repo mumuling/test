@@ -17,6 +17,12 @@ android {
             'armeabi-v7a'
         }
         resConfigs "en", "zh-rCN"
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : "com.zhongtie.work",
+                JPUSH_APPKEY : "254e7120544027f1f39f9c95", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
     buildTypes {
         release {
@@ -48,6 +54,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 def anko_version = "0.10.1"
 def dbflow_version = "4.1.1"
@@ -96,6 +103,9 @@ dependencies {
         exclude group: 'com.android.support'
     })
     compile 'com.orhanobut:logger:2.1.1'
+
+    compile 'cn.jiguang.sdk:jpush:3.1.1'  // 此处以JPush 3.1.1 版本为例。
+    compile 'cn.jiguang.sdk:jcore:1.1.9'  // 此处以JCore 1.1.9 版本为例。
 
 //    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
 //        exclude group: 'com.android.support', module: 'support-annotations'

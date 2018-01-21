@@ -10,12 +10,12 @@ import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.item.SafeSupervisionItemView;
-import com.zhongtie.work.ui.safe.order.SafeOrderDetailFragment;
+import com.zhongtie.work.ui.safe.detail.SafeOrderDetailFragment;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
 import java.util.List;
 
-import static com.zhongtie.work.ui.safe.order.SafeOrderDetailFragment.ID;
+import static com.zhongtie.work.ui.safe.detail.SafeOrderDetailFragment.ID;
 
 /**
  * 安全督导列表几个类别

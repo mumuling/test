@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe.order;
+package com.zhongtie.work.ui.safe.detail;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -70,8 +70,6 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         if (getArguments() != null) {
             mSafeOrderID = getArguments().getInt(ID);
         }
-        mSafeOrderID = 1174;
-//        mSafeOrderID = 927;
         return R.layout.safe_order_info_fragment;
     }
 

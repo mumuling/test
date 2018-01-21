@@ -13,7 +13,7 @@ import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
-import com.zhongtie.work.ui.safe.order.SafeDividerItemDecoration;
+import com.zhongtie.work.ui.safe.detail.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;

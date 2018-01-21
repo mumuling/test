@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.TypedValue;
 
@@ -19,7 +20,7 @@ import com.zhongtie.work.app.App;
 public class ViewUtils {
     private static final String TAG = "ViewUtils";
 
-    public static int getColorPrimary( ) {
+    public static int getColorPrimary() {
         return getAttrColor(App.getInstance(), R.attr.colorPrimary);
     }
 
@@ -27,6 +28,10 @@ public class ViewUtils {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attr, typedValue, true);
         return typedValue.data;
+    }
+
+    public static int getColor(@ColorRes int color) {
+        return App.getInstance().getResources().getColor(color);
     }
 
     /**
@@ -80,8 +85,6 @@ public class ViewUtils {
         DrawableCompat.setTint(mark1, color);
         return mark1;
     }
-
-
 
 
 }

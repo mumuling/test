@@ -18,6 +18,7 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.util.ImageConfigFactory;
 import com.zhongtie.work.util.ToastUtil;
 
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Flowable;
 
 /**
@@ -74,6 +75,8 @@ public class App extends Application {
     }
 
     private void initPush() {
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     private void initServer() {

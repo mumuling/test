@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe.order;
+package com.zhongtie.work.ui.safe.detail;
 
 import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.ui.base.BasePresenter;

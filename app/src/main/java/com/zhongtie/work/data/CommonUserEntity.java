@@ -20,7 +20,7 @@ public class CommonUserEntity implements BaseEvent, Serializable {
     private boolean isAt;
 
 
-    public CommonUserEntity(SafeEventEntity.ReviewlistBean review) {
+    public CommonUserEntity(ApproveEntity review) {
         setUserId(review.userid);
         setUserPic(review.userpic);
         setUserName(review.username);

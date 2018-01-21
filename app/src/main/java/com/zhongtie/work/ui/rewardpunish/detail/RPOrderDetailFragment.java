@@ -14,8 +14,7 @@ import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
-import com.zhongtie.work.ui.safe.order.SafeDetailPresenterImpl;
-import com.zhongtie.work.ui.safe.order.SafeDividerItemDecoration;
+import com.zhongtie.work.ui.safe.detail.SafeDividerItemDecoration;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
 

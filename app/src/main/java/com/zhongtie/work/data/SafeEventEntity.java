@@ -55,7 +55,7 @@ public class SafeEventEntity {
     public ButstateBean butstate;
     public List<ApproveEntity> signlist;
     public List<ReplyEntity> replylist;
-    public List<ReviewlistBean> reviewlist;
+    public List<ApproveEntity> reviewlist;
 
     public static class ButstateBean {
         /**
@@ -257,11 +257,11 @@ public class SafeEventEntity {
         this.replylist = replylist;
     }
 
-    public List<ReviewlistBean> getReviewlist() {
+    public List<ApproveEntity> getReviewlist() {
         return reviewlist;
     }
 
-    public void setReviewlist(List<ReviewlistBean> reviewlist) {
+    public void setReviewlist(List<ApproveEntity> reviewlist) {
         this.reviewlist = reviewlist;
     }
 }

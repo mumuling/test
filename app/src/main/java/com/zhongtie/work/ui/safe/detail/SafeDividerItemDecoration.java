@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe.order;
+package com.zhongtie.work.ui.safe.detail;
 
 import android.content.Context;
 import android.graphics.Canvas;
