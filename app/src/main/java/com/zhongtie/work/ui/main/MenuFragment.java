@@ -81,11 +81,14 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
 
     public void initView() {
         mList = (RecyclerView) findViewById(R.id.list);
-        mHeadView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_home_left_head, mList, false);
+        mHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_home_left_head, mList, false);
         mHead = mHeadView.findViewById(R.id.head);
-        mHead.loadImage(App.getInstance().getUser().getPicture());
-        if (mUserHead != null) {
-            mHead.setImageURI(Uri.parse(mUserHead));
+        try {
+            if (App.getInstance().getUser() != null) {
+                mHead.loadUserCard(App.getInstance().getUser().getIdentity());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

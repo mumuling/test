@@ -1,6 +1,6 @@
 package com.zhongtie.work.app;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -26,7 +26,7 @@ import io.reactivex.Flowable;
  * date:2018.1.8
  */
 
-public class App extends Application {
+public class App extends MultiDexApplication {
     private static final String TAG = "App";
 
     private static App instance;

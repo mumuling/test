@@ -112,31 +112,31 @@ public class SyncUserPic {
 
     private void executeDownload(List<String> strings) {
         L.e(TAG, "正在开始下载...." + strings.size() + "条数据");
-//        for (int i = 0, count = Math.min(2, strings.size()); i < count; i++) {
-//            mDownloadServer.execute(new DownRunnable(strings.get(i), new OnDownLoadCallBack() {
-//                @Override
-//                public void onDownComplete() {
-//                    nextDown();
-//                }
-//
-//                private void nextDown() {
-//                    synchronized (this) {
-//                        downPosition++;
-//                        L.e(TAG, "正在开始下载第" + downPosition + "条数据");
-//                        if (downPosition < strings.size()) {
-//                            mDownloadServer.execute(new DownRunnable(strings.get(downPosition), this));
-//                        } else {
-//                            isRun = false;
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onDownFail() {
-//                    nextDown();
-//                }
-//            }));
-//        }
+        for (int i = 0, count = Math.min(2, strings.size()); i < count; i++) {
+            mDownloadServer.execute(new DownRunnable(strings.get(i), new OnDownLoadCallBack() {
+                @Override
+                public void onDownComplete() {
+                    nextDown();
+                }
+
+                private void nextDown() {
+                    synchronized (this) {
+                        downPosition++;
+                        L.e(TAG, "正在开始下载第" + downPosition + "条数据");
+                        if (downPosition < strings.size()) {
+                            mDownloadServer.execute(new DownRunnable(strings.get(downPosition), this));
+                        } else {
+                            isRun = false;
+                        }
+                    }
+                }
+
+                @Override
+                public void onDownFail() {
+                    nextDown();
+                }
+            }));
+        }
     }
 
     private interface OnDownLoadCallBack {

@@ -10,10 +10,7 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.list.OnRefreshListener;
 import com.zhongtie.work.ui.base.BaseFragment;
-import com.zhongtie.work.ui.endorse.EndorseListActivity;
-import com.zhongtie.work.ui.file.FileShareActivity;
 import com.zhongtie.work.ui.main.adapter.HomeItemView;
-import com.zhongtie.work.ui.rewardpunish.RewardPunishActivity;
 import com.zhongtie.work.ui.safe.SafeSupervisionActivity;
 import com.zhongtie.work.ui.scan.ScanQRCodeActivity;
 import com.zhongtie.work.ui.statistics.StatisticsActivity;
@@ -91,17 +88,18 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
             case "扫二维码":
                 ScanQRCodeActivity.newInstance(getActivity());
                 break;
-            case "文件下载":
-                FileShareActivity.newInstance(getActivity());
-                break;
-            case "文件签认":
-                EndorseListActivity.newInstance(getActivity());
-                break;
-            case "奖惩流程":
-                RewardPunishActivity.newInstance(getActivity());
-//                SettingActivity.newInstance(getActivity(), SelectLookGroupFragment.class,"查阅组");
-                break;
+//            case "文件下载":
+//                FileShareActivity.newInstance(getActivity());
+//                break;
+//            case "文件签认":
+//                EndorseListActivity.newInstance(getActivity());
+//                break;
+//            case "奖惩流程":
+//                RewardPunishActivity.newInstance(getActivity());
+//                break;
             default:
+                showToast("功能正在开发中,敬请期待!");
+                break;
         }
 
 

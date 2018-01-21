@@ -9,11 +9,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.ui.endorse.EndorseListActivity;
-import com.zhongtie.work.ui.rewardpunish.RewardPunishActivity;
 import com.zhongtie.work.ui.safe.SafeSupervisionActivity;
 import com.zhongtie.work.ui.scan.ScanQRCodeActivity;
 import com.zhongtie.work.util.ListPopupWindowUtil;
+
+import static com.zhongtie.work.util.ToastUtil.showToast;
 
 /**
  * Auth:Cheek
@@ -48,9 +48,8 @@ public class CommBottomView extends LinearLayout {
     private void showQualityPopup(View v) {
         ListPopupWindowUtil.showListPopupWindow(v, Gravity.TOP, new String[]{"质量督导", "质量控制"}, (item, position) -> {
             switch (position) {
-                case 0:
-                    break;
-                case 1:
+                default:
+                    showToast("功能正在开发中,敬请期待!");
                     break;
             }
 
@@ -66,11 +65,14 @@ public class CommBottomView extends LinearLayout {
                 case "安全督导":
                     SafeSupervisionActivity.newInstance(getContext());
                     break;
-                case "文件签认":
-                    EndorseListActivity.newInstance(getContext());
+//                case "文件签认":
+//                    EndorseListActivity.newInstance(getContext());
+//                    break;
+//                case "奖惩流程":
+//                    RewardPunishActivity.newInstance(getContext());
+                default:
+                    showToast("功能正在开发中,敬请期待!");
                     break;
-                case "奖惩流程":
-                    RewardPunishActivity.newInstance(getContext());
             }
         });
     }
