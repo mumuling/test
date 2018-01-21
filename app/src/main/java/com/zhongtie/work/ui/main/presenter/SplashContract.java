@@ -13,10 +13,13 @@ public interface SplashContract {
     interface View extends BaseView {
 
         void showSync();
+        void hideSync();
 
         void userLogin();
 
         void startMainView();
+
+        void showRetryDialog();
 
     }
 

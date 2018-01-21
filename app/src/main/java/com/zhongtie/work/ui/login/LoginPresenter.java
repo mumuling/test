@@ -26,6 +26,7 @@ import io.reactivex.functions.Function;
 public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implements LoginContract.Presenter {
 
     public static final String LOGIN_USER_NAME = "login_user_name";
+    public static final String LOGIN_USER_PASSWORD = "login_user_password";
     public static final String LOGIN_USER_ID = "login_user_id";
     /**
      * 选择的公司ID
@@ -67,6 +68,8 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
                 .compose(Network.networkDialog(mView, "正在登录..."))
                 .subscribe(data -> {
                             SharePrefUtil.getUserPre().putString(LOGIN_USER_NAME, user);
+                            SharePrefUtil.getUserPre().putString(LOGIN_USER_PASSWORD, pw);
+
                             SharePrefUtil.getUserPre().putString(LOGIN_USER_ID, String.valueOf(data.getId()));
                             SharePrefUtil.getUserPre().putString(SELECT_COMPANY_NAME, data.companyname);
                             SharePrefUtil.getUserPre().putInt(SELECT_COMPANY_ID, data.getCompany());

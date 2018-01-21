@@ -37,7 +37,7 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
 
     @Override
     public void getSafeDateEventCount() {
-        int company = Cache.getUserUserCompany();
+        int company = Cache.getSelectCompany();
         addDispose(Http.netServer(SafeApi.class)
                 .safeEventListMonthCount(Cache.getUserID(), company)
                 .map(new NetWorkFunc1<>())

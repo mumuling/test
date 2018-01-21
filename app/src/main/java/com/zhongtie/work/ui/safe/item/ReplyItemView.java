@@ -15,6 +15,7 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.ApproveEntity;
 import com.zhongtie.work.data.ReplyEntity;
 import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.widget.BaseImageView;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class ReplyItemView extends AbstractItemView<Object, ReplyItemView.ViewHo
             vh.safeOrderReplyHead.loadImage(replyEntity.userpic);
             vh.safeOrderReplySign.loadImageSign(replyEntity.url);
             vh.safeOrderName.setText(replyEntity.username);
-            vh.safeOrderReplyTime.setText(replyEntity.getTime());
+            vh.safeOrderReplyTime.setText(TimeUtils.formatEventTime(replyEntity.getTime()));
             vh.safeOrderReplyContent.setText(replyEntity.detail);
             List<String> list = TextUtil.getPicList(replyEntity.pic);
             if (vh.list.getAdapter() == null) {
@@ -75,7 +76,7 @@ public class ReplyItemView extends AbstractItemView<Object, ReplyItemView.ViewHo
             vh.safeOrderReplyHead.loadImage(approve.getUserpic());
             vh.safeOrderReplySign.loadImageSign(approve.getUrl());
             vh.safeOrderName.setText(approve.getUsername());
-            vh.safeOrderReplyTime.setText(approve.getTime());
+            vh.safeOrderReplyTime.setText(TimeUtils.formatEventTime(approve.getTime()));
         }
     }
 

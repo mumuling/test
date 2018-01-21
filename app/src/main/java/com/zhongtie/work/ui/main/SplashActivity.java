@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BasePresenterActivity;
@@ -14,8 +15,6 @@ import com.zhongtie.work.ui.login.LoginActivity;
 import com.zhongtie.work.ui.main.presenter.SplashContract;
 import com.zhongtie.work.ui.main.presenter.SplashPresenterImpl;
 import com.zhongtie.work.widget.ProgressWheel;
-
-import static com.zhongtie.work.util.ToastUtil.showToast;
 
 /**
  * Auth: Chaek
@@ -65,6 +64,11 @@ public class SplashActivity extends BasePresenterActivity<SplashContract.Present
     }
 
     @Override
+    public void hideSync() {
+        mSplashSyncView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void userLogin() {
         mSplashSyncView.setVisibility(View.GONE);
         startActivity(new Intent(getAppContext(), LoginActivity.class));
@@ -76,6 +80,27 @@ public class SplashActivity extends BasePresenterActivity<SplashContract.Present
         mSplashSyncView.setVisibility(View.GONE);
         startActivity(new Intent(getAppContext(), MainActivity.class));
         finish();
+    }
+
+    @Override
+    public void showRetryDialog() {
+        new MaterialDialog.Builder(this)
+                .title("提示")
+                .content("同步失败,请检查网络情况。")
+                .positiveText("重试")
+                .cancelable(false)
+                .negativeText("退出")
+                .onPositive((dialog, which) -> {
+                    dialog.cancel();
+                    mPresenter.initSync();
+                })
+                .onNegative((dialog, which) -> {
+                    dialog.cancel();
+                    finish();
+                })
+                .build()
+                .show();
+
     }
 
     @Override
