@@ -2,13 +2,17 @@ package com.zhongtie.work.ui.setting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
+import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.ui.base.BaseActivity;
+import com.zhongtie.work.util.ViewUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,12 +24,14 @@ import java.util.List;
  * @author Chaek
  */
 
-public class CommonFragmentActivity extends BaseActivity {
+public class CommonFragmentActivity extends BaseActivity implements OnEventPrintListener {
 
     public static final String FRAGMENT = "fragment";
     public static final String TITLE = "title";
     public static final int USER_SELECT_CODE = 10003;
     public static final String LIST = "list";
+
+    private int mEventId;
 
     public static void newInstance(Context context, Class fragment, String title) {
         Intent intent = new Intent(context, CommonFragmentActivity.class);
@@ -42,6 +48,27 @@ public class CommonFragmentActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable(LIST, (Serializable) list);
         newInstance(context, fragment, title, bundle);
+    }
+
+
+    @Override
+    protected void onClickRight() {
+        super.onClickRight();
+        showToast("打印");
+    }
+
+    @Override
+    public void onShowPrint(int type, int eventId) {
+        this.mEventId = eventId;
+        mMenuTitle.setVisibility(View.VISIBLE);
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_file_print);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        mMenuTitle.setCompoundDrawables(drawable, null, null, null);
+    }
+
+    @Override
+    public void onHidePrint() {
+        mMenuTitle.setVisibility(View.GONE);
     }
 
     /**
@@ -61,7 +88,6 @@ public class CommonFragmentActivity extends BaseActivity {
         intent.putExtras(bundle);
         context.startActivityForResult(intent, USER_SELECT_CODE);
     }
-
 
     @Override
     protected int getLayoutViewId() {

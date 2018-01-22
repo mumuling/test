@@ -14,6 +14,8 @@ import java.io.File;
 
 import okhttp3.OkHttpClient;
 
+import static com.zhongtie.work.app.Constant.IMAGE_CACHE_PATH;
+
 /**
  * 图片加载初始化
  */
@@ -50,20 +52,16 @@ public class ImageConfigFactory {
                 Integer.MAX_VALUE,                     // Max length of eviction queue
                 Integer.MAX_VALUE);                    // Max cache entry size
         configBuilder.setBitmapMemoryCacheParamsSupplier(
-                new Supplier<MemoryCacheParams>() {
-                    @Override
-                    public MemoryCacheParams get() {
-                        return bitmapCacheParams;
-                    }
-                })
-                .setMainDiskCacheConfig(DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(getExternalCacheDir(context))
+                () -> bitmapCacheParams)
+                .setMainDiskCacheConfig(DiskCacheConfig.newBuilder(context)
+                        .setBaseDirectoryPath(getExternalCacheDir(context))
                         .setBaseDirectoryName(IMAGE_PIPELINE_CACHE_DIR)
                         .setMaxCacheSize(MAX_DISK_CACHE_SIZE)
                         .build());
     }
 
     private static File getExternalCacheDir(final Context context) {
-        return context.getExternalCacheDir();
+        return new File(IMAGE_CACHE_PATH);
     }
 
 }

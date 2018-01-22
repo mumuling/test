@@ -1,5 +1,6 @@
 package com.zhongtie.work.ui.safe.detail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.event.ReplyEvent;
+import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
@@ -55,6 +57,8 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private TextView mCheck;
     private RecyclerView mList;
 
+    private OnEventPrintListener mOnEventPrintListener;
+
 
     public static SafeSupervisionCreateFragment newInstance(int id) {
         Bundle args = new Bundle();
@@ -64,6 +68,14 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         return fragment;
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnEventPrintListener) {
+            mOnEventPrintListener = (OnEventPrintListener) context;
+        }
+    }
 
     @Override
     public int getLayoutViewId() {
@@ -169,6 +181,14 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mApprove.setVisibility(status.sign == 1 ? View.VISIBLE : View.GONE);
         mCheck.setVisibility(status.check == 1 ? View.VISIBLE : View.GONE);
         findViewById(R.id.bottom).setVisibility(status.print == 1 ? View.GONE : View.VISIBLE);
+
+        if (mOnEventPrintListener != null) {
+            if (status.print == 1) {
+                mOnEventPrintListener.onShowPrint(0,mSafeOrderID);
+            } else {
+                mOnEventPrintListener.onHidePrint();
+            }
+        }
     }
 
     @Override
