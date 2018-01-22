@@ -110,7 +110,7 @@
 -keep class  com.zhongtie.work.db.**{ *; }
 -keep class  com.zhongtie.work.data.**{ *; }
 -keep class  com.zhongtie.work.model.**{ *; }
--keep class  com.zhongtie.work.network.**{ *; }
+#-keep class  com.zhongtie.work.network.**{ *; }
 -keep class  com.zhongtie.work.widget.**{ *; }
 
 
