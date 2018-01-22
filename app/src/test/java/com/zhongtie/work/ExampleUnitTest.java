@@ -1,6 +1,6 @@
 package com.zhongtie.work;
 
-import com.zhongtie.work.util.RSASignature;
+import com.zhongtie.work.util.Base64;
 
 import org.junit.Test;
 
@@ -26,6 +26,6 @@ public class ExampleUnitTest {
 
     @Test
     public void addition_isCorrect() throws Exception {
-        System.out.print(RSASignature.sign("1", privateKey));
+        System.out.print(Base64.encode("重庆".getBytes("GB2312")).trim());
     }
 }

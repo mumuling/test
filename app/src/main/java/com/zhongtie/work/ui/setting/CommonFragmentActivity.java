@@ -12,7 +12,7 @@ import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
 import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.ui.base.BaseActivity;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.ui.print.PrintEventActivity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -54,7 +54,9 @@ public class CommonFragmentActivity extends BaseActivity implements OnEventPrint
     @Override
     protected void onClickRight() {
         super.onClickRight();
-        showToast("打印");
+        if (mEventId > 0) {
+            PrintEventActivity.start(this);
+        }
     }
 
     @Override

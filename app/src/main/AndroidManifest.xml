@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
         android:name=".app.App"
@@ -90,6 +91,7 @@
             android:name=".ui.endorse.EndorseListActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.image.ImageReviewActivity"/>
+        <activity android:name=".ui.print.PrintEventActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -115,6 +117,9 @@
                 <category android:name="com.zhongtie.work" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".ui.print.PrintEventActivity$CompleteReceiver" />
+
+        <service android:name=".ui.print.PrintDownServer" />
     </application>
 
 </manifest>

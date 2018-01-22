@@ -1,15 +1,10 @@
 package com.zhongtie.work.ui.main.presenter;
 
-import android.support.annotation.WorkerThread;
-
-import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.LoginUserInfoEntity;
 import com.zhongtie.work.data.LoginUserInfoEntity_Table;
-import com.zhongtie.work.db.CacheCompanyTable;
-import com.zhongtie.work.db.SwitchCompanyUtil;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.HttpException;
 import com.zhongtie.work.network.NetWorkFunc1;
@@ -17,8 +12,6 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.UserApi;
 import com.zhongtie.work.task.sync.SyncCompanyUtil;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.util.DownloadManager;
-import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.TextUtil;
 
@@ -28,7 +21,6 @@ import io.reactivex.Flowable;
 
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_NAME;
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_PASSWORD;
-import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_ID;
 
 /**
  * Auth:Cheek
@@ -85,30 +77,14 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
                 }, throwable -> {
                     throwable.printStackTrace();
                     mView.hideSync();
-                    mView.showRetryDialog();
-                    mView.showToast(HttpException.getErrorMessage(throwable));
+                    if (throwable.getMessage().equals("登录失败")) {
+                        mView.userLogin();
+                    } else {
+                        mView.showRetryDialog();
+                        mView.showToast(HttpException.getErrorMessage(throwable));
+                    }
                 }));
     }
 
-    /**
-     * 下载 最新的数据库
-     * 如果下载的是本地选择的最新的数据库
-     *
-     * @param companyEntity 公司信息
-     */
-    @WorkerThread
-    private void downCompanyDB(CacheCompanyTable companyEntity) {
-        if (!TextUtil.isEmpty(companyEntity.getDburl())) {
-            L.e("-----------", "正在下载" + companyEntity.getDburl());
-            DownloadManager.getInstance().download(companyEntity, null);
-            int companyId = SharePrefUtil.getUserPre().getInt(SELECT_COMPANY_ID, 0);
-            if (companyId == companyEntity.getId()) {
-                SwitchCompanyUtil.switchCompany(companyEntity.getId())
-                        .map(s -> {
-                            FlowManager.init(App.getInstance());
-                            return "";
-                        }).blockingFirst();
-            }
-        }
-    }
+
 }

@@ -159,4 +159,7 @@
     <string name="slide_look_more_title">向右滑动查看更多图片</string>
     <string name="event_check">验证</string>
     <string name="image_review_title">%d/%d</string>
+    <string name="print">打印</string>
+    <string name="print_fail">打印失败</string>
+    <string name="print_title">打印预览</string>
 </resources>
