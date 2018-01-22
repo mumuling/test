@@ -2,6 +2,7 @@ package com.zhongtie.work.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -12,6 +13,8 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +29,7 @@ public class FileUtils {
 
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
+    public static final String ZHONGTIE_DOWNLOAD = "/zhongtie/download/";
 
     public static File createTmpFile(Context context) throws IOException {
         File dir = null;
@@ -184,4 +188,35 @@ public class FileUtils {
         return perm == PackageManager.PERMISSION_GRANTED;
     }
 
+    /**
+     * 保存bitmap到文件夹
+     *
+     * @param bitmap 数据源
+     * @return 保存的文件夹
+     */
+    public static File saveBitmap(Bitmap bitmap) {
+        String cacheFile = Environment.getExternalStorageDirectory().getPath() + ZHONGTIE_DOWNLOAD;
+        File path = new File(cacheFile);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        File imageFile = new File(path, Util.md532(TimeUtils.getFormatDateAll()) + ".jpg");
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+            imageFile = null;
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return imageFile;
+    }
 }

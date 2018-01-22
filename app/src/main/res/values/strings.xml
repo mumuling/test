@@ -158,4 +158,5 @@
     <string name="user_card_code">身份证号:</string>
     <string name="slide_look_more_title">向右滑动查看更多图片</string>
     <string name="event_check">验证</string>
+    <string name="image_review_title">%d/%d</string>
 </resources>

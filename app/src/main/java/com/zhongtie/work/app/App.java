@@ -94,7 +94,7 @@ public class App extends MultiDexApplication {
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override
             public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG;
+                return BuildConfig.IS_LOG;
             }
         });
 

@@ -1,4 +1,6 @@
-package com.zhongtie.work.ui.statistics;
+package com.zhongtie.work.data;
+
+import android.support.annotation.Keep;
 
 import java.util.List;
 
@@ -6,7 +8,7 @@ import java.util.List;
  * Auth:Cheek
  * date:2018.1.15
  */
-
+@Keep
 public class ChartData {
 
 

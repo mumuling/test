@@ -2,6 +2,7 @@ package com.zhongtie.work.network;
 
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
+import android.util.Log;
 
 import com.zhongtie.work.BuildConfig;
 import com.zhongtie.work.util.Base64;
@@ -73,9 +74,9 @@ class SignInterceptor implements Interceptor {
                 signSource.append("&");
             }
 
-            if (BuildConfig.DEBUG) {
-                L.e(TAG, baseData.toString());
-            }
+            Log.e(TAG, baseData.toString());
+//            if (BuildConfig.DEBUG) {
+//            }
 
 
             signSource.delete(signSource.length() - 1, signSource.length());

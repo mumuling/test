@@ -1,7 +1,7 @@
 package com.zhongtie.work.network.api;
 
-import com.zhongtie.work.ui.statistics.ChartData;
-import com.zhongtie.work.ui.statistics.StatisticsData;
+import com.zhongtie.work.data.ChartData;
+import com.zhongtie.work.data.StatisticsData;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Field;

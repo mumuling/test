@@ -1,4 +1,4 @@
-package com.zhongtie.work.util.upload;
+package com.zhongtie.work.data;
 
 /**
  * Auth: Chaek

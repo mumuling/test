@@ -251,7 +251,6 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     @Override
     public void showInputMethod() {
         this.isInput = true;
-//        hideTeamGroupView();
         mBottom.setVisibility(View.GONE);
     }
 
@@ -300,11 +299,11 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 
     @Override
     public void onChanged() {
+        mSearchAdapter.notifyDataSetChanged();
         onChangeSelectView();
     }
 }

@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import com.github.mikephil.charting.data.PieEntry;
+import com.zhongtie.work.data.ChartData;
+import com.zhongtie.work.data.StatisticsData;
 import com.zhongtie.work.data.StatisticsLineData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
@@ -68,13 +70,16 @@ public class PresenterImpl extends BasePresenterImpl<StatisticsContract.View> im
                         temp[2] = chartData;
                         return getPieEntries(position, chartData);
                     });
-            Flowable.zip(workTeamObservable, companyObservable, statisticsObservable, (statisticsLineData, statisticsLineData2, pieEntries) ->
+            addDispose(Flowable.zip(workTeamObservable, companyObservable, statisticsObservable, (statisticsLineData, statisticsLineData2, pieEntries) ->
                     new Object[]{statisticsLineData, statisticsLineData2, pieEntries})
                     .compose(Network.networkIO())
                     .subscribe(o -> {
                         mCacheData.put(year, temp);
                         setStatisticsData(o);
-                    }, throwable -> mView.initFail());
+                    }, throwable -> {
+                        mView.initFail();
+                        throwable.printStackTrace();
+                    }));
         } else {
             List<StatisticsLineData> workTeamStatistics = getStatisticsLineData(position, (StatisticsData) cacheList[0]);
             List<StatisticsLineData> companyStatistics = getStatisticsLineData(position, (StatisticsData) cacheList[1]);

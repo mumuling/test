@@ -8,6 +8,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
+import com.zhongtie.work.ui.image.ImageReviewActivity;
 import com.zhongtie.work.widget.BaseImageView;
 
 /**
@@ -39,6 +40,10 @@ public class CreatePicItemView extends AbstractItemView<String, CreatePicItemVie
         } else {
             vh.mItemPicDelete.setVisibility(View.GONE);
         }
+        if (!isEdit) {
+            vh.mItemPic.setOnClickListener(v -> ImageReviewActivity.start(vh.mContext, vh.getAdapterPosition(), commonAdapter.getListData()));
+        }
+
         //点击删除按钮
         vh.mItemPicDelete.setOnClickListener(v -> {
             commonAdapter.getListData().remove(data);

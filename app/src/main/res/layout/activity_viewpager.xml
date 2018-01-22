@@ -105,10 +105,5 @@
 
     </RelativeLayout>
 
-    <com.zhongtie.work.widget.MultiTouchViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_above="@id/image_choose_bottom"
-        android:layout_height="match_parent"
-        android:layout_marginTop="45dp"/>
+    <include layout="@layout/layout_view_pager"/>
 </RelativeLayout>

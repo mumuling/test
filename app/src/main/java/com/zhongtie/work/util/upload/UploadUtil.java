@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
 import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.data.UploadData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.api.UploadApi;

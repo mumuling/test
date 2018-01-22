@@ -50,7 +50,7 @@ public class ScanQRCodeActivity extends BaseActivity implements OnNextFragmentLi
     @Override
     public void onResumeCamera() {
         if (qrCodeFragment != null) {
-            qrCodeFragment.onResume();
+            qrCodeFragment.resumeCameraPreview();
         }
     }
 }

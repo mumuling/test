@@ -6,17 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseActivity;
-import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,24 +22,15 @@ import static com.zhongtie.work.ui.setting.CommonFragmentActivity.LIST;
 import static com.zhongtie.work.ui.setting.CommonFragmentActivity.USER_SELECT_CODE;
 
 /**
- * Auth: Chaek
+ * 通用搜索界面
  * Date: 2018/1/11
+ *
+ * @author Chaek
  */
-
 public class CommonSelectSearchActivity extends BaseActivity implements TextWatcher {
 
     public final static String SEARCH_HINT = "search_hint";
-    private LinearLayout mTitleLayoutView;
-    private View mTitleBarTransparent;
-    private LinearLayout mTitleBack;
-    private TextView mTitleBackImg;
-    private ImageView mSearchBtn;
     private EditText mSearch;
-    private View mTitleLine;
-    private FrameLayout mFragmentContent;
-
-    private Fragment mFragment;
-
     private OnSearchContentListener mOnSearchContentListener;
 
     public static void newInstance(Context context, Class fragment, String title) {
@@ -90,29 +76,22 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
 
     @Override
     protected void initView() {
-        mTitleLayoutView = findViewById(R.id.title_layout_view);
-        mTitleBarTransparent = findViewById(R.id.title_bar_transparent);
-        mTitleBack = findViewById(R.id.title_back);
-        mTitleBackImg = findViewById(R.id.title_back_img);
-        mSearchBtn = findViewById(R.id.search_btn);
+        LinearLayout titleBack = findViewById(R.id.title_back);
         mSearch = findViewById(R.id.search);
-        mTitleLine = findViewById(R.id.title_line);
-        mFragmentContent = findViewById(R.id.fragment_content);
-
         mSearch.addTextChangedListener(this);
-
+        titleBack.setOnClickListener(v -> finish());
     }
 
     @Override
     protected void initData() {
         mSearch.setHint(getIntent().getStringExtra(SEARCH_HINT));
         try {
-            mFragment = Fragments.with(this)
+            Fragment fragment = Fragments.with(this)
                     .fragment(Class.forName(getIntent().getStringExtra(FRAGMENT)))
                     .bundle(getIntent().getExtras())
                     .into(R.id.fragment_content);
-            if (mFragment instanceof OnSearchContentListener) {
-                mOnSearchContentListener = (OnSearchContentListener) mFragment;
+            if (fragment instanceof OnSearchContentListener) {
+                mOnSearchContentListener = (OnSearchContentListener) fragment;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

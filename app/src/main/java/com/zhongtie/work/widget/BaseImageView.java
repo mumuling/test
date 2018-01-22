@@ -64,7 +64,7 @@ public class BaseImageView extends SimpleDraweeView {
         if (TextUtil.isEmpty(data)) {
             data = "";
         }
-        ImageLoader imageLoader = new ImageLoader.Builder().url(data.startsWith(HTTP) ? data : "file://" + data).placeHolder(R.drawable.ic_event_sign_place).
+        ImageLoader imageLoader = new ImageLoader.Builder().url(data.startsWith(HTTP) ? data : "file://" + data).placeHolder(R.drawable.ic_pic_place_holder).
                 imgView(this).build();
         ImageLoaderUtil.getInstance().loadImage(getContext(), imageLoader);
     }

@@ -1,7 +1,9 @@
 package com.zhongtie.work.util;
 
+import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,5 +31,16 @@ public class TextUtil {
             imageList.add(aT);
         }
         return imageList;
+    }
+
+    public static Uri fromUri(String uri) {
+        if (isEmpty(uri)) {
+            return Uri.parse("");
+        }
+        boolean isHTTP = uri.startsWith("http");
+        if (isHTTP) {
+            return Uri.parse(uri);
+        }
+        return Uri.fromFile(new File(uri));
     }
 }

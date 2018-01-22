@@ -1,7 +1,7 @@
 package com.zhongtie.work.network.api;
 
 import com.zhongtie.work.data.Result;
-import com.zhongtie.work.util.upload.UploadData;
+import com.zhongtie.work.data.UploadData;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Field;
