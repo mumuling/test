@@ -162,4 +162,11 @@
     <string name="print">打印</string>
     <string name="print_fail">打印失败</string>
     <string name="print_title">打印预览</string>
+    <string name="dialog_tip_title">提示</string>
+    <string name="tip_no_support_print_server">检测到您的手机版本过低,无法支持打印服务</string>
+    <string name="download">下载</string>
+    <string name="tip_download_print_server">检测到您没有安装HP无线打印服务插件,请下载安装过后再试!</string>
+    <string name="downloading">正在下载</string>
+    <string name="download_fail">下载出错</string>
+    <string name="download_complete">下载完成</string>
 </resources>

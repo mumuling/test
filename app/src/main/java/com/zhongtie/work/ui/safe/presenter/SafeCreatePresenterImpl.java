@@ -232,7 +232,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         }
 
         CommonItemType<CommonUserEntity> relatedUser = mGroupTypeArrayMap.get("整改人");
-        if (rectify.isEmpty() && isCheckValue) {
+        if (relatedUser.getTypeItemList().isEmpty() && isCheckValue) {
             mView.showToast("请选择整改人");
             return;
         }
@@ -254,12 +254,12 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         CacheSafeEventTable cache = new CacheSafeEventTable();
         //整改人
         String related = !isCheckValue ? "" : relatedUser.getSelectUserIDList();
+        cache.setCompany(Cache.getSelectCompany());
 
         cache.setUnit(unit.getProjectTeamName());
         cache.setRelated(related);
         cache.setImageList(picList);
         cache.setUserid(Integer.valueOf(Cache.getUserID()));
-        cache.setCompany(unit.getProjectTeamID());
         cache.setTime(mView.getSelectDate());
         cache.setLocal(site);
         if (companyTeam == null) {

@@ -73,4 +73,5 @@
     <color name="status_new_next">#ff2a77b6</color>
     <color name="status_read">#ff999999</color>
     <color name="status_over">#fff38900</color>
+    <color name="gray_background">#f0f0f0</color>
 </resources>

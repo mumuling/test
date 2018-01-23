@@ -2,6 +2,7 @@ package com.zhongtie.work.util;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class ToastUtil {
         ToastUtil.application = application.getApplicationContext();
     }
 
-    public static void showToast(int str) {
+    public static void showToast(@StringRes int str) {
         showToast(application.getText(str).toString());
     }
 

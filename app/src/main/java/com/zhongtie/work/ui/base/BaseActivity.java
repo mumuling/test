@@ -143,7 +143,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public void showToast(int strId) {
+    public void showToast(@StringRes int strId) {
         ToastUtil.showToast(strId);
     }
 
@@ -164,7 +164,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public void showLoadDialog(int messageId) {
+    public void showLoadDialog(@StringRes int messageId) {
+        showLoadDialog(getString(messageId));
     }
 
     @Override

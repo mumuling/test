@@ -33,8 +33,12 @@
         <item name="android:listPreferredItemPaddingRight">25dp</item>
     </style>
 
+    <style name="WhiteTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
     <style name="GrayTheme" parent="AppTheme">
-        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowBackground">@color/gray_background</item>
     </style>
 
     <!-- Change Overflow Menu ListView Divider Property -->

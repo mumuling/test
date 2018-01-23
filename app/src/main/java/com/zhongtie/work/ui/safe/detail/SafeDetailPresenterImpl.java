@@ -55,7 +55,7 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
 
         List<Object> itemList = new ArrayList<>();
         //添加修改要求
-        EditContentEntity mRectifyEditContent = new EditContentEntity("整改要求", "", safeEventEntity.event_detail);
+        EditContentEntity mRectifyEditContent = new EditContentEntity("整改要求", "", safeEventEntity.event_changemust);
         itemList.add(mRectifyEditContent);
 
         SafeEventModel safeEventModel = new SafeEventModel(safeEventEntity);

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -33,9 +34,13 @@ import static android.os.Build.VERSION_CODES.KITKAT;
 
 public class PrintEventActivity extends BaseActivity {
     PrintDownServer.DownloadBinder mDownloadBinder;
+    private static final String KEY_EVENT_ID = "EVENT_ID";
 
     public static void start(Context context, int eventId) {
         Intent starter = new Intent(context, PrintEventActivity.class);
+        Bundle data = new Bundle();
+        data.putInt(KEY_EVENT_ID, eventId);
+        starter.putExtras(data);
         context.startActivity(starter);
     }
 
@@ -46,9 +51,6 @@ public class PrintEventActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        Intent intent = new Intent(this, PrintDownServer.class);
-        //下载服务
-        bindService(intent, mConnection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -64,8 +66,6 @@ public class PrintEventActivity extends BaseActivity {
         } else {
             showPrintServerNotSupport();
         }
-
-
     }
 
     /**
@@ -82,9 +82,9 @@ public class PrintEventActivity extends BaseActivity {
      */
     public void showPrintServerNotSupport() {
         new MaterialDialog.Builder(this)
-                .title("提示")
-                .content("检测到您的手机版本过低,无法支持打印服务")
-                .positiveText("确定")
+                .title(R.string.dialog_tip_title)
+                .content(R.string.tip_no_support_print_server)
+                .positiveText(R.string.confirm)
                 .cancelable(false)
                 .onPositive((dialog, which) -> {
                     dialog.cancel();
@@ -98,10 +98,11 @@ public class PrintEventActivity extends BaseActivity {
      */
     public void showDownLoadHPPrintServer() {
         new MaterialDialog.Builder(this)
-                .title("提示")
-                .content("检测到您没有安装HP无线打印服务插件,请下载安装过后再试!")
-                .positiveText("下载").cancelable(false)
-                .negativeText("取消")
+                .title(R.string.dialog_tip_title)
+                .content(R.string.tip_download_print_server)
+                .positiveText(R.string.download)
+                .cancelable(false)
+                .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> downloadHPPrintPlugin())
                 .onNegative((dialog, which) -> {
                     dialog.dismiss();
@@ -127,6 +128,9 @@ public class PrintEventActivity extends BaseActivity {
      * 正在调用下载
      */
     private void downloadHPPrintPlugin() {
+        Intent intent = new Intent(this, PrintDownServer.class);
+        //下载服务
+        bindService(intent, mConnection, BIND_AUTO_CREATE);
         long id = mDownloadBinder.startDownload("http://f3.market.xiaomi.com/download/AppStore/09f835139320333b72748393bb9106e649e43a171/com.hp.android.printservice.apk");
         startCheckProgress(id);
 
@@ -155,7 +159,7 @@ public class PrintEventActivity extends BaseActivity {
 
         @Override
         public void onSubscribe(Disposable d) {
-            showLoadDialog("正在下载");
+            showLoadDialog(R.string.downloading);
         }
 
         @Override
@@ -166,14 +170,14 @@ public class PrintEventActivity extends BaseActivity {
         public void onError(Throwable throwable) {
             throwable.printStackTrace();
             cancelDialog();
-            showToast("下载出错");
+            showToast(R.string.download_fail);
         }
 
         @Override
         public void onComplete() {
             cancelDialog();
             showPrintReview();
-            showToast("下载完成");
+            showToast(R.string.download_complete);
         }
     }
 

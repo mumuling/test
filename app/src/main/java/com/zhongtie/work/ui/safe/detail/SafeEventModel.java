@@ -9,8 +9,11 @@ import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,9 +33,7 @@ public class SafeEventModel {
      * 检查人
      */
     public CommonItemType fetchCheckUserList() {
-        List<EndorseUserEntity> endorseUserList = new ArrayList<>();
-        //获取姓名list
-        List<String> checkUserNameList = TextUtil.getPicList(eventEntity.getEvent_checker());
+        List<EndorseUserEntity> endorseUserList = new ArrayList<>(eventEntity.signlist.size());
         for (int j = 0; j < eventEntity.signlist.size(); j++) {
             ApproveEntity entity = eventEntity.signlist.get(j);
             EndorseUserEntity endorseUserEntity = new EndorseUserEntity();
@@ -44,6 +45,12 @@ public class SafeEventModel {
             endorseUserEntity.setUserid(entity.userid);
             endorseUserList.add(endorseUserEntity);
         }
+        Collections.sort(endorseUserList, (o1, o2) -> {
+            if (TimeUtils.formatSignTime(o1.getTime()) > TimeUtils.formatSignTime(o2.getTime())) {
+                return -1;
+            }
+            return 1;
+        });
 
         CommonItemType checkUser = new CommonItemType<>("检查人", "", R.drawable.plus, false);
         checkUser.setTypeItemList(endorseUserList);
@@ -58,8 +65,9 @@ public class SafeEventModel {
         List<ApproveEntity> reviewUserList = new ArrayList<>();
         for (int j = 0, count = eventEntity.reviewlist.size(); j < count; j++) {
             ApproveEntity review = eventEntity.reviewlist.get(j);
-            if (TextUtil.isEmpty(review.url))
+            if (TextUtil.isEmpty(review.url)) {
                 continue;
+            }
             reviewUserList.add(review);
         }
         return reviewUserList;
@@ -89,17 +97,15 @@ public class SafeEventModel {
      * 修改界面获取检查人
      */
     public CommonItemType getModifyCheckList() {
-        List<CommonUserEntity> modifyCheckList = new ArrayList<>();
-        //获取姓名list
-        List<String> checkUserNameList = TextUtil.getPicList(eventEntity.getEvent_checker());
-        for (int i = 0, count = checkUserNameList.size(); i < count; i++) {
-            CommonUserEntity userEntity = new CommonUserEntity();
-            userEntity.setUserName(checkUserNameList.get(i));
+        List<CommonUserEntity> modifyCheckList = new ArrayList<>(eventEntity.signlist.size());
+        for (int i = 0, count = eventEntity.signlist.size(); i < count; i++) {
+            ApproveEntity approveEntity = eventEntity.signlist.get(i);
+            CommonUserEntity userEntity = new CommonUserEntity(approveEntity);
             userEntity.setSelect(true);
             modifyCheckList.add(userEntity);
         }
         String reviewTitle = "检查人";
-        CommonItemType<CommonUserEntity> reviewUser = new CommonItemType<>(reviewTitle, "向右滑动查看更新", R.drawable.plus, false);
+        CommonItemType<CommonUserEntity> reviewUser = new CommonItemType<>(reviewTitle, "向右滑动查看更多", R.drawable.plus, false);
         reviewUser.setTypeItemList(modifyCheckList);
         return reviewUser;
     }
@@ -156,25 +162,6 @@ public class SafeEventModel {
         return reviewUser;
     }
 
-    public List<ReplyEntity> fetchReplyList() {
-        List<ReplyEntity> replyList = new ArrayList<>();
-        return replyList;
-    }
-
-    /**
-     * @return 照片list
-     */
-    public List<String> fetchPicList() {
-        List<String> integers = new ArrayList<>();
-        String[] t = eventEntity.event_pic.split(",");
-        for (String aT : t) {
-            if (TextUtil.isEmpty(aT)) {
-                continue;
-            }
-            integers.add(aT);
-        }
-        return integers;
-    }
 
 
 }

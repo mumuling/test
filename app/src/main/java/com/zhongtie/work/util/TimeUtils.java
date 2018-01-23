@@ -420,4 +420,20 @@ public class TimeUtils {
         }
         return newTimeFormat.format(d2);
     }
+
+    public static long formatSignTime(String time) {
+        if (TextUtil.isEmpty(time)) {
+            return 0L;
+        }
+        // 设定时间的模板
+        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = oldTimeFormat.parse(time);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
 }

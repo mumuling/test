@@ -37,22 +37,16 @@ public class CreateEditContentItemView extends AbstractItemView<EditContentEntit
         if (vh.mCreateModifyContent.getTag() != null) {
             vh.mCreateModifyContent.removeTextChangedListener((TextWatcher) vh.mCreateModifyContent.getTag());
         }
-        TextWatcher pwTextWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
+        OnCreateTextWatcher onCreateTextWatcher=new OnCreateTextWatcher(vh){
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                data.setContent(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                super.onTextChanged(s, start, before, count);
+                EditContentEntity contentEntity= (EditContentEntity) commonAdapter.getListData(mViewHolder.getItemPosition());
+                contentEntity.setContent(s.toString());
             }
         };
-        vh.mCreateModifyContent.setTag(pwTextWatcher);
-        vh.mCreateModifyContent.addTextChangedListener(pwTextWatcher);
+        vh.mCreateModifyContent.addTextChangedListener(onCreateTextWatcher);
+        vh.mCreateModifyContent.setTag(onCreateTextWatcher);
     }
 
 
