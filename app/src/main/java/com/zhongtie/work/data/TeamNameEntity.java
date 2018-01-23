@@ -1,5 +1,6 @@
 package com.zhongtie.work.data;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.zhongtie.work.event.BaseEvent;
 
 import java.io.Serializable;
@@ -11,9 +12,13 @@ import java.io.Serializable;
 
 public class TeamNameEntity implements BaseEvent, Serializable {
 
+
+    @JSONField(name = "groupname")
     private String teamName;
+    @JSONField(name = "groupid")
     private int teamId;
     private boolean isSelect;
+
 
     public String getTeamName() {
         return teamName;

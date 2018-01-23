@@ -90,7 +90,8 @@ public class SafeDetailHeadView extends LinearLayout {
         mSafeOrderReplyTime.setText(TimeUtils.formatEventTime(headInfo.event_publishtime));
         mDetailTime.setText(TimeUtils.formatEventSelectTime(headInfo.event_time));
         commonAdapter = new CommonAdapter().register(new CreatePicItemView(false));
-        List<String> list = TextUtil.getPicList(headInfo.getEvent_pic());
+        List<String> list = TextUtil.getPicList(headInfo.getEventpiclist());
+
         commonAdapter.setListData(list);
         mList.setAdapter(commonAdapter);
 

@@ -85,6 +85,8 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
 
     @Override
     public void fetchPageListData(int page) {
+        if (page > 1)
+            return;
         mOnSafePageListener.getSafeTypeList(mEventType);
     }
 

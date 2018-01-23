@@ -29,6 +29,7 @@
         android:background="@drawable/edit_describe_bg"
         android:gravity="top|left"
         android:hint="@string/info_modify_edit_hint"
+        android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:textColor="@color/text_color2"

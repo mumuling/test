@@ -109,7 +109,7 @@
     <string name="at_user_name">\@%s</string>
     <string name="modify">修改</string>
     <string name="reply">回复</string>
-    <string name="approve">签名审批</string>
+    <string name="approve">签名</string>
     <string name="detail_site">地点：</string>
     <string name="work_category">工种：</string>
     <string name="question_type">问题类型：</string>
@@ -153,8 +153,8 @@
     <string name="input_reply_content">请输入回复内容</string>
     <string name="reply_success">回复成功</string>
     <string name="loading_title">请稍后</string>
-    <string name="create_safe_event_title">正在发布任务</string>
-    <string name="create_success">发布成功</string>
+    <string name="create_safe_event_title">请稍后</string>
+    <string name="create_success">发起成功</string>
     <string name="user_card_code">身份证号:</string>
     <string name="slide_look_more_title">向右滑动查看更多图片</string>
     <string name="event_check">验证</string>
@@ -169,4 +169,7 @@
     <string name="downloading">正在下载</string>
     <string name="download_fail">下载出错</string>
     <string name="download_complete">下载完成</string>
+    <string name="safe_event_modify_loading">正在修改</string>
+    <string name="modify_success">修改成功</string>
+    <string name="modify_fail">修改失败</string>
 </resources>

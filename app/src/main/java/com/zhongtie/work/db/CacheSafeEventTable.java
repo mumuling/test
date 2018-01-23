@@ -222,6 +222,10 @@ public class CacheSafeEventTable extends BaseModel {
 
     public ArrayMap<String, Object> getOfficeEventMap() {
         ArrayMap<String, Object> postMap = new ArrayMap<>();
+        //大于0说明是要修改
+        if (eventId > 0) {
+            postMap.put("id", eventId);
+        }
         //当前登录用户
         postMap.put("event_userid", userid);
         //选择所属公司

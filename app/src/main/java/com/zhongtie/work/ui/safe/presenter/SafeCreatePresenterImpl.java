@@ -7,6 +7,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.CommonUserEntity;
+import com.zhongtie.work.data.EventPicEntity;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.data.TeamNameEntity;
@@ -15,6 +16,7 @@ import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.data.create.EventTypeEntity;
 import com.zhongtie.work.data.create.SelectEventTypeItem;
 import com.zhongtie.work.db.CacheSafeEventTable;
+import com.zhongtie.work.event.ReplyEvent;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
@@ -25,12 +27,13 @@ import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.upload.UploadUtil;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Flowable;
 
 /**
- * 安全督导创建的实现
+ * 安全督导创建
  * Date: 2018/1/12
  *
  * @author Chaek
@@ -60,6 +63,15 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
 
     private List<Object> itemList;
 
+    private int mSafeEventId;
+
+    /**
+     * 保存的旧的安全督导信息 保存用来记录判断已经上传的pic id是否修改
+     */
+    private SafeEventEntity oldEventEntity;
+
+    private ArrayMap<String, Integer> cacheOldPicMap;
+
     /**
      * 获取输入安全督导的基本类型
      *
@@ -81,6 +93,12 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         return list;
     }
 
+    /**
+     * 获取类型问题类型
+     *
+     * @param selectTypeList 已经选择的type list
+     * @return
+     */
     private SelectEventTypeItem fetchSelectTypeItemData(List<String> selectTypeList) {
         mCommonItemType = new SelectEventTypeItem("问题类型");
         String[] typeList = App.getInstance().getResources().getStringArray(R.array.type_list);
@@ -97,6 +115,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
     @Override
     public void getItemList(int safeOrderID) {
         if (safeOrderID > 0) {
+            this.mSafeEventId = safeOrderID;
             fetchEventInfoData(safeOrderID);
         } else {
             itemList = new ArrayList<>();
@@ -128,14 +147,21 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
                 .map(new NetWorkFunc1<>())
                 .compose(Network.networkIO())
                 .subscribe(safeEventEntity -> {
+                    this.oldEventEntity = safeEventEntity;
                     setTitleUserInfo(safeEventEntity);
                     initItemList(safeEventEntity);
                     mView.initSuccess();
                 }, throwable -> {
+                    throwable.printStackTrace();
                     mView.initFail();
                 }));
     }
 
+    /**
+     * 头部信息展示
+     *
+     * @param titleUserInfo
+     */
     public void setTitleUserInfo(SafeEventEntity titleUserInfo) {
         mView.setModifyInfo(titleUserInfo);
     }
@@ -146,6 +172,12 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
      * @param eventInfo 安全督导基本信息
      */
     private void initItemList(SafeEventEntity eventInfo) {
+        cacheOldPicMap = new ArrayMap<>();
+        for (EventPicEntity picEntity : oldEventEntity.getEventpiclist()) {
+            cacheOldPicMap.put(picEntity.getPicurl(), picEntity.getPicid());
+        }
+
+
         itemList = new ArrayList<>();
         mCommonItemType = fetchSelectTypeItemData(TextUtil.getPicList(eventInfo.getEvent_troubletype()));
         itemList.add(mCommonItemType);
@@ -153,16 +185,18 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
 
         mDescribeEditContent.setContent(eventInfo.getEvent_detail());
         mRectifyEditContent.setContent(eventInfo.getEvent_changemust());
-        mPicItemType.setTypeItemList(TextUtil.getPicList(eventInfo.getEvent_pic()));
+
+        //图片字段转换为list
+        mPicItemType.setTypeItemList(TextUtil.getPicList(eventInfo.getEventpiclist()));
 
         mGroupTypeArrayMap = new ArrayMap<>();
 
-        SafeEventModel safeEventModel = new SafeEventModel(eventInfo);
+        SafeEventModel safeEventModel = new SafeEventModel(eventInfo, true);
         CommonItemType checkUser = safeEventModel.getModifyCheckList();
         mGroupTypeArrayMap.put(checkUser.getTitle(), checkUser);
         CommonItemType reviewUser = safeEventModel.getModifyReviewList();
         mGroupTypeArrayMap.put(reviewUser.getTitle(), reviewUser);
-        CommonItemType relate = safeEventModel.getModifyRelatedList();
+        CommonItemType relate = safeEventModel.getRelatedList();
         mGroupTypeArrayMap.put(relate.getTitle(), relate);
         CommonItemType temLis = safeEventModel.fetchReadList();
         mGroupTypeArrayMap.put(temLis.getTitle(), temLis);
@@ -303,22 +337,66 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
         String read = temLis.getTeamIDList();
         cache.setRead(read);
 
-        addDispose(UploadUtil.uploadListJPGIDList(cache.getImageList())
-                .map(s -> {
-                    cache.setPic(s);
-                    return cache;
-                })
-                .map(CacheSafeEventTable::getOfficeEventMap)
-                .flatMap(officeMap -> Http.netServer(SafeApi.class).createEventList(officeMap))
-                .compose(Network.convertDialog(mView, R.string.create_safe_event_title))
-                .onErrorReturn(throwable -> {
-                    cache.setUploadStatus(0);
-                    cache.save();
-                    return 0;
-                })
-                .subscribe(integer -> mView.createSuccess(), throwable -> {
-                }));
+        if (mSafeEventId <= 0) {
+            //修改
+            addDispose(UploadUtil.uploadListJPGIDList(cache.getImageList())
+                    .map(s -> {
+                        cache.setPic(s);
+                        return cache;
+                    })
+                    .map(CacheSafeEventTable::getOfficeEventMap)
+                    .flatMap(officeMap -> Http.netServer(SafeApi.class).createEventList(officeMap))
+                    .compose(Network.convertDialog(mView, R.string.create_safe_event_title))
+                    .onErrorReturn(throwable -> {
+                        cache.setUploadStatus(0);
+                        cache.save();
+                        return 0;
+                    })
+                    .subscribe(integer -> {
+                        mView.createSuccess();
+                        mView.showToast(R.string.create_success);
+                    }, throwable -> {
+                    }));
+        } else {
+            List<Integer> noDelOldPicIdList = new ArrayList<>();
+            List<String> newPicList = new ArrayList<>();
+            //重新新建避免失败时候的移除
+            for (String img : cache.getImageList()) {
+                newPicList.add(img);
+            }
 
+            Iterator<String> iterator = newPicList.iterator();
+            while (iterator.hasNext()) {
+                String img = iterator.next();
+                if (cacheOldPicMap.containsKey(img)) {
+                    noDelOldPicIdList.add(cacheOldPicMap.get(img));
+                    iterator.remove();
+                }
+            }
+            cache.setEventId(mSafeEventId);
+            addDispose(UploadUtil.uploadListJPGIDList(newPicList)
+                    .map(s -> {
+                        String pic = UploadUtil.getImageIDList(noDelOldPicIdList);
+                        if (!TextUtil.isEmpty(s)) {
+                            pic += ",";
+                            pic += s;
+                        }
+                        cache.setPic(pic);
+                        return cache;
+                    })
+                    .map(CacheSafeEventTable::getOfficeEventMap)
+                    .flatMap(officeMap -> Http.netServer(SafeApi.class).createEventList(officeMap))
+                    .compose(Network.convertDialog(mView, R.string.safe_event_modify_loading))
+                    .subscribe(integer -> {
+                        mView.createSuccess();
+                        new ReplyEvent().post();
+                        mView.showToast(R.string.modify_success);
+                    }, throwable -> {
+                        mView.showToast(R.string.modify_fail);
+                    }));
+
+
+        }
     }
 
     /**

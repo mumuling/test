@@ -61,7 +61,7 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
         SafeEventModel safeEventModel = new SafeEventModel(safeEventEntity);
         itemList.add(safeEventModel.fetchCheckUserList());
         itemList.add(safeEventModel.getModifyReviewList());
-        CommonItemType relate = safeEventModel.getModifyRelatedList();
+        CommonItemType relate = safeEventModel.getRelatedList();
         if (!relate.getTypeItemList().isEmpty()) {
             itemList.add(relate);
         }

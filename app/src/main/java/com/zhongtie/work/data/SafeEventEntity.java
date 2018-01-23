@@ -57,6 +57,26 @@ public class SafeEventEntity {
     public List<ReplyEntity> replylist;
     public List<ApproveEntity> reviewlist;
 
+
+    /**
+     * 查阅组
+     */
+    public List<TeamNameEntity> readlist;
+    /**
+     * AT人信息
+     */
+    public List<ApproveEntity> atlist;
+    /**
+     * 整改人
+     */
+    public List<ApproveEntity> relatedlist;
+    /**
+     * 时间图片地址
+     */
+    public List<EventPicEntity> eventpiclist;
+
+
+
     public static class ButstateBean {
         /**
          * edit : 1
@@ -73,20 +93,36 @@ public class SafeEventEntity {
         public int print;
     }
 
-    public static class ReviewlistBean {
-        /**
-         * userid : 719
-         * username : 肖焕鑫
-         * userpic : https://api.023ztjs.com/picture/420624198708294710.jpg
-         * time :
-         * url :
-         */
+    public List<TeamNameEntity> getReadlist() {
+        return readlist;
+    }
 
-        public int userid;
-        public String username;
-        public String userpic;
-        public String time;
-        public String url;
+    public void setReadlist(List<TeamNameEntity> readlist) {
+        this.readlist = readlist;
+    }
+
+    public List<ApproveEntity> getAtlist() {
+        return atlist;
+    }
+
+    public void setAtlist(List<ApproveEntity> atlist) {
+        this.atlist = atlist;
+    }
+
+    public List<ApproveEntity> getRelatedlist() {
+        return relatedlist;
+    }
+
+    public void setRelatedlist(List<ApproveEntity> relatedlist) {
+        this.relatedlist = relatedlist;
+    }
+
+    public List<EventPicEntity> getEventpiclist() {
+        return eventpiclist;
+    }
+
+    public void setEventpiclist(List<EventPicEntity> eventpiclist) {
+        this.eventpiclist = eventpiclist;
     }
 
     public int getId() {

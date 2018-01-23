@@ -14,7 +14,7 @@ public interface BaseView {
 
     void showLoadDialog(String message);
 
-    void showLoadDialog(int messageId);
+    void showLoadDialog(@StringRes int messageId);
 
     void cancelDialog();
 

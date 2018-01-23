@@ -147,7 +147,6 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
 
     @Override
     public void createSuccess() {
-        showToast(R.string.create_success);
         getActivity().finish();
     }
 

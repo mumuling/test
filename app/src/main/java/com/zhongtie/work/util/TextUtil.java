@@ -3,6 +3,8 @@ package com.zhongtie.work.util;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.zhongtie.work.data.EventPicEntity;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,17 @@ public class TextUtil {
             imageList.add(aT);
         }
         return imageList;
+    }
+
+    /**
+     * @return 照片list
+     */
+    public static List<String> getPicList(List<EventPicEntity> img) {
+        List<String> pic = new ArrayList<>();
+        for (EventPicEntity picEntity : img) {
+            pic.add(picEntity.getPicurl());
+        }
+        return pic;
     }
 
     public static Uri fromUri(String uri) {

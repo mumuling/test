@@ -75,6 +75,18 @@ public class UploadUtil {
         return builder.toString();
     }
 
+    @NonNull
+    public static String getImageIDList(List<Integer> uploadData) {
+        StringBuilder builder = new StringBuilder();
+        for (Integer data : uploadData) {
+            builder.append(data);
+            builder.append(",");
+        }
+        if (builder.length() > 0)
+            builder.delete(builder.length() - 1, builder.length());
+        return builder.toString();
+    }
+
     /**
      * 上传签名文件
      *
