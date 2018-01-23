@@ -55,7 +55,7 @@ public class CommonFragmentActivity extends BaseActivity implements OnEventPrint
     protected void onClickRight() {
         super.onClickRight();
         if (mEventId > 0) {
-            PrintEventActivity.start(this);
+            PrintEventActivity.start(this,mEventId);
         }
     }
 

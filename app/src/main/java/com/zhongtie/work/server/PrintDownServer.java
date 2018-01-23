@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.print;
+package com.zhongtie.work.server;
 
 import android.app.DownloadManager;
 import android.app.Service;
@@ -15,11 +15,18 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.LongSparseArray;
 
+import com.zhongtie.work.ui.print.SystemManager;
+import com.zhongtie.work.util.IOUtils;
+import com.zhongtie.work.util.InstallUtil;
+import com.zhongtie.work.util.Util;
+
 import java.io.File;
 
 /**
- * Auth:Cheek
+ * 下载打印
  * date:2018.1.22
+ *
+ * @author Chaek
  */
 
 public class PrintDownServer extends Service {
@@ -47,34 +54,36 @@ public class PrintDownServer extends Service {
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(mReceiver);//取消注册广播接收者
+        unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
     public class DownloadBinder extends Binder {
         /**
          * 下载
+         *
          * @param apkUrl 下载的url
          */
-        public long startDownload(String apkUrl){
-            IOUtils.clearApk(getApplication(),"hp_print_server.apk");
+        public long startDownload(String apkUrl) {
+            IOUtils.clearApk(getApplication(), Util.md532(apkUrl) + ".apk");
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
-            File file = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "hp_print_server.apk");
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), Util.md532(apkUrl) + ".apk");
             request.setDestinationUri(Uri.fromFile(file));
 
             //添加请求 开始下载
             long downloadId = mDownloadManager.enqueue(request);
             Log.d("DownloadBinder", file.getAbsolutePath());
-            mApkPaths.put(downloadId,file.getAbsolutePath());
+            mApkPaths.put(downloadId, file.getAbsolutePath());
             return downloadId;
         }
 
-        public void setInstallMode(boolean isRoot){
+        public void setInstallMode(boolean isRoot) {
             mIsRoot = isRoot;
         }
 
         /**
          * 获取进度信息
+         *
          * @param downloadId 要获取下载的id
          * @return 进度信息 max-100
          */
@@ -85,28 +94,24 @@ public class PrintDownServer extends Service {
             Cursor cursor = null;
             int progress = 0;
             try {
-                cursor = mDownloadManager.query(query);//获得游标
+                cursor = mDownloadManager.query(query);
                 if (cursor != null && cursor.moveToFirst()) {
                     //当前的下载量
                     int downloadSoFar = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                     //文件总大小
                     int totalBytes = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-
                     progress = (int) (downloadSoFar * 1.0f / totalBytes * 100);
                 }
             } finally {
                 if (cursor != null) {
-
                     cursor.close();
                 }
             }
-
             return progress;
         }
 
     }
 
-    //下载完成的广播
     private class DownloadFinishReceiver extends BroadcastReceiver {
 
         @Override
@@ -115,10 +120,11 @@ public class PrintDownServer extends Service {
             long completeDownloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
             String apkPath = mApkPaths.get(completeDownloadId);
             Log.d("DownloadFinishReceiver", apkPath);
-            if (!apkPath.isEmpty()){
-                SystemManager.setPermission(apkPath);//提升读写权限,否则可能出现解析异常
-                InstallUtil.install(context,apkPath,mIsRoot);
-            }else {
+            if (!apkPath.isEmpty()) {
+                //提升读写权限,否则可能出现解析异常
+                SystemManager.setPermission(apkPath);
+                InstallUtil.install(context, apkPath, mIsRoot);
+            } else {
                 Log.e("DownloadFinishReceiver", "apkPath is null");
             }
         }

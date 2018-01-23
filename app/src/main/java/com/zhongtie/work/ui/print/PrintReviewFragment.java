@@ -18,15 +18,16 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.util.AppUtil;
 
 /**
  * 预览界面
- * Auth:Cheek
  * date:2018.1.22
+ * @author Chaek
  */
-
 public class PrintReviewFragment extends BaseFragment {
 
+    public static final String PRINT_SERVICE = "com.hp.android.printservice";
     private WebView mWebView;
     private TextView mPrint;
     private FrameLayout mFullWebView;
@@ -62,7 +63,7 @@ public class PrintReviewFragment extends BaseFragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                if (!printEventActivity.isPkgInstalled("com.hp.android.printservice")) {
+                if (!AppUtil.isPkgInstalled(PRINT_SERVICE)) {
                     printEventActivity.showDownLoadHPPrintServer();
                 } else {
                     PrintDocumentAdapter printDocumentAdapter = mWebView.createPrintDocumentAdapter();
@@ -82,13 +83,13 @@ public class PrintReviewFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mWebView.onResume();
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mWebView.destroy();
+        mWebView.removeAllViews();
         mFullWebView.removeAllViews();
     }
 
@@ -105,14 +106,10 @@ public class PrintReviewFragment extends BaseFragment {
      */
     public void addWebViewSettings(WebView mWebView) {
         WebSettings settings = mWebView.getSettings();
-        settings.setJavaScriptCanOpenWindowsAutomatically(true); // 支持JavaScript
         settings.setJavaScriptEnabled(true);
         settings.setSaveFormData(false);
-        mWebView.getSettings().setDomStorageEnabled(true);
-        settings.setAppCacheEnabled(true); // 是否允许脚本支持 settings.
+        settings.setAppCacheEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-        //缓存机制
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);

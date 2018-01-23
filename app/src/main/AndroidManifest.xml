@@ -119,7 +119,7 @@
         </receiver>
         <receiver android:name=".ui.print.PrintEventActivity$CompleteReceiver" />
 
-        <service android:name=".ui.print.PrintDownServer" />
+        <service android:name=".server.PrintDownServer" />
     </application>
 
 </manifest>

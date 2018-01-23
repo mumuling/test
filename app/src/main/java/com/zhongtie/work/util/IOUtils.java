@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.print;
+package com.zhongtie.work.util;
 
 import android.content.Context;
 import android.os.Environment;

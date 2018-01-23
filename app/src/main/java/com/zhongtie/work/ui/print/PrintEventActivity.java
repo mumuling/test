@@ -4,17 +4,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.IBinder;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
+import com.zhongtie.work.server.PrintDownServer;
 import com.zhongtie.work.ui.base.BaseActivity;
+import com.zhongtie.work.util.AppUtil;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -27,16 +26,15 @@ import static android.os.Build.VERSION_CODES.KITKAT;
 
 /**
  * 打印界面
- * Auth:Cheek
  * date:2018.1.22
+ *
+ * @author Chaek
  */
 
 public class PrintEventActivity extends BaseActivity {
-    private long completeDownloadId;
-    private File file;
     PrintDownServer.DownloadBinder mDownloadBinder;
 
-    public static void start(Context context) {
+    public static void start(Context context, int eventId) {
         Intent starter = new Intent(context, PrintEventActivity.class);
         context.startActivity(starter);
     }
@@ -49,7 +47,8 @@ public class PrintEventActivity extends BaseActivity {
     @Override
     protected void initView() {
         Intent intent = new Intent(this, PrintDownServer.class);
-        bindService(intent, mConnection, BIND_AUTO_CREATE);//绑定服务
+        //下载服务
+        bindService(intent, mConnection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class PrintEventActivity extends BaseActivity {
         setTitle(getString(R.string.print_title));
         if (Build.VERSION.SDK_INT >= KITKAT) {
             //检测到安装过服务直接打开打印预览连接
-            if (isPkgInstalled("com.hp.android.printservice")) {
+            if (AppUtil.isPkgInstalled(PrintReviewFragment.PRINT_SERVICE)) {
                 showPrintReview();
             } else {
                 showDownLoadHPPrintServer();
@@ -69,6 +68,9 @@ public class PrintEventActivity extends BaseActivity {
 
     }
 
+    /**
+     * 显示打印预览
+     */
     private void showPrintReview() {
         Fragments.with(this)
                 .fragment(PrintReviewFragment.class)
@@ -100,9 +102,7 @@ public class PrintEventActivity extends BaseActivity {
                 .content("检测到您没有安装HP无线打印服务插件,请下载安装过后再试!")
                 .positiveText("下载").cancelable(false)
                 .negativeText("取消")
-                .onPositive((dialog, which) -> {
-                    downloadHPPrintPlugin();
-                })
+                .onPositive((dialog, which) -> downloadHPPrintPlugin())
                 .onNegative((dialog, which) -> {
                     dialog.dismiss();
                     finish();
@@ -127,19 +127,23 @@ public class PrintEventActivity extends BaseActivity {
      * 正在调用下载
      */
     private void downloadHPPrintPlugin() {
-
         long id = mDownloadBinder.startDownload("http://f3.market.xiaomi.com/download/AppStore/09f835139320333b72748393bb9106e649e43a171/com.hp.android.printservice.apk");
         startCheckProgress(id);
 
     }
 
-    //开始监听进度
+    /**
+     * 开始监听进度
+     *
+     * @param downloadId 下载编号
+     */
     private void startCheckProgress(long downloadId) {
         Observable
-                .interval(100, 200, TimeUnit.MILLISECONDS, Schedulers.io())//无限轮询,准备查询进度,在io线程执行
+                .interval(100, 200, TimeUnit.MILLISECONDS, Schedulers.io())
                 .filter(times -> mDownloadBinder != null)
-                .map(i -> mDownloadBinder.getProgress(downloadId))//获得下载进度
-                .takeUntil(progress -> progress >= 100)//返回true就停止了,当进度>=100就是下载完成了
+                .map(i -> mDownloadBinder.getProgress(downloadId))
+                //返回true就停止了,当进度>=100就是下载完成了
+                .takeUntil(progress -> progress >= 100)
                 .distinct()//去重复
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -147,8 +151,7 @@ public class PrintEventActivity extends BaseActivity {
     }
 
 
-    //观察者
-    private class ProgressObserver implements Observer<Integer> {
+    class ProgressObserver implements Observer<Integer> {
 
         @Override
         public void onSubscribe(Disposable d) {
@@ -174,18 +177,5 @@ public class PrintEventActivity extends BaseActivity {
         }
     }
 
-    public boolean isPkgInstalled(String pkgName) {
-        PackageInfo packageInfo = null;
-        try {
-            packageInfo = this.getPackageManager().getPackageInfo(pkgName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            packageInfo = null;
-            e.printStackTrace();
-        }
-        if (packageInfo == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
 }

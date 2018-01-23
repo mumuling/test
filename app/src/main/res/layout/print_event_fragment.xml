@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhongtie.work.widget.MultipleStatusView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/status_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/print"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/app_color"
-        android:gravity="center"
-        android:text="@string/print"
-        android:textColor="@color/white" />
-
-    <FrameLayout
-        android:id="@+id/fullWebView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/print" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/print"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_color"
+            android:gravity="center"
+            android:text="@string/print"
+            android:textColor="@color/white"/>
+
+        <FrameLayout
+            android:id="@+id/fullWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/print"/>
 
 
-</RelativeLayout>
+    </RelativeLayout>
+</com.zhongtie.work.widget.MultipleStatusView>

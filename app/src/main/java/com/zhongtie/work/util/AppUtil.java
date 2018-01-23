@@ -2,6 +2,7 @@ package com.zhongtie.work.util;
 
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.view.Display;
@@ -51,5 +52,19 @@ public class AppUtil {
         Point out = new Point();
         display.getSize(out);
         return out;
+    }
+    public static boolean isPkgInstalled(String pkgName) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = App.getInstance().getPackageManager().getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

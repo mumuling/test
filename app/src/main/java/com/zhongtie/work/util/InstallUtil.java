@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.print;
+package com.zhongtie.work.util;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.ui.print.SystemManager;
 
 import java.io.File;
 
