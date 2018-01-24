@@ -1,6 +1,5 @@
 package com.zhongtie.work.ui.safe.item;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
@@ -26,7 +25,7 @@ public class DetailUserItemView extends AbstractItemView<CommonUserEntity, Detai
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CommonUserEntity data) {
-        vh.mItemUserHead.setImageURI(Uri.parse(data.getUserPic()));
+        vh.mItemUserHead.loadImage(data.getUserPic());
         vh.mItemUserName.setTextColor(vh.mContext.getResources().getColor(R.color.text_color));
         vh.mItemUserName.setText(data.getUserName());
     }

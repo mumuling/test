@@ -54,7 +54,7 @@ public class BaseImageView extends SimpleDraweeView {
         if (TextUtil.isEmpty(data)) {
             data = "";
         }
-        ImageLoader imageLoader = new ImageLoader.Builder().url(data.startsWith(HTTP) ? data : "file://" + data).placeHolder(R.drawable.portrait).
+        ImageLoader imageLoader = new ImageLoader.Builder().url(data.startsWith(HTTP) ? getMiniUrl(data) : "file://" + data).placeHolder(R.drawable.portrait).
                 imgView(this).size(width, width).build();
         ImageLoaderUtil.getInstance().loadImage(getContext(), imageLoader);
     }
@@ -74,7 +74,11 @@ public class BaseImageView extends SimpleDraweeView {
         if (TextUtil.isEmpty(data)) {
             data = "";
         }
-        setImageURI(Uri.parse(data.startsWith(HTTP) ? data : "file://" + data));
+        setImageURI(Uri.parse(data.startsWith(HTTP) ? getMiniUrl(data) : "file://" + data));
+    }
+
+    private String getMiniUrl(String data) {
+        return data.replace(".jpg", "_mini.jpg");
     }
 
     /**
