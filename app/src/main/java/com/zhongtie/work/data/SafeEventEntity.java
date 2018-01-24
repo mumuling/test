@@ -76,7 +76,6 @@ public class SafeEventEntity {
     public List<EventPicEntity> eventpiclist;
 
 
-
     public static class ButstateBean {
         /**
          * edit : 1
@@ -91,6 +90,10 @@ public class SafeEventEntity {
         public int sign;
         public int check;
         public int print;
+
+        public boolean isHide() {
+            return edit == 0 && reply == 0 && sign == 0 && check == 0;
+        }
     }
 
     public List<TeamNameEntity> getReadlist() {

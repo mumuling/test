@@ -32,6 +32,7 @@ android {
                 abiFilters 'armeabi-v7a'
             }
             minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "IS_LOG", "true"

@@ -172,4 +172,5 @@
     <string name="safe_event_modify_loading">正在修改</string>
     <string name="modify_success">修改成功</string>
     <string name="modify_fail">修改失败</string>
+    <string name="CHECK_TITLE">检查人</string>
 </resources>

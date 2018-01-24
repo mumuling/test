@@ -47,11 +47,11 @@ public class EndorseUserItemView extends AbstractItemView<EndorseUserEntity, End
         vh.safeOrderReplyHead.loadImage(data.getPic());
 
         if (TextUtil.isEmpty(data.url)) {
-            vh.safeOrderName.append("：\t");
+            vh.safeOrderName.append("：\r");
             vh.safeOrderName.append(getSignNoStatusText());
             vh.safeOrderReplySign.setVisibility(View.GONE);
         } else {
-            vh.safeOrderName.append("：\t");
+            vh.safeOrderName.append("：\r");
             vh.safeOrderName.append(getSignStatusText());
             vh.safeOrderReplyTime.setText(TimeUtils.formatEventTime(data.getTime()));
             vh.safeOrderReplySign.setVisibility(View.VISIBLE);
@@ -78,11 +78,11 @@ public class EndorseUserItemView extends AbstractItemView<EndorseUserEntity, End
             v.setBackgroundColor(mContext.getResources().getColor(R.color.line2));
             ((ViewGroup) itemView).addView(v, 0);
 
-            safeOrderReplyHead = (BaseImageView) findViewById(R.id.safe_order_reply_head);
-            safeOrderReplySign = (BaseImageView) findViewById(R.id.safe_order_reply_sign);
-            safeOrderName = (TextView) findViewById(R.id.safe_order_name);
+            safeOrderReplyHead = findViewById(R.id.safe_order_reply_head);
+            safeOrderReplySign = findViewById(R.id.safe_order_reply_sign);
+            safeOrderName = findViewById(R.id.safe_order_name);
             safeOrderName.setTextSize(14);
-            safeOrderReplyTime = (TextView) findViewById(R.id.safe_order_reply_time);
+            safeOrderReplyTime = findViewById(R.id.safe_order_reply_time);
             itemView.setPadding(0, 0, 0, 0);
         }
     }

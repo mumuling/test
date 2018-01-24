@@ -94,6 +94,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/work_team_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -119,6 +120,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/safe_event_type_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -188,7 +190,7 @@
             android:lineSpacingExtra="5dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textColor="@color/text_color2"
+            android:textColor="@color/text_color"
             android:textSize="14dp"
             tools:text="请输入整改要请输入整改要请输入整改要请输入整改要求请输入整改要求请输入整改要求请输入整改要求请输入整改要求请输入整改要求求求请输入整改要求请输入整改要求请输入整改要求请输入整改要求请输入整改要求求" />
 
@@ -198,7 +200,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="18dp" />
+            android:layout_marginTop="8dp" />
 
     </LinearLayout>
 

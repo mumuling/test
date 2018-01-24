@@ -12,6 +12,7 @@ import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.SafeEventEntity;
 import com.zhongtie.work.event.ReplyEvent;
+import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
@@ -56,6 +57,8 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private TextView mApprove;
     private TextView mCheck;
     private RecyclerView mList;
+    private SafeDividerItemDecoration dividerItemDecoration;
+    private OnChangeTitleListener mOnChangeTitleListener;
 
     private OnEventPrintListener mOnEventPrintListener;
 
@@ -74,6 +77,9 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         super.onAttach(context);
         if (context instanceof OnEventPrintListener) {
             mOnEventPrintListener = (OnEventPrintListener) context;
+        }
+        if (context instanceof OnChangeTitleListener) {
+            mOnChangeTitleListener = (OnChangeTitleListener) context;
         }
     }
 
@@ -144,7 +150,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
 
     @Override
     protected void initData() {
-        SafeDividerItemDecoration dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
+        dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
         dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(5);
@@ -164,9 +170,24 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     }
 
     @Override
-    public void setItemList(List<Object> itemList) {
+    public void setItemList(List<Object> itemList, boolean isHideNullItem) {
+        changeTitle(isHideNullItem);
         mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 更改标题
+     */
+    private void changeTitle(boolean isHideNullItem) {
+        if (isHideNullItem) {
+            dividerItemDecoration.setEndPosition(3);
+            if (mOnChangeTitleListener != null) {
+                mOnChangeTitleListener.setTitle("例行检查");
+            }
+        } else {
+            dividerItemDecoration.setEndPosition(5);
+        }
     }
 
     @Override
@@ -180,11 +201,11 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mReply.setVisibility(status.reply == 1 ? View.VISIBLE : View.GONE);
         mApprove.setVisibility(status.sign == 1 ? View.VISIBLE : View.GONE);
         mCheck.setVisibility(status.check == 1 ? View.VISIBLE : View.GONE);
-        findViewById(R.id.bottom).setVisibility(status.print == 1 ? View.GONE : View.VISIBLE);
+        findViewById(R.id.bottom).setVisibility(status.isHide() ? View.GONE : View.VISIBLE);
 
         if (mOnEventPrintListener != null) {
             if (status.print == 1) {
-                mOnEventPrintListener.onShowPrint(0,mSafeOrderID);
+                mOnEventPrintListener.onShowPrint(0, mSafeOrderID);
             } else {
                 mOnEventPrintListener.onHidePrint();
             }

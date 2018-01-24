@@ -15,8 +15,9 @@ public interface SafeDetailContract {
     interface View extends BaseView {
         /**
          * @param itemList item数据源
+         * @param isHideNullItem
          */
-        void setItemList(List<Object> itemList);
+        void setItemList(List<Object> itemList, boolean isHideNullItem);
 
         void setSafeDetailInfo(SafeEventEntity titleUserInfo);
 

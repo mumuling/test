@@ -46,7 +46,8 @@ public class DetailCommonItemView extends AbstractItemView<CommonItemType, Detai
         }
         if (vh.mCheckExamineList.getAdapter() == null) {
             CommonAdapter adapter = new CommonAdapter(data.getTypeItemList());
-            if (vh.getItemPosition() == 1) {
+            //验证人竖向
+            if (data.getTitle().contains(vh.mContext.getString(R.string.CHECK_TITLE))) {
                 vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
             } else {
                 vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, false));

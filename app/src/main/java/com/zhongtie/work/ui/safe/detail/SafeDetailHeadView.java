@@ -44,6 +44,11 @@ public class SafeDetailHeadView extends LinearLayout {
     private RecyclerView mList;
     private CommonAdapter commonAdapter;
 
+    private LinearLayout mWorkTeamLayout;
+    private LinearLayout mSafeEventTypeLayout;
+
+
+
     public SafeDetailHeadView(Context context) {
         this(context, null);
     }
@@ -68,6 +73,9 @@ public class SafeDetailHeadView extends LinearLayout {
         mDetailTime = findViewById(R.id.detail_time);
         mDetailContent = findViewById(R.id.detail_content);
         mSafeOrderReplyImgView = findViewById(R.id.safe_order_reply_img_view);
+        mWorkTeamLayout = (LinearLayout) findViewById(R.id.work_team_layout);
+        mSafeEventTypeLayout = (LinearLayout) findViewById(R.id.safe_event_type_layout);
+
         mList = findViewById(R.id.list);
         mList.setLayoutManager(new LinearLayoutManager(getContext(), HORIZONTAL, false));
 
@@ -84,8 +92,20 @@ public class SafeDetailHeadView extends LinearLayout {
         mSafeOrderName.setText(headInfo.user_name);
         mDetailSite.setText(headInfo.event_local);
         mProjectTeam.setText(headInfo.event_unit);
-        mInfoCompanyOffer.setText(headInfo.event_workerteam);
-        mQuestionType.setText(headInfo.event_troubletype);
+        if (!TextUtil.isEmpty(headInfo.event_workerteam)) {
+            mWorkTeamLayout.setVisibility(VISIBLE);
+            mInfoCompanyOffer.setText(headInfo.event_workerteam);
+        }else {
+            mWorkTeamLayout.setVisibility(GONE);
+        }
+        if (!TextUtil.isEmpty(headInfo.event_troubletype)) {
+            mSafeEventTypeLayout.setVisibility(VISIBLE);
+            mQuestionType.setText(headInfo.event_workerteam);
+        }else {
+            mSafeEventTypeLayout.setVisibility(GONE);
+        }
+
+
         mDetailContent.setText(headInfo.event_detail);
         mSafeOrderReplyTime.setText(TimeUtils.formatEventTime(headInfo.event_publishtime));
         mDetailTime.setText(TimeUtils.formatEventSelectTime(headInfo.event_time));
@@ -114,6 +134,7 @@ public class SafeDetailHeadView extends LinearLayout {
             case "已通过":
                 mSafeOrderState.setImageResource(R.drawable.status_pass);
                 break;
+            default:
 
         }
 

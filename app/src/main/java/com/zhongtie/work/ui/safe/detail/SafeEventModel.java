@@ -48,7 +48,7 @@ public class SafeEventModel {
             EndorseUserEntity endorseUserEntity = new EndorseUserEntity();
             endorseUserEntity.setUsername(entity.username);
             endorseUserEntity.setDetail(entity.detail);
-            endorseUserEntity.setPic(entity.pic);
+            endorseUserEntity.setPic(entity.userpic);
             endorseUserEntity.setTime(entity.time);
             endorseUserEntity.setUrl(entity.url);
             endorseUserEntity.setUserid(entity.userid);
@@ -74,7 +74,7 @@ public class SafeEventModel {
         List<ApproveEntity> reviewUserList = new ArrayList<>();
         for (int j = 0, count = eventEntity.reviewlist.size(); j < count; j++) {
             ApproveEntity review = eventEntity.reviewlist.get(j);
-            if (TextUtil.isEmpty(review.url)) {
+            if (TextUtil.isEmpty(review.url) || TextUtil.isEmpty(review.time)) {
                 continue;
             }
             reviewUserList.add(review);
