@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.event.ExitEvent;
+import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,6 +27,7 @@ import io.reactivex.disposables.Disposable;
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseView, View.OnClickListener {
 
+    private static final String TAG = "BaseActivity";
     protected CompositeDisposable mDisposable;
     protected TextView mToolbarTitle;
     protected TextView mMenuTitle;
@@ -35,9 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutViewId());
-        if (EventBus.getDefault().hasSubscriberForEvent(getClass())) {
-            EventBus.getDefault().register(this);
-        }
+        EventBus.getDefault().register(this);
         initTitle();
         initView(savedInstanceState);
         initView();
@@ -67,6 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Subscribe
     public void exitLoginAppEvent(ExitEvent exitEvent) {
+        L.e(TAG, "退出" + getClass().toString());
         finish();
     }
 
@@ -84,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(true);
+        EventBus.getDefault().unregister(this);
         if (mDisposable != null) {
             mDisposable.clear();
         }

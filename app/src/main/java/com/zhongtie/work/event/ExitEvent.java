@@ -6,4 +6,13 @@ package com.zhongtie.work.event;
  */
 
 public class ExitEvent implements BaseEvent {
+    private boolean isExit;
+
+    public boolean isExit() {
+        return isExit;
+    }
+
+    public void setExit(boolean exit) {
+        isExit = exit;
+    }
 }

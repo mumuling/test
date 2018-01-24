@@ -5,6 +5,7 @@ import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.TextUtil;
 
+import static com.zhongtie.work.task.sync.SyncUserPic.DOWNLOAD_USER_PIC_TIME;
 import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_ID;
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_ID;
 import static com.zhongtie.work.ui.login.LoginPresenter.USER_COMPANY_ID;
@@ -103,5 +104,6 @@ public class Cache {
     public static void exitLogin() {
         new ExitEvent().post();
         SharePrefUtil.getUserPre().putString(LOGIN_USER_ID, "");
+        SharePrefUtil.mOtherPre().putLong(DOWNLOAD_USER_PIC_TIME, 0);
     }
 }

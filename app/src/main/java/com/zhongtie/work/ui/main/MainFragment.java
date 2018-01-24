@@ -98,7 +98,7 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
 //                RewardPunishActivity.newInstance(getActivity());
 //                break;
             default:
-                showToast("功能正在开发中,敬请期待!");
+                showToast(getString(R.string.developing));
                 break;
         }
 

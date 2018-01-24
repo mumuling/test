@@ -24,6 +24,9 @@ import com.zhongtie.work.ui.setting.NoticeSettingFragment;
 import com.zhongtie.work.ui.setting.VersionFragment;
 import com.zhongtie.work.ui.statistics.StatisticsActivity;
 import com.zhongtie.work.ui.user.UserInfoActivity;
+import com.zhongtie.work.widget.BaseImageView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +34,17 @@ import java.util.List;
 import io.reactivex.Observable;
 
 /**
- * Auth: Chaek
+ * 首页左侧菜单
  * Date: 2018/1/9
+ *
+ * @author Chaek
  */
-
 public class MenuFragment extends BaseFragment implements OnRecyclerItemClickListener {
     private DrawerLayout mDrawerLayout;
-
     private RecyclerView mList;
     private List<Pair<String, Integer>> mMenuItemList = new ArrayList<>();
-    private CommonAdapter mAdapter;
-
     private View mHeadView;
-    private com.zhongtie.work.widget.BaseImageView mHead;
-
+    private BaseImageView mHead;
     private String mUserHead;
 
     @Override
@@ -96,10 +96,10 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
     @Override
     protected void initData() {
         fetchHomeItemList();
-        mAdapter = new CommonAdapter(mMenuItemList).register(MenuItemView.class);
-        mAdapter.addHeaderView(mHeadView);
-        mAdapter.setOnItemClickListener(this);
-        mList.setAdapter(mAdapter);
+        CommonAdapter adapter = new CommonAdapter(mMenuItemList).register(MenuItemView.class);
+        adapter.addHeaderView(mHeadView);
+        adapter.setOnItemClickListener(this);
+        mList.setAdapter(adapter);
     }
 
     /**
@@ -146,10 +146,10 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
 
     private void exitApp() {
         new MaterialDialog.Builder(getActivity())
-                .title("提示")
-                .content("确定要退出应用吗？")
-                .positiveText("退出")
-                .negativeText("取消")
+                .title(R.string.dialog_tip)
+                .content(R.string.dialog_tip_exit_app)
+                .positiveText(R.string.exit)
+                .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
                     dialog.cancel();
                     new ExitEvent().post();
@@ -161,10 +161,10 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
 
     private void exitLogin() {
         new MaterialDialog.Builder(getActivity())
-                .title("提示")
-                .content("确定要退出当前用户登录吗？")
-                .positiveText("确定")
-                .negativeText("取消")
+                .title(R.string.dialog_tip)
+                .content(R.string.dialog_tip_exit_user_login)
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
                     Cache.exitLogin();
                     LoginActivity.newInstance(getActivity());

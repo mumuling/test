@@ -22,7 +22,7 @@
     <string name="word_feed">工作流</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
-    <string name="sync_loading">正在同步...</string>
+    <string name="sync_loading">正在同步</string>
     <string name="violation_content_hint">请输入违规情况</string>
     <string name="signature">签名</string>
     <string name="clear">清除</string>
@@ -173,4 +173,9 @@
     <string name="modify_success">修改成功</string>
     <string name="modify_fail">修改失败</string>
     <string name="CHECK_TITLE">检查人</string>
+    <string name="dialog_tip">提示</string>
+    <string name="dialog_tip_exit_app">确定要退出应用吗？</string>
+    <string name="exit">退出</string>
+    <string name="dialog_tip_exit_user_login">确定要退出当前用户登录吗？</string>
+    <string name="developing">功能正在开发中,敬请期待!</string>
 </resources>

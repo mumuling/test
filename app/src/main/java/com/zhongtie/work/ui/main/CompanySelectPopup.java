@@ -25,6 +25,7 @@ import com.zhongtie.work.ui.main.adapter.CompanyItemView;
 import java.util.List;
 
 /**
+ * 首页选择公司PopupWindow
  * Auth:Cheek
  * date:2018.1.9
  */
@@ -46,19 +47,6 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         super(context);
         this.companyEntityList = companyEntityList;
         this.context = context;
-
-        Http.netServer(UserApi.class).fetchCompanyList(0)
-                .map(new NetWorkFunc1<>())
-                .map(companyEntities -> {
-                    FlowManager.getDatabase(ZhongtieDb.class).executeTransaction(databaseWrapper ->
-                            FastStoreModelTransaction.saveBuilder(FlowManager.getModelAdapter(CacheCompanyTable.class)).
-                                    addAll(companyEntities).build().execute(databaseWrapper));
-                    return companyEntities;
-                })
-                .compose(Network.networkIO())
-                .subscribe(companyEntities -> {
-
-                }, throwable -> throwable.printStackTrace());
         initView();
         initData();
     }

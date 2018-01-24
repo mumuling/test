@@ -9,6 +9,7 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.NetworkUtil;
 import com.zhongtie.work.network.api.SyncApi;
 import com.zhongtie.work.util.L;
+import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.util.Util;
 
 import java.io.BufferedInputStream;
@@ -24,15 +25,19 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.http.PUT;
 
 /**
  * Date: 2018/1/17
+ *
  * @author Chaek
  */
 
 public class SyncUserPic {
 
     private static final String TAG = "UserPicSync";
+    public static final String DOWNLOAD_USER_PIC_TIME = "download_user_pic_time";
+    private static final int TIME = 3 * 60 * 60 * 1000;
     private static SyncUserPic sUserPicSync;
 
     private ExecutorService mDownloadServer;
@@ -41,6 +46,8 @@ public class SyncUserPic {
     private File cacheFolderName;
     private volatile int downPosition;
     private String cacheFile = Environment.getExternalStorageDirectory().getPath() + "/zhongtie/user_image/";
+
+    private long lastDownloadTime;
 
     public static SyncUserPic getInstance() {
         if (sUserPicSync == null) {
@@ -78,8 +85,9 @@ public class SyncUserPic {
 
 
     public void startDownload() {
-        if (!isRun) {
-
+        lastDownloadTime = SharePrefUtil.mOtherPre().getLong(DOWNLOAD_USER_PIC_TIME, 0);
+        long nowTime = System.currentTimeMillis();
+        if (!isRun && TIME < nowTime - lastDownloadTime) {
             if (NetworkUtil.isWifi()) {
                 L.e(TAG, "正在开始下载....");
                 isRun = true;
@@ -126,6 +134,7 @@ public class SyncUserPic {
                         if (downPosition < strings.size()) {
                             mDownloadServer.execute(new DownRunnable(strings.get(downPosition), this));
                         } else {
+                            SharePrefUtil.mOtherPre().putLong(DOWNLOAD_USER_PIC_TIME, System.currentTimeMillis());
                             isRun = false;
                         }
                     }

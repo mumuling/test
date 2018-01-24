@@ -70,16 +70,16 @@ public class SplashActivity extends BasePresenterActivity<SplashContract.Present
 
     @Override
     public void userLogin() {
+        finish();
         mSplashSyncView.setVisibility(View.GONE);
         startActivity(new Intent(getAppContext(), LoginActivity.class));
-        finish();
     }
 
     @Override
     public void startMainView() {
+        finish();
         mSplashSyncView.setVisibility(View.GONE);
         startActivity(new Intent(getAppContext(), MainActivity.class));
-        finish();
     }
 
     @Override
