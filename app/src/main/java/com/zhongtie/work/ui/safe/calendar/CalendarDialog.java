@@ -3,6 +3,7 @@ package com.zhongtie.work.ui.safe.calendar;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
@@ -15,6 +16,12 @@ import com.ldf.calendar.model.CalendarDate;
 import com.ldf.calendar.view.Calendar;
 import com.ldf.calendar.view.MonthPager;
 import com.zhongtie.work.R;
+import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.model.EventCountData;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.NetWorkFunc1;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BaseDialog;
 
 import java.util.ArrayList;
@@ -41,6 +48,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
 
     private OnSelectDateCallback mOnSelectDateCallback;
     private HashMap<String, String> mEventCountList;
+
+    private ArrayMap<String, Boolean> monthMar = new ArrayMap<>();
 
     public CalendarDialog(@NonNull Context context, OnSelectDateCallback onSelectDateCallback) {
         super(context);
@@ -95,11 +104,7 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
                 CalendarAttr.CalendarType.MONTH,
                 CalendarAttr.WeekArrayType.Monday,
                 customDayView);
-        mCalendarViewAdapter.setOnCalendarTypeChangedListener(new CalendarViewAdapter.OnCalendarTypeChanged() {
-            @Override
-            public void onCalendarTypeChanged(CalendarAttr.CalendarType type) {
-            }
-        });
+
 
         if (mEventCountList != null) {
             mCalendarViewAdapter.setMarkData(mEventCountList);
@@ -126,6 +131,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
                 if (currentCalendars.get(position % currentCalendars.size()) != null) {
                     currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
                     mCalendarDate.setText(getContext().getString(R.string.select_date, currentDate.getYear(), currentDate.getMonth()));
+
+                    getMonthCount(currentDate.year, currentDate.month);
                 }
             }
 
@@ -134,6 +141,35 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
             }
         });
     }
+
+
+    private void getMonthCount(int year, int month) {
+        int company = Cache.getSelectCompany();
+        if (monthMar.get(year + "" + month) == null) {
+            Http.netServer(SafeApi.class)
+                    .safeEventListMonthCount(Cache.getUserID(), company, year, month)
+                    .map(new NetWorkFunc1<>())
+                    .compose(Network.networkIO())
+                    .map(eventCountData -> {
+                        HashMap<String, String> map = new HashMap<>(eventCountData.size());
+                        for (int i = 0; i < eventCountData.size(); i++) {
+                            EventCountData data = eventCountData.get(i);
+                            String[] date = data.getDay().split("-");
+                            map.put(date[0] + "-" + Integer.valueOf(date[1]) + "-" + date[2], data.getCount() + "");
+                        }
+                        return map;
+                    })
+                    .compose(Network.networkIO())
+                    .subscribe(eventCountData -> {
+                        monthMar.put(year + "" + month, true);
+                        mEventCountList.putAll(eventCountData);
+                        mCalendarViewAdapter.setMarkData(mEventCountList);
+                    }, throwable -> {
+                        throwable.printStackTrace();
+                    });
+        }
+    }
+
 
     @Override
     public void onSelectDate(CalendarDate calendarDate) {

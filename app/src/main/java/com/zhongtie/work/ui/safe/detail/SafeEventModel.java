@@ -43,6 +43,7 @@ public class SafeEventModel {
      */
     public CommonItemType fetchCheckUserList() {
         List<EndorseUserEntity> endorseUserList = new ArrayList<>(eventEntity.signlist.size());
+        int signCount = 0;
         for (int j = 0; j < eventEntity.signlist.size(); j++) {
             ApproveEntity entity = eventEntity.signlist.get(j);
             EndorseUserEntity endorseUserEntity = new EndorseUserEntity();
@@ -52,6 +53,9 @@ public class SafeEventModel {
             endorseUserEntity.setTime(entity.time);
             endorseUserEntity.setUrl(entity.url);
             endorseUserEntity.setUserid(entity.userid);
+            if (!TextUtil.isEmpty(entity.getTime())) {
+                signCount++;
+            }
             endorseUserList.add(endorseUserEntity);
         }
         Collections.sort(endorseUserList, (o1, o2) -> {
@@ -60,8 +64,11 @@ public class SafeEventModel {
             }
             return 1;
         });
-
-        CommonItemType checkUser = new CommonItemType<>("检查人", "", R.drawable.plus, isEdit);
+        String checkTitle = "检查人";
+        if (!isEdit) {
+            checkTitle += "(" + signCount + "/" + endorseUserList.size() + ")";
+        }
+        CommonItemType checkUser = new CommonItemType<>(checkTitle, "", R.drawable.plus, isEdit);
         checkUser.setTypeItemList(endorseUserList);
 
         return checkUser;

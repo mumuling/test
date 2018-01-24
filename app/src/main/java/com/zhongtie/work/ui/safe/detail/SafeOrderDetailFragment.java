@@ -10,7 +10,9 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.SafeEventEntity;
+import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.event.ReplyEvent;
 import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.list.OnEventPrintListener;
@@ -24,6 +26,7 @@ import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
 import com.zhongtie.work.ui.safe.item.DetailCommonItemView;
+import com.zhongtie.work.ui.safe.item.EventSignUserItemView;
 import com.zhongtie.work.ui.safe.item.ReplyItemView;
 import com.zhongtie.work.ui.safe.item.SafeTitleItemView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
@@ -43,7 +46,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  * date:2018.1.9
  */
 
-public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailContract.Presenter> implements SafeDetailContract.View, OnSignatureListener {
+public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailContract.Presenter> implements SafeDetailContract.View, OnSignatureListener, OnRecyclerItemClickListener {
     public static final String ID = "id";
     private int mSafeOrderID;
     private SafeDetailHeadView mHeadInfoView;
@@ -57,7 +60,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private TextView mApprove;
     private TextView mCheck;
     private RecyclerView mList;
-    private SafeDividerItemDecoration dividerItemDecoration;
+    private SafeDetailDividerItemDecoration dividerItemDecoration;
     private OnChangeTitleListener mOnChangeTitleListener;
 
     private OnEventPrintListener mOnEventPrintListener;
@@ -91,6 +94,11 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         return R.layout.safe_order_info_fragment;
     }
 
+    @Override
+    public void onClickRefresh() {
+        super.onClickRefresh();
+        mPresenter.getItemList(mSafeOrderID);
+    }
 
     @Override
     public void initView() {
@@ -141,22 +149,24 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
                 //标题
                 .register(SafeTitleItemView.class)
                 //回复
+                .register(EventSignUserItemView.class)
                 .register(ReplyItemView.class)
                 //基本界面 展示数据
-                .register(DetailCommonItemView.class);
+                .register(new DetailCommonItemView(mList));
         mCommonAdapter.addHeaderView(mHeadInfoView);
     }
 
 
     @Override
     protected void initData() {
-        dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
+        dividerItemDecoration = new SafeDetailDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
         dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
         mPresenter.getItemList(mSafeOrderID);
+        mCommonAdapter.setOnItemClickListener(this);
     }
 
     @Subscribe
@@ -171,15 +181,21 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
 
     @Override
     public void setItemList(List<Object> itemList, boolean isHideNullItem) {
-        changeTitle(isHideNullItem);
         mCommonAdapter.setListData(itemList);
+        changeTitle(isHideNullItem);
         mCommonAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setCheckCount(int checkCount) {
+        dividerItemDecoration.setCheckCount(checkCount);
     }
 
     /**
      * 更改标题
      */
     private void changeTitle(boolean isHideNullItem) {
+        dividerItemDecoration.setItemList(mCommonAdapter.getListData());
         if (isHideNullItem) {
             dividerItemDecoration.setEndPosition(3);
             if (mOnChangeTitleListener != null) {
@@ -212,6 +228,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         }
     }
 
+
     @Override
     public void noLookAuthority() {
         mStatusView.showEmpty();
@@ -228,5 +245,16 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
                 }, throwable -> {
                 }));
 
+    }
+
+    @Override
+    public void onClick(Object o, int index) {
+        if (o instanceof CommonItemType) {
+            CommonItemType itemType = (CommonItemType) o;
+            if (itemType.getTitle().contains("检查人")) {
+                mPresenter.changeCheckListState();
+                mCommonAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }

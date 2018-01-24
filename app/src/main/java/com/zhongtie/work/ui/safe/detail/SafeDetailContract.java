@@ -14,7 +14,7 @@ import java.util.List;
 public interface SafeDetailContract {
     interface View extends BaseView {
         /**
-         * @param itemList item数据源
+         * @param itemList       item数据源
          * @param isHideNullItem
          */
         void setItemList(List<Object> itemList, boolean isHideNullItem);
@@ -23,10 +23,19 @@ public interface SafeDetailContract {
 
         void setEventStatus(SafeEventEntity.ButstateBean status);
 
+        /**
+         * 记录check 记录获取数据 设置分割线
+         *
+         * @param checkCount check数量
+         */
+        void setCheckCount(int checkCount);
+
         void noLookAuthority();
     }
 
     interface Presenter extends BasePresenter<View> {
+        void showCheck();
+        void changeCheckListState();
         void getItemList(int safeOrderID);
 
         void setSelectImageList(List<String> selectImgList);

@@ -37,6 +37,11 @@ public class DetailCommonItemView extends AbstractItemView<CommonItemType, Detai
         return R.layout.item_safe_create_add_user;
     }
 
+    private RecyclerView recyclerView;
+
+    public DetailCommonItemView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull CommonItemType data) {
@@ -47,11 +52,8 @@ public class DetailCommonItemView extends AbstractItemView<CommonItemType, Detai
         if (vh.mCheckExamineList.getAdapter() == null) {
             CommonAdapter adapter = new CommonAdapter(data.getTypeItemList());
             //验证人竖向
-            if (data.getTitle().contains(vh.mContext.getString(R.string.CHECK_TITLE))) {
-                vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext));
-            } else {
-                vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, false));
-            }
+
+            vh.mCheckExamineList.setLayoutManager(new LinearLayoutManager(vh.mContext, LinearLayout.HORIZONTAL, false));
             adapter.register(new CreatePicItemView(false));
             //用户信息
             adapter.register(DetailUserItemView.class);

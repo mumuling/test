@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhongtie.work.BuildConfig;
+import com.zhongtie.work.util.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author Chaek
  */
 public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implements View.OnClickListener {
+    private static final String TAG = "CommonAdapter";
     /**
      * item 点击事件的保存data的的tag id
      */
@@ -159,6 +161,9 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
         }
         int result = classIndex * MAX_ITEM_TYPE + viewType;
         positionTypeMap.put(result, classIndex);
+        if (BuildConfig.DEBUG) {
+            L.e(TAG, positionTypeMap.toString());
+        }
         return result;
     }
 

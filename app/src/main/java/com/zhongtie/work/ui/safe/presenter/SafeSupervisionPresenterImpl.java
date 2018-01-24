@@ -8,6 +8,7 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -38,13 +39,14 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
     @Override
     public void getSafeDateEventCount() {
         int company = Cache.getSelectCompany();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
         addDispose(Http.netServer(SafeApi.class)
-                .safeEventListMonthCount(Cache.getUserID(), company)
+                .safeEventListMonthCount(Cache.getUserID(), company, year, month)
                 .map(new NetWorkFunc1<>())
                 .compose(Network.networkIO())
                 .map(eventCountData -> {
                     HashMap<String, String> map = new HashMap<>(eventCountData.size());
-
                     for (int i = 0; i < eventCountData.size(); i++) {
                         EventCountData data = eventCountData.get(i);
                         String[] date = data.getDay().split("-");

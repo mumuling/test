@@ -28,7 +28,7 @@ public interface SafeApi {
      */
     @FormUrlEncoded
     @POST("?action=GetEventListMonthCount")
-    Flowable<Result<List<EventCountData>>> safeEventListMonthCount(@Field("userid") String userId, @Field("companyid") int companyid);
+    Flowable<Result<List<EventCountData>>> safeEventListMonthCount(@Field("userid") String userId, @Field("companyid") int companyid, @Field("year") int year, @Field("month") int month);
 
     /**
      * 安全督导列表
