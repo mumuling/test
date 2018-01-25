@@ -1,8 +1,11 @@
 package com.zhongtie.work.ui.safe.parse;
 
+import android.os.Parcelable;
+
 import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.TextUtil;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 
 /**
@@ -30,49 +33,70 @@ public class CommonParseData {
         Field[] fields = cls.getDeclaredFields();
         try {
             for (Field field : fields) {
-                field.setAccessible(true);
                 Parse parse = field.getAnnotation(Parse.class);
                 // 获取属性的类型
-                String type = field.getGenericType().toString();
+                String type = field.getGenericType().toString().replace("class ", "");
 
                 L.e("--------------------注解解析", type);
-                L.e("--------------------注解解析", field.getDeclaringClass().toString());
-
                 if (parse == null) {
                     continue;
                 }
-
+                field.setAccessible(true);
                 //默认是当前变量名
                 String key = parse.key();
                 if (TextUtil.isEmpty(key)) {
                     key = field.getName();
                 }
-
+                //                class ;
                 Object value = null;
-                if ("class java.lang.String".equals(type)) {
-                    value = parseData.getString(key);
-                } else if ("class java.lang.Integer".equals(type) || "int".equals(type)) {
-                    value = parseData.getInt(key);
-                } else if ("class java.lang.Boolean".equals(type) || "boolean".equals(type)) {
-                    value = parseData.getBoolean(key);
-                } else if ("class java.lang.Float".equals(type) || "float".equals(type)) {
-                    value = parseData.getFloat(key);
-                } else if ("class java.lang.Double".equals(type) || "double".equals(type)) {
-                    value = parseData.getDouble(key);
+                switch (type) {
+                    case "java.lang.String":
+                        value = parseData.getString(key);
+                        break;
+                    case "[Ljava.lang.String;":
+                        value = parseData.getStringArray(key);
+                        break;
+                    case "java.lang.Integer":
+                    case "int":
+                        value = parseData.getInt(key);
+                        break;
+                    case "java.lang.Boolean":
+                    case "boolean":
+                        value = parseData.getBoolean(key);
+                        break;
+                    case "java.lang.Float":
+                    case "float":
+                        value = parseData.getFloat(key);
+                        break;
+                    case "java.lang.Double":
+                    case "double":
+                        value = parseData.getDouble(key);
+                        break;
+                    default:
+                        Class<?> clazz = null;
+                        try {
+                            clazz = Class.forName(type);
+                            boolean isSerializable = Serializable.class.isAssignableFrom(clazz);
+                            if (isSerializable) {
+                                value = parseData.getSerializable(key);
+                            } else {
+                                boolean isParcelable = Parcelable.class.isAssignableFrom(clazz);
+                                if (isParcelable) {
+                                    value = parseData.getParcelable(key);
+                                }
+                            }
+                        } catch (ClassNotFoundException e1) {
+                            e1.printStackTrace();
+                        }
+
                 }
-
-
                 field.set(bean, value);
                 L.e("--------------------注解解析", field.getName());
                 L.e("--------------------注解解析", "赋值" + value);
+
             }
-
-
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
 }

@@ -18,6 +18,7 @@ import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.widget.BaseImageView;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ import java.util.List;
  * Date: 2018/1/11
  */
 
-public class SafeDetailHeadView extends LinearLayout {
+public class SafeDetailHeadView extends LinearLayout implements Serializable {
 
 
     private ImageView mSafeOrderState;

@@ -13,6 +13,8 @@ import java.util.List;
 public interface ParseDelegate {
     String getString(String key);
 
+    String[] getStringArray(String key);
+
     int getInt(String key);
 
     double getDouble(String key);

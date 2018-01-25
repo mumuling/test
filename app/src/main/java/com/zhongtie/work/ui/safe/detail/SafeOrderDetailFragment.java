@@ -4,11 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.SafeEventEntity;
@@ -16,9 +14,6 @@ import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.event.ReplyEvent;
 import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.list.OnEventPrintListener;
-import com.zhongtie.work.network.Http;
-import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment;
@@ -35,7 +30,6 @@ import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
-import com.zhongtie.work.util.upload.UploadUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -59,6 +53,10 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private int mSafeOrderID;
     private SafeDetailHeadView mHeadInfoView;
     private CommonAdapter mCommonAdapter;
+    @Parse
+    private List<String> strings;
+    @Parse
+    private String[] ssss;
     private List<Object> mInfoList = new ArrayList<>();
 
     private TextView mModify;
@@ -87,7 +85,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     public void onAttach(Context context) {
         super.onAttach(context);
         CommonParseData commonParseData = new CommonParseData(this);
-        L.e("--------------------注解解析", mSafeOrderID+"");
+        L.e("--------------------注解解析", mSafeOrderID + "");
 
         if (context instanceof OnEventPrintListener) {
             mOnEventPrintListener = (OnEventPrintListener) context;

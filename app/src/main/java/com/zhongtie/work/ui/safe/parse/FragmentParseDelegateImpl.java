@@ -34,6 +34,11 @@ class FragmentParseDelegateImpl implements ParseDelegate {
     }
 
     @Override
+    public String[] getStringArray(String key) {
+        return mBundle.getStringArray(key);
+    }
+
+    @Override
     public int getInt(String key) {
         return mBundle.getInt(key);
     }
