@@ -30,9 +30,9 @@ public class Network {
      * io->  map-> mainThread
      */
     public static <T> FlowableTransformer<Result<T>, T> convertIO() {
-        return network -> network.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(new NetWorkFunc1<>());
+        return network -> network.map(new NetWorkFunc1<>())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**

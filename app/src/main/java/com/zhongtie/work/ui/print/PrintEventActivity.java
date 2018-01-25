@@ -33,12 +33,14 @@ import static android.os.Build.VERSION_CODES.KITKAT;
  */
 
 public class PrintEventActivity extends BaseActivity {
-    PrintDownServer.DownloadBinder mDownloadBinder;
-    private static final String KEY_EVENT_ID = "EVENT_ID";
+    private PrintDownServer.DownloadBinder mDownloadBinder;
+    public static final String KEY_EVENT_ID = "event_id";
+    public static final String KEY_PRINT_TYPE = "print_type";
 
-    public static void start(Context context, int eventId) {
+    public static void start(Context context, int printType, int eventId) {
         Intent starter = new Intent(context, PrintEventActivity.class);
         Bundle data = new Bundle();
+        data.putInt(KEY_PRINT_TYPE, printType);
         data.putInt(KEY_EVENT_ID, eventId);
         starter.putExtras(data);
         context.startActivity(starter);
@@ -74,6 +76,7 @@ public class PrintEventActivity extends BaseActivity {
     private void showPrintReview() {
         Fragments.with(this)
                 .fragment(PrintReviewFragment.class)
+                .bundle(getIntent().getExtras())
                 .into(R.id.fragment_content);
     }
 

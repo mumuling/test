@@ -32,6 +32,7 @@ public class CommonFragmentActivity extends BaseActivity implements OnEventPrint
     public static final String LIST = "list";
 
     private int mEventId;
+    private int mPrintType;
 
     public static void newInstance(Context context, Class fragment, String title) {
         Intent intent = new Intent(context, CommonFragmentActivity.class);
@@ -55,12 +56,13 @@ public class CommonFragmentActivity extends BaseActivity implements OnEventPrint
     protected void onClickRight() {
         super.onClickRight();
         if (mEventId > 0) {
-            PrintEventActivity.start(this,mEventId);
+            PrintEventActivity.start(this, mPrintType,mEventId);
         }
     }
 
     @Override
     public void onShowPrint(int type, int eventId) {
+        this.mPrintType = type;
         this.mEventId = eventId;
         mMenuTitle.setVisibility(View.VISIBLE);
         Drawable drawable = getResources().getDrawable(R.drawable.ic_file_print);

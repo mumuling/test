@@ -15,7 +15,7 @@ import java.util.List;
 public interface SafeSupervisionContract {
     interface View extends BaseView {
 
-        void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList, int type);
+        void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList, int type);
 
         void setSafeEventCountList(HashMap<String, String> eventCountData);
 

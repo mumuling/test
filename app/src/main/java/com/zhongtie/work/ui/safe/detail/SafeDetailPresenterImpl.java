@@ -1,6 +1,7 @@
 package com.zhongtie.work.ui.safe.detail;
 
 
+import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.ApproveEntity;
 import com.zhongtie.work.data.EndorseUserEntity;
@@ -12,8 +13,8 @@ import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.upload.UploadUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,31 +23,37 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 /**
- * Auth: Chaek
+ * 安全督导详情
  * Date: 2018/1/12
+ *
+ * @author Chaek
  */
 
 public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContract.View> implements SafeDetailContract.Presenter {
 
-    boolean isInit;
-
-    private List<Object> itemList = new ArrayList<>();
-
+    /**
+     * 是否初始化
+     */
+    private boolean isInit;
+    private List<Object> mAdapterItemList = new ArrayList<>();
     private SafeEventEntity eventEntity;
+    /**
+     * 是否隐藏显示check user
+     */
     private boolean isShowCheck;
-
+    /**
+     * 是否显示隐藏Hide 类别其它
+     */
     private boolean isHideNullItem;
 
-    @Override
-    public void showCheck() {
-        isShowCheck = false;
-        initItemList(eventEntity);
-    }
-
+    /**
+     * 改变检查的隐藏数据的英寸状态
+     */
     @Override
     public void changeCheckListState() {
         if (isShowCheck) {
-            Iterator<Object> iterator = itemList.iterator();
+            //隐藏也就是移除所有的检查人信息
+            Iterator<Object> iterator = mAdapterItemList.iterator();
             while (iterator.hasNext()) {
                 Object o = iterator.next();
                 if (o instanceof EndorseUserEntity) {
@@ -56,17 +63,18 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
             isShowCheck = false;
             mView.setCheckCount(0);
         } else {
+            //显示隐藏人信息
             SafeEventModel safeEventModel = new SafeEventModel(eventEntity);
             CommonItemType checkUser = safeEventModel.fetchCheckUserList();
             mView.setCheckCount(checkUser.getTypeItemList().size());
-            itemList.addAll(isHideNullItem ? 1 : 2, checkUser.getTypeItemList());
+            mAdapterItemList.addAll(isHideNullItem ? 1 : 2, checkUser.getTypeItemList());
             isShowCheck = true;
             mView.setCheckCount(checkUser.getTypeItemList().size());
         }
     }
 
     @Override
-    public void getItemList(int safeOrderID) {
+    public void getEventDetailItemList(int safeOrderID) {
         if (!isInit) {
             mView.initLoading();
         }
@@ -91,66 +99,82 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
                 }));
     }
 
+    @Override
+    public void checkUserSign(String imagePath) {
+        addDispose(UploadUtil.uploadSignPNG(imagePath)
+                .flatMap(uploadData -> Http.netServer(SafeApi.class).eventSign(Cache.getUserID(), mView.fetchEventId(), uploadData.getPicname()))
+                .compose(Network.convertDialogTip(mView))
+                .subscribe(integer -> getEventDetailItemList(mView.fetchEventId()), throwable -> {
+                }));
+    }
+
+    @Override
+    public void validateEvent(String imagePath) {
+        addDispose(UploadUtil.uploadSignPNG(imagePath)
+                .flatMap(uploadData -> Http.netServer(SafeApi.class).validateEvent(Cache.getUserID(), mView.fetchEventId(), uploadData.getPicname()))
+                .compose(Network.convertDialogTip(mView))
+                .subscribe(integer -> {
+                    //刷新界面
+                    mView.showToast(R.string.validate_success);
+                    getEventDetailItemList(mView.fetchEventId());
+                }, throwable -> {
+                }));
+    }
+
 
     private void initItemList(SafeEventEntity safeEventEntity) {
         addDispose(Flowable.fromCallable(() -> {
-            itemList = new ArrayList<>();
+            //初始化
+            mAdapterItemList = new ArrayList<>();
             isHideNullItem = true;
-            //添加修改要求
+
+            //未填写情况 劳务公司整改内容等等
             if (!TextUtil.isEmpty(safeEventEntity.event_changemust)) {
                 EditContentEntity mRectifyEditContent = new EditContentEntity("整改要求", "", safeEventEntity.event_changemust);
-                itemList.add(mRectifyEditContent);
+                mAdapterItemList.add(mRectifyEditContent);
                 isHideNullItem = false;
             }
 
-            SafeEventModel safeEventModel = new SafeEventModel(safeEventEntity);
-            CommonItemType checkUser = safeEventModel.fetchCheckUserList();
-            itemList.add(checkUser);
+            SafeEventModel baseSafeModel = new SafeEventModel(safeEventEntity);
+
+            //整改内容
+            CommonItemType checkUserItem = baseSafeModel.fetchCheckUserList();
+            mAdapterItemList.add(checkUserItem);
             //检查人的由主list 展示 避免过多情况引起性能问题
             if (isShowCheck) {
-                mView.setCheckCount(checkUser.getTypeItemList().size());
-                itemList.addAll(checkUser.getTypeItemList());
-            }else {
+                mView.setCheckCount(checkUserItem.getTypeItemList().size());
+                mAdapterItemList.addAll(checkUserItem.getTypeItemList());
+            } else {
                 mView.setCheckCount(0);
             }
-            checkUser.setTypeItemList(new ArrayList());
+            checkUserItem.setTypeItemList(null);
 
-            itemList.add(safeEventModel.getModifyReviewList());
-            CommonItemType relate = safeEventModel.getRelatedList();
+            //添加验证认
+            mAdapterItemList.add(baseSafeModel.getModifyReviewList());
+
+            //整改认为空的话不添加 也就是Hide 整改认一行
+            CommonItemType relate = baseSafeModel.getRelatedList();
             if (!relate.getTypeItemList().isEmpty()) {
-                itemList.add(relate);
+                mAdapterItemList.add(relate);
             }
-            itemList.add(safeEventModel.fetchReadList());
+            mAdapterItemList.add(baseSafeModel.fetchReadList());
             String replyTitle = "已回复(" + safeEventEntity.replylist.size() + ")";
-            itemList.add(replyTitle);
-            itemList.addAll(safeEventEntity.replylist);
-
-            List<ApproveEntity> approveEntities = safeEventModel.getDetailReviewUserList();
+            mAdapterItemList.add(replyTitle);
+            mAdapterItemList.addAll(safeEventEntity.replylist);
+            List<ApproveEntity> approveEntities = baseSafeModel.getDetailReviewUserList();
             String approveTitle = "已验证(" + approveEntities.size() + ")";
-            itemList.add(approveTitle);
-            itemList.addAll(approveEntities);
-            L.e("------------", System.currentTimeMillis() + "");
+            mAdapterItemList.add(approveTitle);
+            mAdapterItemList.addAll(approveEntities);
+
             return isHideNullItem;
-        }).compose(Network.networkIO())
+        })
+                .compose(Network.networkIO())
                 .subscribe(isHideNullItem -> {
                     mView.initSuccess();
-                    mView.setItemList(itemList, isHideNullItem);
-                    L.e("------------", System.currentTimeMillis() + "");
-                }, throwable -> {
-                    mView.initFail();
-                }));
-
+                    mView.setItemList(mAdapterItemList, isHideNullItem);
+                }, throwable -> mView.initFail()));
     }
 
-    @Override
-    public void setSelectImageList(List<String> selectImgList) {
-
-    }
-
-    @Override
-    public void setSelectUserInfoList(String title, List createUserEntities) {
-
-    }
 
     private void setTitleUserInfo(SafeEventEntity titleUserInfo) {
         mView.setSafeDetailInfo(titleUserInfo);

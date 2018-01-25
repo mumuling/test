@@ -9,17 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.db.CacheCompanyTable;
-import com.zhongtie.work.db.ZhongtieDb;
-import com.zhongtie.work.network.Http;
-import com.zhongtie.work.network.NetWorkFunc1;
-import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.UserApi;
 import com.zhongtie.work.ui.main.adapter.CompanyItemView;
 
 import java.util.List;
@@ -71,7 +64,7 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         mList = root.findViewById(R.id.list);
         mList.setLayoutManager(new GridLayoutManager(context, 3));
 
-        mList.addItemDecoration(new PerformerGridItemDecoration(context));
+        mList.addItemDecoration(new SelectCompanyItemDecoration(context));
     }
 
     @Override

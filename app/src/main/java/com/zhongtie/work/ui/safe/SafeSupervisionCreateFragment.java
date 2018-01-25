@@ -17,7 +17,7 @@ import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
 import com.zhongtie.work.ui.safe.item.SafeCommonItemView;
-import com.zhongtie.work.ui.safe.detail.SafeDividerItemDecoration;
+import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 import com.zhongtie.work.ui.safe.presenter.SafeCreatePresenterImpl;
 import com.zhongtie.work.ui.safe.view.SafeCreateEditHeadView;

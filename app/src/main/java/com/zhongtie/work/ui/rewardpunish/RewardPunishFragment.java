@@ -69,7 +69,7 @@ public class RewardPunishFragment extends BasePresenterFragment<RewardPunishCont
     }
 
     @Override
-    public void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList) {
+    public void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList) {
         mList.setListData(supervisionList);
     }
 

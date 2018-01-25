@@ -24,7 +24,7 @@ import static com.zhongtie.work.ui.safe.detail.SafeOrderDetailFragment.ID;
  * @author Chaek
  */
 
-public class SafeSupervisionFragment extends BaseFragment implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener<SupervisorInfoEntity.SafeSupervisionEntity> {
+public class SafeSupervisionFragment extends BaseFragment implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener<SupervisorInfoEntity> {
     public static final String TYPE = "type";
 
     private RefreshRecyclerView mList;
@@ -76,7 +76,7 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
         }
     }
 
-    public void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList) {
+    public void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList) {
         if (mList != null) {
             mList.setListData(supervisionList);
         }
@@ -101,7 +101,7 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
     }
 
     @Override
-    public void onClick(SupervisorInfoEntity.SafeSupervisionEntity safeSupervisionEntity, int index) {
+    public void onClick(SupervisorInfoEntity safeSupervisionEntity, int index) {
         Bundle args = new Bundle();
         args.putInt(ID, safeSupervisionEntity.getEventId());
         SafeSupervisionCreateActivity.newInstance(this, SafeOrderDetailFragment.class, getString(R.string.safe_supervision_title), args);

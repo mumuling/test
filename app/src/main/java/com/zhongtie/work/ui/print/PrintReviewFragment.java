@@ -17,14 +17,26 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.data.Result;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.SyncApi;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.util.AppUtil;
+import com.zhongtie.work.util.TextUtil;
+
+import io.reactivex.functions.Consumer;
+
+import static com.zhongtie.work.ui.print.PrintEventActivity.KEY_EVENT_ID;
+import static com.zhongtie.work.ui.print.PrintEventActivity.KEY_PRINT_TYPE;
 
 /**
- * 预览界面
+ * 打印预览界面
  * date:2018.1.22
+ *
  * @author Chaek
  */
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class PrintReviewFragment extends BaseFragment {
 
     public static final String PRINT_SERVICE = "com.hp.android.printservice";
@@ -32,6 +44,8 @@ public class PrintReviewFragment extends BaseFragment {
     private TextView mPrint;
     private FrameLayout mFullWebView;
 
+    private int mPrintType;
+    private int mPrintEventId;
     private PrintEventActivity printEventActivity;
 
     @Override
@@ -44,8 +58,11 @@ public class PrintReviewFragment extends BaseFragment {
 
     @Override
     public int getLayoutViewId() {
+        mPrintEventId = getArguments().getInt(KEY_EVENT_ID);
+        mPrintType = getArguments().getInt(KEY_PRINT_TYPE);
         return R.layout.print_event_fragment;
     }
+
 
     @Override
     public void initView() {
@@ -59,24 +76,25 @@ public class PrintReviewFragment extends BaseFragment {
         addWebViewSettings(mWebView);
         mWebView.setWebViewClient(new ZTWebViewClient());
 
-        mPrint.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View view) {
-                if (!AppUtil.isPkgInstalled(PRINT_SERVICE)) {
-                    printEventActivity.showDownLoadHPPrintServer();
-                } else {
-                    PrintDocumentAdapter printDocumentAdapter = mWebView.createPrintDocumentAdapter();
-                    PrintManager printManger = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
-                    if (printManger != null) {
-                        String jobName = getActivity().getString(R.string.app_name) + " Document";
-                        printManger.print(jobName, printDocumentAdapter, null);
-                    } else {
-                        showToast(getString(R.string.print_fail));
-                    }
-                }
-            }
+        mPrint.setOnClickListener(view -> {
+            createWevViewPrint();
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void createWevViewPrint() {
+        if (!AppUtil.isPkgInstalled(PRINT_SERVICE)) {
+            printEventActivity.showDownLoadHPPrintServer();
+        } else {
+            PrintDocumentAdapter printDocumentAdapter = mWebView.createPrintDocumentAdapter();
+            PrintManager printManger = (PrintManager) getActivity().getSystemService(Context.PRINT_SERVICE);
+            if (printManger != null) {
+                String jobName = getActivity().getString(R.string.app_name) + " Document";
+                printManger.print(jobName, printDocumentAdapter, null);
+            } else {
+                showToast(getString(R.string.print_fail));
+            }
+        }
     }
 
     @Override
@@ -95,8 +113,23 @@ public class PrintReviewFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        getPrintUrl();
+    }
+
+    private void getPrintUrl() {
         initLoading();
-        mWebView.loadUrl("http://api.023ztjs.com/apiv2/index.php?action=eventPrint&%20timestamp=1511945178&os=j&devicename=PC&sysversion=windows&appversion=v1.0&deviceid=etchris.com&debug=1&userid=572&eventid=1132");
+        addDispose(Http.netServer(SyncApi.class)
+                .getPrintUrl(mPrintType, mPrintEventId)
+                .compose(Network.convertIO())
+                .subscribe(s -> {
+                    if (TextUtil.isEmpty(s)) {
+                        mWebView.loadUrl("http://api.023ztjs.com/apiv2/index.php?action=eventPrint&%20timestamp=1511945178&os=j&devicename=PC&sysversion=windows&appversion=v1.0&deviceid=etchris.com&debug=1&userid=572&eventid=1132");
+                    } else {
+                        mWebView.loadUrl(s);
+                    }
+                }, throwable -> {
+                    initFail();
+                }));
     }
 
     /**
@@ -117,7 +150,6 @@ public class PrintReviewFragment extends BaseFragment {
         settings.setDatabaseEnabled(true);
         settings.setDisplayZoomControls(false);
         settings.setLoadsImagesAutomatically(true);
-
     }
 
     private class ZTWebViewClient extends WebViewClient {

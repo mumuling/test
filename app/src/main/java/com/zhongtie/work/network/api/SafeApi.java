@@ -39,7 +39,7 @@ public interface SafeApi {
      */
     @FormUrlEncoded
     @POST("?action=GetEventList")
-    Flowable<Result<List<SupervisorInfoEntity.SafeSupervisionEntity>>> safeEventList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("time") String time, @Field("state") int state);
+    Flowable<Result<List<SupervisorInfoEntity>>> safeEventList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("time") String time, @Field("state") int state);
 
     /**
      * 创建安全督导

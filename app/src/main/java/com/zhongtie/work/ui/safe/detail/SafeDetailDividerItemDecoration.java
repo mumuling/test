@@ -18,18 +18,16 @@ import java.util.List;
 
 
 /**
- * RecyclerView 分割线
+ * 安全督导详情的同意分割线
  */
 public class SafeDetailDividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int paddingLeft = 0;
     private int dividerHeight = 1;
 
-    private int lineColor;
     private int checkCount;
 
     public void setLineColor(int lineColor) {
-        this.lineColor = lineColor;
         mDivider.setColor(lineColor);
     }
 
@@ -41,16 +39,6 @@ public class SafeDetailDividerItemDecoration extends RecyclerView.ItemDecoration
         this.dividerHeight = dividerHeight;
     }
 
-    private static final int[] ATTRS = new int[]{
-            android.R.attr.listDivider
-    };
-
-    private List<Object> itemList;
-
-    public void setItemList(List<Object> itemList) {
-        this.itemList = itemList;
-    }
-
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
 
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
@@ -58,25 +46,18 @@ public class SafeDetailDividerItemDecoration extends RecyclerView.ItemDecoration
     private GradientDrawable mDivider;
 
     private int mOrientation;
-    private boolean isTopLine;
     private int endPosition;
     private DividerLineDrawable lineDrawable;
     private DividerLineDrawable topLine;
     private DividerLineDrawable bottomLine;
     private int color;
 
-    private int width;
-
-    public void setTopLine(boolean topLine) {
-        isTopLine = topLine;
-    }
 
     public void setEndPosition(int endPosition) {
         this.endPosition = endPosition;
     }
 
     public SafeDetailDividerItemDecoration(Context context, int orientation) {
-        width = ViewUtils.dip2px(16);
         mDivider = new DividerLineDrawable();
         lineDrawable = new DividerLineDrawable();
         color = ContextCompat.getColor(App.getInstance(), R.color.line2);
@@ -123,8 +104,6 @@ public class SafeDetailDividerItemDecoration extends RecyclerView.ItemDecoration
         super.onDraw(c, parent, state);
         if (mOrientation == VERTICAL_LIST) {
             drawVertical(c, parent);
-        } else {
-            drawHorizontal(c, parent);
         }
     }
 
@@ -154,29 +133,11 @@ public class SafeDetailDividerItemDecoration extends RecyclerView.ItemDecoration
         }
     }
 
-    private void drawHorizontal(Canvas c, RecyclerView parent) {
-        final int top = parent.getPaddingTop();
-        final int bottom = parent.getHeight() - parent.getPaddingBottom();
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount - 1; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
-            final int left = child.getRight() + params.rightMargin;
-            final int right = left + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
-        }
-    }
 
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
-        Object o = null;
-        if (itemList != null && itemPosition > 1) {
-            o = itemList.get(itemPosition - 1);
-        }
         if (mOrientation == VERTICAL_LIST) {
-            outRect.set(0, isTopLine && itemPosition == 0 ? ViewUtils.dip2px(8) : 0, 0, endPosition == 0 || isInterval(itemPosition) ? dividerHeight : 1);
+            outRect.set(0, 0, 0, endPosition == 0 || isInterval(itemPosition) ? dividerHeight : 1);
         } else {
             outRect.set(0, 0, dividerHeight, 0);
         }

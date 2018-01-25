@@ -81,10 +81,6 @@ public class SafeDetailHeadView extends LinearLayout {
 
     }
 
-    public void initData() {
-
-
-    }
 
 
     public void setHeadInfo(SafeEventEntity headInfo) {

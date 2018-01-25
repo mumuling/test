@@ -12,14 +12,16 @@ import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.DividerLineDrawable;
 
 /**
- * 人才详情经历 分割线
+ * 首页公司选择分割线
+ *
+ * @author Chaek
  */
-public class PerformerGridItemDecoration extends RecyclerView.ItemDecoration {
+public class SelectCompanyItemDecoration extends RecyclerView.ItemDecoration {
     private DividerLineDrawable mDivider;
     private int mInsets = 0;
     private int lineHeight = 0;
 
-    public PerformerGridItemDecoration(Context context) {
+    SelectCompanyItemDecoration(Context context) {
         mDivider = new DividerLineDrawable();
         mDivider.setColor(context.getResources().getColor(R.color.filtrate_select_color));
         mInsets = ViewUtils.dip2px(16);
@@ -29,18 +31,6 @@ public class PerformerGridItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
-//        drawHorizontal(c, parent);
-    }
-
-
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
-        int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-
-        }
     }
 
 
@@ -48,7 +38,6 @@ public class PerformerGridItemDecoration extends RecyclerView.ItemDecoration {
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
             int spanCount = ((GridLayoutManager) layoutManager).getSpanSizeLookup().getSpanSize(itemPosition);
-//            L.e("1212", spanCount + "<<<<<<<<<<<<<");
             if (spanCount > 1) {
                 return true;
             }

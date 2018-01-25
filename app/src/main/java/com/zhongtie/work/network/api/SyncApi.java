@@ -22,12 +22,14 @@ public interface SyncApi {
     Flowable<Result<List<String>>> syncHeadPortraitUrl(@Field("companyid") int companyid);
 
     /**
-     * 创建本地数
-     * @param companyid
-     * @return
+     * 获取打印地址
+     *
+     * @param type 类型
+     * @param id   事件ID
+     * @return 返回URL地址
      */
     @FormUrlEncoded
-    @POST("?action=GetHeadPortraitUrl")
-    Flowable<Result<String>> createLocalData(@Field("companyid") int companyid);
+    @POST("?action=GetPrintUrl")
+    Flowable<Result<String>> getPrintUrl(@Field("type") int type, @Field("id") int id);
 
 }

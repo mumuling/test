@@ -10,7 +10,7 @@ import java.util.List;
 public interface RewardPunishContract {
     interface View extends BaseView {
 
-        void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList);
+        void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList);
 
         void setSafeEventCountList(HashMap<String, String> eventCountData);
     }

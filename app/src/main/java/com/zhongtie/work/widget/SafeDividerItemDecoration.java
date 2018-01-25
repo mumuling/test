@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe.detail;
+package com.zhongtie.work.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;

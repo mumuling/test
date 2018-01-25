@@ -31,15 +31,29 @@ public interface SafeDetailContract {
         void setCheckCount(int checkCount);
 
         void noLookAuthority();
+
+        int fetchEventId();
     }
 
     interface Presenter extends BasePresenter<View> {
-        void showCheck();
+        /**
+         * 改变check user显示状态
+         */
         void changeCheckListState();
-        void getItemList(int safeOrderID);
 
-        void setSelectImageList(List<String> selectImgList);
+        /**
+         * 初始化获取数据
+         *
+         * @param safeOrderID eventID
+         */
+        void getEventDetailItemList(int safeOrderID);
 
-        void setSelectUserInfoList(String title, List createUserEntities);
+        void checkUserSign(String imagePath);
+
+        /**
+         * 验证审核人事件
+         * @param imagePath 签名文件地址
+         */
+        void validateEvent(String imagePath);
     }
 }

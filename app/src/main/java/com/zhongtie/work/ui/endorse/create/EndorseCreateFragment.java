@@ -11,7 +11,7 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.file.select.NormalFile;
-import com.zhongtie.work.ui.safe.detail.SafeDividerItemDecoration;
+import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;

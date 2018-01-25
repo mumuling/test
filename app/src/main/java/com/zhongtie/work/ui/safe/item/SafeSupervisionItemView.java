@@ -17,15 +17,15 @@ import com.zhongtie.work.widget.BaseImageView;
  *
  * @author Chaek
  */
-@BindItemData(SupervisorInfoEntity.SafeSupervisionEntity.class)
-public class SafeSupervisionItemView extends AbstractItemView<SupervisorInfoEntity.SafeSupervisionEntity, SafeSupervisionItemView.ViewHolder> {
+@BindItemData(SupervisorInfoEntity.class)
+public class SafeSupervisionItemView extends AbstractItemView<SupervisorInfoEntity, SafeSupervisionItemView.ViewHolder> {
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_supervision_order;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SupervisorInfoEntity.SafeSupervisionEntity data) {
+    public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull SupervisorInfoEntity data) {
         vh.mSafeOrderHead.loadImage(data.getUserPicture());
         vh.mSafeOrderName.setText(data.getUserName());
         vh.mSafeOrderState.setText(data.getState());
@@ -46,6 +46,7 @@ public class SafeSupervisionItemView extends AbstractItemView<SupervisorInfoEnti
             case "已阅":
                 statusColor = vh.mContext.getResources().getColor(R.color.status_read);
                 break;
+            default:
         }
         vh.mSafeOrderState.setTextColor(statusColor);
 

@@ -42,19 +42,20 @@ import java.util.List;
 import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
 /**
- * Auth:Cheek
+ * 安全督导详情
  * date:2018.1.9
+ *
+ * @author Chaek
  */
 
 public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailContract.Presenter> implements SafeDetailContract.View, OnSignatureListener, OnRecyclerItemClickListener {
     public static final String ID = "id";
+    public static final int SHOW = 1;
     private int mSafeOrderID;
     private SafeDetailHeadView mHeadInfoView;
     private CommonAdapter mCommonAdapter;
     private List<Object> mInfoList = new ArrayList<>();
 
-    private LinearLayout mBottom;
-    private LinearLayout mBottomBtn;
     private TextView mModify;
     private TextView mReply;
     private TextView mApprove;
@@ -62,7 +63,6 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private RecyclerView mList;
     private SafeDetailDividerItemDecoration dividerItemDecoration;
     private OnChangeTitleListener mOnChangeTitleListener;
-
     private OnEventPrintListener mOnEventPrintListener;
 
 
@@ -97,20 +97,18 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     @Override
     public void onClickRefresh() {
         super.onClickRefresh();
-        mPresenter.getItemList(mSafeOrderID);
+        mPresenter.getEventDetailItemList(mSafeOrderID);
     }
 
     @Override
     public void initView() {
         mList = (RecyclerView) findViewById(R.id.list);
-        mBottom = (LinearLayout) findViewById(R.id.bottom);
-        mBottomBtn = (LinearLayout) findViewById(R.id.bottom_btn);
         mModify = (TextView) findViewById(R.id.modify);
         mReply = (TextView) findViewById(R.id.reply);
         mApprove = (TextView) findViewById(R.id.approve);
         mList = (RecyclerView) findViewById(R.id.list);
-
         mCheck = (TextView) findViewById(R.id.check);
+
 
         mModify.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
@@ -125,22 +123,11 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         });
 
         mCheck.setOnClickListener(view -> new SignatureDialog(getActivity(), mSignCheck).show());
-
         mApprove.setOnClickListener(view -> new SignatureDialog(getActivity(), SafeOrderDetailFragment.this).show());
-        mHeadInfoView = new SafeDetailHeadView(getActivity());
-        mHeadInfoView.initData();
         initAdapter();
     }
 
-    private OnSignatureListener mSignCheck = imagePath -> {
-        addDispose(UploadUtil.uploadSignPNG(imagePath)
-                .flatMap(uploadData -> Http.netServer(SafeApi.class).validateEvent(Cache.getUserID(), mSafeOrderID, uploadData.getPicname()))
-                .compose(Network.convertDialogTip(this))
-                .subscribe(integer -> {
-                    mPresenter.getItemList(mSafeOrderID);
-                }, throwable -> {
-                }));
-    };
+    private OnSignatureListener mSignCheck = imagePath -> mPresenter.validateEvent(imagePath);
 
     private void initAdapter() {
         mCommonAdapter = new CommonAdapter(mInfoList)
@@ -153,6 +140,8 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
                 .register(ReplyItemView.class)
                 //基本界面 展示数据
                 .register(new DetailCommonItemView(mList));
+
+        mHeadInfoView = new SafeDetailHeadView(getActivity());
         mCommonAdapter.addHeaderView(mHeadInfoView);
     }
 
@@ -165,13 +154,18 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
-        mPresenter.getItemList(mSafeOrderID);
+        mPresenter.getEventDetailItemList(mSafeOrderID);
         mCommonAdapter.setOnItemClickListener(this);
     }
 
+    /**
+     * 回复之后刷新界面数据
+     *
+     * @param replyEvent 回复事件
+     */
     @Subscribe
     public void replyEvent(ReplyEvent replyEvent) {
-        mPresenter.getItemList(mSafeOrderID);
+        mPresenter.getEventDetailItemList(mSafeOrderID);
     }
 
     @Override
@@ -195,7 +189,6 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
      * 更改标题
      */
     private void changeTitle(boolean isHideNullItem) {
-        dividerItemDecoration.setItemList(mCommonAdapter.getListData());
         if (isHideNullItem) {
             dividerItemDecoration.setEndPosition(3);
             if (mOnChangeTitleListener != null) {
@@ -213,14 +206,14 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
 
     @Override
     public void setEventStatus(SafeEventEntity.ButstateBean status) {
-        mModify.setVisibility(status.edit == 1 ? View.VISIBLE : View.GONE);
-        mReply.setVisibility(status.reply == 1 ? View.VISIBLE : View.GONE);
-        mApprove.setVisibility(status.sign == 1 ? View.VISIBLE : View.GONE);
-        mCheck.setVisibility(status.check == 1 ? View.VISIBLE : View.GONE);
+        mModify.setVisibility(status.edit == SHOW ? View.VISIBLE : View.GONE);
+        mReply.setVisibility(status.reply == SHOW ? View.VISIBLE : View.GONE);
+        mApprove.setVisibility(status.sign == SHOW ? View.VISIBLE : View.GONE);
+        mCheck.setVisibility(status.check == SHOW ? View.VISIBLE : View.GONE);
         findViewById(R.id.bottom).setVisibility(status.isHide() ? View.GONE : View.VISIBLE);
 
         if (mOnEventPrintListener != null) {
-            if (status.print == 1) {
+            if (status.print == SHOW) {
                 mOnEventPrintListener.onShowPrint(0, mSafeOrderID);
             } else {
                 mOnEventPrintListener.onHidePrint();
@@ -234,17 +227,15 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mStatusView.showEmpty();
     }
 
+    @Override
+    public int fetchEventId() {
+        return mSafeOrderID;
+    }
+
 
     @Override
     public void onSignature(String imagePath) {
-        addDispose(UploadUtil.uploadSignPNG(imagePath)
-                .flatMap(uploadData -> Http.netServer(SafeApi.class).eventSign(Cache.getUserID(), mSafeOrderID, uploadData.getPicname()))
-                .compose(Network.convertDialogTip(this))
-                .subscribe(integer -> {
-                    mPresenter.getItemList(mSafeOrderID);
-                }, throwable -> {
-                }));
-
+        mPresenter.checkUserSign(imagePath);
     }
 
     @Override

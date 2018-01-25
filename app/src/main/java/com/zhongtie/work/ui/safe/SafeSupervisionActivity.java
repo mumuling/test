@@ -130,7 +130,7 @@ public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisi
     }
 
     @Override
-    public void setSafeSupervisionList(List<SupervisorInfoEntity.SafeSupervisionEntity> supervisionList, int type) {
+    public void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList, int type) {
         SafeSupervisionFragment fragment = (SafeSupervisionFragment) supervisionFragments.get(type);
         fragment.setSafeSupervisionList(supervisionList);
     }
