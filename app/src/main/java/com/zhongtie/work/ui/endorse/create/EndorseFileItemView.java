@@ -12,6 +12,7 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.ui.file.select.NormalFile;
 import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.util.Util;
+import com.zhongtie.work.util.ViewUtils;
 
 /**
  * Auth:Cheek
@@ -52,19 +53,7 @@ public class EndorseFileItemView extends AbstractItemView<NormalFile, EndorseFil
             vh.mFileDel.setVisibility(View.GONE);
         }
         vh.mFolderFileContent.setText(fileSize);
-        if (data.getPath().endsWith("xls") || data.getPath().endsWith("xlsx")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_excel);
-        } else if (data.getPath().endsWith("doc") || data.getPath().endsWith("docx")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_word);
-        } else if (data.getPath().endsWith("ppt") || data.getPath().endsWith("pptx")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_ppt);
-        } else if (data.getPath().endsWith("pdf")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_pdf);
-        } else if (data.getPath().endsWith("txt")) {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_txt);
-        } else {
-            vh.mFileImg.setImageResource(R.drawable.vw_ic_file);
-        }
+        vh.mFileImg.setImageResource(ViewUtils.getFileTypeImage(data.getPath()));
     }
 
     @Override

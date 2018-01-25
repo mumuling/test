@@ -4,12 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.util.ToastUtil;
 import com.zhongtie.work.widget.MultipleStatusView;
 
@@ -20,20 +22,74 @@ import io.reactivex.disposables.Disposable;
 
 
 /**
- * Base
+ * BaseFragment
+ *
+ * @author Chaek
  */
 public abstract class BaseFragment extends Fragment implements BaseView, View.OnClickListener {
 
     public View fragmentView;
-    /**
-     * 是否初始
-     */
-    private boolean isInitView;
-    public Context mContext;
-    public boolean isInitData;
     public MultipleStatusView mStatusView;
+    private boolean isInitView;
+    private boolean isInitData;
+    public Context mContext;
     private BaseView activityBaseView;
+    private OnChangeTitleListener mOnChangeTitleListener;
 
+    @Override
+    public void onAttach(Context context) {
+        if (context instanceof BaseView) {
+            activityBaseView = (BaseView) context;
+        }
+        if (context instanceof OnChangeTitleListener) {
+            mOnChangeTitleListener = (OnChangeTitleListener) context;
+        }
+        super.onAttach(context);
+        this.mContext = context;
+        EventBus.getDefault().register(this);
+
+    }
+
+    protected View findViewById(@IdRes int id) {
+        return fragmentView.findViewById(id);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (fragmentView == null) {
+            setFragmentView(container);
+        }
+        isInitView = true;
+        if (mStatusView != null) {
+            mStatusView.setOnRetryClickListener(this);
+        }
+        return fragmentView;
+    }
+
+    protected void setFragmentView(ViewGroup container) {
+        fragmentView = createFragmentView(container);
+        if (fragmentView == null) {
+            fragmentView = LayoutInflater.from(getActivity()).inflate(getLayoutViewId(), container, false);
+        }
+        mStatusView = (MultipleStatusView) findViewById(R.id.status_view);
+        initModel();
+        initView();
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //逻辑实现懒加载 initData 中执行加载方法即是懒加载
+        if (getUserVisibleHint() && isInitView && !isInitData) {
+            initData();
+            isInitData = true;
+        }
+    }
+
+    public void initModel() {
+    }
 
     @Override
     public void showLoadDialog(String message) {
@@ -65,6 +121,11 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
         }
     }
 
+    /**
+     * 获取一个Context 为Application 不可用作打开Activity获取弹出Dialog
+     *
+     * @return ApplicationContext
+     */
     @Override
     public Context getAppContext() {
         if (activityBaseView != null) {
@@ -73,64 +134,33 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
         return getActivity().getApplicationContext();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        if (context instanceof BaseView) {
-            activityBaseView = (BaseView) context;
+    /**
+     * 设置标题 调用 {@link BaseActivity#setTitle(String)} 实现
+     * 所以Fragment要更改标题或设置标题请Activity 实现{@link OnChangeTitleListener}
+     *
+     * @param title 标题
+     */
+    protected void setTitle(String title) {
+        if (mOnChangeTitleListener != null) {
+            mOnChangeTitleListener.setTitle(title);
         }
-        super.onAttach(context);
-        this.mContext = context;
-        EventBus.getDefault().register(this);
-    }
-
-    protected View findViewById(@IdRes int id) {
-        return fragmentView.findViewById(id);
-    }
-
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (fragmentView == null) {
-            setFragmentView(container);
-        }
-        isInitView = true;
-
-        if (mStatusView != null) {
-            mStatusView.setOnRetryClickListener(this);
-        }
-
-        return fragmentView;
-    }
-
-
-    protected void setFragmentView(ViewGroup container) {
-        fragmentView = createFragmentView(container);
-        if (fragmentView == null) {
-            fragmentView = LayoutInflater.from(getActivity()).inflate(getLayoutViewId(), container, false);
-        }
-        mStatusView = (MultipleStatusView) findViewById(R.id.status_view);
-        initModel();
-        initView();
     }
 
     /**
-     * 可拦截layout id 获取View
+     * 设置标题
+     *
+     * @param title 标题string id
+     */
+    protected void setTitle(@StringRes int title) {
+        setTitle(getString(title));
+    }
+
+
+    /**
+     * 可拦截拦截实现返回一个View 就可以不去实现{@link #getLayoutViewId()}
      */
     protected View createFragmentView(ViewGroup container) {
         return null;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getUserVisibleHint() && isInitView && !isInitData) {
-            initData();
-            isInitData = true;
-        }
-    }
-
-    public void initModel() {
     }
 
 
@@ -154,11 +184,6 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
         return (T) fragmentView.findViewById(viewId);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        EventBus.getDefault().unregister(this);
-    }
 
     /**
      * EveBus CallBack
@@ -169,20 +194,6 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
     public void onEventThread(int event) {
     }
 
-    /**
-     * @return get root layout id
-     */
-    public abstract int getLayoutViewId();
-
-    /**
-     * initAttach view
-     */
-    public abstract void initView();
-
-    /**
-     * initAttach data
-     */
-    protected abstract void initData();
 
     @Override
     public void showToast(String message) {
@@ -205,8 +216,10 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
         }
     }
 
+    /**
+     * 实现点击刷新逻辑
+     */
     public void onClickRefresh() {
-
     }
 
     /**
@@ -246,5 +259,29 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
             mStatusView.showContent();
         }
     }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    /**
+     * @return get root layout id
+     */
+    public abstract int getLayoutViewId();
+
+    /**
+     * initAttach view
+     */
+    public abstract void initView();
+
+    /**
+     * initAttach data
+     */
+    protected abstract void initData();
 
 }

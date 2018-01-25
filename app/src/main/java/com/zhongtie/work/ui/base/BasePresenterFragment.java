@@ -17,6 +17,11 @@ public abstract class BasePresenterFragment<T extends BasePresenter> extends Bas
         mPresenter.takeView(this);
     }
 
+    /**
+     * 默认实现Presenter方法
+     *
+     * @return 注解的Presenter
+     */
     protected abstract T getPresenter();
 
     @Override

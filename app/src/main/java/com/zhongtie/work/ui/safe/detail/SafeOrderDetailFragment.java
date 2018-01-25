@@ -29,7 +29,10 @@ import com.zhongtie.work.ui.safe.item.DetailCommonItemView;
 import com.zhongtie.work.ui.safe.item.EventSignUserItemView;
 import com.zhongtie.work.ui.safe.item.ReplyItemView;
 import com.zhongtie.work.ui.safe.item.SafeTitleItemView;
+import com.zhongtie.work.ui.safe.parse.CommonParseData;
+import com.zhongtie.work.ui.safe.parse.Parse;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
+import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.util.upload.UploadUtil;
@@ -51,6 +54,8 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailContract.Presenter> implements SafeDetailContract.View, OnSignatureListener, OnRecyclerItemClickListener {
     public static final String ID = "id";
     public static final int SHOW = 1;
+
+    @Parse(key = ID)
     private int mSafeOrderID;
     private SafeDetailHeadView mHeadInfoView;
     private CommonAdapter mCommonAdapter;
@@ -66,6 +71,9 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private OnEventPrintListener mOnEventPrintListener;
 
 
+    @Parse
+    private String testName;
+
     public static SafeSupervisionCreateFragment newInstance(int id) {
         Bundle args = new Bundle();
         SafeSupervisionCreateFragment fragment = new SafeSupervisionCreateFragment();
@@ -78,6 +86,9 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        CommonParseData commonParseData = new CommonParseData(this);
+        L.e("--------------------注解解析", mSafeOrderID+"");
+
         if (context instanceof OnEventPrintListener) {
             mOnEventPrintListener = (OnEventPrintListener) context;
         }
@@ -88,9 +99,9 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
 
     @Override
     public int getLayoutViewId() {
-        if (getArguments() != null) {
-            mSafeOrderID = getArguments().getInt(ID);
-        }
+//        if (getArguments() != null) {
+//            mSafeOrderID = getArguments().getInt(ID);
+//        }
         return R.layout.safe_order_info_fragment;
     }
 

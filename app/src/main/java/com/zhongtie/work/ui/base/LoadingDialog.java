@@ -36,8 +36,8 @@ public class LoadingDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_loading);
-        LinearLayout widthLineLayout = (LinearLayout) findViewById(R.id.loading_width_layout);
-        content = (TextView) findViewById(R.id.toas_text);
+        LinearLayout widthLineLayout = findViewById(R.id.loading_width_layout);
+        content = findViewById(R.id.toas_text);
         content.setText(text);
         LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) widthLineLayout.getLayoutParams();
         linearParams.width = (int) (ViewUtils.getScreenWidth(context) * 0.8);

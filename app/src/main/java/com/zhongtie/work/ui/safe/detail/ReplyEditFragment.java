@@ -33,21 +33,18 @@ import static android.app.Activity.RESULT_OK;
 import static com.zhongtie.work.ui.image.MultiImageSelector.REQUEST_CODE;
 
 /**
- * Auth:Cheek
+ * 安全督导回复Fragment
  * date:2018.1.12
+ *
+ * @author Chaek
  */
 
 public class ReplyEditFragment extends BaseFragment implements OnSignatureListener, AdapterDataObserver.OnAdapterDataChangedListener {
 
     public static final String EVENT_ID = "event_id";
     private int mSafeEventId;
-    private TextView mEditTitle;
     private EditText mCreateModifyContent;
-    private TextView mItemUserListTitle;
-    private TextView mItemUserListTip;
-    private ImageView mItemUserAddImg;
     private RecyclerView mCheckExamineList;
-    private TextView mSubmit;
 
     private CommonAdapter commonAdapter;
     private List<String> mPicList = new ArrayList<>();
@@ -61,28 +58,28 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
     @Override
     public void initView() {
 
-        mEditTitle = (TextView) findViewById(R.id.edit_title);
+        TextView editTitle = (TextView) findViewById(R.id.edit_title);
         mCreateModifyContent = (EditText) findViewById(R.id.create_modify_content);
-        mItemUserListTitle = (TextView) findViewById(R.id.item_user_list_title);
-        mItemUserListTip = (TextView) findViewById(R.id.item_user_list_tip);
-        mItemUserAddImg = (ImageView) findViewById(R.id.item_user_add_img);
+        TextView itemUserListTitle = (TextView) findViewById(R.id.item_user_list_title);
+        TextView itemUserListTip = (TextView) findViewById(R.id.item_user_list_tip);
+        ImageView itemUserAddImg = (ImageView) findViewById(R.id.item_user_add_img);
         mCheckExamineList = (RecyclerView) findViewById(R.id.check_examine_list);
-        mSubmit = (TextView) findViewById(R.id.submit);
+        TextView submit = (TextView) findViewById(R.id.submit);
 
-        mItemUserListTitle.setText(R.string.imaage_title);
-        mEditTitle.setText(R.string.description);
-        mItemUserListTip.setText(R.string.select_photo_tip);
+        itemUserListTitle.setText(R.string.imaage_title);
+        editTitle.setText(R.string.description);
+        itemUserListTip.setText(R.string.select_photo_tip);
         mCreateModifyContent.setHint(R.string.description_hint);
 
-        mItemUserAddImg.setImageResource(R.drawable.ic_cam);
-        mItemUserAddImg.setVisibility(View.VISIBLE);
-        mItemUserAddImg.setOnClickListener(view -> {
+        itemUserAddImg.setImageResource(R.drawable.ic_cam);
+        itemUserAddImg.setVisibility(View.VISIBLE);
+        itemUserAddImg.setOnClickListener(view -> {
             int count = MultiImageSelector.MAX_COUNT - mPicList.size();
             MultiImageSelector.create().count(count).start(ReplyEditFragment.this, REQUEST_CODE);
         });
         mCheckExamineList.setLayoutManager(new LinearLayoutManager(getAppContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        mSubmit.setOnClickListener(view -> replyEvent());
+        submit.setOnClickListener(view -> replyEvent());
     }
 
     private void replyEvent() {

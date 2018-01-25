@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.zhongtie.work.Fragments;
 import com.zhongtie.work.R;
+import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.print.PrintEventActivity;
@@ -24,7 +25,7 @@ import java.util.List;
  * @author Chaek
  */
 
-public class CommonFragmentActivity extends BaseActivity implements OnEventPrintListener {
+public class CommonFragmentActivity extends BaseActivity implements OnEventPrintListener,OnChangeTitleListener {
 
     public static final String FRAGMENT = "fragment";
     public static final String TITLE = "title";
