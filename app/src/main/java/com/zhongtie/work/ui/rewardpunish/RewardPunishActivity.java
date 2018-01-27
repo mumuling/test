@@ -2,6 +2,7 @@ package com.zhongtie.work.ui.rewardpunish;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewPager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.calendar.CalendarDialog;
+import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.CaterpillarIndicator;
 
 import java.util.ArrayList;
@@ -41,13 +43,20 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
     @Override
     protected void initView() {
         setTitle(getString(R.string.safe_reward_punish));
-        setRightText("发起");
-        mSelectDate = (TextView) findViewById(R.id.select_date);
-        mSelectDateImg = (ImageView) findViewById(R.id.select_date_img);
-        mProjectTitleBar = (CaterpillarIndicator) findViewById(R.id.project_title_bar);
-        mViewPage = (ViewPager) findViewById(R.id.view_page);
-
+        setRightText(getString(R.string.create_title));
+        initDrawCreateIcon();
+        mSelectDate = findViewById(R.id.select_date);
+        mSelectDateImg = findViewById(R.id.select_date_img);
+        mProjectTitleBar = findViewById(R.id.project_title_bar);
+        mViewPage = findViewById(R.id.view_page);
         mSelectDateImg.setOnClickListener(v -> showSelectDate());
+    }
+
+    private void initDrawCreateIcon() {
+        Drawable drawable = getResources().getDrawable(R.drawable.btn_talk);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        mMenuTitle.setCompoundDrawablePadding(ViewUtils.dip2px(5));
+        mMenuTitle.setCompoundDrawables(drawable, null, null, null);
     }
 
     /**
@@ -65,7 +74,7 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
         supervisionFragments.add(RewardPunishFragment.newInstance(1));
         ZtFragmentAdapter adapter = new ZtFragmentAdapter(getSupportFragmentManager(), supervisionFragments);
         mViewPage.setAdapter(adapter);
-        mProjectTitleBar.initTitle(mViewPage, "我发起的", "可查阅的");
+        mProjectTitleBar.initTitle(mViewPage, R.array.punish_title_list);
         initDate();
     }
 

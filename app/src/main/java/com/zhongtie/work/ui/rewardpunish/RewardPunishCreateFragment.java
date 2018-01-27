@@ -9,14 +9,15 @@ import android.view.View;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.CommonUserEntity;
+import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
-import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
-import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.widget.SafeDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
 
     public static final String ID = "id";
     private int mSafeOrderID;
-    private View mHeadInfoView;
+    private RPCreateHeadView mHeadInfoView;
     private RecyclerView mList;
     private CommonAdapter mCommonAdapter;
     private List<Object> mInfoList = new ArrayList<>();
@@ -66,8 +67,6 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
 
     private void initAdapter() {
         mCommonAdapter = new CommonAdapter(mInfoList)
-                //选择类别
-                .register(CreateSelectTypeItemView.class)
                 //输入数据
                 .register(CreateEditContentItemView.class)
                 //基本界面
@@ -87,7 +86,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
-        mPresenter.getItemList(mSafeOrderID);
+        mPresenter.getRewardPunishItemList(mSafeOrderID);
     }
 
     @Override
@@ -99,6 +98,26 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
     public void setItemList(List<Object> itemList) {
         mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public int getPunishAmount() {
+        return mHeadInfoView.getInputPunishAmount();
+    }
+
+    @Override
+    public ProjectTeamEntity getPunishUnit() {
+        return mHeadInfoView.getUnitEntity();
+    }
+
+    @Override
+    public String getCreateCode() {
+        return mHeadInfoView.getCreateSafeCode();
+    }
+
+    @Override
+    public SupervisorInfoEntity getSafeEventData() {
+        return mHeadInfoView.getSupervisorInfoEntity();
     }
 
     @Override

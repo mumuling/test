@@ -4,32 +4,39 @@ import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
-import com.zhongtie.work.data.RPRecordEntity;
-import com.zhongtie.work.data.create.EventTypeEntity;
-import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.create.SelectEventTypeItem;
 import com.zhongtie.work.data.CommonUserEntity;
+import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.RPRecordEntity;
+import com.zhongtie.work.data.RewardPunishDetailEntity;
+import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
+import com.zhongtie.work.ui.rewardpunish.detail.TransformationPunishModel;
+import com.zhongtie.work.util.TextUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 安全奖罚 创建与编辑
  * Auth:Cheek
  * date:2018.1.12
  */
 
 public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateContract.View> implements RewardPunishCreateContract.Presenter {
     /**
-     * 描述编辑数据
+     * 摘要信息
      */
-    private EditContentEntity mDescribeEditContent;
+    private EditContentEntity mAbstract;
     /**
-     * 整改内容
+     * 详细信息
      */
-    private EditContentEntity mRectifyEditContent;
-    private ArrayMap<String, CommonItemType> mTypeArrayMap;
+    private EditContentEntity mDescribe;
+    private ArrayMap<String, CommonItemType> mItemArrayMap;
+
+    private int orderId;
+
+    private RewardPunishDetailEntity detailEntity;
 
     /**
      * @return 获取类型
@@ -41,49 +48,116 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         int size = titleList.length;
         for (int i = 0; i < size; i++) {
             CommonItemType item = new CommonItemType<>(titleList[i], tip[i], R.drawable.plus, true);
-            mTypeArrayMap.put(titleList[i], item);
+            mItemArrayMap.put(titleList[i], item);
             list.add(item);
         }
         return list;
     }
 
-    private SelectEventTypeItem fetchSelectTypeItemData() {
-        SelectEventTypeItem selectTypeItem = new SelectEventTypeItem("问题类型");
-        String[] typeList = App.getInstance().getResources().getStringArray(R.array.type_list);
-        List<EventTypeEntity> list = new ArrayList<>();
-        int size = typeList.length;
-        for (int i = 0; i < size; i++) {
-            list.add(new EventTypeEntity(typeList[i], i, false));
+
+    @Override
+    public void getRewardPunishItemList(int orderId) {
+
+        if (orderId <= 0) {
+            List<Object> itemList = new ArrayList<>();
+            mItemArrayMap = new ArrayMap<>();
+            mAbstract = new EditContentEntity("摘要", "请输入摘要说明", "");
+            mDescribe = new EditContentEntity("详细情况", "请输入详细情况", "");
+            //添加描述
+            itemList.add(mAbstract);
+            //添加修改要求
+            itemList.add(mDescribe);
+            itemList.addAll(fetchCommonItemTypeList());
+            mView.setItemList(itemList);
+        } else {
+            fetchPunishData(orderId);
         }
-        selectTypeItem.setTypeItemList(list);
-        return selectTypeItem;
+    }
+
+    private void fetchPunishData(int orderId) {
+        this.orderId = orderId;
+
+        initPunishEditItemList(detailEntity);
+    }
+
+    /**
+     * 编辑初始化
+     */
+    private void initPunishEditItemList(RewardPunishDetailEntity detailEntity) {
+        List<Object> itemList = new ArrayList<>();
+        mItemArrayMap = new ArrayMap<>();
+        mAbstract = new EditContentEntity("摘要", "请输入摘要说明", "");
+        mDescribe = new EditContentEntity("详细情况", "请输入详细情况", "");
+        //添加描述
+        itemList.add(mAbstract);
+        //添加修改要求
+        itemList.add(mDescribe);
+
+        TransformationPunishModel punishModel=new TransformationPunishModel(detailEntity);
+
+        itemList.addAll(fetchCommonItemTypeList());
+        mView.setItemList(itemList);
+
     }
 
     @Override
-    public void getItemList(int safeOrderID) {
-        List<Object> itemList = new ArrayList<>();
-        mTypeArrayMap = new ArrayMap<>();
-        mDescribeEditContent = new EditContentEntity("摘要", "请输入摘要说明", "");
-        mRectifyEditContent = new EditContentEntity("详细情况", "请输入详细情况", "");
+    public void createRewardPunish() {
 
-        //添加描述
-        itemList.add(mDescribeEditContent);
-        //添加修改要求
-        itemList.add(mRectifyEditContent);
-        itemList.addAll(fetchCommonItemTypeList());
-        mView.setItemList(itemList);
+        String code = mView.getCreateCode();
+        if (TextUtil.isEmpty(code)) {
+            mView.showToast(R.string.toast_input_punish_code);
+            return;
+        }
+        ProjectTeamEntity teamEntity = mView.getPunishUnit();
+        if (teamEntity == null) {
+            mView.showToast(R.string.toast_punish_select_unit);
+            return;
+        }
+
+        int punishAmount = mView.getPunishAmount();
+        if (punishAmount <= 0) {
+            mView.showToast(R.string.toast_punish_amount);
+            return;
+        }
+        //摘要信息
+        String abstractContent = mAbstract.getContent();
+        if (TextUtil.isEmpty(abstractContent)) {
+            mView.showToast(R.string.toast_punish_abstract);
+            return;
+        }
+        String describe = mDescribe.getContent();
+        if (TextUtil.isEmpty(describe)) {
+            mView.showToast(R.string.toast_punish_describe);
+            return;
+        }
+
+        for (String key : mItemArrayMap.keySet()) {
+            CommonItemType itemType = mItemArrayMap.get(key);
+            if (itemType.getTypeItemList().isEmpty()) {
+                mView.showToast("请选择" + itemType.getTitle());
+                return;
+            }
+        }
+
+        ArrayMap<String, Object> createData = new ArrayMap<>();
+
+
     }
 
 
     @Override
     public void setSelectUserInfoList(String title, List createUserEntities) {
-        CommonItemType itemType = mTypeArrayMap.get(title);
+        CommonItemType itemType = mItemArrayMap.get(title);
         if (itemType != null) {
             if (!title.contains("查阅")) {
+                //编辑界面对选择的人进行转换
                 List<RPRecordEntity> list = new ArrayList<>();
                 for (int i = 0; i < createUserEntities.size(); i++) {
-                    CommonUserEntity createUserEntity = (CommonUserEntity) createUserEntities.get(i);
+                    CommonUserEntity user = (CommonUserEntity) createUserEntities.get(i);
                     RPRecordEntity rpRecordEntity = new RPRecordEntity();
+                    rpRecordEntity.setUserName(user.getUserName());
+                    rpRecordEntity.setUserID(user.getUserId());
+                    rpRecordEntity.setUserPic(user.getUserPic());
                     rpRecordEntity.setEdit(true);
                     list.add(rpRecordEntity);
                 }

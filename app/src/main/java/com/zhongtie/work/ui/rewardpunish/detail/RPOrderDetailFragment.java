@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
+import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.RewardPunishCreateFragment;
 import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
@@ -64,13 +65,8 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
         mList = (RecyclerView) findViewById(R.id.list);
 
         mModify.setOnClickListener(view -> SafeSupervisionCreateActivity.newInstance(getActivity(), RewardPunishCreateFragment.class, getString(R.string.safe_supervision_title)));
-        mApprove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showApproveDialog();
-//                new SignatureDialog(getActivity(), EndorseDetailFragment.this).show();
-            }
-        });
+        mApprove.setOnClickListener(view -> showApproveDialog());
+
         mHeadInfoView = new RPDetailHeadView(getActivity());
         mHeadInfoView.initData();
         initAdapter();
@@ -99,7 +95,7 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
-        mPresenter.getItemList(mSafeOrderID);
+        mPresenter.getDetailInfo(mSafeOrderID);
     }
 
     @Override
@@ -111,6 +107,11 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
     public void setItemList(List<Object> itemList) {
         mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setHeadTitle(RewardPunishDetailEntity detailEntity) {
+        mHeadInfoView.setDetailInfo(detailEntity);
     }
 
     @Override

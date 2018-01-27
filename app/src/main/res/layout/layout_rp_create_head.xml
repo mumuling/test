@@ -25,15 +25,15 @@
             android:textSize="16dp" />
 
 
-        <TextView
+        <EditText
             android:id="@+id/create_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:hint="@string/create_code_hint"
             android:textColor="@color/text_color2"
+            android:textColorHint="@color/text_color3"
             android:textSize="14dp" />
-
     </LinearLayout>
 
     <RelativeLayout

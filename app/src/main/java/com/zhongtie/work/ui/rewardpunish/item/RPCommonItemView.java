@@ -19,7 +19,6 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.list.CommonAdapterDataObserver;
-import com.zhongtie.work.ui.safe.item.SafeCommonItemView;
 import com.zhongtie.work.ui.safe.item.TeamNameItemView;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.SelectLookGroupFragment;
@@ -27,7 +26,7 @@ import com.zhongtie.work.ui.select.SelectSupervisorUserFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 
 /**
- * 创建基本类别
+ * 安全督导创建通用界面
  * Auth: Chaek
  * Date: 2018/1/11
  */

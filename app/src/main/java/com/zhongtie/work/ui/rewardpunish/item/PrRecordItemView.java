@@ -16,6 +16,8 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 安全监察的操作 记录
+ * <p>
+ * 创建的操作选择人也会进入这个item
  * Auth: Chaek
  * Date: 2018/1/11
  */
@@ -29,9 +31,9 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull RPRecordEntity data) {
-        vh.mSafeOrderReplyHead.loadImage(imageUrls[0]);
-        vh.mSafeOrderName.setText("测试");
+        vh.mSafeOrderName.setText(data.getUserName());
         if (data.isEdit()) {
+            vh.mSafeOrderReplyHead.loadImage(data.getUserID());
             vh.mSafeOrderReplySign.setVisibility(View.GONE);
             vh.mSafeOrderReplyTime.setVisibility(View.GONE);
             vh.mRecordContent.setVisibility(View.GONE);

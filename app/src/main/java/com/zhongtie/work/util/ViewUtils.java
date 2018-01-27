@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.TypedValue;
 
@@ -104,4 +105,7 @@ public class ViewUtils {
         }
     }
 
+    public static String getString(@StringRes int stringId) {
+        return App.getInstance().getString(stringId);
+    }
 }

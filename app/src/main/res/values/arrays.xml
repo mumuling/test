@@ -109,4 +109,8 @@
         <item>未完结</item>
         <item>已完结</item>
     </string-array>
+    <string-array name="punish_title_list">
+        <item>我发起的</item>
+        <item>可查阅的</item>
+    </string-array>
 </resources>

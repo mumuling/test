@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.widget.BaseImageView;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
@@ -33,6 +34,7 @@ public class RPDetailHeadView extends LinearLayout implements View.OnClickListen
     private TextView mPunishProjectTeam;
     private TextView mPunishAmount;
     private RelativeLayout mSupervisorLookLayout;
+    private RewardPunishDetailEntity detailInfo;
 
 
     public RPDetailHeadView(Context context) {
@@ -74,5 +76,9 @@ public class RPDetailHeadView extends LinearLayout implements View.OnClickListen
     @Override
     public void onClick(View view) {
 
+    }
+
+    public void setDetailInfo(RewardPunishDetailEntity detailInfo) {
+        this.detailInfo = detailInfo;
     }
 }

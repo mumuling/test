@@ -179,4 +179,15 @@
     <string name="dialog_tip_exit_user_login">确定要退出当前用户登录吗？</string>
     <string name="developing">功能正在开发中,敬请期待!</string>
     <string name="validate_success">验证成功</string>
+    <string name="select_unit">输入单位名称</string>
+    <string name="toast_input_punish_code">请输入编号</string>
+    <string name="toast_punish_select_unit">请选择处罚单位</string>
+    <string name="toast_punish_amount">请输入正确的处罚金额</string>
+    <string name="toast_punish_abstract">请输入摘要信息</string>
+    <string name="toast_punish_describe">请输入详细情况</string>
+    <string name="safe_supervision_item_title">安全监察</string>
+    <string name="punish_leader_item_title">安全监察</string>
+    <string name="punish_item_tip">仅限选择1人</string>
+    <string name="punish_read_group_title">查阅组</string>
+    <string name="slide_look_more">查阅组</string>
 </resources>

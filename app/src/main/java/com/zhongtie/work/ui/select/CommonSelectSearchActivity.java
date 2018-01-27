@@ -37,6 +37,7 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
         Intent intent = new Intent(context, CommonSelectSearchActivity.class);
         intent.putExtra(FRAGMENT, fragment.getName());
         intent.putExtra(TITLE, title);
+        intent.putExtra(SEARCH_HINT, title);
         context.startActivity(intent);
     }
 
@@ -45,6 +46,7 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
         Bundle bundle = new Bundle();
         bundle.putString(FRAGMENT, fragment.getName());
         bundle.putString(TITLE, hint);
+        bundle.putString(SEARCH_HINT, hint);
         bundle.putSerializable(LIST, (Serializable) list);
         intent.putExtras(bundle);
         context.startActivityForResult(intent, USER_SELECT_CODE);

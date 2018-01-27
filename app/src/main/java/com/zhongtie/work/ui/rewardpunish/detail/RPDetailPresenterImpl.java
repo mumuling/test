@@ -78,7 +78,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
 
 
     @Override
-    public void getItemList(int safeOrderID) {
+    public void getDetailInfo(int safeOrderID) {
         List<Object> itemList = new ArrayList<>();
         mTypeArrayMap = new ArrayMap<>();
 
@@ -97,17 +97,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
         itemList.add(mDescribeEditContent);
 
         itemList.addAll(fetchCommonItemTypeList());
-
         mView.setItemList(itemList);
     }
 
-    @Override
-    public void setSelectImageList(List<String> selectImgList) {
-
-    }
-
-    @Override
-    public void setSelectUserInfoList(String title, List createUserEntities) {
-
-    }
 }

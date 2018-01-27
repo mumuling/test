@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * 安全奖惩列表
  * Auth:Cheek
  * date:2018.1.9
  */
@@ -52,6 +53,7 @@ public class RewardPunishFragment extends BasePresenterFragment<RewardPunishCont
     @Override
     protected void initData() {
         commonAdapter = new CommonAdapter();
+        //区分列表
         if (mType == 0) {
             commonAdapter.register(RewardPunishItemView.class);
         } else {
@@ -75,12 +77,13 @@ public class RewardPunishFragment extends BasePresenterFragment<RewardPunishCont
 
     @Override
     public void setSafeEventCountList(HashMap<String, String> eventCountData) {
-
     }
 
     @Override
     public void fetchPageListData(int page) {
-        mPresenter.fetchPageList("", 0, page);
+        if (page == 1) {
+            mPresenter.fetchPageList("", 0, page);
+        }
     }
 
     @Override
