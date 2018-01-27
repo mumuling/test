@@ -12,8 +12,8 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.ui.adapter.ZtFragmentAdapter;
 import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.ui.rewardpunish.dialog.SelectDateTimeDialog;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
-import com.zhongtie.work.ui.safe.calendar.CalendarDialog;
 import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.CaterpillarIndicator;
 
@@ -25,11 +25,13 @@ import java.util.List;
  * date:2018.1.9
  */
 
-public class RewardPunishActivity extends BaseActivity implements CalendarDialog.OnSelectDateCallback {
+public class RewardPunishActivity extends BaseActivity implements SelectDateTimeDialog.OnSelectDateTimeListener {
     private TextView mSelectDate;
     private ImageView mSelectDateImg;
     private CaterpillarIndicator mProjectTitleBar;
     private ViewPager mViewPage;
+    private SelectDateTimeDialog mSelectDateTimeDialog;
+    private String createTime;
 
     public static void newInstance(Context context) {
         context.startActivity(new Intent(context, RewardPunishActivity.class));
@@ -63,8 +65,23 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
      * 筛选日期选择
      */
     private void showSelectDate() {
-        CalendarDialog calendarDialog = new CalendarDialog(this, this);
-        calendarDialog.show();
+        if (mSelectDateTimeDialog == null) {
+            SelectDateTimeDialog.Build build = new SelectDateTimeDialog.Build(this);
+            build.setSelectDateTime(this);
+            build.setSelectDateTime(new SelectDateTimeDialog.OnSelectDateTimeListener() {
+                @Override
+                public void setTimeDate(String datetime, int type) {
+                    setCreateTime(datetime);
+                }
+
+                @Override
+                public void setSelectType(int[] type, int buildType) {
+                }
+            });
+            build.setType(SelectDateTimeDialog.BIRTH_DATE).setDataModel(SelectDateTimeDialog.Build.BIRTH);
+            mSelectDateTimeDialog = build.create();
+        }
+        mSelectDateTimeDialog.show();
     }
 
     @Override
@@ -80,7 +97,7 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
 
     private void initDate() {
         CalendarDate calendarDate = new CalendarDate();
-        mSelectDate.setText(getString(R.string.safe_select_title_date, calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay()));
+        mSelectDate.setText(getString(R.string.punish_select_title_date, calendarDate.getYear(), calendarDate.getMonth()));
     }
 
     @Override
@@ -89,8 +106,19 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
         SafeSupervisionCreateActivity.newInstance(this, RewardPunishCreateFragment.class, getString(R.string.safe_reward_punish));
     }
 
+
     @Override
-    public void onSelectDate(String date) {
-        mSelectDate.setText(date);
+    public void setTimeDate(String datetime, int type) {
+
+    }
+
+    @Override
+    public void setSelectType(int[] type, int buildType) {
+
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+        mSelectDate.setText(createTime);
     }
 }

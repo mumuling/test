@@ -6,13 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.zhongtie.work.BuildConfig;
-import com.zhongtie.work.util.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,9 +157,6 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
         }
         int result = classIndex * MAX_ITEM_TYPE + viewType;
         positionTypeMap.put(result, classIndex);
-        if (BuildConfig.DEBUG) {
-            L.e(TAG, positionTypeMap.toString());
-        }
         return result;
     }
 
@@ -508,9 +501,6 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
         CommonViewHolder commonViewHolder = (CommonViewHolder) v.getTag(RECYCLER_CLICK);
         if (onRecyclerClickListener != null) {
             int position = commonViewHolder.getLayoutPosition() - getHeaderCount();
-            if (BuildConfig.DEBUG) {
-                Log.e("CommonViewHolder", "onClick: " + position);
-            }
             onRecyclerClickListener.onClick(mListData.get(position), position);
         }
     }
