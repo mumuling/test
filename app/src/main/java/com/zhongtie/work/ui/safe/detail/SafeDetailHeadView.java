@@ -97,7 +97,7 @@ public class SafeDetailHeadView extends LinearLayout implements Serializable {
         }
         if (!TextUtil.isEmpty(headInfo.event_troubletype)) {
             mSafeEventTypeLayout.setVisibility(VISIBLE);
-            mQuestionType.setText(headInfo.event_workerteam);
+            mQuestionType.setText(headInfo.event_troubletype);
         }else {
             mSafeEventTypeLayout.setVisibility(GONE);
         }

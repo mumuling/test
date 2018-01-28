@@ -49,6 +49,7 @@
         <item>临时用电</item>
         <item>消防管理</item>
         <item>高处作业</item>
+        <item>安全管理</item>
         <item>其它</item>
     </string-array>
     <string-array name="create_item_title">

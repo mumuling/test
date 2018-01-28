@@ -21,6 +21,8 @@ import io.reactivex.Flowable;
 
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_NAME;
 import static com.zhongtie.work.ui.login.LoginPresenter.LOGIN_USER_PASSWORD;
+import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_ID;
+import static com.zhongtie.work.ui.login.LoginPresenter.SELECT_COMPANY_NAME;
 
 /**
  * Auth:Cheek
@@ -61,7 +63,11 @@ public class SplashPresenterImpl extends BasePresenterImpl<SplashContract.View> 
                                 .map(s -> {
                                     LoginUserInfoEntity userInfoEntity = SQLite.select().from(LoginUserInfoEntity.class)
                                             .where(LoginUserInfoEntity_Table.id.eq(s)).querySingle();
-                                    App.getInstance().setUserInfo(userInfoEntity);
+                                    if (userInfoEntity != null) {
+                                        SharePrefUtil.getUserPre().putString(SELECT_COMPANY_NAME, userInfoEntity.getCompanyname());
+                                        SharePrefUtil.getUserPre().putInt(SELECT_COMPANY_ID, userInfoEntity.getCompany());
+                                        App.getInstance().setUserInfo(userInfoEntity);
+                                    }
                                     return s;
                                 });
                     }
