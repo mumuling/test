@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -19,6 +17,7 @@ import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.select.item.SelectTeamNameItemView;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.DividerItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -35,17 +34,17 @@ import static com.zhongtie.work.ui.setting.CommonFragmentActivity.TITLE;
 import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
 /**
- * Auth:Cheek
+ * 选择查阅组
+ * <p>
  * date:2018.1.11
+ *
+ * @author Chaek
  */
-
-public class SelectLookGroupFragment extends BaseFragment implements OnRecyclerItemClickListener<TeamNameEntity> {
-    private RelativeLayout mLookGroupTitle;
-    private TextView mItemTeamTitle;
+public class SelectReadGroupFragment extends BaseFragment implements OnRecyclerItemClickListener<TeamNameEntity> {
     private TextView mItemTeamSelectAll;
     private RecyclerView mCheckExamineList;
-    private TextView mAdd;
 
+    @BindKey(LIST)
     private List<TeamNameEntity> nameEntityList = new ArrayList<>();
     private List<TeamNameEntity> mAllTeamList = new ArrayList<>();
 
@@ -55,36 +54,30 @@ public class SelectLookGroupFragment extends BaseFragment implements OnRecyclerI
 
     @Override
     public int getLayoutViewId() {
-        nameEntityList = (List<TeamNameEntity>) getArguments().getSerializable(LIST);
         return R.layout.look_group_fragment;
     }
 
     @Override
     public void initView() {
-        mLookGroupTitle = (RelativeLayout) findViewById(R.id.look_group_title);
-        mItemTeamTitle = (TextView) findViewById(R.id.item_team_title);
         mItemTeamSelectAll = (TextView) findViewById(R.id.item_team_select_all);
         mCheckExamineList = (RecyclerView) findViewById(R.id.check_examine_list);
         mCheckExamineList.setLayoutManager(new LinearLayoutManager(getAppContext()));
-        mAdd = (TextView) findViewById(R.id.add);
+        TextView add = (TextView) findViewById(R.id.add);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.white));
         dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(5));
         mCheckExamineList.addItemDecoration(dividerItemDecoration);
 
-        mAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //点击确定返回数据
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString(TITLE, getArguments().getString(TITLE));
-                bundle.putSerializable(LIST, (Serializable) nameEntityList);
-                intent.putExtras(bundle);
-                getActivity().setResult(RESULT_OK, intent);
-                getActivity().finish();
-            }
+        add.setOnClickListener(view -> {
+            //点击确定返回数据
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putString(TITLE, getArguments().getString(TITLE));
+            bundle.putSerializable(LIST, (Serializable) nameEntityList);
+            intent.putExtras(bundle);
+            getActivity().setResult(RESULT_OK, intent);
+            getActivity().finish();
         });
 
         mItemTeamSelectAll.setOnClickListener(v -> selectAllTeam());
@@ -101,7 +94,7 @@ public class SelectLookGroupFragment extends BaseFragment implements OnRecyclerI
             }
         }
         isSelect = !isSelect;
-        mItemTeamSelectAll.setText(!isSelect ? "全选" : "取消全选");
+        mItemTeamSelectAll.setText(!isSelect ? R.string.select_all : R.string.select_cancel_all);
         mCommonAdapter.notifyDataSetChanged();
     }
 

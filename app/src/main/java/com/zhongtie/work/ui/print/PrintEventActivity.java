@@ -159,7 +159,6 @@ public class PrintEventActivity extends BaseActivity {
 
 
     class ProgressObserver implements Observer<Integer> {
-
         @Override
         public void onSubscribe(Disposable d) {
             showLoadDialog(R.string.downloading);

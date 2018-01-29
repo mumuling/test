@@ -21,7 +21,7 @@ import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.list.CommonAdapterDataObserver;
 import com.zhongtie.work.ui.safe.item.TeamNameItemView;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
-import com.zhongtie.work.ui.select.SelectLookGroupFragment;
+import com.zhongtie.work.ui.select.SelectReadGroupFragment;
 import com.zhongtie.work.ui.select.SelectSupervisorUserFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 
@@ -105,7 +105,7 @@ public class RPCommonItemView extends AbstractItemView<CommonItemType, RPCommonI
 
     private void itemStartView(View v, @NonNull CommonItemType data) {
         if (data.getTitle().contains("查阅")) {
-            CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectLookGroupFragment.class, data.getTitle(), data.getTypeItemList());
+            CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectReadGroupFragment.class, data.getTitle(), data.getTypeItemList());
         } else {
             CommonSelectSearchActivity.newInstance(getFragment(v.getContext()), SelectSupervisorUserFragment.class, data.getTitle(), data.getTypeItemList());
         }

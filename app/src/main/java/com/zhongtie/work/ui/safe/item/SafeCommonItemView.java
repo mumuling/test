@@ -20,7 +20,7 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.list.CommonAdapterDataObserver;
 import com.zhongtie.work.ui.image.MultiImageSelector;
-import com.zhongtie.work.ui.select.SelectLookGroupFragment;
+import com.zhongtie.work.ui.select.SelectReadGroupFragment;
 import com.zhongtie.work.ui.select.SelectUserFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 
@@ -67,7 +67,7 @@ public class SafeCommonItemView extends AbstractItemView<CommonItemType, SafeCom
                 int count = data.getTypeItemList() == null ? MultiImageSelector.MAX_COUNT : MultiImageSelector.MAX_COUNT - data.getTypeItemList().size();
                 MultiImageSelector.create().count(count).start(getFragment(v.getContext()), REQUEST_CODE);
             } else if (data.getTitle().contains("查阅")) {
-                CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectLookGroupFragment.class, data.getTitle(), data.getTypeItemList());
+                CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectReadGroupFragment.class, data.getTitle(), data.getTypeItemList());
             } else {
                 CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectUserFragment.class, data.getTitle(), data.getTypeItemList());
             }

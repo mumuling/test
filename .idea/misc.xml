@@ -6,6 +6,8 @@
     </list>
     <writeAnnotations>
       <writeAnnotation name="com.zhongtie.work.ui.safe.parse.Parse" />
+      <writeAnnotation name="com.zhongtie.work.util.parse.Parse" />
+      <writeAnnotation name="com.zhongtie.work.util.parse.BindKey" />
     </writeAnnotations>
   </component>
   <component name="NullableNotNullManager">

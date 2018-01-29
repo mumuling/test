@@ -5,9 +5,6 @@ import android.util.Log;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * Created by 陈丰尧 on 2017/4/16.
- */
 
 public class SystemManager {
 

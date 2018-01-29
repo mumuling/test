@@ -25,16 +25,18 @@ import java.util.List;
  *
  * @author Chaek
  */
-public class MainActivity extends BasePresenterActivity<MainContract.Presenter> implements CompanySelectPopup.OnCompanySelectListener,
+public class MainActivity extends BasePresenterActivity<MainContract.Presenter> implements CompanySelectPopupWindow.OnCompanySelectListener,
         MainContract.View, OnRefreshListener {
     private static final String TAG = "MainActivity";
-    public static final int EXIT_LOAD_TIME = 2000;
+    private static final int EXIT_LOAD_TIME = 2000;
+
     private TextView mUserCompanyName;
     private ImageView mArrowView;
     public DrawerLayout mDrawerLayout;
     private List<CacheCompanyTable> companyEntityList;
     private MainFragment mainFragment;
 
+    private CompanySelectPopupWindow selectPopupWindow;
     private long mExitTime = 0;
 
     @Override
@@ -52,15 +54,20 @@ public class MainActivity extends BasePresenterActivity<MainContract.Presenter> 
 
         //点击按钮打开菜单
         lvHomeMenu.setOnClickListener(v -> mDrawerLayout.openDrawer(Gravity.START));
-        lvHomeTitle.setOnClickListener(view -> showSelectCompany());
+        lvHomeTitle.setOnClickListener(view -> showSelectCompanyPopupWindow());
     }
 
 
-    private void showSelectCompany() {
-        CompanySelectPopup companySelectPopup = new CompanySelectPopup(this, companyEntityList);
-        companySelectPopup.showAsDropDown(mUserCompanyName);
-        companySelectPopup.setOnCompanySelectListener(this);
-        companySelectPopup.setOnDismissListener(() -> mArrowView.animate().rotation(0).setDuration(300).start());
+    /**
+     * 显示公司选择弹窗
+     */
+    private void showSelectCompanyPopupWindow() {
+        if (selectPopupWindow == null) {
+            selectPopupWindow = new CompanySelectPopupWindow(this, companyEntityList);
+            selectPopupWindow.setOnCompanySelectListener(this);
+            selectPopupWindow.setOnDismissListener(() -> mArrowView.animate().rotation(0).setDuration(300).start());
+        }
+        selectPopupWindow.showAsDropDown(mUserCompanyName);
         mArrowView.animate().rotation(180).setDuration(300).start();
     }
 

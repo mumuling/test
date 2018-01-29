@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.zhongtie.work.R;
 import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.util.ToastUtil;
+import com.zhongtie.work.util.parse.ParseData;
 import com.zhongtie.work.widget.MultipleStatusView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,6 +39,8 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
 
     @Override
     public void onAttach(Context context) {
+        new ParseData(this);
+
         if (context instanceof BaseView) {
             activityBaseView = (BaseView) context;
         }

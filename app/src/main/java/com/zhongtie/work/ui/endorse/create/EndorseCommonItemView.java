@@ -23,7 +23,7 @@ import com.zhongtie.work.ui.endorse.detail.EndorseUserItemView;
 import com.zhongtie.work.ui.file.FileSelectFragment;
 import com.zhongtie.work.ui.safe.item.CreateUserItemView;
 import com.zhongtie.work.ui.safe.item.TeamNameItemView;
-import com.zhongtie.work.ui.select.SelectLookGroupFragment;
+import com.zhongtie.work.ui.select.SelectReadGroupFragment;
 import com.zhongtie.work.ui.select.SelectUserFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 
@@ -119,7 +119,7 @@ public class EndorseCommonItemView extends AbstractItemView<CommonItemType, Endo
 
     private void itemStartView(View v, @NonNull CommonItemType data) {
         if (data.getTitle().contains("查阅")) {
-            CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectLookGroupFragment.class, data.getTitle(), data.getTypeItemList());
+            CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectReadGroupFragment.class, data.getTitle(), data.getTypeItemList());
         } else if (data.getTitle().contains("上传文件")) {
             CommonFragmentActivity.newInstance(v.getContext(), FileSelectFragment.class, "选择文件");
         } else {

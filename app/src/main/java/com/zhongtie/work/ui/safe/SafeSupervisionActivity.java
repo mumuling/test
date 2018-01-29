@@ -71,8 +71,10 @@ public class SafeSupervisionActivity extends BasePresenterActivity<SafeSupervisi
      * 筛选日期选择
      */
     private void showSelectDate() {
-        calendarDialog = new CalendarDialog(this, this);
-        calendarDialog.setEventCountList(mOrderEventCountList);
+        if (calendarDialog == null) {
+            calendarDialog = new CalendarDialog(this, this);
+            calendarDialog.setEventCountList(mOrderEventCountList);
+        }
         calendarDialog.show();
     }
 

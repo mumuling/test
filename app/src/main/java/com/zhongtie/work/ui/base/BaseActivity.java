@@ -14,6 +14,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.ToastUtil;
+import com.zhongtie.work.util.parse.ParseData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new ParseData(this);
+
         setContentView(getLayoutViewId());
         EventBus.getDefault().register(this);
         initTitle();
@@ -103,8 +106,16 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     public void setTitle(String title, String right) {
-        setTitle(title, true);
+        setTitle(title);
         setRightText(right);
+    }
+
+    @Override
+    protected void onTitleChanged(CharSequence title, int color) {
+        super.onTitleChanged(title, color);
+        if (mToolbarTitle != null) {
+            mToolbarTitle.setText(title);
+        }
     }
 
     /**
@@ -112,14 +123,17 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
      *
      * @param title 标题内容
      */
-    public void setTitle(String title) {
-        setTitle(title, true);
-    }
 
-    public void setTitle(String title, boolean isShowUp) {
+
+    public void setTitle(String title) {
         if (mToolbarTitle != null) {
             mToolbarTitle.setText(title);
         }
+    }
+
+    @Override
+    public void setTitle(@StringRes int title) {
+        super.setTitle(title);
     }
 
 

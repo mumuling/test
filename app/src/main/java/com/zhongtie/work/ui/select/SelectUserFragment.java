@@ -30,6 +30,7 @@ import com.zhongtie.work.ui.select.item.SelectUserItemView;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.AdapterDataObserver;
 import com.zhongtie.work.widget.DividerItemDecoration;
 import com.zhongtie.work.widget.EmptyFragment;
@@ -69,31 +70,31 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     private RecyclerView mUserGroupList;
 
     private CommonAdapter mSelectInfoAdapter;
-    private List<CommonUserEntity> mSelectUserList = new ArrayList<>();
     private InputMethodRelativeLayout mInput;
-
     private List<CompanyTeamEntity> mTeamEntityList;
-    private EmptyFragment mSearchList;
 
+    private EmptyFragment mSearchList;
     private CommonAdapter mAllUserListAdapter;
+
     private CommonAdapter mSearchAdapter;
     private List<CommonUserEntity> mAllUserNameInfo;
     private boolean isInput;
 
+    @BindKey(value = TITLE)
     private String mTitle;
+    @BindKey(value = LIST)
+    private List<CommonUserEntity> mSelectUserList = new ArrayList<>();
 
     private String mTip;
     private int maxSelectCount = -1;
 
     @Override
     public int getLayoutViewId() {
-        mTitle = getArguments().getString(TITLE, "已选成员");
         mTip = "向右滑动查看更多";
         if (mTitle.equals("验证人")) {
             maxSelectCount = 2;
             mTip = "最多可选择2人";
         }
-        mSelectUserList = (List<CommonUserEntity>) getArguments().getSerializable(LIST);
         return R.layout.select_user_fragment;
     }
 
@@ -147,7 +148,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
             }
         }
 
-        if (!isModify&&maxSelectCount != -1 && mSelectUserList.size() >= maxSelectCount) {
+        if (!isModify && maxSelectCount != -1 && mSelectUserList.size() >= maxSelectCount) {
             showToast("最多可选择" + maxSelectCount + "人");
             createUserEntity.setSelect(false);
             createUserEntity.setAt(false);

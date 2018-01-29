@@ -5,11 +5,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 
+import com.zhongtie.work.BuildConfig;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.list.OnRefreshListener;
 import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.ui.endorse.EndorseListActivity;
+import com.zhongtie.work.ui.file.FileShareActivity;
 import com.zhongtie.work.ui.main.adapter.HomeItemView;
 import com.zhongtie.work.ui.rewardpunish.RewardPunishActivity;
 import com.zhongtie.work.ui.safe.SafeSupervisionActivity;
@@ -92,12 +95,20 @@ public class MainFragment extends BaseFragment implements OnRecyclerItemClickLis
             case "奖惩流程":
                 RewardPunishActivity.newInstance(getActivity());
                 break;
-//            case "文件下载":
-//                FileShareActivity.newInstance(getActivity());
-//                break;
-//            case "文件签认":
-//                EndorseListActivity.newInstance(getActivity());
-//                break;
+            case "文件下载":
+                if (BuildConfig.DEBUG) {
+                    FileShareActivity.newInstance(getActivity());
+                } else {
+                    showToast(getString(R.string.developing));
+                }
+                break;
+            case "文件签认":
+                if (BuildConfig.DEBUG) {
+                    EndorseListActivity.newInstance(getActivity());
+                } else {
+                    showToast(getString(R.string.developing));
+                }
+                break;
             default:
                 showToast(getString(R.string.developing));
                 break;

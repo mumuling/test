@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FileLoader extends CursorLoader {
     private static final String[] FILE_PROJECTION = {
             //Base File
@@ -25,8 +28,17 @@ public class FileLoader extends CursorLoader {
 
     public FileLoader(Context context) {
         super(context);
+
+        //条件过滤优化查询速度
+        String selection = " _data LIKE '%.doc%'";
+        selection += "  or _data LIKE '%.xls%'";
+        selection += "  or _data LIKE '%.ppt%'";
+        selection += "  or _data LIKE '%.pdf%'";
+        setSelection(selection);
+
         setProjection(FILE_PROJECTION);
         setUri(MediaStore.Files.getContentUri("external"));
+
         setSortOrder(MediaStore.Files.FileColumns.DATE_ADDED + " DESC");
     }
 }

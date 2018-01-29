@@ -6,7 +6,6 @@ import android.os.Build;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.support.annotation.RequiresApi;
-import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -17,15 +16,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.data.Result;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SyncApi;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.util.AppUtil;
 import com.zhongtie.work.util.TextUtil;
-
-import io.reactivex.functions.Consumer;
+import com.zhongtie.work.util.parse.BindKey;
 
 import static com.zhongtie.work.ui.print.PrintEventActivity.KEY_EVENT_ID;
 import static com.zhongtie.work.ui.print.PrintEventActivity.KEY_PRINT_TYPE;
@@ -41,11 +38,13 @@ public class PrintReviewFragment extends BaseFragment {
 
     public static final String PRINT_SERVICE = "com.hp.android.printservice";
     private WebView mWebView;
-    private TextView mPrint;
     private FrameLayout mFullWebView;
 
+    @BindKey(KEY_PRINT_TYPE)
     private int mPrintType;
+    @BindKey(KEY_EVENT_ID)
     private int mPrintEventId;
+
     private PrintEventActivity printEventActivity;
 
     @Override
@@ -58,15 +57,13 @@ public class PrintReviewFragment extends BaseFragment {
 
     @Override
     public int getLayoutViewId() {
-        mPrintEventId = getArguments().getInt(KEY_EVENT_ID);
-        mPrintType = getArguments().getInt(KEY_PRINT_TYPE);
         return R.layout.print_event_fragment;
     }
 
 
     @Override
     public void initView() {
-        mPrint = (TextView) findViewById(R.id.print);
+        TextView print = (TextView) findViewById(R.id.print);
         mFullWebView = (FrameLayout) findViewById(R.id.fullWebView);
         mWebView = new WebView(getAppContext().getApplicationContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -76,9 +73,7 @@ public class PrintReviewFragment extends BaseFragment {
         addWebViewSettings(mWebView);
         mWebView.setWebViewClient(new ZTWebViewClient());
 
-        mPrint.setOnClickListener(view -> {
-            createWevViewPrint();
-        });
+        print.setOnClickListener(view -> createWevViewPrint());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -101,6 +96,12 @@ public class PrintReviewFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mWebView.onResume();
+    }
+
+    @Override
+    public void onClickRefresh() {
+        super.onClickRefresh();
+        getPrintUrl();
     }
 
     @Override
@@ -127,9 +128,7 @@ public class PrintReviewFragment extends BaseFragment {
                     } else {
                         mWebView.loadUrl(s);
                     }
-                }, throwable -> {
-                    initFail();
-                }));
+                }, throwable -> initFail()));
     }
 
     /**
@@ -152,6 +151,9 @@ public class PrintReviewFragment extends BaseFragment {
         settings.setLoadsImagesAutomatically(true);
     }
 
+    /**
+     * 打印预览客户端
+     */
     private class ZTWebViewClient extends WebViewClient {
 
         @Override

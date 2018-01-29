@@ -23,7 +23,7 @@ import java.util.List;
  * date:2018.1.9
  */
 
-public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemClickListener {
+public class CompanySelectPopupWindow extends PopupWindow implements OnRecyclerItemClickListener {
 
     private List<CacheCompanyTable> companyEntityList;
     private Context context;
@@ -36,7 +36,7 @@ public class CompanySelectPopup extends PopupWindow implements OnRecyclerItemCli
         this.onCompanySelectListener = onCompanySelectListener;
     }
 
-    public CompanySelectPopup(Context context, List<CacheCompanyTable> companyEntityList) {
+    public CompanySelectPopupWindow(Context context, List<CacheCompanyTable> companyEntityList) {
         super(context);
         this.companyEntityList = companyEntityList;
         this.context = context;
