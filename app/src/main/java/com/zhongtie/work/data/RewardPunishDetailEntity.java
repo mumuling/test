@@ -71,7 +71,7 @@ public class RewardPunishDetailEntity {
     private int agreeStatius;
     private int returnStatius;
     private int signStatius;
-    private int abolishStatus;
+    private int cancelStatus;
     private int printStatus;
 
     public int getPunishId() {
@@ -330,12 +330,12 @@ public class RewardPunishDetailEntity {
         this.signStatius = signStatius;
     }
 
-    public int getAbolishStatus() {
-        return abolishStatus;
+    public int getCancelStatus() {
+        return cancelStatus;
     }
 
-    public void setAbolishStatus(int abolishStatus) {
-        this.abolishStatus = abolishStatus;
+    public void setCancelStatus(int cancelStatus) {
+        this.cancelStatus = cancelStatus;
     }
 
     public int getPrintStatus() {

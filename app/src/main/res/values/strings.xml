@@ -195,5 +195,4 @@
     <string name="splash_sync_dialog_title">提示</string>
     <string name="splash_sync_error_message">同步失败,请检查网络情况。</string>
     <string name="sync_retry">重试</string>
-    <string name="exit">退出</string>
 </resources>

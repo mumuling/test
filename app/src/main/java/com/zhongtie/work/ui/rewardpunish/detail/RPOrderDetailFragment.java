@@ -15,6 +15,7 @@ import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
+import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
@@ -31,6 +32,14 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
 public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContract.Presenter> implements RPDetailContract.View, OnSignatureListener, OnApproveListener, SendBackDialog.OnSendBackListener {
     public static final String ID = "id";
+
+    public static final int PUNISH_SIGN_TYP = 11;
+    public static final int PUNISH_RETURN_TYPE = 12;
+    public static final int PUNISH_AGREE_TYPE = 13;
+    public static final int PUNISH_CANCEL_TYPE = 14;
+
+
+    @BindKey(ID)
     private int mSafeOrderID;
     private RPDetailHeadView mHeadInfoView;
     private CommonAdapter mCommonAdapter;
@@ -46,9 +55,6 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
 
     @Override
     public int getLayoutViewId() {
-        if (getArguments() != null) {
-            mSafeOrderID = getArguments().getInt(ID);
-        }
         return R.layout.safe_order_info_fragment;
     }
 

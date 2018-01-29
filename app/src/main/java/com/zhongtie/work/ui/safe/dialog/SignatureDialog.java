@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.zhongtie.work.R;
+import com.zhongtie.work.enums.SignatureType;
+import com.zhongtie.work.list.OnSignatureTypeListener;
 import com.zhongtie.work.util.ViewUtils;
 
 import java.io.File;
@@ -27,6 +29,17 @@ public class SignatureDialog extends Dialog {
     private TextView mClearSignature;
     private SignaturePad mSignaturePad;
     private OnSignatureListener onSignatureListener;
+
+    @SignatureType
+    private int signatursType;
+
+    private OnSignatureTypeListener mOnSignatureTypeListener;
+
+    public SignatureDialog(@NonNull Context context, @SignatureType int signatursType, OnSignatureTypeListener onSignatureTypeListener) {
+        super(context);
+        this.signatursType = signatursType;
+        mOnSignatureTypeListener = onSignatureTypeListener;
+    }
 
     public SignatureDialog(@NonNull Context context, OnSignatureListener onSignatureListener) {
         super(context, R.style.signature_dialog);
@@ -55,12 +68,14 @@ public class SignatureDialog extends Dialog {
         updateBackGroundDownload.setOnClickListener(view -> {
             if (onSignatureListener != null) {
                 onSignatureListener.onSignature(saveSignaturePic());
+            } else if (mOnSignatureTypeListener != null) {
+                mOnSignatureTypeListener.onSignature(signatursType, saveSignaturePic());
             }
             dismiss();
         });
 
         LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mSignaturePad.getLayoutParams();
-        linearParams.width = (int) (ViewUtils.getScreenWidth(getContext())*0.82);
+        linearParams.width = (int) (ViewUtils.getScreenWidth(getContext()) * 0.82);
         linearParams.height = (int) (linearParams.width * 0.55f);
         mSignaturePad.setLayoutParams(linearParams);
     }

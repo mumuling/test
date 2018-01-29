@@ -91,7 +91,7 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=EventDetails")
-    Flowable<Result<RewardPunishDetailEntity>> abolishPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
+    Flowable<Result<RewardPunishDetailEntity>> cancelPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
 
     /**
      * 同意
