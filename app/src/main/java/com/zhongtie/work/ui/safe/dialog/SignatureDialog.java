@@ -26,9 +26,6 @@ public class SignatureDialog extends Dialog {
     private LinearLayout mDialog;
     private TextView mClearSignature;
     private SignaturePad mSignaturePad;
-    private TextView mUpdateDownloadCancel;
-    private TextView mUpdateBackGroundDownload;
-
     private OnSignatureListener onSignatureListener;
 
     public SignatureDialog(@NonNull Context context, OnSignatureListener onSignatureListener) {
@@ -48,14 +45,14 @@ public class SignatureDialog extends Dialog {
         mDialog = findViewById(R.id.dialog);
         mClearSignature = findViewById(R.id.clear_signature);
         mSignaturePad = findViewById(R.id.signature_pad);
-        mUpdateDownloadCancel = findViewById(R.id.update_download_cancel);
-        mUpdateBackGroundDownload = findViewById(R.id.update_back_ground_download);
+        TextView updateDownloadCancel = findViewById(R.id.update_download_cancel);
+        TextView updateBackGroundDownload = findViewById(R.id.update_back_ground_download);
 
         mClearSignature.setOnClickListener(view -> mSignaturePad.clear());
 
-        mUpdateDownloadCancel.setOnClickListener(view -> dismiss());
+        updateDownloadCancel.setOnClickListener(view -> dismiss());
 
-        mUpdateBackGroundDownload.setOnClickListener(view -> {
+        updateBackGroundDownload.setOnClickListener(view -> {
             if (onSignatureListener != null) {
                 onSignatureListener.onSignature(saveSignaturePic());
             }

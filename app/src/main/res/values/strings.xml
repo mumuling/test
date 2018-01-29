@@ -192,4 +192,8 @@
     <string name="punish_read_group_title">查阅组</string>
     <string name="slide_look_more">查阅组</string>
     <string name="select_cancel_all">取消全选</string>
+    <string name="splash_sync_dialog_title">提示</string>
+    <string name="splash_sync_error_message">同步失败,请检查网络情况。</string>
+    <string name="sync_retry">重试</string>
+    <string name="exit">退出</string>
 </resources>

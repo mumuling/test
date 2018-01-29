@@ -3,9 +3,7 @@ package com.zhongtie.work.ui.main;
 import android.Manifest;
 import android.content.Intent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -14,7 +12,6 @@ import com.zhongtie.work.ui.base.BasePresenterActivity;
 import com.zhongtie.work.ui.login.LoginActivity;
 import com.zhongtie.work.ui.main.presenter.SplashContract;
 import com.zhongtie.work.ui.main.presenter.SplashPresenterImpl;
-import com.zhongtie.work.widget.ProgressWheel;
 
 /**
  * Auth: Chaek
@@ -22,13 +19,7 @@ import com.zhongtie.work.widget.ProgressWheel;
  */
 
 public class SplashActivity extends BasePresenterActivity<SplashContract.Presenter> implements SplashContract.View {
-    private TextView mTvSplashTitle;
-    private TextView mTvSplashTitle2;
-    private ImageView mImgSplashIcon;
-    private TextView mTvSplashCopyRight;
     private LinearLayout mSplashSyncView;
-    private ProgressWheel mLoadingViewImage;
-    private TextView mMzwLoadingText;
 
 
     @Override
@@ -38,9 +29,7 @@ public class SplashActivity extends BasePresenterActivity<SplashContract.Present
 
     @Override
     protected void initView() {
-        mSplashSyncView = (LinearLayout) findViewById(R.id.splash_sync_view);
-        mLoadingViewImage = (ProgressWheel) findViewById(R.id.loading_view_image);
-        mMzwLoadingText = (TextView) findViewById(R.id.mzw_loading_text);
+        mSplashSyncView = findViewById(R.id.splash_sync_view);
     }
 
 
@@ -70,26 +59,26 @@ public class SplashActivity extends BasePresenterActivity<SplashContract.Present
 
     @Override
     public void userLogin() {
-        finish();
         mSplashSyncView.setVisibility(View.GONE);
         startActivity(new Intent(getAppContext(), LoginActivity.class));
+        finish();
     }
 
     @Override
     public void startMainView() {
-        finish();
         mSplashSyncView.setVisibility(View.GONE);
         startActivity(new Intent(getAppContext(), MainActivity.class));
+        finish();
     }
 
     @Override
     public void showRetryDialog() {
         new MaterialDialog.Builder(this)
-                .title("提示")
-                .content("同步失败,请检查网络情况。")
-                .positiveText("重试")
+                .title(R.string.splash_sync_dialog_title)
+                .content(R.string.splash_sync_error_message)
+                .positiveText(R.string.sync_retry)
                 .cancelable(false)
-                .negativeText("退出")
+                .negativeText(R.string.exit)
                 .onPositive((dialog, which) -> {
                     dialog.cancel();
                     mPresenter.initSync();

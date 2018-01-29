@@ -31,6 +31,14 @@
         <item name="android:listPreferredItemHeightSmall">48dp</item>
         <item name="android:listPreferredItemPaddingLeft">25dp</item>
         <item name="android:listPreferredItemPaddingRight">25dp</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+    </style>
+
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/open_slide_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/open_slide_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/close_slide_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/close_slide_out</item>
     </style>
 
     <style name="WhiteTheme" parent="AppTheme">
@@ -83,6 +91,7 @@
 
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
 
     <style name="Widget.AppCompat.Button.FanShuButton" parent="android:Widget.Button">
@@ -122,7 +131,7 @@
     </style>
 
 
-    <style name="MultipleStatusView"/>
+    <style name="MultipleStatusView" />
 
     <style name="MultipleStatusView.Content">
         <item name="android:layout_width">wrap_content</item>
