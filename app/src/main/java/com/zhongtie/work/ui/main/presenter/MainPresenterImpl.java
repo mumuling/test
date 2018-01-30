@@ -2,6 +2,7 @@ package com.zhongtie.work.ui.main.presenter;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.db.CacheCompanyTable;
 import com.zhongtie.work.data.LoginUserInfoEntity;
@@ -57,12 +58,13 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
                         return "";
                     })
                     .delay(500, TimeUnit.MILLISECONDS)
-                    .compose(Network.networkDialog(mView, "正在切换公司"))
+                    .compose(Network.networkDialog(mView, R.string.switch_company_loading))
                     .subscribe(s -> {
+                        //切换公司成功 重新保存选择的公司以及公司ID
                         SharePrefUtil.getUserPre().putString(SELECT_COMPANY_NAME, companyEntity.getName());
                         SharePrefUtil.getUserPre().putInt(SELECT_COMPANY_ID, companyEntity.getId());
                         mView.setUserCompany(companyEntity.getName());
-                    }, throwable -> mView.showToast("切换失败"));
+                    }, throwable -> mView.showToast(R.string.switch_fail));
         }
     }
 

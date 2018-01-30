@@ -1,18 +1,22 @@
-package com.zhongtie.work.ui.rewardpunish;
+package com.zhongtie.work.ui.rewardpunish.presenter;
 
 import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.EditContentEntity;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.RewardPunishApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.ui.rewardpunish.detail.TransformationPunishModel;
 import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +38,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     private EditContentEntity mDescribe;
     private ArrayMap<String, CommonItemType> mItemArrayMap;
 
-    private int orderId;
+    private int mPunishId;
 
     private RewardPunishDetailEntity detailEntity;
 
@@ -75,8 +79,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     }
 
     private void fetchPunishData(int orderId) {
-        this.orderId = orderId;
-
+        this.mPunishId = orderId;
         initPunishEditItemList(detailEntity);
     }
 
@@ -93,7 +96,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         //添加修改要求
         itemList.add(mDescribe);
 
-        TransformationPunishModel punishModel=new TransformationPunishModel(detailEntity);
+        TransformationPunishModel punishModel = new TransformationPunishModel(detailEntity);
 
         itemList.addAll(fetchCommonItemTypeList());
         mView.setItemList(itemList);
@@ -120,8 +123,8 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
             return;
         }
         //摘要信息
-        String abstractContent = mAbstract.getContent();
-        if (TextUtil.isEmpty(abstractContent)) {
+        String summary = mAbstract.getContent();
+        if (TextUtil.isEmpty(summary)) {
             mView.showToast(R.string.toast_punish_abstract);
             return;
         }
@@ -139,8 +142,46 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
             }
         }
 
+
         ArrayMap<String, Object> createData = new ArrayMap<>();
 
+
+        createData.put("tax_userid", Cache.getUserID());
+        createData.put("tax_company", Cache.getSelectCompany());
+        createData.put("tax_number", code);
+        createData.put("tax_unit", teamEntity.getProjectTeamName());
+        createData.put("tax_summary", summary);
+        createData.put("tax_detail", describe);
+        int eventId = mView.getSafeEventData() == null ? 0 : mView.getSafeEventData().getEventId();
+        createData.put("tax_eventid", eventId);
+
+        CommonItemType itemType = mItemArrayMap.get(ViewUtils.getString(R.string.punish_leader_title));
+        RPRecordEntity lead = (RPRecordEntity) itemType.getTypeItemList().get(0);
+        createData.put("tax_leader", lead.getUserID());
+        createData.put("tax_money", punishAmount);
+        createData.put("tax_reader", mItemArrayMap.get(ViewUtils.getString(R.string.punish_read_group_title)).getTeamIDList());
+
+        Http.netServer(RewardPunishApi.class)
+                .createPunishEvent(createData)
+                .compose(Network.convertDialogTip(mView))
+                .subscribe(integer -> {
+
+                }, throwable -> {
+
+                });
+
+
+//        action	AddTax	是	[string]
+//        	tax_userid	用户编号	是	[string]
+//        	tax_company	分公司编号	是	[string]
+//        	tax_number	信息编号	是	[string]
+//        	tax_unit	处罚单位	是	[string]
+//        	tax_summary	摘要	是	[string]
+//        	tax_detail	详情	是	[string]
+//        	tax_eventid	安全督导事件编号		[string]
+//        	tax_leader	被处罚单位负责人编号	是	[string]
+//        	tax_reader	查阅组	是	[string]
+//        tax_money	处罚金额
 
     }
 
@@ -149,7 +190,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     public void setSelectUserInfoList(String title, List createUserEntities) {
         CommonItemType itemType = mItemArrayMap.get(title);
         if (itemType != null) {
-            if (!title.contains("查阅")) {
+            if (!title.contains(ViewUtils.getString(R.string.punish_read_group_title))) {
                 //编辑界面对选择的人进行转换
                 List<RPRecordEntity> list = new ArrayList<>();
                 for (int i = 0; i < createUserEntities.size(); i++) {

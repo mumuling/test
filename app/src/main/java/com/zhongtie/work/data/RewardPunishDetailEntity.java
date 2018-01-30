@@ -1,5 +1,7 @@
 package com.zhongtie.work.data;
 
+import android.support.annotation.StringRes;
+
 /**
  * 安全惩罚详情
  * Auth:Cheek
@@ -9,7 +11,7 @@ package com.zhongtie.work.data;
 public class RewardPunishDetailEntity {
 
 
-    private int punishId;
+    private String punishCode;
     private String punishCompany;
 
     private int punishAmount;
@@ -28,6 +30,7 @@ public class RewardPunishDetailEntity {
      * 创建用户头像
      */
     private String createUserPic;
+    private String createTime;
 
 
     /**
@@ -58,28 +61,28 @@ public class RewardPunishDetailEntity {
     /**
      * 退回理由
      */
-    private String returnReason;
+    private String sendBackReason;
 
-    private String returnSign;
+    private String sendBackSign;
 
-    private String returnTime;
+    private String sendBackTime;
 
     private String atUserId;
     private String atUserName;
     private String atUserPic;
 
-    private int agreeStatius;
-    private int returnStatius;
+    private int consentStatius;
+    private int sendBackStatius;
     private int signStatius;
     private int cancelStatus;
     private int printStatus;
 
-    public int getPunishId() {
-        return punishId;
+    public String getPunishCode() {
+        return punishCode;
     }
 
-    public void setPunishId(int punishId) {
-        this.punishId = punishId;
+    public void setPunishCode(String punishCode) {
+        this.punishCode = punishCode;
     }
 
     public String getPunishCompany() {
@@ -258,28 +261,28 @@ public class RewardPunishDetailEntity {
         this.readGroupName = readGroupName;
     }
 
-    public String getReturnReason() {
-        return returnReason;
+    public String getSendBackReason() {
+        return sendBackReason;
     }
 
-    public void setReturnReason(String returnReason) {
-        this.returnReason = returnReason;
+    public void setSendBackReason(String sendBackReason) {
+        this.sendBackReason = sendBackReason;
     }
 
-    public String getReturnSign() {
-        return returnSign;
+    public String getSendBackSign() {
+        return sendBackSign;
     }
 
-    public void setReturnSign(String returnSign) {
-        this.returnSign = returnSign;
+    public void setSendBackSign(String sendBackSign) {
+        this.sendBackSign = sendBackSign;
     }
 
-    public String getReturnTime() {
-        return returnTime;
+    public String getSendBackTime() {
+        return sendBackTime;
     }
 
-    public void setReturnTime(String returnTime) {
-        this.returnTime = returnTime;
+    public void setSendBackTime(String sendBackTime) {
+        this.sendBackTime = sendBackTime;
     }
 
     public String getAtUserId() {
@@ -306,20 +309,20 @@ public class RewardPunishDetailEntity {
         this.atUserPic = atUserPic;
     }
 
-    public int getAgreeStatius() {
-        return agreeStatius;
+    public int getConsentStatius() {
+        return consentStatius;
     }
 
-    public void setAgreeStatius(int agreeStatius) {
-        this.agreeStatius = agreeStatius;
+    public void setConsentStatius(int consentStatius) {
+        this.consentStatius = consentStatius;
     }
 
-    public int getReturnStatius() {
-        return returnStatius;
+    public int getSendBackStatius() {
+        return sendBackStatius;
     }
 
-    public void setReturnStatius(int returnStatius) {
-        this.returnStatius = returnStatius;
+    public void setSendBackStatius(int sendBackStatius) {
+        this.sendBackStatius = sendBackStatius;
     }
 
     public int getSignStatius() {
@@ -344,5 +347,13 @@ public class RewardPunishDetailEntity {
 
     public void setPrintStatus(int printStatus) {
         this.printStatus = printStatus;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 }

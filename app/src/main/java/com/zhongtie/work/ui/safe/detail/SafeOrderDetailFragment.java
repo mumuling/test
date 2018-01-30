@@ -1,9 +1,12 @@
 package com.zhongtie.work.ui.safe.detail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
@@ -52,6 +55,8 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private SafeDetailHeadView mHeadInfoView;
     private CommonAdapter mCommonAdapter;
     private List<Object> mInfoList = new ArrayList<>();
+    private LinearLayout mBottom;
+
 
     private TextView mModify;
     private TextView mReply;
@@ -63,12 +68,10 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     private OnEventPrintListener mOnEventPrintListener;
 
 
-    public static SafeSupervisionCreateFragment newInstance(int id) {
+    public static void start(Context context, int id) {
         Bundle args = new Bundle();
-        SafeSupervisionCreateFragment fragment = new SafeSupervisionCreateFragment();
         args.putInt(ID, id);
-        fragment.setArguments(args);
-        return fragment;
+        SafeSupervisionCreateActivity.newInstance(context, SafeOrderDetailFragment.class, context.getString(R.string.safe_supervision_title), args);
     }
 
 
@@ -98,6 +101,9 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     @Override
     public void initView() {
         mList = (RecyclerView) findViewById(R.id.list);
+        mBottom = (LinearLayout) findViewById(R.id.bottom);
+        LayoutInflater.from(getActivity()).inflate(R.layout.layout_safe_event_bottom, mBottom, true);
+
         mModify = (TextView) findViewById(R.id.modify);
         mReply = (TextView) findViewById(R.id.reply);
         mApprove = (TextView) findViewById(R.id.approve);
@@ -205,7 +211,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
         mReply.setVisibility(status.reply == SHOW ? View.VISIBLE : View.GONE);
         mApprove.setVisibility(status.sign == SHOW ? View.VISIBLE : View.GONE);
         mCheck.setVisibility(status.check == SHOW ? View.VISIBLE : View.GONE);
-        findViewById(R.id.bottom).setVisibility(status.isHide() ? View.GONE : View.VISIBLE);
+        mBottom.setVisibility(status.isHide() ? View.GONE : View.VISIBLE);
 
         if (mOnEventPrintListener != null) {
             if (status.print == SHOW) {

@@ -41,17 +41,29 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
         context.startActivity(intent);
     }
 
-    public static void newInstance(Fragment context, Class fragment, String hint, List list) {
-        Intent intent = new Intent(context.getContext(), CommonSelectSearchActivity.class);
+    /**
+     * 添加hint
+     *
+     * @param context  fragment
+     * @param fragment 要跳转的fragment class
+     * @param title    标题
+     * @param hint     搜索提示Hint
+     * @param list     list
+     */
+    public static void newInstanceHint(Fragment context, Class fragment, String title, String hint, List list) {
         Bundle bundle = new Bundle();
-        bundle.putString(FRAGMENT, fragment.getName());
-        bundle.putString(TITLE, hint);
+        bundle.putString(TITLE, title);
         bundle.putString(SEARCH_HINT, hint);
         bundle.putSerializable(LIST, (Serializable) list);
-        intent.putExtras(bundle);
-        context.startActivityForResult(intent, USER_SELECT_CODE);
+        newInstance(context, fragment, bundle);
     }
 
+    public static void newInstance(Fragment context, Class fragment, Bundle valueBundle) {
+        Intent intent = new Intent(context.getContext(), CommonSelectSearchActivity.class);
+        valueBundle.putString(FRAGMENT, fragment.getName());
+        intent.putExtras(valueBundle);
+        context.startActivityForResult(intent, USER_SELECT_CODE);
+    }
 
     /**
      * 参数
@@ -62,13 +74,10 @@ public class CommonSelectSearchActivity extends BaseActivity implements TextWatc
      * @param valueBundle 参数集合
      */
     public static void newInstance(Fragment context, Class fragment, String title, Bundle valueBundle) {
-        Intent intent = new Intent(context.getContext(), CommonSelectSearchActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(FRAGMENT, fragment.getName());
         bundle.putString(TITLE, title);
         bundle.putAll(valueBundle);
-        intent.putExtras(bundle);
-        context.startActivityForResult(intent, USER_SELECT_CODE);
+        newInstance(context, fragment, bundle);
     }
 
     @Override

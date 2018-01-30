@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.rewardpunish.item;
+package com.zhongtie.work.ui.rewardpunish.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -7,17 +7,18 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
-import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.data.RewardPunishEntity;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
- * 创建类别选择
- * Auth: Chaek
- * Date: 2018/1/11
+ * 我可查看安全处罚信息
+ *
+ * @author Chaek
+ * @date: 2018/1/11
  */
-@BindItemData(SupervisorInfoEntity.class)
-public class RewardPunishLookItemView extends AbstractItemView<SupervisorInfoEntity, RewardPunishItemView.ViewHolder> {
+@BindItemData(RewardPunishEntity.class)
+public class RewardPunishReadItemView extends AbstractItemView<RewardPunishEntity, RewardPunishItemView.ViewHolder> {
 
     @Override
     public int getLayoutId(int viewType) {
@@ -25,19 +26,18 @@ public class RewardPunishLookItemView extends AbstractItemView<SupervisorInfoEnt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RewardPunishItemView.ViewHolder vh, @NonNull SupervisorInfoEntity data) {
+    public void onBindViewHolder(@NonNull RewardPunishItemView.ViewHolder vh, @NonNull RewardPunishEntity data) {
         vh.mOrderUserPic.setVisibility(View.VISIBLE);
         vh.mOrderUserPic.loadImage(imageUrls[0]);
-        vh.mOrderCode.setText("张连英");
-        vh.mOrderContent.setText("被处理对象：十号线供电线路项目分部十号线供...");
-        vh.mOrderCreateTime.setText("11-20 11:49");
+        vh.mOrderCode.setText(data.getPunishCode());
+        vh.mOrderContent.setText(R.string.punish_user_title);
+        vh.mOrderContent.append(data.getPunishCompany());
+        vh.mOrderCreateTime.setText(data.getCreateTime());
     }
-
 
     @Override
     public CommonViewHolder onCreateViewHolder(@NonNull View view, int viewType) {
         return new RewardPunishItemView.ViewHolder(view);
     }
-
 
 }

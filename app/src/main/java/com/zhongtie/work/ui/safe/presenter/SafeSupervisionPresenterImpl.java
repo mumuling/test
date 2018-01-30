@@ -33,32 +33,10 @@ public class SafeSupervisionPresenterImpl extends BasePresenterImpl<SafeSupervis
 
     @Override
     public void fetchInit() {
-        getSafeDateEventCount();
     }
 
     @Override
     public void getSafeDateEventCount() {
-        int company = Cache.getSelectCompany();
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        addDispose(Http.netServer(SafeApi.class)
-                .safeEventListMonthCount(Cache.getUserID(), company, year, month)
-                .map(new NetWorkFunc1<>())
-                .compose(Network.networkIO())
-                .map(eventCountData -> {
-                    HashMap<String, String> map = new HashMap<>(eventCountData.size());
-                    for (int i = 0; i < eventCountData.size(); i++) {
-                        EventCountData data = eventCountData.get(i);
-                        String[] date = data.getDay().split("-");
-                        map.put(date[0] + "-" + Integer.valueOf(date[1]) + "-" + date[2], data.getCount() + "");
-                    }
-                    return map;
-                })
-                .compose(Network.networkIO())
-                .subscribe(eventCountData -> {
-                    mView.setSafeEventCountList(eventCountData);
-                }, throwable -> {
-                    throwable.printStackTrace();
-                }));
+
     }
 }

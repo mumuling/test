@@ -1,18 +1,22 @@
 package com.zhongtie.work.ui.rewardpunish.detail;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
+import com.zhongtie.work.enums.SignatureType;
+import com.zhongtie.work.list.OnSignatureTypeListener;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.RewardPunishCreateFragment;
-import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
-import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
-import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
+import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishCommonItemView;
+import com.zhongtie.work.ui.rewardpunish.dialog.ApproceIdeaDialog;
+import com.zhongtie.work.ui.rewardpunish.dialog.SendBackDialog;
+import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailContract;
+import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailPresenterImpl;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
 import com.zhongtie.work.util.parse.BindKey;
@@ -26,21 +30,36 @@ import java.util.List;
 import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
 /**
- * Auth:Cheek
- * date:2018.1.9
+ * 安全处罚详情
+ *
+ * @author Chaek
+ * @date:2018.1.9
  */
 
-public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContract.Presenter> implements RPDetailContract.View, OnSignatureListener, OnApproveListener, SendBackDialog.OnSendBackListener {
+public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract.Presenter> implements RPDetailContract.View,
+        OnSignatureTypeListener, OnApproveListener, SendBackDialog.OnSendBackListener {
     public static final String ID = "id";
 
+    /**
+     * 签认
+     */
     public static final int PUNISH_SIGN_TYP = 11;
-    public static final int PUNISH_RETURN_TYPE = 12;
-    public static final int PUNISH_AGREE_TYPE = 13;
+    /**
+     * 退回
+     */
+    public static final int PUNISH_SEND_BACK_TYPE = 12;
+    /**
+     * 同意
+     */
+    public static final int PUNISH_CONSENT_TYPE = 13;
+    /**
+     * 作废&取消
+     */
     public static final int PUNISH_CANCEL_TYPE = 14;
 
 
     @BindKey(ID)
-    private int mSafeOrderID;
+    private int mPunishId;
     private RPDetailHeadView mHeadInfoView;
     private CommonAdapter mCommonAdapter;
     private List<Object> mInfoList = new ArrayList<>();
@@ -48,7 +67,7 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
     private LinearLayout mBottom;
     private LinearLayout mBottomBtn;
     private TextView mModify;
-    private TextView mReply;
+    private TextView mReModfiy;
     private TextView mApprove;
     private RecyclerView mList;
 
@@ -62,15 +81,16 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
     public void initView() {
         mList = (RecyclerView) findViewById(R.id.list);
         mBottom = (LinearLayout) findViewById(R.id.bottom);
-        mBottomBtn = (LinearLayout) findViewById(R.id.bottom_btn);
+
+        LayoutInflater.from(getActivity()).inflate(R.layout.layout_punish_detail_bottom, mBottom, true);
+
         mModify = (TextView) findViewById(R.id.modify);
-        mReply = (TextView) findViewById(R.id.reply);
-        mReply.setVisibility(View.GONE);
+        mReModfiy = (TextView) findViewById(R.id.remodfiy);
         mApprove = (TextView) findViewById(R.id.approve);
-        mApprove.setText(R.string.rp_approve);
+
         mList = (RecyclerView) findViewById(R.id.list);
 
-        mModify.setOnClickListener(view -> SafeSupervisionCreateActivity.newInstance(getActivity(), RewardPunishCreateFragment.class, getString(R.string.safe_supervision_title)));
+        mModify.setOnClickListener(view -> RewardPunishCreateFragment.start(getActivity(), mPunishId));
         mApprove.setOnClickListener(view -> showApproveDialog());
 
         mHeadInfoView = new RPDetailHeadView(getActivity());
@@ -88,7 +108,7 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
                 //输入的文字展示
                 .register(CommonDetailContentItemView.class)
                 //基本界面 展示数据
-                .register(RPCommonItemView.class);
+                .register(RewardPunishCommonItemView.class);
         mCommonAdapter.addHeaderView(mHeadInfoView);
     }
 
@@ -101,7 +121,7 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
-        mPresenter.getDetailInfo(mSafeOrderID);
+        mPresenter.getDetailInfo(mPunishId);
     }
 
     @Override
@@ -120,14 +140,19 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
         mHeadInfoView.setDetailInfo(detailEntity);
     }
 
-    @Override
-    public void onSignature(String imagePath) {
 
+    /**
+     * 弹出签名窗口
+     *
+     * @param signType 类型  {@link SignatureType}
+     */
+    private void showSignDialog(@SignatureType int signType) {
+        new SignatureDialog(getActivity(), signType, this).show();
     }
 
     @Override
     public void onConsent() {
-        new SignatureDialog(getActivity(), this).show();
+        showSignDialog(PUNISH_CONSENT_TYPE);
     }
 
     @Override
@@ -142,6 +167,11 @@ public class RPOrderDetailFragment extends BasePresenterFragment<RPDetailContrac
 
     @Override
     public void onSendBackSuccess(String reason) {
+
+    }
+
+    @Override
+    public void onSignature(int type, String imagePath) {
 
     }
 }

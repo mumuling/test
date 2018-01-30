@@ -88,9 +88,7 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                 }
                 Log.e("-------------", data.getCount()+"条数据");
                 while (data.moveToNext()) {
-//                    Log.e("-------------", "start: ");
                     String path = data.getString(data.getColumnIndexOrThrow(DATA));
-//                    Log.e("-------------", "math_end: ");
                     if (path != null && contains(path)) {
                         //Create a File instance
                         NormalFile file = new NormalFile();
@@ -99,9 +97,7 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                         file.setPath(data.getString(data.getColumnIndex(DATA)));
                         file.setSize(data.getLong(data.getColumnIndex(SIZE)));
                         file.setDate(data.getLong(data.getColumnIndex(DATE_ADDED)));
-
                         file.setMimeType(data.getString(data.getColumnIndexOrThrow(MIME_TYPE)));
-
                         //Create a Directory
                         Directory<NormalFile> directory = new Directory<>();
                         directory.setName(Util.extractFileNameWithSuffix(Util.extractPathWithoutSeparator(file.getPath())));
@@ -114,7 +110,6 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                             directories.get(directories.indexOf(directory)).addFile(file);
                         }
                     }
-//                    Log.e("-------------", "end: ");
                 }
                 data.close();
                 return directories;

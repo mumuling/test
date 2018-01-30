@@ -8,7 +8,7 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.EndorseEntity;
-import com.zhongtie.work.ui.rewardpunish.item.RewardPunishItemView;
+import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishItemView;
 
 /**
  * Auth:Cheek

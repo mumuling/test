@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.main;
+package com.zhongtie.work.ui.main.adapter;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -21,7 +21,7 @@ public class SelectCompanyItemDecoration extends RecyclerView.ItemDecoration {
     private int mInsets = 0;
     private int lineHeight = 0;
 
-    SelectCompanyItemDecoration(Context context) {
+    public SelectCompanyItemDecoration(Context context) {
         mDivider = new DividerLineDrawable();
         mDivider.setColor(context.getResources().getColor(R.color.filtrate_select_color));
         mInsets = ViewUtils.dip2px(16);
@@ -45,6 +45,10 @@ public class SelectCompanyItemDecoration extends RecyclerView.ItemDecoration {
         return false;
     }
 
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        super.getItemOffsets(outRect, view, parent, state);
+    }
 
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
@@ -55,29 +59,26 @@ public class SelectCompanyItemDecoration extends RecyclerView.ItemDecoration {
         if (isHeadFoot(parent, itemPosition)) {
             return;
         }
-        if (isFirstColum(parent, itemPosition)) {
+        if (isFirstColumn(parent, itemPosition)) {
             outRect.set(mInsets, lineHeight, 0, 0);
-        } else if (isLastColum(parent, itemPosition)) {
+        } else if (isLastColumn(parent, itemPosition)) {
             outRect.set(0, lineHeight, mInsets, 0);
         } else {
             outRect.set(mInsets, lineHeight, mInsets, 0);
         }
     }
 
-    private boolean isFirstColum(RecyclerView parent, int itemPosition) {
+    private boolean isFirstColumn(RecyclerView parent, int itemPosition) {
         GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
         int count = 0;
         for (int i = 0; i < itemPosition; i++) {
             int n = layoutManager.getSpanSizeLookup().getSpanSize(i);
             count = count + n;
         }
-        if (count % layoutManager.getSpanCount() == 0) {
-            return true;
-        }
-        return false;
+        return count % layoutManager.getSpanCount() == 0;
     }
 
-    private boolean isLastColum(RecyclerView parent, int itemPosition) {
+    private boolean isLastColumn(RecyclerView parent, int itemPosition) {
         GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
         int count = 0;
         for (int i = 0; i < itemPosition; i++) {

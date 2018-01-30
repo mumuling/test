@@ -195,4 +195,12 @@
     <string name="splash_sync_dialog_title">提示</string>
     <string name="splash_sync_error_message">同步失败,请检查网络情况。</string>
     <string name="sync_retry">重试</string>
+    <string name="switch_company_loading">正在切换公司</string>
+    <string name="switch_fail">切换失败</string>
+    <string name="safe_punish_title">安全处罚</string>
+    <string name="safe_punish_approve">审核</string>
+    <string name="remodfiy">再次编辑</string>
+    <string name="punish_user_title">被处理对象：</string>
+    <string name="punish_leader_title">被罚款单位负责人</string>
+    <string name="punish_read_group_title">查阅组</string>
 </resources>

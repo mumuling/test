@@ -113,9 +113,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onTitleChanged(CharSequence title, int color) {
         super.onTitleChanged(title, color);
-        if (mToolbarTitle != null) {
-            mToolbarTitle.setText(title);
-        }
+
     }
 
     /**
@@ -133,7 +131,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void setTitle(@StringRes int title) {
-        super.setTitle(title);
+        if (mToolbarTitle != null) {
+            mToolbarTitle.setText(title);
+        }
     }
 
 

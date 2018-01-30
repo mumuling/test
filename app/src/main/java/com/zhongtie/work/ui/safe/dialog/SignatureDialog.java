@@ -36,7 +36,7 @@ public class SignatureDialog extends Dialog {
     private OnSignatureTypeListener mOnSignatureTypeListener;
 
     public SignatureDialog(@NonNull Context context, @SignatureType int signatursType, OnSignatureTypeListener onSignatureTypeListener) {
-        super(context);
+        super(context, R.style.signature_dialog);
         this.signatursType = signatursType;
         mOnSignatureTypeListener = onSignatureTypeListener;
     }
@@ -58,12 +58,18 @@ public class SignatureDialog extends Dialog {
         mDialog = findViewById(R.id.dialog);
         mClearSignature = findViewById(R.id.clear_signature);
         mSignaturePad = findViewById(R.id.signature_pad);
-        TextView updateDownloadCancel = findViewById(R.id.update_download_cancel);
+
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mSignaturePad.getLayoutParams();
+        linearParams.width = (int) (ViewUtils.getScreenWidth(getContext()) * 0.82);
+        linearParams.height = (int) (linearParams.width * 0.55f);
+        mSignaturePad.setLayoutParams(linearParams);
+
+        TextView cancel = findViewById(R.id.update_download_cancel);
         TextView updateBackGroundDownload = findViewById(R.id.update_back_ground_download);
 
         mClearSignature.setOnClickListener(view -> mSignaturePad.clear());
 
-        updateDownloadCancel.setOnClickListener(view -> dismiss());
+        cancel.setOnClickListener(view -> dismiss());
 
         updateBackGroundDownload.setOnClickListener(view -> {
             if (onSignatureListener != null) {
@@ -74,10 +80,7 @@ public class SignatureDialog extends Dialog {
             dismiss();
         });
 
-        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mSignaturePad.getLayoutParams();
-        linearParams.width = (int) (ViewUtils.getScreenWidth(getContext()) * 0.82);
-        linearParams.height = (int) (linearParams.width * 0.55f);
-        mSignaturePad.setLayoutParams(linearParams);
+
     }
 
     private String saveSignaturePic() {

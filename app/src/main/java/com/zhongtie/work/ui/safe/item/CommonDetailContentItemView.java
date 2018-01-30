@@ -18,6 +18,7 @@ import com.zhongtie.work.data.create.EditContentEntity;
 
 @BindItemData(EditContentEntity.class)
 public class CommonDetailContentItemView extends AbstractItemView<EditContentEntity, CommonDetailContentItemView.ViewHolder> {
+
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_safe_view_content;

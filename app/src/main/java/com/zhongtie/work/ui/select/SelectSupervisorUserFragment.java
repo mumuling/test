@@ -23,6 +23,7 @@ import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.select.item.SelectSupervisorGroupItemView;
 import com.zhongtie.work.ui.select.item.SelectSupervisorUserItemView;
 import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.EmptyFragment;
 import com.zhongtie.work.widget.InputMethodRelativeLayout;
 
@@ -46,6 +47,7 @@ import static com.zhongtie.work.ui.setting.CommonFragmentActivity.TITLE;
 
 public class SelectSupervisorUserFragment extends BaseFragment implements InputMethodRelativeLayout.OnInputMethodChangedListener, OnSearchContentListener {
 
+    @BindKey(LIST)
     private List<CommonUserEntity> mSelectUserList = new ArrayList<>();
 
     private List<CompanyTeamEntity> mTeamEntityList;
@@ -69,7 +71,6 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
 
     @Override
     public int getLayoutViewId() {
-//        mSelectUserList = (List<CreateUserEntity>) getArguments().getSerializable(LIST);
         return R.layout.select_user_supervise_fragment;
     }
 
@@ -161,9 +162,7 @@ public class SelectSupervisorUserFragment extends BaseFragment implements InputM
                     mTeamEntityList = companyTeamEntities;
                     mCommonAdapter = new CommonAdapter(companyTeamEntities).register(SelectSupervisorGroupItemView.class).register(SelectSupervisorUserItemView.class);
                     mTeamList.setAdapter(mCommonAdapter);
-                }, throwable -> {
-                    throwable.printStackTrace();
-                });
+                }, Throwable::printStackTrace);
     }
 
     @WorkerThread

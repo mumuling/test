@@ -8,8 +8,8 @@ import com.zhongtie.work.ui.base.BaseView;
 import java.util.List;
 
 /**
- * Auth:Cheek
- * date:2018.1.14
+ * @author Chaek
+ * @date:2018.1.14
  */
 
 public interface MainContract {

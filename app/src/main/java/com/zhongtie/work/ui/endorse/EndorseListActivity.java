@@ -13,7 +13,7 @@ import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.endorse.create.EndorseCreateFragment;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
-import com.zhongtie.work.ui.safe.calendar.CalendarDialog;
+import com.zhongtie.work.ui.safe.dialog.calendar.CalendarDialog;
 import com.zhongtie.work.widget.CaterpillarIndicator;
 
 import java.util.ArrayList;

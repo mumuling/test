@@ -69,12 +69,12 @@ public class CommonItemType<T> {
 
     public String getSelectUserIDList() {
         StringBuilder builder = new StringBuilder();
-        List<String> strings=new ArrayList<>();
+        List<String> strings = new ArrayList<>();
         for (T data : mTypeItemList) {
             CommonUserEntity userEntity = (CommonUserEntity) data;
             builder.append(userEntity.getUserId());
             builder.append(",");
-            strings.add(userEntity.getUserId()+"");
+            strings.add(userEntity.getUserId() + "");
         }
         if (builder.length() > 0) {
             builder.delete(builder.length() - 1, builder.length());

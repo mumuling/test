@@ -23,7 +23,7 @@ import java.util.List;
  * date:2018.1.10
  */
 
-public class SafeSupervisionCreateActivity extends BaseActivity implements OnEventPrintListener , OnChangeTitleListener {
+public class SafeSupervisionCreateActivity extends BaseActivity implements OnEventPrintListener, OnChangeTitleListener {
     public static final String FRAGMENT = "fragment";
     public static final String TITLE = "title";
     public static final int USER_SELECT_CODE = 10003;
@@ -60,7 +60,7 @@ public class SafeSupervisionCreateActivity extends BaseActivity implements OnEve
 
     @Override
     public void onShowPrint(int type, int eventId) {
-        this.mPrintType=type;
+        this.mPrintType = type;
         this.mEventId = eventId;
         mMenuTitle.setVisibility(View.VISIBLE);
         Drawable drawable = getResources().getDrawable(R.drawable.ic_file_print);
@@ -89,6 +89,16 @@ public class SafeSupervisionCreateActivity extends BaseActivity implements OnEve
         bundle.putAll(valueBundle);
         intent.putExtras(bundle);
         context.startActivityForResult(intent, USER_SELECT_CODE);
+    }
+
+    public static void newInstance(Context context, Class fragment, String title, Bundle valueBundle) {
+        Intent intent = new Intent(context, SafeSupervisionCreateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(FRAGMENT, fragment.getName());
+        bundle.putString(TITLE, title);
+        bundle.putAll(valueBundle);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.rewardpunish.item;
+package com.zhongtie.work.ui.rewardpunish.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -64,16 +64,15 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mSafeOrderReplyHead = (BaseImageView) findViewById(R.id.safe_order_reply_head);
-            mSafeOrderReplySign = (BaseImageView) findViewById(R.id.safe_order_reply_sign);
+            mSafeOrderReplyHead = findViewById(R.id.safe_order_reply_head);
+            mSafeOrderReplySign = findViewById(R.id.safe_order_reply_sign);
             mSafeOrderReplyHead.getLayoutParams().width = ViewUtils.dip2px(50);
             mSafeOrderReplyHead.getLayoutParams().height = ViewUtils.dip2px(50);
-            mSafeOrderName = (TextView) findViewById(R.id.safe_order_name);
+            mSafeOrderName = findViewById(R.id.safe_order_name);
             mSafeOrderName.setTextSize(14f);
-            mSafeOrderReplyTime = (TextView) findViewById(R.id.safe_order_reply_time);
-            mSafeOrderReplyTime.setTextColor(mContext.getResources().getColor(R.color.text_color));
-            mRecordContent = (TextView) findViewById(R.id.record_content);
-
+            mSafeOrderReplyTime = findViewById(R.id.safe_order_reply_time);
+            mSafeOrderReplyTime.setTextColor(ViewUtils.getColor(R.color.text_color));
+            mRecordContent = findViewById(R.id.record_content);
         }
 
     }

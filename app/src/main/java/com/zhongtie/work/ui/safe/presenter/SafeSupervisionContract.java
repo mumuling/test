@@ -17,7 +17,6 @@ public interface SafeSupervisionContract {
 
         void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList, int type);
 
-        void setSafeEventCountList(HashMap<String, String> eventCountData);
 
         void fetchPageFail(int type);
     }

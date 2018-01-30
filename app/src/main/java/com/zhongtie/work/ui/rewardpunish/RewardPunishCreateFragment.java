@@ -1,5 +1,6 @@
 package com.zhongtie.work.ui.rewardpunish;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -8,15 +9,18 @@ import android.view.View;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
-import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.rewardpunish.item.RPCommonItemView;
+import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishCommonItemView;
+import com.zhongtie.work.ui.rewardpunish.presenter.RPCreatePresenterImpl;
+import com.zhongtie.work.ui.rewardpunish.presenter.RewardPunishCreateContract;
+import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.SafeDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -28,33 +32,36 @@ import static com.zhongtie.work.ui.setting.CommonFragmentActivity.TITLE;
 import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
 
 /**
- * Auth:Cheek
- * date:2018.1.9
+ * 安全处罚修改与创建
+ *
+ * @author Chaek
+ * @date:2018.1.9
  */
 
 public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPunishCreateContract.Presenter> implements RewardPunishCreateContract.View {
 
-    public static final String ID = "id";
+    private static final String ID = "id";
+
+    @BindKey(ID)
     private int mSafeOrderID;
     private RPCreateHeadView mHeadInfoView;
     private RecyclerView mList;
     private CommonAdapter mCommonAdapter;
     private List<Object> mInfoList = new ArrayList<>();
 
-    public static RewardPunishCreateFragment newInstance(int id) {
-        Bundle args = new Bundle();
-        RewardPunishCreateFragment fragment = new RewardPunishCreateFragment();
-        args.putInt(ID, id);
-        fragment.setArguments(args);
-        return fragment;
+
+    public static void start(Context context, int id) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ID, id);
+        SafeSupervisionCreateActivity.newInstance(context, RewardPunishCreateFragment.class, context.getString(R.string.safe_punish_title), bundle);
     }
 
+    public static void start(Context context) {
+        start(context, 0);
+    }
 
     @Override
     public int getLayoutViewId() {
-        if (getArguments() != null) {
-            mSafeOrderID = getArguments().getInt(ID);
-        }
         return R.layout.base_recyclerview;
     }
 
@@ -70,7 +77,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
                 //输入数据
                 .register(CreateEditContentItemView.class)
                 //基本界面
-                .register(RPCommonItemView.class);
+                .register(RewardPunishCommonItemView.class);
         mCommonAdapter.addHeaderView(mHeadInfoView);
 
         View mFooterView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_modify_pw_bottom, mList, false);
@@ -120,13 +127,14 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
         return mHeadInfoView.getSupervisorInfoEntity();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == CommonFragmentActivity.USER_SELECT_CODE) {
                 String title = data.getStringExtra(TITLE);
-                List<CommonUserEntity> createUserEntities = (List<CommonUserEntity>) data.getSerializableExtra(LIST);
+                List createUserEntities = (List) data.getSerializableExtra(LIST);
                 mPresenter.setSelectUserInfoList(title, createUserEntities);
                 mCommonAdapter.notifyDataSetChanged();
             }
@@ -134,8 +142,5 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
         }
 
     }
-
-
-
 
 }

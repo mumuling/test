@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.safe.calendar;
+package com.zhongtie.work.ui.safe.dialog.calendar;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.ldf.calendar.view.Calendar;
 import com.ldf.calendar.view.MonthPager;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
+import com.zhongtie.work.enums.CalendarType;
 import com.zhongtie.work.model.EventCountData;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
@@ -33,6 +34,10 @@ import java.util.HashMap;
  */
 
 public class CalendarDialog extends BaseDialog implements OnSelectDateListener, View.OnClickListener {
+
+    public static final int SAFE_EVENT_COUNT = 1;
+    public static final int SAFE_PUNISH_COUNT = 2;
+
     private TextView mCancel;
     private TextView mFinish;
     private MonthPager mCalendarView;
@@ -47,13 +52,21 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     private AppCompatImageView mNext;
 
     private OnSelectDateCallback mOnSelectDateCallback;
-    private HashMap<String, String> mEventCountList;
+    private HashMap<String, String> mEventCountList = new HashMap<>();
 
     private ArrayMap<String, Boolean> monthMar = new ArrayMap<>();
 
-    public CalendarDialog(@NonNull Context context, OnSelectDateCallback onSelectDateCallback) {
+    @CalendarType
+    private int mCalendarTyp;
+
+    public CalendarDialog(@NonNull Context context, OnSelectDateCallback onSelectDateCallback, @CalendarType int calendarTyp) {
         super(context);
-        this.mOnSelectDateCallback = onSelectDateCallback;
+        mOnSelectDateCallback = onSelectDateCallback;
+        mCalendarTyp = calendarTyp;
+    }
+
+    public CalendarDialog(@NonNull Context context, OnSelectDateCallback onSelectDateCallback) {
+        this(context, onSelectDateCallback, SAFE_EVENT_COUNT);
     }
 
     @Override
@@ -96,6 +109,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
 
     private void initCalendarPage() {
         currentDate = new CalendarDate();
+        getMonthCount(currentDate.year, currentDate.month);
+
         mCalendarDate.setText(getContext().getString(R.string.select_date, currentDate.getYear(), currentDate.getMonth()));
         CustomDayView customDayView = new CustomDayView(getContext(), R.layout.custom_day);
         mCalendarViewAdapter = new CalendarViewAdapter(
@@ -104,11 +119,7 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
                 CalendarAttr.CalendarType.MONTH,
                 CalendarAttr.WeekArrayType.Monday,
                 customDayView);
-
-
-        if (mEventCountList != null) {
-            mCalendarViewAdapter.setMarkData(mEventCountList);
-        }
+        mCalendarViewAdapter.setMarkData(mEventCountList);
 
         mCalendarView.setAdapter(mCalendarViewAdapter);
         mCalendarView.setCurrentItem(MonthPager.CURRENT_DAY_INDEX);
@@ -164,9 +175,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
                         monthMar.put(year + "" + month, true);
                         mEventCountList.putAll(eventCountData);
                         mCalendarViewAdapter.setMarkData(mEventCountList);
-                    }, throwable -> {
-                        throwable.printStackTrace();
-                    });
+                        mCalendarViewAdapter.notifyDataChanged();
+                    }, Throwable::printStackTrace);
         }
     }
 
@@ -175,8 +185,13 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     public void onSelectDate(CalendarDate calendarDate) {
         dismiss();
         if (mOnSelectDateCallback != null) {
-            String date = getContext().getResources().getString(R.string.safe_select_title_date, calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay());
-            mOnSelectDateCallback.onSelectDate(date);
+            if (mCalendarTyp == SAFE_EVENT_COUNT) {
+                String date = getContext().getResources().getString(R.string.safe_select_title_date, calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay());
+                mOnSelectDateCallback.onSelectDate(date);
+            } else {
+                String date = getContext().getResources().getString(R.string.punish_select_title_date, calendarDate.getYear(), calendarDate.getMonth());
+                mOnSelectDateCallback.onSelectDate(date);
+            }
         }
     }
 
@@ -195,7 +210,6 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     }
 
     public interface OnSelectDateCallback {
-
         void onSelectDate(String date);
     }
 }

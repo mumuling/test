@@ -93,7 +93,9 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
      */
     private void obtainPageData(int page) {
         indexPage = page;
-        refreshRecyclerViewObservable.fetchPageListData(page);
+        if (refreshRecyclerViewObservable != null) {
+            refreshRecyclerViewObservable.fetchPageListData(page);
+        }
     }
 
     @Override
@@ -139,7 +141,7 @@ public class RefreshRecyclerView<V extends CommonAdapter> extends SwipeRefreshRe
         }
 //        if (indexPage == FIRST_PAGE) {
 //            refreshAdapter.setListData(listData);
-            refreshAdapter.notifyDataSetChanged();
+        refreshAdapter.notifyDataSetChanged();
 //        } else {
 //            notifyDataSetChanged();
 //        }

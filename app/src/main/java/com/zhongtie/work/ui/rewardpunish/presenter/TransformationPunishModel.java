@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.rewardpunish.detail;
+package com.zhongtie.work.ui.rewardpunish.presenter;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
@@ -36,7 +36,7 @@ public class TransformationPunishModel {
     public CommonItemType fetchPunishUserItem() {
         List<RPRecordEntity> endorseUserList = new ArrayList<>();
         String safeSupervision = App.getInstance().getString(R.string.safe_supervision_item_title);
-        CommonItemType checkUser = new CommonItemType<>(safeSupervision, ViewUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
+        CommonItemType<RPRecordEntity> checkUser = new CommonItemType<>(safeSupervision, ViewUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
         checkUser.setTypeItemList(endorseUserList);
         return checkUser;
     }
@@ -47,7 +47,7 @@ public class TransformationPunishModel {
     public CommonItemType fetchPunishLeaderItem() {
         List<RPRecordEntity> endorseUserList = new ArrayList<>();
         String safeSupervision = App.getInstance().getString(R.string.punish_leader_item_title);
-        CommonItemType checkUser = new CommonItemType<>(safeSupervision, ViewUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
+        CommonItemType<RPRecordEntity> checkUser = new CommonItemType<>(safeSupervision, ViewUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
         checkUser.setTypeItemList(endorseUserList);
         return checkUser;
     }

@@ -120,7 +120,6 @@ public class MenuFragment extends BaseFragment implements OnRecyclerItemClickLis
     public void onClick(Object t, int index) {
         Pair<String, Integer> pair = mMenuItemList.get(index);
         mDrawerLayout.closeDrawers();
-
         switch (pair.first) {
             case "个人信息":
                 UserInfoActivity.newInstance(getActivity());

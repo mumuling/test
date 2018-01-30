@@ -1,5 +1,6 @@
 package com.zhongtie.work.network.api;
 
+import android.support.annotation.StringRes;
 import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.data.Result;
@@ -34,8 +35,8 @@ public interface RewardPunishApi {
      * @return 列表参数
      */
     @FormUrlEncoded
-    @POST("?action=GetEventList")
-    Flowable<Result<List<RewardPunishEntity>>> punishMeCreateList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("time") String time);
+    @POST("?action=GetTaxListByMy")
+    Flowable<Result<List<RewardPunishEntity>>> punishMeCreateList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("year") String year, @Field("month") String month);
 
     /**
      * 安全处罚列表 我可查看的
@@ -46,8 +47,8 @@ public interface RewardPunishApi {
      * @return 列表参数
      */
     @FormUrlEncoded
-    @POST("?action=GetEventList")
-    Flowable<Result<List<RewardPunishEntity>>> punishMeReadList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("time") String time);
+    @POST("?action=GetTaxListByReader")
+    Flowable<Result<List<RewardPunishEntity>>> punishMeReadList(@Field("userid") String userId, @Field("companyid") int companyid, @Field("year") String year, @Field("month") String month);
 
     /**
      * 创建安全处罚
@@ -56,7 +57,7 @@ public interface RewardPunishApi {
      * @return 返回创建ID
      */
     @FormUrlEncoded
-    @POST("?action=EditEvent")
+    @POST("?action=AddTax")
     Flowable<Result<Integer>> createPunishEvent(@FieldMap ArrayMap<String, Object> data);
 
 
@@ -80,7 +81,7 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=EventDetails")
-    Flowable<Result<RewardPunishDetailEntity>> signPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
+    Flowable<Result<Integer>> signPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
 
     /**
      * 安全处罚作废
@@ -115,5 +116,5 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=EventDetails")
-    Flowable<Result<RewardPunishDetailEntity>> returnPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
+    Flowable<Result<RewardPunishDetailEntity>> sendBackPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img, @Field("content") String content);
 }

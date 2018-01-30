@@ -288,7 +288,6 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
      */
     public void setListData(List mListData) {
         this.mListData = mListData;
-//        this.mListData.addAll(mListData);
     }
 
     /**
@@ -326,8 +325,9 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
      *
      * @param object 数据 任意参数格式但是需要{@link #register(Class[])} 不然会报错
      */
-    public void addListData(Object object) {
+    public void add(Object object) {
         this.mListData.add(object);
+        notifyItemInserted(getHeaderCount() + mListData.size() - 1);
     }
 
     /**
@@ -337,6 +337,9 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
      */
     public void addListData(List<Object> listData) {
         this.mListData.addAll(listData);
+        int oldSize = mListData.size() + getHeaderCount();
+        mListData.addAll(listData);
+        notifyItemRangeInserted(oldSize, listData.size());
     }
 
     /**

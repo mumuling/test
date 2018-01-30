@@ -9,11 +9,12 @@ import android.widget.TextView;
 
 import com.ldf.calendar.model.CalendarDate;
 import com.zhongtie.work.R;
+import com.zhongtie.work.list.OnDateCallback;
 import com.zhongtie.work.ui.adapter.ZtFragmentAdapter;
 import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.base.BaseFragment;
-import com.zhongtie.work.ui.rewardpunish.dialog.SelectDateTimeDialog;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
+import com.zhongtie.work.ui.safe.dialog.calendar.CalendarDialog;
 import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.CaterpillarIndicator;
 
@@ -21,17 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Auth:Cheek
- * date:2018.1.9
+ * 安全处罚
+ *
+ * @author Chaek
+ * @date:2018.1.9
  */
 
-public class RewardPunishActivity extends BaseActivity implements SelectDateTimeDialog.OnSelectDateTimeListener {
+public class RewardPunishActivity extends BaseActivity implements CalendarDialog.OnSelectDateCallback, OnDateCallback {
     private TextView mSelectDate;
-    private ImageView mSelectDateImg;
     private CaterpillarIndicator mProjectTitleBar;
     private ViewPager mViewPage;
-    private SelectDateTimeDialog mSelectDateTimeDialog;
     private String createTime;
+
+    private CalendarDialog mCalendarDialog;
+    private List<BaseFragment> mFragments;
 
     public static void newInstance(Context context) {
         context.startActivity(new Intent(context, RewardPunishActivity.class));
@@ -48,10 +52,10 @@ public class RewardPunishActivity extends BaseActivity implements SelectDateTime
         setRightText(getString(R.string.create_title));
         initDrawCreateIcon();
         mSelectDate = findViewById(R.id.select_date);
-        mSelectDateImg = findViewById(R.id.select_date_img);
+        ImageView selectDateImg = findViewById(R.id.select_date_img);
         mProjectTitleBar = findViewById(R.id.project_title_bar);
         mViewPage = findViewById(R.id.view_page);
-        mSelectDateImg.setOnClickListener(v -> showSelectDate());
+        selectDateImg.setOnClickListener(v -> showSelectDate());
     }
 
     private void initDrawCreateIcon() {
@@ -65,60 +69,62 @@ public class RewardPunishActivity extends BaseActivity implements SelectDateTime
      * 筛选日期选择
      */
     private void showSelectDate() {
-        if (mSelectDateTimeDialog == null) {
-            SelectDateTimeDialog.Build build = new SelectDateTimeDialog.Build(this);
-            build.setSelectDateTime(this);
-            build.setSelectDateTime(new SelectDateTimeDialog.OnSelectDateTimeListener() {
-                @Override
-                public void setTimeDate(String datetime, int type) {
-                    setCreateTime(datetime);
-                }
-
-                @Override
-                public void setSelectType(int[] type, int buildType) {
-                }
-            });
-            build.setType(SelectDateTimeDialog.BIRTH_DATE).setDataModel(SelectDateTimeDialog.Build.BIRTH);
-            mSelectDateTimeDialog = build.create();
+        if (mCalendarDialog == null) {
+            mCalendarDialog = new CalendarDialog(this, this, CalendarDialog.SAFE_PUNISH_COUNT);
         }
-        mSelectDateTimeDialog.show();
+        mCalendarDialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mCalendarDialog != null && mCalendarDialog.isShowing()) {
+            mCalendarDialog.dismiss();
+        }
     }
 
     @Override
     protected void initData() {
-        List<BaseFragment> supervisionFragments = new ArrayList<>();
-        supervisionFragments.add(RewardPunishFragment.newInstance(0));
-        supervisionFragments.add(RewardPunishFragment.newInstance(1));
-        ZtFragmentAdapter adapter = new ZtFragmentAdapter(getSupportFragmentManager(), supervisionFragments);
-        mViewPage.setAdapter(adapter);
-        mProjectTitleBar.initTitle(mViewPage, R.array.punish_title_list);
         initDate();
+        mFragments = new ArrayList<>();
+        mFragments.add(RewardPunishFragment.newInstance(0));
+        mFragments.add(RewardPunishFragment.newInstance(1));
+
+        ZtFragmentAdapter adapter = new ZtFragmentAdapter(getSupportFragmentManager(), mFragments);
+        mViewPage.setAdapter(adapter);
+
+        mProjectTitleBar.initTitle(mViewPage, R.array.punish_title_list);
     }
 
     private void initDate() {
         CalendarDate calendarDate = new CalendarDate();
-        mSelectDate.setText(getString(R.string.punish_select_title_date, calendarDate.getYear(), calendarDate.getMonth()));
+        setCreateTime(getString(R.string.punish_select_title_date, calendarDate.getYear(), calendarDate.getMonth()));
     }
 
     @Override
     protected void onClickRight() {
         super.onClickRight();
-        SafeSupervisionCreateActivity.newInstance(this, RewardPunishCreateFragment.class, getString(R.string.safe_reward_punish));
+        RewardPunishCreateFragment.start(this);
     }
 
-
-    @Override
-    public void setTimeDate(String datetime, int type) {
-
-    }
-
-    @Override
-    public void setSelectType(int[] type, int buildType) {
-
-    }
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
         mSelectDate.setText(createTime);
+    }
+
+    @Override
+    public void onSelectDate(String date) {
+        setCreateTime(date);
+        for (BaseFragment fragment : mFragments) {
+            if (fragment instanceof RewardPunishFragment) {
+                ((RewardPunishFragment) fragment).onRefresh();
+            }
+        }
+    }
+
+    @Override
+    public String getSelectDate() {
+        return createTime;
     }
 }

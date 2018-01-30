@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.rewardpunish.detail;
+package com.zhongtie.work.ui.rewardpunish.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseDialog;
+import com.zhongtie.work.ui.rewardpunish.detail.OnApproveListener;
 
 /**
  * Auth:Cheek
@@ -15,8 +16,6 @@ import com.zhongtie.work.ui.base.BaseDialog;
  */
 
 public class ApproceIdeaDialog extends BaseDialog implements View.OnClickListener {
-    private TextView mSendBack;
-    private TextView mConsent;
 
     private OnApproveListener onApproveListener;
 
@@ -34,10 +33,10 @@ public class ApproceIdeaDialog extends BaseDialog implements View.OnClickListene
     }
 
     private void initView() {
-        mSendBack = (TextView) findViewById(R.id.send_back);
-        mConsent = (TextView) findViewById(R.id.consent);
-        mSendBack.setOnClickListener(this);
-        mConsent.setOnClickListener(this);
+        TextView sendBack = findViewById(R.id.send_back);
+        TextView consent = findViewById(R.id.consent);
+        sendBack.setOnClickListener(this);
+        consent.setOnClickListener(this);
     }
 
     @Override
@@ -51,6 +50,7 @@ public class ApproceIdeaDialog extends BaseDialog implements View.OnClickListene
                 case R.id.consent:
                     onApproveListener.onConsent();
                     break;
+                default:
             }
         }
     }

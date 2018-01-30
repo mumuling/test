@@ -8,14 +8,18 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.SupervisorInfoEntity;
-import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.list.OnDateCallback;
+import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.safe.item.SafeSupervisionItemView;
 import com.zhongtie.work.ui.safe.detail.SafeOrderDetailFragment;
+import com.zhongtie.work.ui.safe.presenter.SafeSupervisionContract;
+import com.zhongtie.work.ui.safe.presenter.SafeSupervisionPresenterImpl;
+import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
 import java.util.List;
 
-import static com.zhongtie.work.ui.safe.detail.SafeOrderDetailFragment.ID;
+import static com.zhongtie.work.ui.safe.SafeSupervisionActivity.KEY_IS_SELECT;
 
 /**
  * 安全督导列表几个类别
@@ -24,19 +28,26 @@ import static com.zhongtie.work.ui.safe.detail.SafeOrderDetailFragment.ID;
  * @author Chaek
  */
 
-public class SafeSupervisionFragment extends BaseFragment implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener<SupervisorInfoEntity> {
+public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisionContract.Presenter>
+        implements RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener<SupervisorInfoEntity>, SafeSupervisionContract.View {
     public static final String TYPE = "type";
 
     private RefreshRecyclerView mList;
     private CommonAdapter commonAdapter;
-    private OnSafePageListener mOnSafePageListener;
 
+    @BindKey(TYPE)
     private int mEventType;
 
-    public static SafeSupervisionFragment newInstance(int type) {
+    @BindKey(KEY_IS_SELECT)
+    private boolean isSelect;
+
+    private OnDateCallback mOnDateCallback;
+
+    public static SafeSupervisionFragment newInstance(int type, boolean isSelect) {
         Bundle args = new Bundle();
         SafeSupervisionFragment fragment = new SafeSupervisionFragment();
         args.putInt(TYPE, type);
+        args.putBoolean(KEY_IS_SELECT, isSelect);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,14 +55,13 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnSafePageListener) {
-            mOnSafePageListener = (OnSafePageListener) context;
+        if (context instanceof OnDateCallback) {
+            mOnDateCallback = (OnDateCallback) context;
         }
     }
 
     @Override
     public int getLayoutViewId() {
-        mEventType = getArguments().getInt(TYPE);
         return R.layout.safe_supervision_fragment;
     }
 
@@ -59,15 +69,15 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
     public void initView() {
         mList = (RefreshRecyclerView) findViewById(R.id.list);
         commonAdapter = new CommonAdapter(mList.getListData()).register(SafeSupervisionItemView.class);
-        mList.setDivider(true);
-        mList.initConfig(this);
-        mList.setEmptyView(R.layout.placeholder_empty_view);
-        commonAdapter.setOnItemClickListener(this);
     }
 
 
     @Override
     protected void initData() {
+        mList.setDivider(true);
+        mList.initConfig(this);
+        mList.setEmptyView(R.layout.placeholder_empty_view);
+        commonAdapter.setOnItemClickListener(this);
     }
 
     public void onRefresh() {
@@ -76,18 +86,12 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
         }
     }
 
-    public void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList) {
-        if (mList != null) {
-            mList.setListData(supervisionList);
-        }
-
-    }
-
     @Override
     public void fetchPageListData(int page) {
-        if (page > 1)
+        if (page > 1) {
             return;
-        mOnSafePageListener.getSafeTypeList(mEventType);
+        }
+        mPresenter.fetchPageList(mOnDateCallback.getSelectDate(), mEventType, page);
     }
 
     @Override
@@ -95,15 +99,30 @@ public class SafeSupervisionFragment extends BaseFragment implements RefreshRecy
         return commonAdapter;
     }
 
-
-    public void fetchPageFail() {
-        mList.onFail("");
+    @Override
+    public void onClick(SupervisorInfoEntity safeSupervisionEntity, int index) {
+        if (isSelect) {
+            safeSupervisionEntity.post();
+            getActivity().finish();
+        } else {
+            SafeOrderDetailFragment.start(getContext(), safeSupervisionEntity.getEventId());
+        }
     }
 
     @Override
-    public void onClick(SupervisorInfoEntity safeSupervisionEntity, int index) {
-        Bundle args = new Bundle();
-        args.putInt(ID, safeSupervisionEntity.getEventId());
-        SafeSupervisionCreateActivity.newInstance(this, SafeOrderDetailFragment.class, getString(R.string.safe_supervision_title), args);
+    protected SafeSupervisionContract.Presenter getPresenter() {
+        return new SafeSupervisionPresenterImpl();
+    }
+
+    @Override
+    public void setSafeSupervisionList(List<SupervisorInfoEntity> supervisionList, int type) {
+        if (mList != null) {
+            mList.setListData(supervisionList);
+        }
+    }
+
+    @Override
+    public void fetchPageFail(int type) {
+        mList.onFail("");
     }
 }

@@ -1,4 +1,4 @@
-package com.zhongtie.work.ui.rewardpunish.detail;
+package com.zhongtie.work.ui.rewardpunish.dialog;
 
 import android.content.Context;
 import android.os.Bundle;

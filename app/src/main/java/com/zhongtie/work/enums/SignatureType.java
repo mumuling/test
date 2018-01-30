@@ -6,10 +6,10 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment.PUNISH_AGREE_TYPE;
-import static com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment.PUNISH_CANCEL_TYPE;
-import static com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment.PUNISH_RETURN_TYPE;
-import static com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment.PUNISH_SIGN_TYP;
+import static com.zhongtie.work.ui.rewardpunish.detail.PunishDetailFragment.PUNISH_CONSENT_TYPE;
+import static com.zhongtie.work.ui.rewardpunish.detail.PunishDetailFragment.PUNISH_CANCEL_TYPE;
+import static com.zhongtie.work.ui.rewardpunish.detail.PunishDetailFragment.PUNISH_SEND_BACK_TYPE;
+import static com.zhongtie.work.ui.rewardpunish.detail.PunishDetailFragment.PUNISH_SIGN_TYP;
 
 /**
  * @author: Cheek
@@ -17,7 +17,7 @@ import static com.zhongtie.work.ui.rewardpunish.detail.RPOrderDetailFragment.PUN
  */
 
 @Inherited
-@IntDef(flag = true, value = {PUNISH_AGREE_TYPE, PUNISH_CANCEL_TYPE, PUNISH_RETURN_TYPE, PUNISH_SIGN_TYP})
+@IntDef(flag = true, value = {PUNISH_CONSENT_TYPE, PUNISH_CANCEL_TYPE, PUNISH_SEND_BACK_TYPE, PUNISH_SIGN_TYP})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SignatureType {
 }

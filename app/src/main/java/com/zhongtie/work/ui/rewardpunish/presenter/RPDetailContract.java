@@ -1,4 +1,6 @@
-package com.zhongtie.work.ui.rewardpunish.detail;
+package com.zhongtie.work.ui.rewardpunish.presenter;
+
+import android.support.annotation.StringRes;
 
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
@@ -26,5 +28,23 @@ public interface RPDetailContract {
     interface Presenter extends BasePresenter<View> {
         void getDetailInfo(int safeOrderID);
 
+        /**
+         * 同意
+         */
+        void consentPunish(String signPath);
+
+        /**
+         * 退回
+         *
+         * @param content 理由
+         */
+        void sendBackPunish(String signPath,String content);
+
+        /**
+         * 作废
+         */
+        void cancellationPunish(String signPath);
+
+        void signPunish(String signPath);
     }
 }

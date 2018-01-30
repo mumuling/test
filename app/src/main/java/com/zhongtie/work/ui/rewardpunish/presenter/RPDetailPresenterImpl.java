@@ -1,15 +1,21 @@
-package com.zhongtie.work.ui.rewardpunish.detail;
+package com.zhongtie.work.ui.rewardpunish.presenter;
 
 
 import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.EditContentEntity;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.Network;
+import com.zhongtie.work.network.api.RewardPunishApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
+import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailContract;
+import com.zhongtie.work.util.upload.UploadUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +28,6 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
  */
 
 public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.View> implements RPDetailContract.Presenter {
-
 
     /**
      * 描述编辑数据
@@ -39,6 +44,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
     private CommonItemType<String> mPicItemType;
 
     private ArrayMap<String, CommonItemType> mTypeArrayMap;
+    private int mPunishId;
 
     /**
      * @return 获取类型
@@ -78,7 +84,8 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
 
 
     @Override
-    public void getDetailInfo(int safeOrderID) {
+    public void getDetailInfo(int punishId) {
+        this.mPunishId = punishId;
         List<Object> itemList = new ArrayList<>();
         mTypeArrayMap = new ArrayMap<>();
 
@@ -99,5 +106,73 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
         itemList.addAll(fetchCommonItemTypeList());
         mView.setItemList(itemList);
     }
+
+    /**
+     * 同意
+     *
+     * @param signPath 签名地址
+     */
+    @Override
+    public void consentPunish(String signPath) {
+        addDispose(UploadUtil.uploadSignPNG(signPath)
+                .flatMap(img -> Http.netServer(RewardPunishApi.class).agreePunish(Cache.getUserID(), mPunishId, img.getPicname()))
+                .compose(Network.convertDialogTip(mView))
+                .subscribe(integer -> {
+
+                }, throwable -> {
+                }));
+    }
+
+    /**
+     * 退回
+     *
+     * @param signPath 签名路径
+     * @param content  理由
+     */
+    @Override
+    public void sendBackPunish(String signPath, String content) {
+        addDispose(UploadUtil.uploadSignPNG(signPath)
+                .flatMap(img -> Http.netServer(RewardPunishApi.class).sendBackPunish(Cache.getUserID(), mPunishId, img.getPicname(), content))
+                .compose(Network.convertDialogTip(mView))
+                .subscribe(integer -> {
+
+                }, throwable -> {
+                }));
+    }
+
+
+    /**
+     * 作废
+     *
+     * @param signPath 签名地址
+     */
+    @Override
+    public void cancellationPunish(String signPath) {
+        addDispose(UploadUtil.uploadSignPNG(signPath)
+                .flatMap(img -> Http.netServer(RewardPunishApi.class).cancelPunish(Cache.getUserID(), mPunishId, img.getPicname()))
+                .compose(Network.convertDialogTip(mView))
+                .subscribe(integer -> {
+
+                }, throwable -> {
+                }));
+    }
+
+    /**
+     * 同意处罚
+     *
+     * @param signPath 签名路径
+     */
+    @Override
+    public void signPunish(String signPath) {
+        addDispose(UploadUtil.uploadSignPNG(signPath)
+                .flatMap(img -> Http.netServer(RewardPunishApi.class).signPunish(Cache.getUserID(), mPunishId, img.getPicname()))
+                .compose(Network.convertDialogTip(mView))
+                .subscribe(integer -> {
+
+                }, throwable -> {
+                }));
+
+    }
+
 
 }

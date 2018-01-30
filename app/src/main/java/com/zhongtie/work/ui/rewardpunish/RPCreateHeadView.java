@@ -14,6 +14,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.event.SelectCompanyEvent;
+import com.zhongtie.work.ui.safe.SafeSupervisionActivity;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.ProjectTeamSelectFragment;
 import com.zhongtie.work.ui.select.SelectSupervisorFragment;
@@ -33,12 +34,9 @@ import static com.zhongtie.work.ui.safe.view.SafeCreateEditHeadView.UNIT;
 
 public class RPCreateHeadView extends LinearLayout implements View.OnClickListener {
 
-    private LinearLayout mCreateCodeLayout;
     private EditText mCreateCode;
-    private RelativeLayout mPunishTeamLayout;
     private TextView mPunishTeam;
     private EditText mPunishAmount;
-    private RelativeLayout mSupervisorInfoSelectLayout;
     private TextView mSupervisorInfo;
 
     private ProjectTeamEntity unitEntity;
@@ -86,6 +84,7 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
     @Subscribe
     public void selectSupervisorInfo(SupervisorInfoEntity supervisorInfoEntity) {
         this.supervisorInfoEntity = supervisorInfoEntity;
+        mSupervisorInfo.setText(String.valueOf(supervisorInfoEntity.getEventId()));
     }
 
     /**
@@ -130,15 +129,14 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_rp_create_head, this, true);
-        mCreateCodeLayout = findViewById(R.id.create_code_layout);
         mCreateCode = findViewById(R.id.create_code);
-        mPunishTeamLayout = findViewById(R.id.punish_team_layout);
+        RelativeLayout punishTeamLayout = findViewById(R.id.punish_team_layout);
         mPunishTeam = findViewById(R.id.punish_team);
         mPunishAmount = findViewById(R.id.punish_amount);
-        mSupervisorInfoSelectLayout = findViewById(R.id.supervisor_info_select_layout);
+        RelativeLayout supervisorInfoSelectLayout = findViewById(R.id.supervisor_info_select_layout);
         mSupervisorInfo = findViewById(R.id.supervisor_info);
-        mPunishTeamLayout.setOnClickListener(this);
-        mSupervisorInfoSelectLayout.setOnClickListener(this);
+        punishTeamLayout.setOnClickListener(this);
+        supervisorInfoSelectLayout.setOnClickListener(this);
     }
 
 
@@ -150,8 +148,9 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
                 CommonSelectSearchActivity.newInstance(getContext(), ProjectTeamSelectFragment.class, getContext().getString(R.string.select_unit));
                 break;
             case R.id.supervisor_info_select_layout:
-                CommonFragmentActivity.newInstance(getContext(), SelectSupervisorFragment.class, "安全奖罚");
+                SafeSupervisionActivity.newInstance(getContext(), true);
                 break;
+            default:
         }
 
     }
