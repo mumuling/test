@@ -8,6 +8,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.event.SafeCreateEvent;
 import com.zhongtie.work.list.OnDateCallback;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.safe.item.SafeSupervisionItemView;
@@ -63,7 +64,7 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
     }
 
     @Subscribe
-    public void safeCreateSuccess() {
+    public void safeCreateSuccess(SafeCreateEvent safeCreateEvent) {
         onRefresh();
     }
 
@@ -77,6 +78,8 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
         mList = (RefreshRecyclerView) findViewById(R.id.list);
         commonAdapter = new CommonAdapter(mList.getListData()).register(SafeSupervisionItemView.class);
     }
+
+
 
 
     @Override

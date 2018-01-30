@@ -147,9 +147,14 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        new SafeCreateEvent().post();
+    }
+
+    @Override
     public void createSuccess() {
         getActivity().finish();
-        new SafeCreateEvent().post();
     }
 
     @Override
