@@ -17,6 +17,8 @@ import com.zhongtie.work.ui.safe.presenter.SafeSupervisionPresenterImpl;
 import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionActivity.KEY_IS_SELECT;
@@ -58,6 +60,11 @@ public class SafeSupervisionFragment extends BasePresenterFragment<SafeSupervisi
         if (context instanceof OnDateCallback) {
             mOnDateCallback = (OnDateCallback) context;
         }
+    }
+
+    @Subscribe
+    public void safeCreateSuccess() {
+        onRefresh();
     }
 
     @Override

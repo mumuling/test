@@ -31,7 +31,7 @@ public class RPDetailHeadView extends LinearLayout implements View.OnClickListen
     private BaseImageView mSafeOrderReplySign;
     private TextView mCreateUserName;
     private TextView mCreateTime;
-    private TextView mDetailCode = (TextView) findViewById(R.id.detail_code);
+    private TextView mDetailCode;
     private TextView mPunishProjectTeam;
     private TextView mPunishAmount;
     private RelativeLayout mSupervisorReadLayout;
@@ -49,6 +49,8 @@ public class RPDetailHeadView extends LinearLayout implements View.OnClickListen
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_rp_detail_head_view, this, true);
+
+        mDetailCode = findViewById(R.id.detail_code);
         mOrderStateImg = findViewById(R.id.order_state_img);
         mCreateUserPic = findViewById(R.id.safe_order_reply_head);
         mSafeOrderReplySign = findViewById(R.id.safe_order_reply_sign);

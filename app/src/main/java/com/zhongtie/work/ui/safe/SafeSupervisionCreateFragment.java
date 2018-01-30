@@ -11,6 +11,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.SafeEventEntity;
+import com.zhongtie.work.event.SafeCreateEvent;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
@@ -148,6 +149,7 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     @Override
     public void createSuccess() {
         getActivity().finish();
+        new SafeCreateEvent().post();
     }
 
     @Override

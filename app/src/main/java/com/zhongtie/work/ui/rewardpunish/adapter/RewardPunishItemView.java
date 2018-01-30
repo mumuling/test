@@ -10,6 +10,7 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.RewardPunishEntity;
 import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.widget.BaseImageView;
 
 /**
@@ -29,8 +30,9 @@ public class RewardPunishItemView extends AbstractItemView<RewardPunishEntity, R
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull RewardPunishEntity data) {
         vh.mOrderCode.setText(data.getPunishCode());
-        vh.mOrderContent.setText(data.getPunishCompany());
-        vh.mOrderCreateTime.setText(data.getCreateTime());
+        vh.mOrderContent.setText(R.string.punish_user_title);
+        vh.mOrderContent.append(data.getPunishCompany());
+        vh.mOrderCreateTime.setText(TimeUtils.formatPunishTime(data.getCreateTime()));
     }
 
 

@@ -202,5 +202,6 @@
     <string name="remodfiy">再次编辑</string>
     <string name="punish_user_title">被处理对象：</string>
     <string name="punish_leader_title">被罚款单位负责人</string>
-    <string name="punish_read_group_title">查阅组</string>
+    <string name="punish_safe_title">安全监察</string>
+    <string name="punish_create_success">发起成功</string>
 </resources>

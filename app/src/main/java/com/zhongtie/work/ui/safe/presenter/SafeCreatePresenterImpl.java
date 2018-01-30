@@ -17,6 +17,7 @@ import com.zhongtie.work.data.create.EventTypeEntity;
 import com.zhongtie.work.data.create.SelectEventTypeItem;
 import com.zhongtie.work.db.CacheSafeEventTable;
 import com.zhongtie.work.event.ReplyEvent;
+import com.zhongtie.work.event.SafeCreateEvent;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
@@ -355,6 +356,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
                     .subscribe(integer -> {
                         mView.createSuccess();
                         mView.showToast(R.string.create_success);
+
                     }, throwable -> {
                     }));
         } else {

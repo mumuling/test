@@ -9,6 +9,7 @@ import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.RewardPunishEntity;
 import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.event.PunishCreateEvent;
 import com.zhongtie.work.list.OnDateCallback;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.detail.PunishDetailFragment;
@@ -19,6 +20,8 @@ import com.zhongtie.work.ui.rewardpunish.presenter.RewardPunishListPresenterImpl
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.RefreshRecyclerView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +58,13 @@ public class RewardPunishFragment extends BasePresenterFragment<RewardPunishCont
         args.putInt(TYPE, type);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Subscribe
+    public void punishCreateEvent(PunishCreateEvent punishCreateEvent) {
+        if (mList != null) {
+            mList.onRefresh();
+        }
     }
 
     @Override

@@ -160,29 +160,18 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         createData.put("tax_leader", lead.getUserID());
         createData.put("tax_money", punishAmount);
         createData.put("tax_reader", mItemArrayMap.get(ViewUtils.getString(R.string.punish_read_group_title)).getTeamIDList());
+        CommonItemType safer = mItemArrayMap.get(ViewUtils.getString(R.string.punish_safe_title));
+        RPRecordEntity saferItem = (RPRecordEntity) safer.getTypeItemList().get(0);
+        createData.put("tax_safer", saferItem.getUserID());
 
         Http.netServer(RewardPunishApi.class)
                 .createPunishEvent(createData)
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
-
+                    mView.showToast(R.string.punish_create_success);
+                    mView.createSuccess();
                 }, throwable -> {
-
                 });
-
-
-//        action	AddTax	是	[string]
-//        	tax_userid	用户编号	是	[string]
-//        	tax_company	分公司编号	是	[string]
-//        	tax_number	信息编号	是	[string]
-//        	tax_unit	处罚单位	是	[string]
-//        	tax_summary	摘要	是	[string]
-//        	tax_detail	详情	是	[string]
-//        	tax_eventid	安全督导事件编号		[string]
-//        	tax_leader	被处罚单位负责人编号	是	[string]
-//        	tax_reader	查阅组	是	[string]
-//        tax_money	处罚金额
-
     }
 
 

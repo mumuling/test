@@ -436,4 +436,19 @@ public class TimeUtils {
             return 0L;
         }
     }
+
+    public static String formatPunishTime(String createTime) {
+        // 设定时间的模板
+        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat newTimeFormat = new SimpleDateFormat("MM-dd  HH:mm");
+        // 得到指定模范的时间
+        Date d2 = null;
+        try {
+            d2 = oldTimeFormat.parse(createTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return createTime;
+        }
+        return newTimeFormat.format(d2);
+    }
 }

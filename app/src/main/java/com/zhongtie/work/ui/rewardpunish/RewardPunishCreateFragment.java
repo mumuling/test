@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.event.PunishCreateEvent;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishCommonItemView;
 import com.zhongtie.work.ui.rewardpunish.presenter.RPCreatePresenterImpl;
@@ -81,6 +83,11 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
         mCommonAdapter.addHeaderView(mHeadInfoView);
 
         View mFooterView = LayoutInflater.from(getAppContext()).inflate(R.layout.layout_modify_pw_bottom, mList, false);
+
+        TextView mSubmit = mFooterView.findViewById(R.id.modify_password);
+        mSubmit.setText(R.string.submit);
+        mSubmit.setOnClickListener(v -> mPresenter.createRewardPunish());
+
         mCommonAdapter.addFooterView(mFooterView);
     }
 
@@ -125,6 +132,12 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
     @Override
     public SupervisorInfoEntity getSafeEventData() {
         return mHeadInfoView.getSupervisorInfoEntity();
+    }
+
+    @Override
+    public void createSuccess() {
+        getActivity().finish();
+        new PunishCreateEvent().post();
     }
 
 

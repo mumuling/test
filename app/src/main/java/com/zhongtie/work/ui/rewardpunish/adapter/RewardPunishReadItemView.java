@@ -8,6 +8,7 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.RewardPunishEntity;
+import com.zhongtie.work.util.TimeUtils;
 
 import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
@@ -28,11 +29,11 @@ public class RewardPunishReadItemView extends AbstractItemView<RewardPunishEntit
     @Override
     public void onBindViewHolder(@NonNull RewardPunishItemView.ViewHolder vh, @NonNull RewardPunishEntity data) {
         vh.mOrderUserPic.setVisibility(View.VISIBLE);
-        vh.mOrderUserPic.loadImage(imageUrls[0]);
+        vh.mOrderUserPic.loadImage(data.getCreateUserPic());
         vh.mOrderCode.setText(data.getPunishCode());
         vh.mOrderContent.setText(R.string.punish_user_title);
         vh.mOrderContent.append(data.getPunishCompany());
-        vh.mOrderCreateTime.setText(data.getCreateTime());
+        vh.mOrderCreateTime.setText(TimeUtils.formatPunishTime(data.getCreateTime()));
     }
 
     @Override

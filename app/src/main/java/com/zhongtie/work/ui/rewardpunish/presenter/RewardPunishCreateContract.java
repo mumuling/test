@@ -45,6 +45,7 @@ public interface RewardPunishCreateContract {
          */
         SupervisorInfoEntity getSafeEventData();
 
+        void createSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {
