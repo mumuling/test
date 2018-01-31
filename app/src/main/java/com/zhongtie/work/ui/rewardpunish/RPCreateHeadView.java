@@ -12,13 +12,11 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.data.SelectSafeEventEntity;
 import com.zhongtie.work.event.SelectCompanyEvent;
-import com.zhongtie.work.ui.safe.SafeSupervisionActivity;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.ProjectTeamSelectFragment;
 import com.zhongtie.work.ui.select.SelectSupervisorFragment;
-import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.TextUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,7 +38,7 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
     private TextView mSupervisorInfo;
 
     private ProjectTeamEntity unitEntity;
-    private SupervisorInfoEntity supervisorInfoEntity;
+    private SelectSafeEventEntity supervisorInfoEntity;
 
     public RPCreateHeadView(Context context) {
         this(context, null);
@@ -82,9 +80,9 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
      * @param supervisorInfoEntity 督导信息
      */
     @Subscribe
-    public void selectSupervisorInfo(SupervisorInfoEntity supervisorInfoEntity) {
+    public void selectSupervisorInfo(SelectSafeEventEntity supervisorInfoEntity) {
         this.supervisorInfoEntity = supervisorInfoEntity;
-        mSupervisorInfo.setText(String.valueOf(supervisorInfoEntity.getEventId()));
+        mSupervisorInfo.setText(String.valueOf(supervisorInfoEntity.getUnit()));
     }
 
     /**
@@ -109,7 +107,7 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
     /**
      * @return 返回选择的安全督导信息 可以不选择
      */
-    public SupervisorInfoEntity getSupervisorInfoEntity() {
+    public SelectSafeEventEntity getSupervisorInfoEntity() {
         return supervisorInfoEntity;
     }
 
@@ -148,7 +146,7 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
                 CommonSelectSearchActivity.newInstance(getContext(), ProjectTeamSelectFragment.class, getContext().getString(R.string.select_unit));
                 break;
             case R.id.supervisor_info_select_layout:
-                SafeSupervisionActivity.newInstance(getContext(), true);
+                SelectSupervisorFragment.start(getContext());
                 break;
             default:
         }

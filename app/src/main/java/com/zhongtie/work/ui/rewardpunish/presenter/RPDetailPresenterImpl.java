@@ -149,8 +149,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
      */
     @Override
     public void cancellationPunish(String signPath) {
-        addDispose(UploadUtil.uploadSignPNG(signPath)
-                .flatMap(img -> Http.netServer(RewardPunishApi.class).cancelPunish(Cache.getUserID(), mPunishId, img.getPicname()))
+        addDispose(Http.netServer(RewardPunishApi.class).cancelPunish(Cache.getUserID(), mPunishId)
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
                     getDetailInfo(mPunishId);

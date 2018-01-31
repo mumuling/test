@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.data.SelectSafeEventEntity;
 import com.zhongtie.work.event.PunishCreateEvent;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishCommonItemView;
@@ -130,7 +130,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
     }
 
     @Override
-    public SupervisorInfoEntity getSafeEventData() {
+    public SelectSafeEventEntity getSafeEventData() {
         return mHeadInfoView.getSupervisorInfoEntity();
     }
 

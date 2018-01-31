@@ -197,11 +197,12 @@
     <string name="sync_retry">重试</string>
     <string name="switch_company_loading">正在切换公司</string>
     <string name="switch_fail">切换失败</string>
-    <string name="safe_punish_title">安全处罚</string>
+    <string name="safe_punish_title">安全奖罚</string>
     <string name="safe_punish_approve">审核</string>
     <string name="remodfiy">再次编辑</string>
     <string name="punish_user_title">被处理对象：</string>
     <string name="punish_leader_title">被罚款单位负责人</string>
     <string name="punish_safe_title">安全监察</string>
     <string name="punish_create_success">发起成功</string>
+    <string name="select_safe_event_title">相关督导信息</string>
 </resources>

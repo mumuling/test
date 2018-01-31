@@ -152,7 +152,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         createData.put("tax_unit", teamEntity.getProjectTeamName());
         createData.put("tax_summary", summary);
         createData.put("tax_detail", describe);
-        int eventId = mView.getSafeEventData() == null ? 0 : mView.getSafeEventData().getEventId();
+        int eventId = mView.getSafeEventData() == null ? 0 : mView.getSafeEventData().getId();
         createData.put("tax_eventid", eventId);
 
         CommonItemType itemType = mItemArrayMap.get(ViewUtils.getString(R.string.punish_leader_title));

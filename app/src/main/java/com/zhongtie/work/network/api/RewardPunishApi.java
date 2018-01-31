@@ -7,6 +7,7 @@ import com.zhongtie.work.data.Result;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.data.RewardPunishEntity;
 import com.zhongtie.work.data.SafeEventEntity;
+import com.zhongtie.work.data.SelectSafeEventList;
 import com.zhongtie.work.data.SupervisorInfoEntity;
 
 import java.util.List;
@@ -71,6 +72,16 @@ public interface RewardPunishApi {
     Flowable<Result<RewardPunishDetailEntity>> punishDetails(@Field("userid") String userId, @Field("eventid") int eventid);
 
     /**
+     * 获取安全督导列表
+     * @param userId
+     * @param companyid
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("?action=GetEventListTwoMonths")
+    Flowable<List<SelectSafeEventList>> getPunisnSafeEvent(@Field("userid") String userId, @Field("companyid") int companyid);
+
+    /**
      * 安全处罚签认操作
      *
      * @param userId  用户ID
@@ -78,8 +89,8 @@ public interface RewardPunishApi {
      * @return 返回详情
      */
     @FormUrlEncoded
-    @POST("?action=EventDetails")
-    Flowable<Result<Integer>> signPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
+    @POST("?action=TaxSign")
+    Flowable<Result<Integer>> signPunish(@Field("userid") String userId, @Field("taxid") int eventid, @Field("signurl") String img);
 
     /**
      * 安全处罚作废
@@ -89,8 +100,8 @@ public interface RewardPunishApi {
      * @return 返回详情
      */
     @FormUrlEncoded
-    @POST("?action=EventDetails")
-    Flowable<Result<RewardPunishDetailEntity>> cancelPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
+    @POST("?action=TaxCancel")
+    Flowable<Result<RewardPunishDetailEntity>> cancelPunish(@Field("userid") String userId, @Field("taxid") int eventid );
 
     /**
      * 同意
@@ -113,6 +124,6 @@ public interface RewardPunishApi {
      * @return
      */
     @FormUrlEncoded
-    @POST("?action=EventDetails")
-    Flowable<Result<RewardPunishDetailEntity>> sendBackPunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img, @Field("content") String content);
+    @POST("?action=TaxReturn")
+    Flowable<Result<RewardPunishDetailEntity>> sendBackPunish(@Field("userid") String userId, @Field("taxid") int eventid, @Field("signurl") String img, @Field("reason") String content);
 }

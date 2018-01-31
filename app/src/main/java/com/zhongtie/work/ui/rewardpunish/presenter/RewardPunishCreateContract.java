@@ -1,7 +1,7 @@
 package com.zhongtie.work.ui.rewardpunish.presenter;
 
 import com.zhongtie.work.data.ProjectTeamEntity;
-import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.data.SelectSafeEventEntity;
 import com.zhongtie.work.ui.base.BasePresenter;
 import com.zhongtie.work.ui.base.BaseView;
 
@@ -43,7 +43,7 @@ public interface RewardPunishCreateContract {
          *
          * @return 督导信息
          */
-        SupervisorInfoEntity getSafeEventData();
+        SelectSafeEventEntity getSafeEventData();
 
         void createSuccess();
     }
