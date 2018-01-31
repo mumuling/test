@@ -24,6 +24,8 @@ public class RewardPunishEntity {
         }
     **/
 
+    private int id;
+
     @JSONField(name = "tax_number")
     private String punishCode;
     @JSONField(name = "tax_userid")
@@ -50,6 +52,13 @@ public class RewardPunishEntity {
     @JSONField(name = "leadername")
     private String punishTeamLeader;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setPunishCode(String punishCode) {
         this.punishCode = punishCode;

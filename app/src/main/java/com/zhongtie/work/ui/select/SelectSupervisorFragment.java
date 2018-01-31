@@ -6,6 +6,8 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.SupervisorInfoEntity;
+import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.api.RewardPunishApi;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.select.item.SelectSupervisorNameItemView;
 import com.zhongtie.work.widget.DividerItemDecoration;
@@ -51,6 +53,19 @@ public class SelectSupervisorFragment extends BaseFragment implements OnRecycler
         }
         commonAdapter.setListData(entityList);
         commonAdapter.notifyDataSetChanged();
+
+        fetchSafeEventList();
+    }
+
+    private void fetchSafeEventList() {
+
+        // TODO: 2018/1/31  
+//        Http.netServer(RewardPunishApi.class)
+//                .cancelPunish()
+
+
+
+
     }
 
 

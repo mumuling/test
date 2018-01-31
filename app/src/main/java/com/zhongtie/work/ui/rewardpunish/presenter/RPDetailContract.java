@@ -23,6 +23,8 @@ public interface RPDetailContract {
         void setItemList(List<Object> itemList);
 
         void setHeadTitle(RewardPunishDetailEntity detailEntity);
+
+        void consentPunishSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {

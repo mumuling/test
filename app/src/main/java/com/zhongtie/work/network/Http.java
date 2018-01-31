@@ -18,10 +18,8 @@ public class Http {
         if (retrofit == null) {
             synchronized (Http.class) {
                 retrofit = new ZtRetrofit();
+                mCacheServer = new ArrayMap<>();
             }
-        }
-        if (mCacheServer == null) {
-            mCacheServer = new ArrayMap<>();
         }
         Object cache = mCacheServer.get(cl.getName());
         if (cache == null) {

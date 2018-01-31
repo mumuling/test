@@ -3,6 +3,7 @@ package com.zhongtie.work.ui.rewardpunish.presenter;
 
 import android.support.v4.util.ArrayMap;
 
+import com.github.gcacace.signaturepad.utils.SvgBuilder;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
@@ -14,7 +15,6 @@ import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.RewardPunishApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
-import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailContract;
 import com.zhongtie.work.util.upload.UploadUtil;
 
 import java.util.ArrayList;
@@ -115,10 +115,11 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
     @Override
     public void consentPunish(String signPath) {
         addDispose(UploadUtil.uploadSignPNG(signPath)
-                .flatMap(img -> Http.netServer(RewardPunishApi.class).agreePunish(Cache.getUserID(), mPunishId, img.getPicname()))
+                .flatMap(img -> Http.netServer(RewardPunishApi.class).consentPunish(Cache.getUserID(), mPunishId, img.getPicname()))
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
-
+                    getDetailInfo(mPunishId);
+                    mView.consentPunishSuccess();
                 }, throwable -> {
                 }));
     }
@@ -135,7 +136,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .flatMap(img -> Http.netServer(RewardPunishApi.class).sendBackPunish(Cache.getUserID(), mPunishId, img.getPicname(), content))
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
-
+                    getDetailInfo(mPunishId);
                 }, throwable -> {
                 }));
     }
@@ -152,7 +153,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .flatMap(img -> Http.netServer(RewardPunishApi.class).cancelPunish(Cache.getUserID(), mPunishId, img.getPicname()))
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
-
+                    getDetailInfo(mPunishId);
                 }, throwable -> {
                 }));
     }
@@ -168,7 +169,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .flatMap(img -> Http.netServer(RewardPunishApi.class).signPunish(Cache.getUserID(), mPunishId, img.getPicname()))
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
-
+                    getDetailInfo(mPunishId);
                 }, throwable -> {
                 }));
 

@@ -140,6 +140,11 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         mHeadInfoView.setDetailInfo(detailEntity);
     }
 
+    @Override
+    public void consentPunishSuccess() {
+        //同意成功
+    }
+
 
     /**
      * 弹出签名窗口

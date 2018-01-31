@@ -291,6 +291,16 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonViewHolder> implem
     }
 
     /**
+     * 移除所有数据重新添加数据
+     *
+     * @param list list
+     */
+    public void replaceList(List list) {
+        this.mListData.clear();
+        this.mListData.add(list);
+    }
+
+    /**
      * Diff刷新界面 Adapter 根据toString()进行比对
      * <p>
      * 如自带的XDiffCallback无法满足需求可以按照此修改

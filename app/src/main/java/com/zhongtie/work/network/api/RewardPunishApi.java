@@ -31,7 +31,6 @@ public interface RewardPunishApi {
      *
      * @param userId    登录用户ID
      * @param companyid 公司ID
-     * @param time      选择时间月份
      * @return 列表参数
      */
     @FormUrlEncoded
@@ -43,7 +42,6 @@ public interface RewardPunishApi {
      *
      * @param userId    登录用户ID
      * @param companyid 公司ID
-     * @param time      选择时间月份
      * @return 列表参数
      */
     @FormUrlEncoded
@@ -97,14 +95,14 @@ public interface RewardPunishApi {
     /**
      * 同意
      *
-     * @param userId
-     * @param eventid
-     * @param img
+     * @param userId 操作用户ID
+     * @param taxid  用户ID
+     * @param img    签名地址
      * @return
      */
     @FormUrlEncoded
-    @POST("?action=EventDetails")
-    Flowable<Result<RewardPunishDetailEntity>> agreePunish(@Field("userid") String userId, @Field("eventid") int eventid, @Field("img") String img);
+    @POST("?action=TaxAgree")
+    Flowable<Result<RewardPunishDetailEntity>> consentPunish(@Field("userid") String userId, @Field("taxid") int taxid, @Field("signurl") String img);
 
     /**
      * 退回操作
