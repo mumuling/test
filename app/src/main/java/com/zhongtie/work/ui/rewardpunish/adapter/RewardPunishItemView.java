@@ -29,7 +29,8 @@ public class RewardPunishItemView extends AbstractItemView<RewardPunishEntity, R
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull RewardPunishEntity data) {
-        vh.mOrderCode.setText(data.getPunishCode());
+        vh.mOrderCode.setText(R.string.punish_code_title);
+        vh.mOrderCode.append(data.getPunishCode());
         vh.mOrderContent.setText(R.string.punish_user_title);
         vh.mOrderContent.append(data.getPunishCompany());
         vh.mOrderCreateTime.setText(TimeUtils.formatPunishTime(data.getCreateTime()));

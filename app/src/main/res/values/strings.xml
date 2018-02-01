@@ -211,4 +211,5 @@
     <string name="punish_edit_success">修改成功</string>
     <string name="select_safe_event_title">相关督导信息</string>
     <string name="punish_cancel_event">确定要作废当前安全奖罚么？</string>
+    <string name="punish_code_title">编号：</string>
 </resources>

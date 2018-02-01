@@ -37,7 +37,7 @@
         android:background="@color/white"
         app:slide_caterpillar="false"
         app:slide_footer_color="@color/app_color"
-        app:slide_footer_line_height="2dp"
+        app:slide_footer_line_height="3dp"
         app:slide_item_width="300dp"
         app:slide_round="false"
         app:slide_text_color="@color/text_color"

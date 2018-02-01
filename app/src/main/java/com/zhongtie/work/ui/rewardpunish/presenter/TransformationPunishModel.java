@@ -10,6 +10,7 @@ import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.ui.rewardpunish.adapter.PrRecordItemView;
 import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.util.ViewUtils;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class TransformationPunishModel {
         punishUserData.setUserID(detailEntity.getSupervisionId());
         punishUserData.setUserName(detailEntity.getSupervisionUserName());
         punishUserData.setSignatureImg(detailEntity.getSupervisionUserSignImg());
-        punishUserData.setSignTime(detailEntity.getSupervisionSignTime());
+        punishUserData.setSignTime(TimeUtils.formatPunishDetailTime(detailEntity.getSupervisionSignTime()));
         punishUserData.setState(PrRecordItemView.PUNISH_AGREE);
         return punishUserData;
     }
@@ -69,6 +70,7 @@ public class TransformationPunishModel {
             //不是编辑状态才显示签名等信息
             leaderData.setSignatureImg(detailEntity.getPunishLeadSign());
             leaderData.setSignTime(detailEntity.getPunishLeaderSignTime());
+            leaderData.setSignTime(TimeUtils.formatPunishDetailTime(detailEntity.getPunishLeaderSignTime()));
         }
         return leaderData;
     }
@@ -89,7 +91,7 @@ public class TransformationPunishModel {
             recordEntity.setUserName(backEntity.getName());
             recordEntity.setUserPic(backEntity.getPicture());
             recordEntity.setSignatureImg(backEntity.getSign());
-            recordEntity.setSignTime(backEntity.getAddtime());
+            recordEntity.setSignTime((backEntity.getAddtime()));
             recordEntity.setState(PrRecordItemView.PUNISH_BACK);
             backList.add(recordEntity);
         }
