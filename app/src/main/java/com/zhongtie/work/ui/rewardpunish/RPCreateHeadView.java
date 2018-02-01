@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.data.SelectSafeEventEntity;
 import com.zhongtie.work.event.SelectCompanyEvent;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
@@ -39,6 +40,7 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
 
     private ProjectTeamEntity unitEntity;
     private SelectSafeEventEntity supervisorInfoEntity;
+    private RewardPunishDetailEntity mHeadEditInfo;
 
     public RPCreateHeadView(Context context) {
         this(context, null);
@@ -151,5 +153,23 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
             default:
         }
 
+    }
+
+    public void setHeadEditInfo(RewardPunishDetailEntity headEditInfo) {
+        mHeadEditInfo = headEditInfo;
+
+        //code
+        mCreateCode.setText(headEditInfo.getPunishCode());
+        mPunishTeam.setText(headEditInfo.getPunishCompany());
+        mPunishAmount.setText(String.valueOf(headEditInfo.getPunishAmount()));
+        mSupervisorInfo.setText(headEditInfo.getSafeEventCompany());
+
+        //初始化对象
+        supervisorInfoEntity = new SelectSafeEventEntity();
+        supervisorInfoEntity.setId(headEditInfo.getSafeEventId());
+        supervisorInfoEntity.setLocal(headEditInfo.getSafeEventSite());
+        supervisorInfoEntity.setUnit(headEditInfo.getSafeEventCompany());
+
+        unitEntity = new ProjectTeamEntity(headEditInfo.getPunishCompany());
     }
 }

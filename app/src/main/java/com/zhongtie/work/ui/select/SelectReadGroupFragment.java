@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -100,9 +101,17 @@ public class SelectReadGroupFragment extends BaseFragment implements OnRecyclerI
 
     @Subscribe
     public void userEntityEvent(TeamNameEntity createUserEntity) {
-        if (nameEntityList.contains(createUserEntity)) {
-            nameEntityList.remove(createUserEntity);
-        } else {
+        Iterator<TeamNameEntity> nameEntities = nameEntityList.iterator();
+        boolean isExist = false;
+        while (nameEntities.hasNext()) {
+            TeamNameEntity teamNameEntity = nameEntities.next();
+            if (teamNameEntity.getTeamId() == createUserEntity.getTeamId()) {
+                nameEntities.remove();
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist) {
             nameEntityList.add(createUserEntity);
         }
     }

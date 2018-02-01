@@ -55,10 +55,14 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
     private int mPunishId;
 
 
+    private boolean isInit;
+
     @Override
     public void getDetailInfo(int punishId) {
         this.mPunishId = punishId;
-        mView.initLoading();
+        if (!isInit) {
+            mView.initLoading();
+        }
         addDispose(Http.netServer(RewardPunishApi.class)
                 .punishDetails(Cache.getUserID(), punishId)
                 .map(new NetWorkFunc1<>())
@@ -77,6 +81,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .delay(500, TimeUnit.MILLISECONDS)
                 .compose(Network.networkIO())
                 .subscribe(data -> {
+                    isInit = true;
                     mView.setItemList(mPunishItemList);
                     mView.setHeadTitle(data);
                     mView.showStatusView(data.edit, data.consentStatius, data.sendBackStatius, data.signStatius, data.cancelStatus);
@@ -105,6 +110,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                     getDetailInfo(mPunishId);
                     mView.consentPunishSuccess();
                 }, throwable -> {
+                    throwable.printStackTrace();
                 }));
     }
 
@@ -122,6 +128,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .subscribe(integer -> {
                     getDetailInfo(mPunishId);
                 }, throwable -> {
+                    throwable.printStackTrace();
                 }));
     }
 
@@ -138,6 +145,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .subscribe(integer -> {
                     getDetailInfo(mPunishId);
                 }, throwable -> {
+                    throwable.printStackTrace();
                 }));
     }
 

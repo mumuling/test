@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
+import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.data.SelectSafeEventEntity;
 import com.zhongtie.work.event.PunishCreateEvent;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
@@ -64,7 +65,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
 
     @Override
     public int getLayoutViewId() {
-        return R.layout.base_recyclerview;
+        return R.layout.common_status_list;
     }
 
     @Override
@@ -87,7 +88,6 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
         TextView mSubmit = mFooterView.findViewById(R.id.modify_password);
         mSubmit.setText(R.string.submit);
         mSubmit.setOnClickListener(v -> mPresenter.createRewardPunish());
-
         mCommonAdapter.addFooterView(mFooterView);
     }
 
@@ -138,6 +138,11 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
     public void createSuccess() {
         getActivity().finish();
         new PunishCreateEvent().post();
+    }
+
+    @Override
+    public void setHeadEditInfo(RewardPunishDetailEntity data) {
+        mHeadInfoView.setHeadEditInfo(data);
     }
 
 

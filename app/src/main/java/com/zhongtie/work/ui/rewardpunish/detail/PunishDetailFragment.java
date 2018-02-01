@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.enums.SignatureType;
+import com.zhongtie.work.event.ExitEvent;
+import com.zhongtie.work.event.PunishDetailUpdateEvent;
 import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.list.OnSignatureTypeListener;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
@@ -28,6 +31,8 @@ import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ViewUtils;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +128,11 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         //签认
         mSign.setOnClickListener(v -> showSignDialog(PUNISH_SIGN_TYP));
         //作废
-        mCancel.setOnClickListener(v -> showSignDialog(PUNISH_CANCEL_TYPE));
+        mCancel.setOnClickListener(v -> {
+
+            cancelPunish();
+
+        });
 
         //退回
         mSendBack.setOnClickListener(v -> new SendBackDialog(getActivity(), PunishDetailFragment.this).show());
@@ -132,8 +141,27 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         initAdapter();
     }
 
+    private void cancelPunish() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_tip)
+                .content(R.string.punish_cancel_event)
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .onPositive((dialog, which) -> {
+                    mPresenter.cancellationPunish("");
+                }).onNegative((dialog, which) -> dialog.dismiss())
+                .build().show();
+
+    }
+
     private void showApproveDialog() {
         new ApproceIdeaDialog(getActivity(), this).show();
+    }
+
+
+    @Subscribe
+    public void punishUpdateEvent(PunishDetailUpdateEvent updateEvent) {
+        mPresenter.getDetailInfo(mPunishId);
 
     }
 
@@ -221,9 +249,6 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         } else if (type == PUNISH_CONSENT_TYPE) {
             //处罚同意
             mPresenter.consentPunish(imagePath);
-        } else if (type == PUNISH_CANCEL_TYPE) {
-            //作废
-            mPresenter.cancellationPunish(imagePath);
         } else if (type == PUNISH_SEND_BACK_TYPE) {
             //退回
             mPresenter.sendBackPunish(imagePath, reason);
@@ -237,6 +262,16 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         mSendBack.setVisibility(retreat == 1 ? View.VISIBLE : View.GONE);
         mSign.setVisibility(sign == 1 ? View.VISIBLE : View.GONE);
         mCancel.setVisibility(cancel == 1 ? View.VISIBLE : View.GONE);
+
+        boolean isHide = true;
+        for (int i = 0; i < mBottomBtn.getChildCount(); i++) {
+            View view = mBottomBtn.getChildAt(i);
+            if (view.getVisibility() == View.VISIBLE && view instanceof TextView) {
+                isHide = false;
+                break;
+            }
+        }
+        mBottom.setVisibility(isHide ? View.GONE : View.VISIBLE);
     }
 
 

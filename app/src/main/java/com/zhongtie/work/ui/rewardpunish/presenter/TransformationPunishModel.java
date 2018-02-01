@@ -42,7 +42,7 @@ public class TransformationPunishModel {
      */
     private RPRecordEntity getAgreeSupervisionData() {
         RPRecordEntity punishUserData = new RPRecordEntity();
-        punishUserData.setEdit(false);
+        punishUserData.setEdit(isEdit);
         punishUserData.setUserPic(detailEntity.getSupervisionUserPic());
         punishUserData.setUserID(detailEntity.getSupervisionId());
         punishUserData.setUserName(detailEntity.getSupervisionUserName());
@@ -59,7 +59,7 @@ public class TransformationPunishModel {
      */
     private RPRecordEntity getPunishLeaderData() {
         RPRecordEntity leaderData = new RPRecordEntity();
-        leaderData.setEdit(false);
+        leaderData.setEdit(isEdit);
         leaderData.setUserID(detailEntity.getPunishLeaderId());
         leaderData.setUserName(detailEntity.getPunishLeaderName());
         leaderData.setUserPic(detailEntity.getPunishLeaderPic());
@@ -84,7 +84,7 @@ public class TransformationPunishModel {
         for (int i = 0, len = goBackEntities.size(); i < len; i++) {
             PunishGoBackEntity backEntity = goBackEntities.get(i);
             RPRecordEntity recordEntity = new RPRecordEntity();
-            recordEntity.setEdit(false);
+            recordEntity.setEdit(isEdit);
             recordEntity.setUserID(backEntity.getId());
             recordEntity.setUserName(backEntity.getName());
             recordEntity.setUserPic(backEntity.getPicture());
@@ -101,7 +101,7 @@ public class TransformationPunishModel {
      */
     public CommonItemType fetchPunishUserItem() {
         List<RPRecordEntity> endorseUserList = new ArrayList<>();
-        if (TextUtil.isEmpty(detailEntity.getSupervisionUserSignImg())) {
+        if (TextUtil.isEmpty(detailEntity.getSupervisionUserSignImg()) && !isEdit) {
             if (!detailEntity.getSendBackList().isEmpty()) {
                 endorseUserList.addAll(getSendBackList());
             } else {

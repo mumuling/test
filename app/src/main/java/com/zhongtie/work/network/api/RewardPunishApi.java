@@ -58,7 +58,15 @@ public interface RewardPunishApi {
     @FormUrlEncoded
     @POST("?action=AddTax")
     Flowable<Result<Integer>> createPunishEvent(@FieldMap ArrayMap<String, Object> data);
-
+    /**
+     * 创建安全处罚
+     *
+     * @param data 参数
+     * @return 返回创建ID
+     */
+    @FormUrlEncoded
+    @POST("?action=UpdateTax")
+    Flowable<Result<Integer>> editPunishEvent(@FieldMap ArrayMap<String, Object> data);
 
     /**
      * 安全处罚详情
@@ -90,7 +98,7 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=TaxSign")
-    Flowable<Result<Integer>> signPunish(@Field("userid") String userId, @Field("taxid") int eventid, @Field("signurl") String img);
+    Flowable<Result<String>> signPunish(@Field("userid") String userId, @Field("taxid") int eventid, @Field("signurl") String img);
 
     /**
      * 安全处罚作废
@@ -101,7 +109,7 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=TaxCancel")
-    Flowable<Result<RewardPunishDetailEntity>> cancelPunish(@Field("userid") String userId, @Field("taxid") int eventid );
+    Flowable<Result<String>> cancelPunish(@Field("userid") String userId, @Field("taxid") int eventid );
 
     /**
      * 同意
@@ -113,7 +121,7 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=TaxAgree")
-    Flowable<Result<RewardPunishDetailEntity>> consentPunish(@Field("userid") String userId, @Field("taxid") int taxid, @Field("signurl") String img);
+    Flowable<Result<String>> consentPunish(@Field("userid") String userId, @Field("taxid") int taxid, @Field("signurl") String img);
 
     /**
      * 退回操作
@@ -125,5 +133,5 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=TaxReturn")
-    Flowable<Result<RewardPunishDetailEntity>> sendBackPunish(@Field("userid") String userId, @Field("taxid") int eventid, @Field("signurl") String img, @Field("reason") String content);
+    Flowable<Result<String>> sendBackPunish(@Field("userid") String userId, @Field("taxid") int eventid, @Field("signurl") String img, @Field("reason") String content);
 }

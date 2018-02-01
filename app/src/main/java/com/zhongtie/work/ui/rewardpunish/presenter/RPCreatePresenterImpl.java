@@ -11,7 +11,9 @@ import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.EditContentEntity;
+import com.zhongtie.work.event.PunishDetailUpdateEvent;
 import com.zhongtie.work.network.Http;
+import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.RewardPunishApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
@@ -20,6 +22,7 @@ import com.zhongtie.work.util.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 安全奖罚 创建与编辑
@@ -41,6 +44,8 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     private int mPunishId;
 
     private RewardPunishDetailEntity detailEntity;
+
+    private List<Object> mPunishItemList;
 
     /**
      * @return 获取类型
@@ -78,29 +83,45 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         }
     }
 
-    private void fetchPunishData(int orderId) {
-        this.mPunishId = orderId;
-        initPunishEditItemList(detailEntity);
-    }
+    private void fetchPunishData(int punishId) {
+        this.mPunishId = punishId;
+        mView.initLoading();
+        addDispose(Http.netServer(RewardPunishApi.class)
+                .punishDetails(Cache.getUserID(), punishId)
+                .map(new NetWorkFunc1<>())
+                .map(data -> {
+                    mPunishItemList = new ArrayList<>();
+                    mItemArrayMap = new ArrayMap<>();
 
-    /**
-     * 编辑初始化
-     */
-    private void initPunishEditItemList(RewardPunishDetailEntity detailEntity) {
-        List<Object> itemList = new ArrayList<>();
-        mItemArrayMap = new ArrayMap<>();
-        mAbstract = new EditContentEntity("摘要", "请输入摘要说明", "");
-        mDescribe = new EditContentEntity("详细情况", "请输入详细情况", "");
-        //添加描述
-        itemList.add(mAbstract);
-        //添加修改要求
-        itemList.add(mDescribe);
+                    mAbstract = new EditContentEntity("摘要", "请输入摘要说明", data.getSummary());
+                    mPunishItemList.add(mAbstract);
+                    mDescribe = new EditContentEntity("详细情况", "请输入详细情况", data.getContent());
+                    mPunishItemList.add(mDescribe);
+                    TransformationPunishModel transModel = new TransformationPunishModel(data, true);
+                    CommonItemType punishUser = transModel.fetchPunishUserItem();
+                    mPunishItemList.add(punishUser);
+                    mItemArrayMap.put(punishUser.getTitle(), punishUser);
 
-        TransformationPunishModel punishModel = new TransformationPunishModel(detailEntity);
+                    CommonItemType punishLeader = transModel.fetchPunishLeaderItem();
+                    mPunishItemList.add(punishLeader);
+                    mItemArrayMap.put(punishLeader.getTitle(), punishLeader);
 
-        itemList.addAll(fetchCommonItemTypeList());
-        mView.setItemList(itemList);
+                    CommonItemType readGroup = transModel.fetchReadList();
+                    mPunishItemList.add(readGroup);
+                    mItemArrayMap.put(readGroup.getTitle(), readGroup);
 
+                    return data;
+                })
+                .delay(500, TimeUnit.MILLISECONDS)
+                .compose(Network.networkIO())
+                .subscribe(data -> {
+                    mView.setHeadEditInfo(data);
+                    mView.setItemList(mPunishItemList);
+                    mView.initSuccess();
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    mView.initFail();
+                }));
     }
 
     @Override
@@ -164,14 +185,29 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         RPRecordEntity saferItem = (RPRecordEntity) safer.getTypeItemList().get(0);
         createData.put("tax_safer", saferItem.getUserID());
 
-        Http.netServer(RewardPunishApi.class)
-                .createPunishEvent(createData)
-                .compose(Network.convertDialogTip(mView))
-                .subscribe(integer -> {
-                    mView.showToast(R.string.punish_create_success);
-                    mView.createSuccess();
-                }, throwable -> {
-                });
+
+        if (mPunishId > 0) {
+            createData.put("id", mPunishId);
+            addDispose(Http.netServer(RewardPunishApi.class)
+                    .editPunishEvent(createData)
+                    .compose(Network.convertDialogTip(mView))
+                    .subscribe(integer -> {
+                        mView.showToast(R.string.punish_edit_success);
+                        mView.createSuccess();
+                        new PunishDetailUpdateEvent().post();
+                    }, throwable -> {
+                    }));
+        } else {
+            addDispose(Http.netServer(RewardPunishApi.class)
+                    .createPunishEvent(createData)
+                    .compose(Network.convertDialogTip(mView))
+                    .subscribe(integer -> {
+                        mView.showToast(R.string.punish_create_success);
+                        mView.createSuccess();
+
+                    }, throwable -> {
+                    }));
+        }
     }
 
 
