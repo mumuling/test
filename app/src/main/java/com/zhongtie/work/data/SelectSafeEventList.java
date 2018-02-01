@@ -15,7 +15,7 @@ public class SelectSafeEventList {
      */
 
     private String time;
-    private List<List<SelectSafeEventEntity>> events;
+    private List<SelectSafeEventEntity> events;
 
     public String getTime() {
         return time;
@@ -25,11 +25,12 @@ public class SelectSafeEventList {
         this.time = time;
     }
 
-    public List<List<SelectSafeEventEntity>> getEvents() {
+
+    public List<SelectSafeEventEntity> getEvents() {
         return events;
     }
 
-    public void setEvents(List<List<SelectSafeEventEntity>> events) {
+    public void setEvents(List<SelectSafeEventEntity> events) {
         this.events = events;
     }
 }

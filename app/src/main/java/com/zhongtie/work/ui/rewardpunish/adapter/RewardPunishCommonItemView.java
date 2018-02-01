@@ -144,6 +144,7 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
             mItemUserListTip = findViewById(R.id.item_user_list_tip);
             mItemUserAddImg = findViewById(R.id.item_user_add_img);
             mCheckExamineList = findViewById(R.id.check_examine_list);
+            mCheckExamineList.setPadding(0,0,0, com.zhongtie.work.util.ViewUtils.dip2px(10));
         }
 
     }

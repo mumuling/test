@@ -64,12 +64,12 @@ public interface RewardPunishApi {
      * 安全处罚详情
      *
      * @param userId  用户ID
-     * @param eventid ID
+     * @param taxid ID
      * @return 返回详情
      */
     @FormUrlEncoded
-    @POST("?action=EventDetails")
-    Flowable<Result<RewardPunishDetailEntity>> punishDetails(@Field("userid") String userId, @Field("eventid") int eventid);
+    @POST("?action=GetTaxDetails")
+    Flowable<Result<RewardPunishDetailEntity>> punishDetails(@Field("userid") String userId, @Field("taxid") int taxid);
 
     /**
      * 获取安全督导列表
@@ -79,7 +79,7 @@ public interface RewardPunishApi {
      */
     @FormUrlEncoded
     @POST("?action=GetEventListTwoMonths")
-    Flowable<List<SelectSafeEventList>> getPunisnSafeEvent(@Field("userid") String userId, @Field("companyid") int companyid);
+    Flowable<Result<List<SelectSafeEventList>>> getPunisnSafeEvent(@Field("userid") String userId, @Field("companyid") int companyid);
 
     /**
      * 安全处罚签认操作

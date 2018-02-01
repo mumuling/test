@@ -25,6 +25,9 @@ public abstract class AbstractItemView<T, R extends CommonViewHolder> {
 
     protected CommonAdapter commonAdapter;
 
+    public AbstractItemView() {
+    }
+
     /**
      * 赋值 commonAdapter 参考{@link CommonAdapter#register(Class[])} }
      * 在初始化时 注册当前<code>AbstractAdapterItemView</code> 赋值可让<code>AbstractAdapterItemView</code>持有CommonKyAdapter对象

@@ -33,7 +33,7 @@ import java.util.HashMap;
  * Date: 2018/1/11
  */
 
-public class CalendarDialog extends BaseDialog implements OnSelectDateListener, View.OnClickListener {
+public class CalendarDialog extends BaseDialog implements OnSelectDateListener, View.OnClickListener, MonthPager.OnPageChangeListener {
 
     public static final int SAFE_EVENT_COUNT = 1;
     public static final int SAFE_PUNISH_COUNT = 2;
@@ -113,71 +113,53 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
 
         mCalendarDate.setText(getContext().getString(R.string.select_date, currentDate.getYear(), currentDate.getMonth()));
         CustomDayView customDayView = new CustomDayView(getContext(), R.layout.custom_day);
-        mCalendarViewAdapter = new CalendarViewAdapter(
-                getContext(),
-                this,
-                CalendarAttr.CalendarType.MONTH,
-                CalendarAttr.WeekArrayType.Monday,
-                customDayView);
+        mCalendarViewAdapter = new CalendarViewAdapter(getContext(), this, CalendarAttr.CalendarType.MONTH,
+                CalendarAttr.WeekArrayType.Monday, customDayView);
         mCalendarViewAdapter.setMarkData(mEventCountList);
 
         mCalendarView.setAdapter(mCalendarViewAdapter);
         mCalendarView.setCurrentItem(MonthPager.CURRENT_DAY_INDEX);
-        mCalendarView.setPageTransformer(false, new ViewPager.PageTransformer() {
-            @Override
-            public void transformPage(View page, float position) {
-                position = (float) Math.sqrt(1 - Math.abs(position));
-                page.setAlpha(position);
-            }
+        mCalendarView.setPageTransformer(false, (page, position) -> {
+            position = (float) Math.sqrt(1 - Math.abs(position));
+            page.setAlpha(position);
         });
-        mCalendarView.addOnPageChangeListener(new MonthPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mCurrentPage = position;
-                currentCalendars = mCalendarViewAdapter.getPagers();
-                if (currentCalendars.get(position % currentCalendars.size()) != null) {
-                    currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
-                    mCalendarDate.setText(getContext().getString(R.string.select_date, currentDate.getYear(), currentDate.getMonth()));
-
-                    getMonthCount(currentDate.year, currentDate.month);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+        mCalendarView.addOnPageChangeListener(this);
     }
 
 
+    /**
+     * 获取当月事件数量
+     *
+     * @param year  年份
+     * @param month 月份
+     */
     private void getMonthCount(int year, int month) {
-        int company = Cache.getSelectCompany();
-        if (monthMar.get(year + "" + month) == null) {
-            Http.netServer(SafeApi.class)
-                    .safeEventListMonthCount(Cache.getUserID(), company, year, month)
-                    .map(new NetWorkFunc1<>())
-                    .compose(Network.networkIO())
-                    .map(eventCountData -> {
-                        HashMap<String, String> map = new HashMap<>(eventCountData.size());
-                        for (int i = 0; i < eventCountData.size(); i++) {
-                            EventCountData data = eventCountData.get(i);
-                            String[] date = data.getDay().split("-");
-                            map.put(date[0] + "-" + Integer.valueOf(date[1]) + "-" + date[2], data.getCount() + "");
-                        }
-                        return map;
-                    })
-                    .compose(Network.networkIO())
-                    .subscribe(eventCountData -> {
-                        monthMar.put(year + "" + month, true);
-                        mEventCountList.putAll(eventCountData);
-                        mCalendarViewAdapter.setMarkData(mEventCountList);
-                        mCalendarViewAdapter.notifyDataChanged();
-                    }, Throwable::printStackTrace);
+        if (mCalendarTyp == SAFE_EVENT_COUNT) {
+            int company = Cache.getSelectCompany();
+            if (monthMar.get(year + "" + month) == null) {
+                Http.netServer(SafeApi.class)
+                        .safeEventListMonthCount(Cache.getUserID(), company, year, month)
+                        .map(new NetWorkFunc1<>())
+                        .compose(Network.networkIO())
+                        .map(eventCountData -> {
+                            HashMap<String, String> map = new HashMap<>(eventCountData.size());
+                            for (int i = 0; i < eventCountData.size(); i++) {
+                                EventCountData data = eventCountData.get(i);
+                                String[] date = data.getDay().split("-");
+                                map.put(date[0] + "-" + Integer.valueOf(date[1]) + "-" + date[2], data.getCount() + "");
+                            }
+                            return map;
+                        })
+                        .compose(Network.networkIO())
+                        .subscribe(eventCountData -> {
+                            monthMar.put(year + "" + month, true);
+                            mEventCountList.putAll(eventCountData);
+                            mCalendarViewAdapter.setMarkData(mEventCountList);
+                            mCalendarViewAdapter.notifyDataChanged();
+                        }, Throwable::printStackTrace);
+            }
         }
+
     }
 
 
@@ -207,6 +189,27 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
             mCalendarViewAdapter.setMarkData(mEventCountList);
             mCalendarViewAdapter.notifyDataChanged();
         }
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mCurrentPage = position;
+        currentCalendars = mCalendarViewAdapter.getPagers();
+        if (currentCalendars.get(position % currentCalendars.size()) != null) {
+            currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
+            mCalendarDate.setText(getContext().getString(R.string.select_date, currentDate.getYear(), currentDate.getMonth()));
+            getMonthCount(currentDate.year, currentDate.month);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
     }
 
     public interface OnSelectDateCallback {

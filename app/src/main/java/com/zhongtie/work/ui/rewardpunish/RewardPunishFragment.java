@@ -8,22 +8,19 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.OnRecyclerItemClickListener;
 import com.zhongtie.work.data.RewardPunishEntity;
-import com.zhongtie.work.data.SupervisorInfoEntity;
 import com.zhongtie.work.event.PunishCreateEvent;
 import com.zhongtie.work.list.OnDateCallback;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
-import com.zhongtie.work.ui.rewardpunish.detail.PunishDetailFragment;
 import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishItemView;
 import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishReadItemView;
+import com.zhongtie.work.ui.rewardpunish.detail.PunishDetailFragment;
 import com.zhongtie.work.ui.rewardpunish.presenter.RewardPunishContract;
 import com.zhongtie.work.ui.rewardpunish.presenter.RewardPunishListPresenterImpl;
-import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,7 +31,7 @@ import java.util.List;
  */
 
 public class RewardPunishFragment extends BasePresenterFragment<RewardPunishContract.Presenter>
-        implements RewardPunishContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
+        implements RewardPunishContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener<RewardPunishEntity> {
 
     public static final String TYPE = "type";
     private RefreshRecyclerView mList;
@@ -127,7 +124,7 @@ public class RewardPunishFragment extends BasePresenterFragment<RewardPunishCont
     }
 
     @Override
-    public void onClick(Object t, int index) {
-        SafeSupervisionCreateActivity.newInstance(getActivity(), PunishDetailFragment.class, getString(R.string.safe_punish_title));
+    public void onClick(RewardPunishEntity data, int index) {
+        PunishDetailFragment.start(getActivity(), data.getId());
     }
 }

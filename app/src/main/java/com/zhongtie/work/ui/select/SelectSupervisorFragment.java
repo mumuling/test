@@ -32,8 +32,9 @@ import io.reactivex.functions.Function;
 
 /**
  * 选择督导信息
- * Auth:Cheek
- * date:2018.1.13
+ *
+ * @author Chaek
+ * @date:2018.1.13
  */
 
 public class SelectSupervisorFragment extends BaseFragment implements OnRecyclerItemClickListener<SelectSafeEventEntity> {
@@ -81,11 +82,12 @@ public class SelectSupervisorFragment extends BaseFragment implements OnRecycler
         initLoading();
         addDispose(Http.netServer(RewardPunishApi.class)
                 .getPunisnSafeEvent(Cache.getUserID(), Cache.getSelectCompany())
-                .flatMap(selectSafeEventLists -> Flowable.fromIterable(selectSafeEventLists)
+                .map(new NetWorkFunc1<>())
+                .flatMap(eventList -> Flowable.fromIterable(eventList)
                         .map(selectSafeEventList -> {
                             SelectSafeEventEntity title = new SelectSafeEventEntity();
                             title.setTime(selectSafeEventList.getTime());
-                            List<SelectSafeEventEntity> list = selectSafeEventList.getEvents().get(0);
+                            List<SelectSafeEventEntity> list = selectSafeEventList.getEvents();
                             list.add(0, title);
                             return list;
                         }).flatMap(Flowable::fromIterable)
@@ -95,8 +97,12 @@ public class SelectSupervisorFragment extends BaseFragment implements OnRecycler
                 .subscribe(selectSafeEventEntities -> {
                     mSelectSafeEventEntities.clear();
                     mSelectSafeEventEntities.addAll(selectSafeEventEntities);
-                    commonAdapter.notifyDataSetChanged();
-                    initSuccess();
+                    if (mSelectSafeEventEntities.isEmpty()) {
+                        mStatusView.showEmpty();
+                    } else {
+                        commonAdapter.notifyDataSetChanged();
+                        initSuccess();
+                    }
                 }, throwable -> {
                     initFail();
                     throwable.printStackTrace();

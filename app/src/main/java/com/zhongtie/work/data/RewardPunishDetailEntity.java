@@ -1,6 +1,9 @@
 package com.zhongtie.work.data;
 
-import android.support.annotation.StringRes;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.zhongtie.work.util.JsonUtil;
+
+import java.util.List;
 
 /**
  * 安全惩罚详情
@@ -10,75 +13,184 @@ import android.support.annotation.StringRes;
 
 public class RewardPunishDetailEntity {
 
+    /*
+    * {
+      "id": 31,
+      "tax_unit": "unit111",
+      "tax_money": 444,
+      "tax_summary": "summary111",
+      "tax_detail": "detail111",
+      "tax_eventid": 1102,
+      "eventusername": "超人",
+      "eventlocal": "测试",
+      "eventunit": "项目二部",
+      "tax_userid": 1,
+      "taxusername": "田晓元",
+      "taxuserpic": "https://api.023ztjs.com/picture/610324198702113446.jpg",
+      "tax_safer": 9,
+      "saferusername": "刘金鑫",
+      "saferuserpic": "https://api.023ztjs.com/picture/500235199101254019.jpg",
+      "tax_safersign": "signurl",
+      "tax_safertime": "2018/1/31 11:30:06",
+      "tax_leader": 6,
+      "leaderusername": "黄维荣",
+      "leaderuserpic": "https://api.023ztjs.com/picture/532127197511201115.jpg",
+      "tax_leadersign": "signurl",
+      "tax_leadertime": "2018/1/31 15:36:11",
+      "readerlist": [
+        {
+          "id": 2,
+          "name": "十号线通信项目"
+        },
+        {
+          "id": 4,
+          "name": "十号线信号项目"
+        }
+      ],
+      "sendBackList": "[]",
+      "atuserlist": [
+        {
+          "id": 1,
+          "name": "田晓元",
+          "pic": "https://api.023ztjs.com/picture/610324198702113446.jpg"
+        },
+        {
+          "id": 2,
+          "name": "赵凯",
+          "pic": "https://api.023ztjs.com/picture/510703198802291318.jpg"
+        }
+      ],
+      "edit": 1,
+      "agree": 0,
+      "retreat": 0,
+      "sign": 0,
+      "cancel": 1,
+      "print": 0
+    }*/
+    private int id;
 
+    @JSONField(name = "tax_number")
     private String punishCode;
-    private String punishCompany;
 
+    @JSONField(name = "tax_publishtime")
+    private String punishTime;
+    /**
+     * 选择的单位
+     */
+    @JSONField(name = "tax_unit")
+    private String punishCompany;
+    /**
+     * 处罚金额
+     */
+    @JSONField(name = "tax_money")
     private int punishAmount;
+    /**
+     * 简介
+     */
+    @JSONField(name = "tax_detail")
     private String summary;
 
+    /**
+     * 详细内容
+     */
+    @JSONField(name = "tax_summary")
     private String content;
+    @JSONField(name = "tax_status")
+    private String punishState;
 
+    @JSONField(name = "tax_eventid")
     private int safeEventId;
+    @JSONField(name = "eventusername")
     private String safeEventUserName;
+    @JSONField(name = "eventlocal")
     private String safeEventSite;
+    @JSONField(name = "eventunit")
     private String safeEventCompany;
-
+    @JSONField(name = "tax_userid")
     private int createUserId;
+    /**
+     * 创建用户名称
+     */
+    @JSONField(name = "taxusername")
     private String createUserName;
     /**
      * 创建用户头像
      */
+    @JSONField(name = "taxuserpic")
     private String createUserPic;
+    @JSONField(name = "tax_publishtime")
     private String createTime;
 
-
     /**
-     * 安全监察编号
+     * 安全监察编号 就是安全监察人的ID
      */
+    @JSONField(name = "tax_safer")
     private int supervisionId;
+
+
+    @JSONField(name = "saferusername")
     private String supervisionUserName;
     /**
      * 头像
      */
+    @JSONField(name = "saferuserpic")
     private String supervisionUserPic;
-    /**
-     * 签名
-     */
+
+    @JSONField(name = "tax_safersign")
     private String supervisionUserSignImg;
+    @JSONField(name = "tax_safertime")
+    private String supervisionSignTime;
 
+    @JSONField(name = "tax_leader")
     private int punishLeaderId;
+    @JSONField(name = "leaderusername")
     private String punishLeaderName;
-
+    @JSONField(name = "leaderuserpic")
     private String punishLeaderPic;
+    @JSONField(name = "tax_leadersign")
     private String punishLeadSign;
+    @JSONField(name = "tax_leadertime")
+    private String punishLeaderSignTime;
 
-    private String punishSignTime;
 
-    private String readGroupId;
-    private String readGroupName;
+    /**
+     * 查阅组
+     */
+    private List<PunishReadEntity> readerlist;
 
+
+    private String gobacklist;
     /**
      * 退回理由
      */
-    private String sendBackReason;
+    private List<PunishGoBackEntity> sendBackList;
 
-    private String sendBackSign;
+    private List<PunishAtUserEntity> atuserlist;
 
-    private String sendBackTime;
 
-    private String atUserId;
-    private String atUserName;
-    private String atUserPic;
-
-    private int consentStatius;
-    private int sendBackStatius;
-    private int signStatius;
-    private int cancelStatus;
-    private int printStatus;
+    public int edit;
+    @JSONField(name = "agree")
+    public int consentStatius;
+    @JSONField(name = "retreat")
+    public int sendBackStatius;
+    @JSONField(name = "sign")
+    public int signStatius;
+    @JSONField(name = "cancel")
+    public int cancelStatus;
+    @JSONField(name = "print")
+    public int printStatus;
 
     public String getPunishCode() {
         return punishCode;
+    }
+
+
+    public String getPunishState() {
+        return punishState;
+    }
+
+    public void setPunishState(String punishState) {
+        this.punishState = punishState;
     }
 
     public void setPunishCode(String punishCode) {
@@ -87,6 +199,22 @@ public class RewardPunishDetailEntity {
 
     public String getPunishCompany() {
         return punishCompany;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPunishTime() {
+        return punishTime;
+    }
+
+    public void setPunishTime(String punishTime) {
+        this.punishTime = punishTime;
     }
 
     public void setPunishCompany(String punishCompany) {
@@ -173,6 +301,14 @@ public class RewardPunishDetailEntity {
         this.createUserPic = createUserPic;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     public int getSupervisionId() {
         return supervisionId;
     }
@@ -203,6 +339,14 @@ public class RewardPunishDetailEntity {
 
     public void setSupervisionUserSignImg(String supervisionUserSignImg) {
         this.supervisionUserSignImg = supervisionUserSignImg;
+    }
+
+    public String getSupervisionSignTime() {
+        return supervisionSignTime;
+    }
+
+    public void setSupervisionSignTime(String supervisionSignTime) {
+        this.supervisionSignTime = supervisionSignTime;
     }
 
     public int getPunishLeaderId() {
@@ -237,76 +381,47 @@ public class RewardPunishDetailEntity {
         this.punishLeadSign = punishLeadSign;
     }
 
-    public String getPunishSignTime() {
-        return punishSignTime;
+    public String getPunishLeaderSignTime() {
+        return punishLeaderSignTime;
     }
 
-    public void setPunishSignTime(String punishSignTime) {
-        this.punishSignTime = punishSignTime;
+    public void setPunishLeaderSignTime(String punishLeaderSignTime) {
+        this.punishLeaderSignTime = punishLeaderSignTime;
     }
 
-    public String getReadGroupId() {
-        return readGroupId;
+    public List<PunishReadEntity> getReaderlist() {
+        return readerlist;
     }
 
-    public void setReadGroupId(String readGroupId) {
-        this.readGroupId = readGroupId;
+    public void setReaderlist(List<PunishReadEntity> readerlist) {
+        this.readerlist = readerlist;
     }
 
-    public String getReadGroupName() {
-        return readGroupName;
+    public String getGobacklist() {
+        return gobacklist;
     }
 
-    public void setReadGroupName(String readGroupName) {
-        this.readGroupName = readGroupName;
+    public void setGobacklist(String gobacklist) {
+        this.gobacklist = gobacklist;
     }
 
-    public String getSendBackReason() {
-        return sendBackReason;
+    public List<PunishGoBackEntity> getSendBackList() {
+        if (sendBackList == null) {
+            sendBackList = JsonUtil.getPersons(gobacklist, PunishGoBackEntity.class);
+        }
+        return sendBackList;
     }
 
-    public void setSendBackReason(String sendBackReason) {
-        this.sendBackReason = sendBackReason;
+    public void setSendBackList(List<PunishGoBackEntity> sendBackList) {
+        this.sendBackList = sendBackList;
     }
 
-    public String getSendBackSign() {
-        return sendBackSign;
+    public List<PunishAtUserEntity> getAtuserlist() {
+        return atuserlist;
     }
 
-    public void setSendBackSign(String sendBackSign) {
-        this.sendBackSign = sendBackSign;
-    }
-
-    public String getSendBackTime() {
-        return sendBackTime;
-    }
-
-    public void setSendBackTime(String sendBackTime) {
-        this.sendBackTime = sendBackTime;
-    }
-
-    public String getAtUserId() {
-        return atUserId;
-    }
-
-    public void setAtUserId(String atUserId) {
-        this.atUserId = atUserId;
-    }
-
-    public String getAtUserName() {
-        return atUserName;
-    }
-
-    public void setAtUserName(String atUserName) {
-        this.atUserName = atUserName;
-    }
-
-    public String getAtUserPic() {
-        return atUserPic;
-    }
-
-    public void setAtUserPic(String atUserPic) {
-        this.atUserPic = atUserPic;
+    public void setAtuserlist(List<PunishAtUserEntity> atuserlist) {
+        this.atuserlist = atuserlist;
     }
 
     public int getConsentStatius() {
@@ -347,13 +462,5 @@ public class RewardPunishDetailEntity {
 
     public void setPrintStatus(int printStatus) {
         this.printStatus = printStatus;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
     }
 }

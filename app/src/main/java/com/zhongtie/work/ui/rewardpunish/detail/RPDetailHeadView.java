@@ -3,6 +3,7 @@ package com.zhongtie.work.ui.rewardpunish.detail;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,7 +50,6 @@ public class RPDetailHeadView extends LinearLayout implements View.OnClickListen
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_rp_detail_head_view, this, true);
-
         mDetailCode = findViewById(R.id.detail_code);
         mOrderStateImg = findViewById(R.id.order_state_img);
         mCreateUserPic = findViewById(R.id.safe_order_reply_head);
@@ -63,26 +63,16 @@ public class RPDetailHeadView extends LinearLayout implements View.OnClickListen
 
     }
 
-    public void initData() {
-        mCreateUserPic.loadImage(imageUrls[0]);
-        mCreateUserName.setText("刘玉梅");
-        mCreateTime.setText("2017-06-20 11:02");
-        mDetailCode.setText("重庆2017-61");
-        mPunishProjectTeam.setText("城建部");
-        mPunishAmount.setText("500");
-    }
-
-
     @Override
     public void onClick(View view) {
-        SafeOrderDetailFragment.start(getContext(), detailInfo.getSupervisionId());
+        SafeOrderDetailFragment.start(getContext(), detailInfo.getSafeEventId());
     }
 
     public void setDetailInfo(RewardPunishDetailEntity detailInfo) {
         this.detailInfo = detailInfo;
         mCreateUserPic.loadImage(detailInfo.getCreateUserPic());
         mCreateUserName.setText(detailInfo.getCreateUserName());
-        mCreateTime.setText(detailInfo.getCreateTime());
+        mCreateTime.setText(com.zhongtie.work.util.TimeUtils.formatEventTime(detailInfo.getCreateTime()));
         mDetailCode.setText(detailInfo.getPunishCode());
         mPunishProjectTeam.setText(detailInfo.getPunishCompany());
         mPunishAmount.setText(String.valueOf(detailInfo.getPunishAmount()));
@@ -92,5 +82,27 @@ public class RPDetailHeadView extends LinearLayout implements View.OnClickListen
             mSupervisorReadLayout.setVisibility(VISIBLE);
         }
 
+        switch (detailInfo.getPunishState()) {
+            case "审批中":
+                mOrderStateImg.setImageResource(R.drawable.status_approve_loading);
+                break;
+            case "已审批":
+                mOrderStateImg.setImageResource(R.drawable.status_approve);
+                break;
+            case "已取消":
+                mOrderStateImg.setImageResource(R.drawable.status_cancel);
+                break;
+            case "已退回":
+                mOrderStateImg.setImageResource(R.drawable.status_exit);
+                break;
+            case "已完结":
+                mOrderStateImg.setImageResource(R.drawable.status_over);
+                break;
+            case "已通过":
+                mOrderStateImg.setImageResource(R.drawable.status_pass);
+                break;
+            default:
+
+        }
     }
 }

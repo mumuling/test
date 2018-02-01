@@ -1,7 +1,10 @@
 package com.zhongtie.work.ui.rewardpunish.detail;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -9,6 +12,7 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.enums.SignatureType;
+import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.list.OnSignatureTypeListener;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.RewardPunishCreateFragment;
@@ -17,6 +21,7 @@ import com.zhongtie.work.ui.rewardpunish.dialog.ApproceIdeaDialog;
 import com.zhongtie.work.ui.rewardpunish.dialog.SendBackDialog;
 import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailContract;
 import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailPresenterImpl;
+import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
 import com.zhongtie.work.util.parse.BindKey;
@@ -65,12 +70,30 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
     private List<Object> mInfoList = new ArrayList<>();
 
     private LinearLayout mBottom;
-    private LinearLayout mBottomBtn;
-    private TextView mModify;
-    private TextView mReModfiy;
-    private TextView mApprove;
     private RecyclerView mList;
 
+    private LinearLayout mBottomBtn;
+    private TextView mModify;
+    private TextView mSendBack;
+    private TextView mApprove;
+    private TextView mSign;
+    private TextView mCancel;
+
+    private OnEventPrintListener mOnEventPrintListener;
+
+    public static void start(Context context, int punishId) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(ID, punishId);
+        SafeSupervisionCreateActivity.newInstance(context, PunishDetailFragment.class, context.getString(R.string.safe_punish_title), bundle);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnEventPrintListener) {
+            mOnEventPrintListener = (OnEventPrintListener) context;
+        }
+    }
 
     @Override
     public int getLayoutViewId() {
@@ -83,18 +106,29 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         mBottom = (LinearLayout) findViewById(R.id.bottom);
 
         LayoutInflater.from(getActivity()).inflate(R.layout.layout_punish_detail_bottom, mBottom, true);
-
         mModify = (TextView) findViewById(R.id.modify);
-        mReModfiy = (TextView) findViewById(R.id.remodfiy);
         mApprove = (TextView) findViewById(R.id.approve);
+        mBottomBtn = (LinearLayout) findViewById(R.id.bottom_btn);
+        mModify = (TextView) findViewById(R.id.modify);
+        mSendBack = (TextView) findViewById(R.id.send_back);
+        mApprove = (TextView) findViewById(R.id.approve);
+        mSign = (TextView) findViewById(R.id.sign);
+        mCancel = (TextView) findViewById(R.id.cancel);
 
         mList = (RecyclerView) findViewById(R.id.list);
 
         mModify.setOnClickListener(view -> RewardPunishCreateFragment.start(getActivity(), mPunishId));
-        mApprove.setOnClickListener(view -> showApproveDialog());
+        //同意
+        mApprove.setOnClickListener(view -> showSignDialog(PUNISH_CONSENT_TYPE));
+        //签认
+        mSign.setOnClickListener(v -> showSignDialog(PUNISH_SIGN_TYP));
+        //作废
+        mCancel.setOnClickListener(v -> showSignDialog(PUNISH_CANCEL_TYPE));
+
+        //退回
+        mSendBack.setOnClickListener(v -> new SendBackDialog(getActivity(), PunishDetailFragment.this).show());
 
         mHeadInfoView = new RPDetailHeadView(getActivity());
-        mHeadInfoView.initData();
         initAdapter();
     }
 
@@ -143,6 +177,7 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
     @Override
     public void consentPunishSuccess() {
         //同意成功
+
     }
 
 
@@ -162,7 +197,7 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
 
     @Override
     public void onSendBack() {
-        new SendBackDialog(getActivity(), this).show();
+
     }
 
     @Override
@@ -170,13 +205,53 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
 
     }
 
+    private String reason;
+
     @Override
     public void onSendBackSuccess(String reason) {
-
+        this.reason = reason;
+        showSignDialog(PUNISH_SEND_BACK_TYPE);
     }
 
     @Override
     public void onSignature(int type, String imagePath) {
+        if (type == PUNISH_SIGN_TYP) {
+            //处罚认罚
+            mPresenter.signPunish(imagePath);
+        } else if (type == PUNISH_CONSENT_TYPE) {
+            //处罚同意
+            mPresenter.consentPunish(imagePath);
+        } else if (type == PUNISH_CANCEL_TYPE) {
+            //作废
+            mPresenter.cancellationPunish(imagePath);
+        } else if (type == PUNISH_SEND_BACK_TYPE) {
+            //退回
+            mPresenter.sendBackPunish(imagePath, reason);
+        }
+    }
+
+    @Override
+    public void showStatusView(int edit, int agree, int retreat, int sign, int cancel) {
+        mModify.setVisibility(edit == 1 ? View.VISIBLE : View.GONE);
+        mApprove.setVisibility(agree == 1 ? View.VISIBLE : View.GONE);
+        mSendBack.setVisibility(retreat == 1 ? View.VISIBLE : View.GONE);
+        mSign.setVisibility(sign == 1 ? View.VISIBLE : View.GONE);
+        mCancel.setVisibility(cancel == 1 ? View.VISIBLE : View.GONE);
+    }
+
+
+    @Override
+    public void showPrint(int print) {
+        if (print == 1) {
+            mBottom.setVisibility(View.GONE);
+            if (mOnEventPrintListener != null) {
+                mOnEventPrintListener.onShowPrint(2, mPunishId);
+            }
+        } else {
+            if (mOnEventPrintListener != null) {
+                mOnEventPrintListener.onHidePrint();
+            }
+        }
 
     }
 }

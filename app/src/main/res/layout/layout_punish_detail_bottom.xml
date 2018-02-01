@@ -23,13 +23,13 @@
 
 
     <TextView
-        android:id="@+id/remodfiy"
+        android:id="@+id/send_back"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/item_white_select_bg"
         android:gravity="center"
-        android:text="@string/remodfiy"
+        android:text="@string/safe_punish_send_back"
         android:textColor="@color/app_color"
         android:textSize="16sp"/>
 
@@ -40,7 +40,27 @@
         android:layout_weight="1"
         android:background="@drawable/item_white_select_bg"
         android:gravity="center"
-        android:text="@string/safe_punish_approve"
+        android:text="@string/safe_punish_agree"
+        android:textColor="@color/app_color"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/sign"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/item_white_select_bg"
+        android:gravity="center"
+        android:text="@string/safe_punish_sign"
+        android:textColor="@color/app_color"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/item_white_select_bg"
+        android:gravity="center"
+        android:text="@string/safe_punish_cancel"
         android:textColor="@color/app_color"
         android:textSize="16sp"/>
 </LinearLayout>

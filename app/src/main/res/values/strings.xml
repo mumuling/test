@@ -199,7 +199,11 @@
     <string name="switch_fail">切换失败</string>
     <string name="safe_punish_title">安全奖罚</string>
     <string name="safe_punish_approve">审核</string>
+    <string name="safe_punish_cancel">作废</string>
+    <string name="safe_punish_sign">签认</string>
+    <string name="safe_punish_agree">同意</string>
     <string name="remodfiy">再次编辑</string>
+    <string name="safe_punish_send_back">退回</string>
     <string name="punish_user_title">被处理对象：</string>
     <string name="punish_leader_title">被罚款单位负责人</string>
     <string name="punish_safe_title">安全监察</string>

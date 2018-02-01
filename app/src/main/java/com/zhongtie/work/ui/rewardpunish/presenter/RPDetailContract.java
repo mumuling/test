@@ -24,11 +24,16 @@ public interface RPDetailContract {
 
         void setHeadTitle(RewardPunishDetailEntity detailEntity);
 
+        void showStatusView(int edit, int agree, int retreat, int sign, int cancel);
+
+        void showPrint(int print);
+
         void consentPunishSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {
         void getDetailInfo(int safeOrderID);
+
 
         /**
          * 同意
@@ -40,7 +45,7 @@ public interface RPDetailContract {
          *
          * @param content 理由
          */
-        void sendBackPunish(String signPath,String content);
+        void sendBackPunish(String signPath, String content);
 
         /**
          * 作废

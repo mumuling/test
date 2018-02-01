@@ -20,6 +20,16 @@ public class RPRecordEntity implements BaseEvent, Serializable {
     private String stateText;
     private String replyContent;
     private String signatureImg;
+    private String signTime;
+
+
+    public String getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(String signTime) {
+        this.signTime = signTime;
+    }
 
     public String getUserName() {
         return userName;

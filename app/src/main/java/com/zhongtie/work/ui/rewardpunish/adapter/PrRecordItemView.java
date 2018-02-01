@@ -1,6 +1,9 @@
 package com.zhongtie.work.ui.rewardpunish.adapter;
 
 import android.support.annotation.NonNull;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +12,8 @@ import com.zhongtie.work.base.adapter.AbstractItemView;
 import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.RPRecordEntity;
+import com.zhongtie.work.util.TextUtil;
+import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.widget.BaseImageView;
 
@@ -24,9 +29,31 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 @BindItemData(RPRecordEntity.class)
 public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordItemView.ViewHolder> {
+    public static final int PUNISH_BACK = 1;
+    public static final int PUNISH_AGREE = 2;
+    public static final int PUNISH_SIGN = 3;
+
     @Override
     public int getLayoutId(int viewType) {
         return R.layout.item_rp_record_layout;
+    }
+
+    private SpannableString getBackStatusText() {
+        SpannableString spStr = new SpannableString("批示：退回");
+        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.status_at)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spStr;
+    }
+
+    private SpannableString getAgreeNoStatusText() {
+        SpannableString spStr = new SpannableString("批示：同意");
+        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.state_green_color)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spStr;
+    }
+
+    private SpannableString getSignNoStatusText() {
+        SpannableString spStr = new SpannableString("：已签认");
+        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.app_color)), 1, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spStr;
     }
 
     @Override
@@ -38,13 +65,32 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
             vh.mSafeOrderReplyTime.setVisibility(View.GONE);
             vh.mRecordContent.setVisibility(View.GONE);
         } else {
-            vh.mRecordContent.setText("项目安全措施也技术指标没有达标请完善全部指标" +
-                    "项目安全措施也技术指标没有达标请完善全部指标");
-            vh.mSafeOrderReplyTime.setText("2017-11-20 16:58");
-            vh.mSafeOrderReplySign.loadImage(imageUrls[1]);
-            vh.mSafeOrderReplySign.setVisibility(View.VISIBLE);
-            vh.mSafeOrderReplyTime.setVisibility(View.VISIBLE);
-            vh.mRecordContent.setVisibility(View.VISIBLE);
+            vh.mSafeOrderReplyHead.loadImage(data.getUserPic());
+
+            if (TextUtil.isEmpty(data.getReplyContent())) {
+                vh.mRecordContent.setVisibility(View.GONE);
+            } else {
+                vh.mRecordContent.setVisibility(View.VISIBLE);
+                vh.mRecordContent.setText(data.getReplyContent());
+            }
+            if (TextUtil.isEmpty(data.getSignatureImg())) {
+                vh.mSafeOrderReplySign.setVisibility(View.GONE);
+                vh.mSafeOrderReplyTime.setVisibility(View.GONE);
+            } else {
+                vh.mSafeOrderReplySign.loadImageSign(data.getSignatureImg());
+                vh.mSafeOrderReplySign.setVisibility(View.VISIBLE);
+                vh.mSafeOrderReplyTime.setVisibility(View.VISIBLE);
+                vh.mSafeOrderReplyTime.setText(TimeUtils.formatEventTime(data.getSignTime()));
+                if (data.getState() == PUNISH_AGREE) {
+                    vh.mSafeOrderName.append(getAgreeNoStatusText());
+                } else if (data.getState() == PUNISH_BACK) {
+                    vh.mSafeOrderName.append(getBackStatusText());
+                } else if (data.getState() == PUNISH_SIGN) {
+                    vh.mSafeOrderName.append(getSignNoStatusText());
+                }
+            }
+
+
         }
     }
 

@@ -41,7 +41,7 @@ public class ScanQRCodeFragment extends BaseFragment implements ZXingScannerView
 
     @Override
     protected View createFragmentView(ViewGroup container) {
-        return mScannerView = new ZXingScannerView(getActivity()){
+        return mScannerView = new ZXingScannerView(getActivity()) {
             @Override
             protected IViewFinder createViewFinderView(Context context) {
                 return new CustomViewFinderView(context);
@@ -124,13 +124,13 @@ public class ScanQRCodeFragment extends BaseFragment implements ZXingScannerView
             float tradeMarkTop;
             float tradeMarkLeft;
             if (framingRect != null) {
-                tradeMarkTop = framingRect.bottom + PAINT.getTextSize() + 10;
+                tradeMarkTop = framingRect.bottom + PAINT.getTextSize() + ViewUtils.dip2px(10);
                 tradeMarkLeft = framingRect.left;
             } else {
                 tradeMarkTop = 10;
-                tradeMarkLeft = canvas.getHeight() - PAINT.getTextSize() - 10;
+                tradeMarkLeft = canvas.getHeight() - PAINT.getTextSize() - ViewUtils.dip2px(10);
             }
-            canvas.drawText(TRADE_MARK_TEXT, tradeMarkLeft+ ViewUtils.dip2px(20), tradeMarkTop, PAINT);
+            canvas.drawText(TRADE_MARK_TEXT, tradeMarkLeft + ViewUtils.dip2px(26), tradeMarkTop, PAINT);
         }
     }
 }

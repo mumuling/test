@@ -61,6 +61,7 @@ public class SendBackDialog extends BaseDialog implements View.OnClickListener {
                     dismiss();
                     onSendBackListener.onSendBackSuccess("");
                     break;
+                default:
             }
 
         } else {
