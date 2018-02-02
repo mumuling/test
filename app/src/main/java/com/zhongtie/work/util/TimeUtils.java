@@ -334,24 +334,44 @@ public class TimeUtils {
         return deadLineTime + "";
     }
 
-    public static String getEventTime(String day) {
-        try {
-            if (day != null) {
-                if (day.contains("-")) {
-                    String[] date = day.split("-");
-                    int y = Integer.valueOf(date[0]);
-                    int m = Integer.valueOf(date[1]);
-                    int d = Integer.valueOf(date[2]);
-                    return y + "-" + m + "-" + d;
-                }
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return day;
+
+    private static String formatTime(String sourceFormat, String newFormat, String time) {
+        if (TextUtil.isEmpty(time)) {
+            return time;
         }
-        return day;
+        // 设定时间的模板
+        SimpleDateFormat oldTimeFormat = new SimpleDateFormat(sourceFormat);
+        SimpleDateFormat newTimeFormat = new SimpleDateFormat(newFormat);
+        // 得到指定模范的时间
+        Date d2 = null;
+        try {
+            d2 = oldTimeFormat.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return time;
+        }
+        return newTimeFormat.format(d2);
     }
 
+    public static String formatWrongTime2(String time) {
+        return formatTime("yyyy-MM-dd HH:mm", "yyyy-MM-dd", time);
+    }
+
+    public static String formatEventSelectTime(String time) {
+        return formatTime("yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd", time);
+    }
+
+    public static String formatEventTime(String time) {
+        return formatTime("yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", time);
+    }
+
+    public static String formatPunishDetailTime(String time) {
+        return formatTime("yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd HH:mm", time);
+    }
+
+    public static String formatPunishTime(String createTime) {
+        return formatTime("yyyy-MM-dd HH:mm:ss", "MM-dd HH:mm", createTime);
+    }
 
     /**
      * 转换违规情况时间
@@ -360,79 +380,7 @@ public class TimeUtils {
      * @return 返回时间格式只需要展示年月日
      */
     public static String formatWrongTime(String time) {
-        // 设定时间的模板
-        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
-        // 得到指定模范的时间
-        Date d2 = null;
-        try {
-            d2 = oldTimeFormat.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return time;
-        }
-        return newTimeFormat.format(d2);
-
-    }
-
-    public static String formatWrongTime2(String time) {
-        // 设定时间的模板
-        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
-        // 得到指定模范的时间
-        Date d2 = null;
-        try {
-            d2 = oldTimeFormat.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return time;
-        }
-        return newTimeFormat.format(d2);
-
-    }
-
-    public static String formatEventSelectTime(String time) {
-        // 设定时间的模板
-        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
-        // 得到指定模范的时间
-        Date d2 = null;
-        try {
-            d2 = oldTimeFormat.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return time;
-        }
-        return newTimeFormat.format(d2);
-    }
-
-    public static String formatEventTime(String time) {
-        // 设定时间的模板
-        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        // 得到指定模范的时间
-        Date d2 = null;
-        try {
-            d2 = oldTimeFormat.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return time;
-        }
-        return newTimeFormat.format(d2);
-    }
-    public static String formatPunishDetailTime(String time) {
-        // 设定时间的模板
-        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        SimpleDateFormat newTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        // 得到指定模范的时间
-        Date d2 = null;
-        try {
-            d2 = oldTimeFormat.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return time;
-        }
-        return newTimeFormat.format(d2);
+        return formatTime("yyyy/MM/dd HH:mm", "yyyy-MM-dd", time);
     }
 
     public static long formatSignTime(String time) {
@@ -451,18 +399,5 @@ public class TimeUtils {
         }
     }
 
-    public static String formatPunishTime(String createTime) {
-        // 设定时间的模板
-        SimpleDateFormat oldTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat newTimeFormat = new SimpleDateFormat("MM-dd HH:mm");
-        // 得到指定模范的时间
-        Date d2 = null;
-        try {
-            d2 = oldTimeFormat.parse(createTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return createTime;
-        }
-        return newTimeFormat.format(d2);
-    }
+
 }

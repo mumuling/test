@@ -68,8 +68,7 @@ public class SendBackDialog extends BaseDialog implements View.OnClickListener {
                         ToastUtil.showToast(R.string.send_back_reason_hint);
                         return;
                     }
-                    dismiss();
-                    onSendBackListener.onSendBackSuccess("");
+                    onSendBackListener.onSendBackSuccess(reason);
                     break;
                 default:
             }

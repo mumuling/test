@@ -1,16 +1,8 @@
 package com.zhongtie.work.ui.rewardpunish.presenter;
 
 
-import android.support.v4.util.ArrayMap;
-
-import com.github.gcacace.signaturepad.utils.SvgBuilder;
 import com.zhongtie.work.R;
-import com.zhongtie.work.app.App;
 import com.zhongtie.work.app.Cache;
-import com.zhongtie.work.data.RPRecordEntity;
-import com.zhongtie.work.data.RewardPunishDetailEntity;
-import com.zhongtie.work.data.TeamNameEntity;
-import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.data.create.EditContentEntity;
 import com.zhongtie.work.network.Http;
 import com.zhongtie.work.network.NetWorkFunc1;
@@ -23,16 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
-
 /**
- * Auth: Chaek
- * Date: 2018/1/12
+ * @author Chaek
+ * @date: 2018/1/12
  */
-
 public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.View> implements RPDetailContract.Presenter {
 
     /**
@@ -44,19 +30,16 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
      */
     private EditContentEntity mRectifyEditContent;
 
-    /**
-     * 图片信息
-     */
-    private CommonItemType<String> mPicItemType;
-
-    private ArrayMap<String, CommonItemType> mTypeArrayMap;
-
     private List<Object> mPunishItemList;
+
     private int mPunishId;
-
-
     private boolean isInit;
 
+    /**
+     * 获取安全奖惩详细信息
+     *
+     * @param punishId 安全处罚编号
+     */
     @Override
     public void getDetailInfo(int punishId) {
         this.mPunishId = punishId;
@@ -108,10 +91,9 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
                     getDetailInfo(mPunishId);
+                    mView.showToast(R.string.punish_change_success);
                     mView.consentPunishSuccess();
-                }, throwable -> {
-                    throwable.printStackTrace();
-                }));
+                }, Throwable::printStackTrace));
     }
 
     /**
@@ -126,10 +108,9 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .flatMap(img -> Http.netServer(RewardPunishApi.class).sendBackPunish(Cache.getUserID(), mPunishId, img.getPicname(), content))
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
+                    mView.showToast(R.string.punish_change_success);
                     getDetailInfo(mPunishId);
-                }, throwable -> {
-                    throwable.printStackTrace();
-                }));
+                }, Throwable::printStackTrace));
     }
 
 
@@ -143,10 +124,9 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
         addDispose(Http.netServer(RewardPunishApi.class).cancelPunish(Cache.getUserID(), mPunishId)
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
+                    mView.showToast(R.string.punish_change_success);
                     getDetailInfo(mPunishId);
-                }, throwable -> {
-                    throwable.printStackTrace();
-                }));
+                }, Throwable::printStackTrace));
     }
 
     /**
@@ -160,6 +140,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .flatMap(img -> Http.netServer(RewardPunishApi.class).signPunish(Cache.getUserID(), mPunishId, img.getPicname()))
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
+                    mView.showToast(R.string.punish_change_success);
                     getDetailInfo(mPunishId);
                 }, throwable -> {
                 }));

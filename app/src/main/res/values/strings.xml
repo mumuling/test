@@ -212,4 +212,9 @@
     <string name="select_safe_event_title">相关督导信息</string>
     <string name="punish_cancel_event">确定要作废当前安全奖罚么？</string>
     <string name="punish_code_title">编号：</string>
+    <string name="punish_change_success">操作成功</string>
+    <string name="punish_go_back_status">批示：退回</string>
+    <string name="punish_agree_status">批示：同意</string>
+    <string name="punish_sign_status">：已签认</string>
+    <string name="punish_content_title">理由：</string>
 </resources>

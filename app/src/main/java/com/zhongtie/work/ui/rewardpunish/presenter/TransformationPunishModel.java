@@ -22,16 +22,15 @@ import java.util.List;
  * date:2018.1.27
  */
 
-public class TransformationPunishModel {
-    public static final int AGREE = 1;
+class TransformationPunishModel {
     private RewardPunishDetailEntity detailEntity;
     private boolean isEdit;
 
-    public TransformationPunishModel(RewardPunishDetailEntity detailEntity) {
+    TransformationPunishModel(RewardPunishDetailEntity detailEntity) {
         this(detailEntity, false);
     }
 
-    public TransformationPunishModel(RewardPunishDetailEntity detailEntity, boolean isEdit) {
+    TransformationPunishModel(RewardPunishDetailEntity detailEntity, boolean isEdit) {
         this.detailEntity = detailEntity;
         this.isEdit = isEdit;
     }
@@ -91,6 +90,7 @@ public class TransformationPunishModel {
             recordEntity.setUserName(backEntity.getName());
             recordEntity.setUserPic(backEntity.getPicture());
             recordEntity.setSignatureImg(backEntity.getSign());
+            recordEntity.setReplyContent(backEntity.getContent());
             recordEntity.setSignTime((backEntity.getAddtime()));
             recordEntity.setState(PrRecordItemView.PUNISH_BACK);
             backList.add(recordEntity);
@@ -101,7 +101,7 @@ public class TransformationPunishModel {
     /**
      * 获取安全监察人
      */
-    public CommonItemType fetchPunishUserItem() {
+    CommonItemType fetchPunishUserItem() {
         List<RPRecordEntity> endorseUserList = new ArrayList<>();
         if (TextUtil.isEmpty(detailEntity.getSupervisionUserSignImg()) && !isEdit) {
             if (!detailEntity.getSendBackList().isEmpty()) {
@@ -121,7 +121,7 @@ public class TransformationPunishModel {
     /**
      * 被处理对象负责人
      */
-    public CommonItemType fetchPunishLeaderItem() {
+    CommonItemType fetchPunishLeaderItem() {
         List<RPRecordEntity> leadUserList = new ArrayList<>();
         leadUserList.add(getPunishLeaderData());
         String safeSupervision = App.getInstance().getString(R.string.punish_leader_title);
@@ -133,7 +133,7 @@ public class TransformationPunishModel {
     /**
      * 查阅组
      */
-    public CommonItemType fetchReadList() {
+    CommonItemType fetchReadList() {
         List<TeamNameEntity> teamNameEntities = new ArrayList<>();
         for (int i = 0; i < detailEntity.getReaderlist().size(); i++) {
             PunishReadEntity punishRead = detailEntity.getReaderlist().get(i);

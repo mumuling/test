@@ -30,7 +30,7 @@ public abstract class AbstractItemView<T, R extends CommonViewHolder> {
 
     /**
      * 赋值 commonAdapter 参考{@link CommonAdapter#register(Class[])} }
-     * 在初始化时 注册当前<code>AbstractAdapterItemView</code> 赋值可让<code>AbstractAdapterItemView</code>持有CommonKyAdapter对象
+     * 在初始化时 注册当前<code>AbstractAdapterItemView</code> 赋值可让<code>AbstractAdapterItemView</code>持有CommonAdapter对象
      * <p>
      * 获取CommonKyAdapter 实例操作应该在调用 setCommonAdapter之后在自己构建AbstractAdapterItemView的构造函数中调用会出现null
      *

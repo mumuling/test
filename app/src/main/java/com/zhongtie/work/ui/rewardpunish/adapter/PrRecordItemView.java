@@ -39,20 +39,26 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
     }
 
     private SpannableString getBackStatusText() {
-        SpannableString spStr = new SpannableString("批示：退回");
+        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_go_back_status));
         spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.status_at)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
     private SpannableString getAgreeNoStatusText() {
-        SpannableString spStr = new SpannableString("批示：同意");
+        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_agree_status));
         spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.state_green_color)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
     private SpannableString getSignNoStatusText() {
-        SpannableString spStr = new SpannableString("：已签认");
+        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_sign_status));
         spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.app_color)), 1, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spStr;
+    }
+
+    private SpannableString getContentTitleText() {
+        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_content_title));
+        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.text_color)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
@@ -71,7 +77,8 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
                 vh.mRecordContent.setVisibility(View.GONE);
             } else {
                 vh.mRecordContent.setVisibility(View.VISIBLE);
-                vh.mRecordContent.setText(data.getReplyContent());
+                vh.mRecordContent.setText(getContentTitleText());
+                vh.mRecordContent.append(data.getReplyContent());
             }
             if (TextUtil.isEmpty(data.getSignatureImg())) {
                 vh.mSafeOrderReplySign.setVisibility(View.GONE);

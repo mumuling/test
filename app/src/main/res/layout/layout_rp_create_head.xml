@@ -29,6 +29,7 @@
             android:id="@+id/create_code"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:windowSoftInputMode="adjustNothing"
             android:layout_marginLeft="10dp"
             android:hint="@string/create_code_hint"
             android:textColor="@color/text_color2"

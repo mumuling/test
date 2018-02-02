@@ -84,7 +84,7 @@ public class RPCreateHeadView extends LinearLayout implements View.OnClickListen
     @Subscribe
     public void selectSupervisorInfo(SelectSafeEventEntity supervisorInfoEntity) {
         this.supervisorInfoEntity = supervisorInfoEntity;
-        mSupervisorInfo.setText(String.valueOf(supervisorInfoEntity.getUnit()));
+        mSupervisorInfo.setText(String.valueOf(supervisorInfoEntity.getLocal()));
     }
 
     /**

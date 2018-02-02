@@ -47,7 +47,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  */
 
 public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract.Presenter> implements RPDetailContract.View,
-        OnSignatureTypeListener, OnApproveListener, SendBackDialog.OnSendBackListener {
+        OnSignatureTypeListener, SendBackDialog.OnSendBackListener {
     public static final String ID = "id";
 
     /**
@@ -119,7 +119,6 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         mApprove = (TextView) findViewById(R.id.approve);
         mSign = (TextView) findViewById(R.id.sign);
         mCancel = (TextView) findViewById(R.id.cancel);
-
         mList = (RecyclerView) findViewById(R.id.list);
 
         mModify.setOnClickListener(view -> RewardPunishCreateFragment.start(getActivity(), mPunishId));
@@ -128,11 +127,7 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         //签认
         mSign.setOnClickListener(v -> showSignDialog(PUNISH_SIGN_TYP));
         //作废
-        mCancel.setOnClickListener(v -> {
-
-            cancelPunish();
-
-        });
+        mCancel.setOnClickListener(v -> cancelPunish());
 
         //退回
         mSendBack.setOnClickListener(v -> new SendBackDialog(getActivity(), PunishDetailFragment.this).show());
@@ -152,10 +147,6 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
                 }).onNegative((dialog, which) -> dialog.dismiss())
                 .build().show();
 
-    }
-
-    private void showApproveDialog() {
-        new ApproceIdeaDialog(getActivity(), this).show();
     }
 
 
@@ -193,8 +184,10 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
 
     @Override
     public void setItemList(List<Object> itemList) {
-        mCommonAdapter.setListData(itemList);
+        mInfoList.clear();
+        mInfoList.addAll(itemList);
         mCommonAdapter.notifyDataSetChanged();
+        mList.scrollTo(0,0);
     }
 
     @Override
@@ -205,7 +198,6 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
     @Override
     public void consentPunishSuccess() {
         //同意成功
-
     }
 
 
@@ -218,19 +210,9 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         new SignatureDialog(getActivity(), signType, this).show();
     }
 
-    @Override
-    public void onConsent() {
-        showSignDialog(PUNISH_CONSENT_TYPE);
-    }
-
-    @Override
-    public void onSendBack() {
-
-    }
 
     @Override
     public void onSendBackCancel() {
-
     }
 
     private String reason;

@@ -87,13 +87,13 @@ public class RewardPunishDetailEntity {
     /**
      * 简介
      */
-    @JSONField(name = "tax_detail")
+    @JSONField(name = "tax_summary")
     private String summary;
 
     /**
      * 详细内容
      */
-    @JSONField(name = "tax_summary")
+    @JSONField(name = "tax_detail")
     private String content;
     @JSONField(name = "tax_status")
     private String punishState;
