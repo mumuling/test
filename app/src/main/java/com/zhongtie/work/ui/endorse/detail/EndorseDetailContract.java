@@ -18,9 +18,13 @@ public interface EndorseDetailContract {
          * @param itemList item数据源
          */
         void setItemList(List<Object> itemList);
+
+        void setEndorseTitle(String title);
     }
 
     interface Presenter extends BasePresenter<View> {
+
+        void endorseFile(String imagePath);
         void getItemList(int safeOrderID);
 
         void setSelectImageList(List<String> selectImgList);

@@ -82,8 +82,6 @@
     <string name="aite_select">\u0040已选</string>
     <string name="look_group_title">查阅组</string>
     <string name="add">添加</string>
-
-
     <string name="mis_folder_all">所有照片</string>
     <string name="mis_preview">预览</string>
     <string name="mis_msg_no_camera">没有系统相机</string>
@@ -121,7 +119,7 @@
     <string name="description">描述</string>
     <string name="description_hint">请输入事件描述</string>
     <string name="imaage_title">图片</string>
-    <string name="safe_reward_punish">安全奖罚</string>
+    <string name="safe_reward_punish">安全处罚</string>
     <string name="punish_team_title">处罚单位</string>
     <string name="punish_amount_title">处罚金额(元)</string>
     <string name="punish_amount_hint">输入处罚金额</string>
@@ -197,7 +195,7 @@
     <string name="sync_retry">重试</string>
     <string name="switch_company_loading">正在切换公司</string>
     <string name="switch_fail">切换失败</string>
-    <string name="safe_punish_title">安全奖罚</string>
+    <string name="safe_punish_title">安全处罚</string>
     <string name="safe_punish_approve">审核</string>
     <string name="safe_punish_cancel">作废</string>
     <string name="safe_punish_sign">签认</string>
@@ -210,11 +208,17 @@
     <string name="punish_create_success">发起成功</string>
     <string name="punish_edit_success">修改成功</string>
     <string name="select_safe_event_title">相关督导信息</string>
-    <string name="punish_cancel_event">确定要作废当前安全奖罚么？</string>
+    <string name="punish_cancel_event">确定要作废当前安全处罚么？</string>
     <string name="punish_code_title">编号：</string>
     <string name="punish_change_success">操作成功</string>
     <string name="punish_go_back_status">批示：退回</string>
     <string name="punish_agree_status">批示：同意</string>
     <string name="punish_sign_status">：已签认</string>
     <string name="punish_content_title">理由：</string>
+    <string name="endorse_file_title">文件签认</string>
+    <string name="endorse_input_title_tip">请输入标题</string>
+    <string name="endorse_sign_user_title">签认人</string>
+    <string name="endorse_read_group_title">查阅组</string>
+    <string name="endorse_upload_file_title">上传文件</string>
+    <string name="endorse_sign_title">签认</string>
 </resources>

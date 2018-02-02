@@ -114,4 +114,8 @@
         <item>我发起的</item>
         <item>可查阅的</item>
     </string-array>
+    <string-array name="endorse_file_switch_title">
+        <item>我发起的</item>
+        <item>我签认的</item>
+    </string-array>
 </resources>

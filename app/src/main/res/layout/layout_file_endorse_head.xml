@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/create_code_layout"
     android:layout_width="match_parent"
     android:layout_height="45dp"
+    android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:background="@color/white"
     android:paddingLeft="16dp">
 
     <TextView
@@ -13,16 +14,18 @@
         android:layout_height="wrap_content"
         android:text="@string/title"
         android:textColor="@color/text_color"
-        android:textSize="16dp" />
+        android:textSize="16dp"/>
 
 
-    <TextView
+    <EditText
         android:id="@+id/title_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:hint="@string/title_edit_hint"
+        android:singleLine="true"
         android:textColor="@color/text_color2"
-        android:textSize="14dp" />
+        android:textColorHint="@color/text_color3"
+        android:textSize="14dp"/>
 
 </LinearLayout>

@@ -19,8 +19,10 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.create.CommonItemType;
+import com.zhongtie.work.list.CommonAdapterDataObserver;
 import com.zhongtie.work.ui.endorse.detail.EndorseUserItemView;
 import com.zhongtie.work.ui.file.FileSelectFragment;
+import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishCommonItemView;
 import com.zhongtie.work.ui.safe.item.CreateUserItemView;
 import com.zhongtie.work.ui.safe.item.TeamNameItemView;
 import com.zhongtie.work.ui.select.SelectReadGroupFragment;
@@ -79,21 +81,7 @@ public class EndorseCommonItemView extends AbstractItemView<CommonItemType, Endo
             adapter.register(TeamNameItemView.class);
             //签认人
             adapter.register(EndorseUserItemView.class);
-
             vh.mCheckExamineList.setAdapter(adapter);
-
-            if (vh.mCheckExamineList.getTag() != null) {
-                adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
-            }
-            RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onItemRangeRemoved(int positionStart, int itemCount) {
-                    super.onItemRangeRemoved(positionStart, itemCount);
-                    changeItemView(vh, data);
-                }
-            };
-            adapter.registerAdapterDataObserver(observer);
-            vh.mCheckExamineList.setTag(observer);
 
         } else {
             adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
@@ -101,6 +89,13 @@ public class EndorseCommonItemView extends AbstractItemView<CommonItemType, Endo
             adapter.notifyDataSetChanged();
         }
 
+        if (vh.mCheckExamineList.getTag() != null) {
+            adapter.unregisterAdapterDataObserver((RecyclerView.AdapterDataObserver) vh.mCheckExamineList.getTag());
+        }
+        RecyclerView.AdapterDataObserver observer = new CommonAdapterDataObserver(vh, commonViewHolder ->
+                changeItemView((EndorseCommonItemView.ViewHolder) commonViewHolder, (CommonItemType) getCommonAdapter().getListData(commonViewHolder.getItemPosition())));
+        adapter.registerAdapterDataObserver(observer);
+        vh.mCheckExamineList.setTag(observer);
         changeItemView(vh, data);
     }
 

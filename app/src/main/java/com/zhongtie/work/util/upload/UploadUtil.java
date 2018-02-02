@@ -99,4 +99,15 @@ public class UploadUtil {
                 .map(new NetWorkFunc1<>());
     }
 
+    /**
+     * 上传文件签认的文件
+     *
+     * @param filePath 文件路径
+     */
+    public static Flowable<UploadData> uploadSignFile(String filePath) {
+        return Http.netServer(UploadApi.class)
+                .uploadSignPng(Cache.getUserID(), filePath)
+                .map(new NetWorkFunc1<>());
+    }
+
 }

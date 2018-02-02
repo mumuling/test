@@ -83,6 +83,7 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
     private TextView mApprove;
     private TextView mSign;
     private TextView mCancel;
+    private SendBackDialog sendBackDialog;
 
     private OnEventPrintListener mOnEventPrintListener;
 
@@ -130,10 +131,16 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         mCancel.setOnClickListener(v -> cancelPunish());
 
         //退回
-        mSendBack.setOnClickListener(v -> new SendBackDialog(getActivity(), PunishDetailFragment.this).show());
+        mSendBack.setOnClickListener(v -> showSendBackDialog());
 
         mHeadInfoView = new RPDetailHeadView(getActivity());
         initAdapter();
+    }
+
+    private void showSendBackDialog() {
+        sendBackDialog = new SendBackDialog(getActivity(), PunishDetailFragment.this);
+        sendBackDialog.show();
+
     }
 
     private void cancelPunish() {
@@ -187,7 +194,7 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         mInfoList.clear();
         mInfoList.addAll(itemList);
         mCommonAdapter.notifyDataSetChanged();
-        mList.scrollTo(0,0);
+        mList.scrollTo(0, 0);
     }
 
     @Override
@@ -200,6 +207,21 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         //同意成功
     }
 
+    @Override
+    public void sendBackSuccess() {
+        cancelSendBackDialog();
+    }
+
+    /**
+     * 去取消弹窗
+     */
+    private void cancelSendBackDialog() {
+        if (sendBackDialog != null) {
+            sendBackDialog.cancel();
+            sendBackDialog = null;
+        }
+    }
+
 
     /**
      * 弹出签名窗口
@@ -210,6 +232,11 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         new SignatureDialog(getActivity(), signType, this).show();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cancelSendBackDialog();
+    }
 
     @Override
     public void onSendBackCancel() {

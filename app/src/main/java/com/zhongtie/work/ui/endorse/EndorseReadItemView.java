@@ -17,7 +17,7 @@ import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
  * date:2018.1.13
  */
 @BindItemData(EndorseEntity.class)
-public class EndorseLookItemView extends AbstractItemView<EndorseEntity, RewardPunishItemView.ViewHolder> {
+public class EndorseReadItemView extends AbstractItemView<EndorseEntity, RewardPunishItemView.ViewHolder> {
 
     @Override
     public int getLayoutId(int viewType) {

@@ -10,13 +10,16 @@ import com.zhongtie.work.data.EndorseEntity;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.endorse.detail.EndorseDetailFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
+import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.RefreshRecyclerView;
 
 import java.util.List;
 
 /**
- * Auth:Cheek
- * date:2018.1.9
+ * 文件签字
+ *
+ * @author Chaek
+ * @date:2018.1.9
  */
 
 public class EndorseListFragment extends BasePresenterFragment<EndorseListContract.Presenter> implements EndorseListContract.View, RefreshRecyclerView.RefreshPageConfig, OnRecyclerItemClickListener {
@@ -25,6 +28,8 @@ public class EndorseListFragment extends BasePresenterFragment<EndorseListContra
 
     private RefreshRecyclerView mList;
     private CommonAdapter commonAdapter;
+
+    @BindKey(TYPE)
     private int mType;
 
     public static EndorseListFragment newInstance(int type) {
@@ -37,7 +42,6 @@ public class EndorseListFragment extends BasePresenterFragment<EndorseListContra
 
     @Override
     public int getLayoutViewId() {
-        mType = getArguments().getInt(TYPE, 0);
         return R.layout.safe_supervision_fragment;
     }
 
@@ -52,7 +56,7 @@ public class EndorseListFragment extends BasePresenterFragment<EndorseListContra
         if (mType == 0) {
             commonAdapter.register(EndorseItemView.class);
         } else {
-            commonAdapter.register(EndorseLookItemView.class);
+            commonAdapter.register(EndorseReadItemView.class);
         }
         mList.setDivider(true);
         mList.initConfig(this);
@@ -72,7 +76,9 @@ public class EndorseListFragment extends BasePresenterFragment<EndorseListContra
 
     @Override
     public void fetchPageListData(int page) {
-        mPresenter.fetchPageList("", 0, page);
+        if (page == 1) {
+            mPresenter.fetchPageList("", 0, page);
+        }
     }
 
     @Override
@@ -82,7 +88,6 @@ public class EndorseListFragment extends BasePresenterFragment<EndorseListContra
 
     @Override
     public void onClick(Object t, int index) {
-        CommonFragmentActivity.newInstance(getActivity(), EndorseDetailFragment.class, getString(R.string.safe_supervision_title));
-
+        EndorseDetailFragment.start(getActivity());
     }
 }

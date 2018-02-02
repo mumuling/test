@@ -29,6 +29,8 @@ public interface RPDetailContract {
         void showPrint(int print);
 
         void consentPunishSuccess();
+
+        void sendBackSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {

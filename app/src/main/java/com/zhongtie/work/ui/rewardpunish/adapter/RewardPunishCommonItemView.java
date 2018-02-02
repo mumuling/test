@@ -99,9 +99,6 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
 
     private void changeItemView(ViewHolder vh, CommonItemType data) {
         vh.mItemUserListTitle.setText(data.getTitle());
-        if (data.getTypeItemList().size() > 0) {
-            vh.mItemUserListTitle.append("\t(" + data.getTypeItemList().size() + ")");
-        }
         if (data.getTypeItemList() == null || data.getTypeItemList().isEmpty()) {
             vh.mCheckExamineList.setVisibility(View.GONE);
         } else {
@@ -121,8 +118,8 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
                 CommonUserEntity user = new CommonUserEntity(rpRecordEntity);
                 list.add(user);
             }
-            String tip= com.zhongtie.work.util.ViewUtils.getString(R.string.search_hint);
-            CommonSelectSearchActivity.newInstanceHint(getFragment(v.getContext()), SelectSupervisorUserFragment.class, data.getTitle(),tip, list);
+            String tip = com.zhongtie.work.util.ViewUtils.getString(R.string.search_hint);
+            CommonSelectSearchActivity.newInstanceHint(getFragment(v.getContext()), SelectSupervisorUserFragment.class, data.getTitle(), tip, list);
         }
     }
 
@@ -144,7 +141,7 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
             mItemUserListTip = findViewById(R.id.item_user_list_tip);
             mItemUserAddImg = findViewById(R.id.item_user_add_img);
             mCheckExamineList = findViewById(R.id.check_examine_list);
-            mCheckExamineList.setPadding(0,0,0, com.zhongtie.work.util.ViewUtils.dip2px(10));
+            mCheckExamineList.setPadding(0, 0, 0, com.zhongtie.work.util.ViewUtils.dip2px(10));
         }
 
     }

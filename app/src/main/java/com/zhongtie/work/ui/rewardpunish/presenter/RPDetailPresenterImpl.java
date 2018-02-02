@@ -109,6 +109,7 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                 .compose(Network.convertDialogTip(mView))
                 .subscribe(integer -> {
                     mView.showToast(R.string.punish_change_success);
+                    mView.sendBackSuccess();
                     getDetailInfo(mPunishId);
                 }, Throwable::printStackTrace));
     }

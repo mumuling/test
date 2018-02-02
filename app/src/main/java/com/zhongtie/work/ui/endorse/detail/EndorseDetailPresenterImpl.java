@@ -76,6 +76,12 @@ public class EndorseDetailPresenterImpl extends BasePresenterImpl<EndorseDetailC
     }
 
     @Override
+    public void endorseFile(String imagePath) {
+
+
+    }
+
+    @Override
     public void getItemList(int safeOrderID) {
         mTypeArrayMap = new ArrayMap<>();
         List<Object> itemList = new ArrayList<>();
