@@ -13,6 +13,7 @@ import com.zhongtie.work.list.OnDateCallback;
 import com.zhongtie.work.ui.adapter.ZtFragmentAdapter;
 import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.base.BaseFragment;
+import com.zhongtie.work.ui.rewardpunish.dialog.SelectDateTimeDialog;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.calendar.CalendarDialog;
 import com.zhongtie.work.util.ViewUtils;
@@ -28,13 +29,12 @@ import java.util.List;
  * @date:2018.1.9
  */
 
-public class RewardPunishActivity extends BaseActivity implements CalendarDialog.OnSelectDateCallback, OnDateCallback {
+public class RewardPunishActivity extends BaseActivity implements  OnDateCallback, SelectDateTimeDialog.OnSelectDateTimeListener {
     private TextView mSelectDate;
     private CaterpillarIndicator mProjectTitleBar;
     private ViewPager mViewPage;
     private String createTime;
-
-    private CalendarDialog mCalendarDialog;
+    private SelectDateTimeDialog mSelectDateTimeDialog;
     private List<BaseFragment> mFragments;
 
     public static void newInstance(Context context) {
@@ -69,17 +69,20 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
      * 筛选日期选择
      */
     private void showSelectDate() {
-        if (mCalendarDialog == null) {
-            mCalendarDialog = new CalendarDialog(this, this, CalendarDialog.SAFE_PUNISH_COUNT);
+        if (mSelectDateTimeDialog == null) {
+            SelectDateTimeDialog.Build build = new SelectDateTimeDialog.Build(this);
+            build.setSelectDateTime(this);
+            build.setType(SelectDateTimeDialog.BIRTH_DATE).setDataModel(SelectDateTimeDialog.Build.BIRTH);
+            mSelectDateTimeDialog = build.create();
         }
-        mCalendarDialog.show();
+        mSelectDateTimeDialog.show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mCalendarDialog != null && mCalendarDialog.isShowing()) {
-            mCalendarDialog.dismiss();
+        if (mSelectDateTimeDialog != null && mSelectDateTimeDialog.isShowing()) {
+            mSelectDateTimeDialog.dismiss();
         }
     }
 
@@ -113,9 +116,15 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
         mSelectDate.setText(createTime);
     }
 
+
     @Override
-    public void onSelectDate(String date) {
-        setCreateTime(date);
+    public String getSelectDate() {
+        return createTime;
+    }
+
+    @Override
+    public void setTimeDate(String datetime, int type) {
+        setCreateTime(datetime);
         for (BaseFragment fragment : mFragments) {
             if (fragment instanceof RewardPunishFragment) {
                 ((RewardPunishFragment) fragment).onRefresh();
@@ -124,7 +133,7 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
     }
 
     @Override
-    public String getSelectDate() {
-        return createTime;
+    public void setSelectType(int[] type, int buildType) {
+
     }
 }

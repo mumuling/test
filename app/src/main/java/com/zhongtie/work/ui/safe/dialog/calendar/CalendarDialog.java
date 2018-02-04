@@ -83,6 +83,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
         mNext = findViewById(R.id.next);
         mUp.setOnClickListener(this);
         mNext.setOnClickListener(this);
+        mCancel.setOnClickListener(this);
+        mFinish.setOnClickListener(this);
         initCalendarPage();
 
     }
