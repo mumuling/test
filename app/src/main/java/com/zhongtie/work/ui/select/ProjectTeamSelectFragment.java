@@ -71,11 +71,14 @@ public class ProjectTeamSelectFragment extends BasePresenterFragment<ProjectTeam
 
     @Override
     public void onTouchingLetterChanged(String s) {
-        for (int i = 0, len = mProjectTeamEntities.size(); i < len; i++) {
-            if (mProjectTeamEntities.get(i).getCharacter() != null && mProjectTeamEntities.get(i).getCharacter().equals(s)) {
-                mList.smoothScrollToPosition(i);
-                break;
+        if (mProjectTeamEntities != null) {
+            for (int i = 0, len = mProjectTeamEntities.size(); i < len; i++) {
+                if (mProjectTeamEntities.get(i).getCharacter() != null && mProjectTeamEntities.get(i).getCharacter().equals(s)) {
+                    mList.smoothScrollToPosition(i);
+                    break;
+                }
             }
+
         }
     }
 

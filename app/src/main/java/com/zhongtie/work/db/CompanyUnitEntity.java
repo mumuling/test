@@ -7,6 +7,8 @@ import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.db.CompanyDB;
 import com.zhongtie.work.util.HanziToPinyin;
 
+import java.util.ArrayList;
+
 /**
  * 工作单位
  * Auth: Chaek
@@ -49,7 +51,9 @@ public class CompanyUnitEntity {
 
     public ProjectTeamEntity convert() {
         ProjectTeamEntity teamEntity = new ProjectTeamEntity(name);
-        teamEntity.setCharacter(HanziToPinyin.getInstance().get(name.substring(0, 1)).get(0).target.substring(0, 1));
+        ArrayList<HanziToPinyin.Token> tokens = HanziToPinyin.getInstance().get(name.substring(0, 1));
+        String c=tokens.get(0).target.substring(0,1);
+        teamEntity.setCharacter(c);
         teamEntity.setProjectTeamID(id);
         teamEntity.setCompanyID(company);
         return teamEntity;

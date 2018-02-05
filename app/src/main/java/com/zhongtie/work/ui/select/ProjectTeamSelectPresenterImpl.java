@@ -51,6 +51,7 @@ class ProjectTeamSelectPresenterImpl extends BasePresenterImpl<ProjectTeamSelect
                 .toFlowable()
                 .compose(Network.networkIO())
                 .subscribe(projectTeamEntities -> mView.setProjectTeamListData(projectTeamEntities), throwable -> {
+                    throwable.printStackTrace();
                 }));
     }
 
