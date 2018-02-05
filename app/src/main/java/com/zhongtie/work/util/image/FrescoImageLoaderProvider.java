@@ -14,7 +14,7 @@ import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 /**
  * Created by Cheek on 2017.5.17.
@@ -44,7 +44,7 @@ class FrescoImageLoaderProvider implements ImageLoaderProvider {
         String url = img.getUrl() == null ? "" : img.getUrl();
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url));
         if (img.getWidth() > 0) {
-            ResizeOptions resizeOptions = new ResizeOptions(ViewUtils.dip2px(img.getWidth()), ViewUtils.dip2px(img.getHeight()));
+            ResizeOptions resizeOptions = new ResizeOptions(ResourcesUtils.dip2px(img.getWidth()), ResourcesUtils.dip2px(img.getHeight()));
             imageRequestBuilder.setResizeOptions(resizeOptions);
         }
         ImageRequest request = imageRequestBuilder.build();

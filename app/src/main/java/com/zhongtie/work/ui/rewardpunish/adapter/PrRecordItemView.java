@@ -14,10 +14,8 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.widget.BaseImageView;
-
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 安全监察的操作 记录
@@ -39,26 +37,26 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
     }
 
     private SpannableString getBackStatusText() {
-        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_go_back_status));
-        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.status_at)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString spStr = new SpannableString(ResourcesUtils.getString(R.string.punish_go_back_status));
+        spStr.setSpan(new ForegroundColorSpan(ResourcesUtils.getColor(R.color.status_at)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
     private SpannableString getAgreeNoStatusText() {
-        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_agree_status));
-        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.state_green_color)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString spStr = new SpannableString(ResourcesUtils.getString(R.string.punish_agree_status));
+        spStr.setSpan(new ForegroundColorSpan(ResourcesUtils.getColor(R.color.state_green_color)), 3, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
     private SpannableString getSignNoStatusText() {
-        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_sign_status));
-        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.app_color)), 1, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString spStr = new SpannableString(ResourcesUtils.getString(R.string.punish_sign_status));
+        spStr.setSpan(new ForegroundColorSpan(ResourcesUtils.getColor(R.color.app_color)), 1, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
     private SpannableString getContentTitleText() {
-        SpannableString spStr = new SpannableString(ViewUtils.getString(R.string.punish_content_title));
-        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.text_color)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString spStr = new SpannableString(ResourcesUtils.getString(R.string.punish_content_title));
+        spStr.setSpan(new ForegroundColorSpan(ResourcesUtils.getColor(R.color.text_color)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
@@ -119,12 +117,12 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
             super(itemView);
             mSafeOrderReplyHead = findViewById(R.id.safe_order_reply_head);
             mSafeOrderReplySign = findViewById(R.id.safe_order_reply_sign);
-            mSafeOrderReplyHead.getLayoutParams().width = ViewUtils.dip2px(50);
-            mSafeOrderReplyHead.getLayoutParams().height = ViewUtils.dip2px(50);
+            mSafeOrderReplyHead.getLayoutParams().width = ResourcesUtils.dip2px(50);
+            mSafeOrderReplyHead.getLayoutParams().height = ResourcesUtils.dip2px(50);
             mSafeOrderName = findViewById(R.id.safe_order_name);
             mSafeOrderName.setTextSize(14f);
             mSafeOrderReplyTime = findViewById(R.id.safe_order_reply_time);
-            mSafeOrderReplyTime.setTextColor(ViewUtils.getColor(R.color.text_color));
+            mSafeOrderReplyTime.setTextColor(ResourcesUtils.getColor(R.color.text_color));
             mRecordContent = findViewById(R.id.record_content);
         }
 

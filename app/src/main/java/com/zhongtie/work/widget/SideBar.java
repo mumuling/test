@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 
 public class SideBar extends View {
@@ -72,7 +72,7 @@ public class SideBar extends View {
             paint.setColor(Color.parseColor("#1F70B2"));
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             paint.setAntiAlias(true);
-            paint.setTextSize(ViewUtils.dip2px(12));
+            paint.setTextSize(ResourcesUtils.dip2px(12));
             if (i == choose) {
                 paint.setColor(Color.parseColor("#666666"));
                 paint.setFakeBoldText(true);

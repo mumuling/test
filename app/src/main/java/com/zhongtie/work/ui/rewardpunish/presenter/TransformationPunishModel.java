@@ -11,7 +11,7 @@ import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.ui.rewardpunish.adapter.PrRecordItemView;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +104,7 @@ class TransformationPunishModel {
     CommonItemType fetchPunishUserItem() {
         List<RPRecordEntity> endorseUserList = new ArrayList<>();
         if (TextUtil.isEmpty(detailEntity.getSupervisionUserSignImg()) && !isEdit) {
-            if (!detailEntity.getSendBackList().isEmpty()) {
+            if (detailEntity.getSendBackList()!=null&&!detailEntity.getSendBackList().isEmpty()) {
                 endorseUserList.addAll(getSendBackList());
             } else {
                 endorseUserList.add(getAgreeSupervisionData());
@@ -113,7 +113,7 @@ class TransformationPunishModel {
             endorseUserList.add(getAgreeSupervisionData());
         }
         String safeSupervision = App.getInstance().getString(R.string.safe_supervision_item_title);
-        CommonItemType<RPRecordEntity> checkUser = new CommonItemType<>(safeSupervision, ViewUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
+        CommonItemType<RPRecordEntity> checkUser = new CommonItemType<>(safeSupervision, ResourcesUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
         checkUser.setTypeItemList(endorseUserList);
         return checkUser;
     }
@@ -125,7 +125,7 @@ class TransformationPunishModel {
         List<RPRecordEntity> leadUserList = new ArrayList<>();
         leadUserList.add(getPunishLeaderData());
         String safeSupervision = App.getInstance().getString(R.string.punish_leader_title);
-        CommonItemType<RPRecordEntity> checkUser = new CommonItemType<>(safeSupervision, ViewUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
+        CommonItemType<RPRecordEntity> checkUser = new CommonItemType<>(safeSupervision, ResourcesUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
         checkUser.setTypeItemList(leadUserList);
         return checkUser;
     }
@@ -144,7 +144,7 @@ class TransformationPunishModel {
             teamNameEntities.add(teamNameEntity);
         }
 
-        CommonItemType<TeamNameEntity> readGroupItem = new CommonItemType<>(ViewUtils.getString(R.string.punish_read_group_title), ViewUtils.getString(R.string.right_slide_look_more), R.drawable.plus, isEdit);
+        CommonItemType<TeamNameEntity> readGroupItem = new CommonItemType<>(ResourcesUtils.getString(R.string.punish_read_group_title), ResourcesUtils.getString(R.string.right_slide_look_more), R.drawable.plus, isEdit);
         readGroupItem.setTypeItemList(teamNameEntities);
         return readGroupItem;
     }

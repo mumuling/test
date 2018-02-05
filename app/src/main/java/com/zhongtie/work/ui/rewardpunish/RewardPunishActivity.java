@@ -13,9 +13,8 @@ import com.zhongtie.work.list.OnDateCallback;
 import com.zhongtie.work.ui.adapter.ZtFragmentAdapter;
 import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.base.BaseFragment;
-import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.calendar.CalendarDialog;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.widget.CaterpillarIndicator;
 
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class RewardPunishActivity extends BaseActivity implements CalendarDialog
     private void initDrawCreateIcon() {
         Drawable drawable = getResources().getDrawable(R.drawable.btn_talk);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        mMenuTitle.setCompoundDrawablePadding(ViewUtils.dip2px(5));
+        mMenuTitle.setCompoundDrawablePadding(ResourcesUtils.dip2px(5));
         mMenuTitle.setCompoundDrawables(drawable, null, null, null);
     }
 

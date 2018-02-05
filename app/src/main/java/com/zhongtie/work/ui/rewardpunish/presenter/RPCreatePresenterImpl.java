@@ -18,7 +18,7 @@ import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.RewardPunishApi;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.TextUtil;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,12 +176,12 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         int eventId = mView.getSafeEventData() == null ? 0 : mView.getSafeEventData().getId();
         createData.put("tax_eventid", eventId);
 
-        CommonItemType itemType = mItemArrayMap.get(ViewUtils.getString(R.string.punish_leader_title));
+        CommonItemType itemType = mItemArrayMap.get(ResourcesUtils.getString(R.string.punish_leader_title));
         RPRecordEntity lead = (RPRecordEntity) itemType.getTypeItemList().get(0);
         createData.put("tax_leader", lead.getUserID());
         createData.put("tax_money", punishAmount);
-        createData.put("tax_reader", mItemArrayMap.get(ViewUtils.getString(R.string.punish_read_group_title)).getTeamIDList());
-        CommonItemType safer = mItemArrayMap.get(ViewUtils.getString(R.string.punish_safe_title));
+        createData.put("tax_reader", mItemArrayMap.get(ResourcesUtils.getString(R.string.punish_read_group_title)).getTeamIDList());
+        CommonItemType safer = mItemArrayMap.get(ResourcesUtils.getString(R.string.punish_safe_title));
         RPRecordEntity saferItem = (RPRecordEntity) safer.getTypeItemList().get(0);
         createData.put("tax_safer", saferItem.getUserID());
 
@@ -215,7 +215,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     public void setSelectUserInfoList(String title, List createUserEntities) {
         CommonItemType itemType = mItemArrayMap.get(title);
         if (itemType != null) {
-            if (!title.contains(ViewUtils.getString(R.string.punish_read_group_title))) {
+            if (!title.contains(ResourcesUtils.getString(R.string.punish_read_group_title))) {
                 //编辑界面对选择的人进行转换
                 List<RPRecordEntity> list = new ArrayList<>();
                 for (int i = 0; i < createUserEntities.size(); i++) {

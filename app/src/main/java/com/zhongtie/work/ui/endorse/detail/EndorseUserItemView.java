@@ -15,7 +15,7 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.widget.BaseImageView;
 
 /**
@@ -31,13 +31,13 @@ public class EndorseUserItemView extends AbstractItemView<EndorseUserEntity, End
 
     private SpannableString getSignStatusText() {
         SpannableString spStr = new SpannableString("已签认");
-        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.app_color)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spStr.setSpan(new ForegroundColorSpan(ResourcesUtils.getColor(R.color.app_color)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 
     private SpannableString getSignNoStatusText() {
         SpannableString spStr = new SpannableString("未签认");
-        spStr.setSpan(new ForegroundColorSpan(ViewUtils.getColor(R.color.text_color3)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spStr.setSpan(new ForegroundColorSpan(ResourcesUtils.getColor(R.color.text_color3)), 0, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spStr;
     }
 

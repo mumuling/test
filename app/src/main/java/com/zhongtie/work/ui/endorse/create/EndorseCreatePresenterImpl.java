@@ -3,13 +3,12 @@ package com.zhongtie.work.ui.endorse.create;
 import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.app.App;
+import com.zhongtie.work.data.EndorseDetailEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.ui.file.select.NormalFile;
 import com.zhongtie.work.util.TextUtil;
-import com.zhongtie.work.util.ViewUtils;
-import com.zhongtie.work.util.upload.UploadUtil;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,18 @@ public class EndorseCreatePresenterImpl extends BasePresenterImpl<EndorseCreateC
     private ArrayMap<String, CommonItemType> mItemMap;
 
     /**
+     * 已经发布的文件签认
+     */
+    private EndorseDetailEntity mEndorseDetailEntity;
+
+    private int mEndorseID;
+
+    /**
      * @return 获取类型
      */
-    private List<CommonItemType> fetchCommonItemTypeList() {
-        String[] titleList = App.getInstance().getResources().getStringArray(R.array.create_file_sign_item_title);
-        String[] tip = App.getInstance().getResources().getStringArray(R.array.create_file_sign_item_tip);
+    private List<CommonItemType> fetchCreateItemTypeList() {
+        String[] titleList = ResourcesUtils.getStringArray(R.array.create_file_sign_item_title);
+        String[] tip = ResourcesUtils.getStringArray(R.array.create_file_sign_item_tip);
         List<CommonItemType> list = new ArrayList<>();
         int size = titleList.length;
         for (int i = 0; i < size; i++) {
@@ -45,11 +51,21 @@ public class EndorseCreatePresenterImpl extends BasePresenterImpl<EndorseCreateC
 
 
     @Override
-    public void getItemList(int safeOrderID) {
-        mItemMap = new ArrayMap<>();
-        List<Object> itemList = new ArrayList<>();
-        itemList.addAll(fetchCommonItemTypeList());
-        mView.setItemList(itemList);
+    public void getItemList(int endorseID) {
+        if (endorseID > 0) {
+            getEndorseDetail(endorseID);
+        } else {
+            mItemMap = new ArrayMap<>();
+            List<Object> itemList = new ArrayList<>();
+            itemList.addAll(fetchCreateItemTypeList());
+            mView.setItemList(itemList);
+        }
+
+    }
+
+    private void getEndorseDetail(int endorseID) {
+        // TODO: 2018/2/5
+
     }
 
 
@@ -76,9 +92,9 @@ public class EndorseCreatePresenterImpl extends BasePresenterImpl<EndorseCreateC
                 return;
             }
         }
-        String signUserList = mItemMap.get(ViewUtils.getString(R.string.endorse_sign_user_title)).getSelectUserIDList();
-        String readGroupList = mItemMap.get(ViewUtils.getString(R.string.endorse_read_group_title)).getTeamIDList();
-        List<NormalFile> normalFiles = mItemMap.get(ViewUtils.getString(R.string.endorse_upload_file_title)).getTypeItemList();
+        String signUserList = mItemMap.get(ResourcesUtils.getString(R.string.endorse_sign_user_title)).getSelectUserIDList();
+        String readGroupList = mItemMap.get(ResourcesUtils.getString(R.string.endorse_read_group_title)).getTeamIDList();
+        List<NormalFile> normalFiles = mItemMap.get(ResourcesUtils.getString(R.string.endorse_upload_file_title)).getTypeItemList();
         String filePath = normalFiles.get(0).getPath();
 
 

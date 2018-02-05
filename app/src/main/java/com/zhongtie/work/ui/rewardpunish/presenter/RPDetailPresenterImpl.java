@@ -74,9 +74,8 @@ public class RPDetailPresenterImpl extends BasePresenterImpl<RPDetailContract.Vi
                     throwable.printStackTrace();
                     mView.initFail();
                 }));
-
-
     }
+
 
 
     /**

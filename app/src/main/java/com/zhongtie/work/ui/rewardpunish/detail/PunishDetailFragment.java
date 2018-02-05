@@ -13,14 +13,12 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.enums.SignatureType;
-import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.event.PunishDetailUpdateEvent;
 import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.list.OnSignatureTypeListener;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.rewardpunish.RewardPunishCreateFragment;
 import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishCommonItemView;
-import com.zhongtie.work.ui.rewardpunish.dialog.ApproceIdeaDialog;
 import com.zhongtie.work.ui.rewardpunish.dialog.SendBackDialog;
 import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailContract;
 import com.zhongtie.work.ui.rewardpunish.presenter.RPDetailPresenterImpl;
@@ -30,7 +28,7 @@ import com.zhongtie.work.ui.safe.item.CommonDetailContentItemView;
 import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -156,6 +154,11 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
 
     }
 
+    @Override
+    public void onClickRefresh() {
+        super.onClickRefresh();
+        mPresenter.getDetailInfo(mPunishId);
+    }
 
     @Subscribe
     public void punishUpdateEvent(PunishDetailUpdateEvent updateEvent) {
@@ -177,7 +180,7 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
     protected void initData() {
         SafeDividerItemDecoration dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
-        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
+        dividerItemDecoration.setDividerHeight(ResourcesUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
@@ -194,7 +197,8 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
         mInfoList.clear();
         mInfoList.addAll(itemList);
         mCommonAdapter.notifyDataSetChanged();
-        mList.scrollTo(0, 0);
+        mList.postDelayed(() -> mList.smoothScrollToPosition(0),50);
+
     }
 
     @Override

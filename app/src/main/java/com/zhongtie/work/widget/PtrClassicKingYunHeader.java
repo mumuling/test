@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrUIHandler;
@@ -104,7 +104,7 @@ public class PtrClassicKingYunHeader extends FrameLayout implements PtrUIHandler
         final int currentPos = ptrIndicator.getCurrentPosY();
         final int lastPos = ptrIndicator.getLastPosY();
 
-        view.setDropDown(currentPos - ViewUtils.dip2px(15));
+        view.setDropDown(currentPos - ResourcesUtils.dip2px(15));
         if (currentPos < mOffsetToRefresh && lastPos >= mOffsetToRefresh) {
             if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
             }

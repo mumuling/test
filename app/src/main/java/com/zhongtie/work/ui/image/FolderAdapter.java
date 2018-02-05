@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.util.ViewUtils;
 import com.zhongtie.work.util.image.ImageLoader;
 import com.zhongtie.work.util.image.ImageLoaderUtil;
 

@@ -1,7 +1,6 @@
 package com.zhongtie.work.ui.safe.detail;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +28,7 @@ import com.zhongtie.work.ui.safe.item.ReplyItemView;
 import com.zhongtie.work.ui.safe.item.SafeTitleItemView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.util.parse.BindKey;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -151,7 +150,7 @@ public class SafeOrderDetailFragment extends BasePresenterFragment<SafeDetailCon
     protected void initData() {
         dividerItemDecoration = new SafeDetailDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
-        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
+        dividerItemDecoration.setDividerHeight(ResourcesUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);

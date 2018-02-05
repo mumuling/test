@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 
 public class LoadingDialog extends Dialog {
@@ -40,7 +40,7 @@ public class LoadingDialog extends Dialog {
         content = findViewById(R.id.toas_text);
         content.setText(text);
         LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) widthLineLayout.getLayoutParams();
-        linearParams.width = (int) (ViewUtils.getScreenWidth(context) * 0.8);
+        linearParams.width = (int) (ResourcesUtils.getScreenWidth(context) * 0.8);
         widthLineLayout.setLayoutParams(linearParams);
     }
 

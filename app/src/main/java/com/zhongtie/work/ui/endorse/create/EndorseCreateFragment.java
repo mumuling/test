@@ -17,7 +17,7 @@ import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -85,7 +85,7 @@ public class EndorseCreateFragment extends BasePresenterFragment<EndorseCreateCo
     protected void initData() {
         SafeDividerItemDecoration dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
-        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
+        dividerItemDecoration.setDividerHeight(ResourcesUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(3);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);
@@ -121,6 +121,15 @@ public class EndorseCreateFragment extends BasePresenterFragment<EndorseCreateCo
         return mTitleEdit.getText().toString();
     }
 
+    @Override
+    public void createSuccess() {
+
+    }
+
+    @Override
+    public void modifySuccess() {
+
+    }
 
 
     @Override

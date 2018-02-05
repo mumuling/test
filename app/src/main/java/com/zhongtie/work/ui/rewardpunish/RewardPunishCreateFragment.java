@@ -22,7 +22,7 @@ import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.SafeDividerItemDecoration;
 
@@ -96,7 +96,7 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
     protected void initData() {
         SafeDividerItemDecoration dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
-        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
+        dividerItemDecoration.setDividerHeight(ResourcesUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(5);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);

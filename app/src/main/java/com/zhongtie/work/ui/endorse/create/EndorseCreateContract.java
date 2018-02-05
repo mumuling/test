@@ -18,6 +18,10 @@ public interface EndorseCreateContract {
         String getEndorseTitle();
 
 
+        void createSuccess();
+
+        void modifySuccess();
+
     }
 
     interface Presenter extends BasePresenter<View> {

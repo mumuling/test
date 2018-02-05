@@ -13,17 +13,13 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.endorse.create.EndorseCommonItemView;
-import com.zhongtie.work.ui.endorse.create.EndorseCreateFragment;
-import com.zhongtie.work.ui.rewardpunish.dialog.ApproceIdeaDialog;
-import com.zhongtie.work.ui.rewardpunish.detail.OnApproveListener;
-import com.zhongtie.work.ui.rewardpunish.dialog.SendBackDialog;
 import com.zhongtie.work.ui.safe.SafeSupervisionCreateActivity;
 import com.zhongtie.work.ui.safe.dialog.OnSignatureListener;
 import com.zhongtie.work.ui.safe.dialog.SignatureDialog;
 import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +97,7 @@ public class EndorseDetailFragment extends BasePresenterFragment<EndorseDetailCo
     protected void initData() {
         SafeDividerItemDecoration dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
-        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
+        dividerItemDecoration.setDividerHeight(ResourcesUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(4);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);

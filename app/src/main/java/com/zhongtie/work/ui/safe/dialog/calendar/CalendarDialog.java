@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import com.zhongtie.work.network.NetWorkFunc1;
 import com.zhongtie.work.network.Network;
 import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.ui.base.BaseDialog;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +77,7 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
         mFinish = findViewById(R.id.finish);
         mCalendarView = findViewById(R.id.calendar_view);
 
-        mCalendarView.setViewHeight(com.zhongtie.work.util.ViewUtils.dip2px(232));
+        mCalendarView.setViewHeight(ResourcesUtils.dip2px(232));
         mUp = findViewById(R.id.up);
         mCalendarDate = findViewById(R.id.calendar_date);
         mNext = findViewById(R.id.next);

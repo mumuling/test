@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Constant;
 import com.zhongtie.work.event.EventData;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.util.image.ImageLoader;
 import com.zhongtie.work.util.image.ImageLoaderUtil;
 
@@ -37,7 +37,7 @@ public class ImageGridAdapter extends BaseAdapter {
     private RelativeLayout.LayoutParams params;
 
     public ImageGridAdapter(Context context, boolean showCamera, int column) {
-        params = new RelativeLayout.LayoutParams(ViewUtils.getScreenWidth(context) / 3, ViewUtils.getScreenWidth(context) / 3);
+        params = new RelativeLayout.LayoutParams(ResourcesUtils.getScreenWidth(context) / 3, ResourcesUtils.getScreenWidth(context) / 3);
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showCamera = showCamera;

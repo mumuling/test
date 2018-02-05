@@ -20,7 +20,7 @@ import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -185,7 +185,7 @@ public class WheelView extends View {
      * @param context the context
      */
     private void initData(Context context) {
-        ADDITIONAL_ITEM_HEIGHT = ViewUtils.dip2px(20);
+        ADDITIONAL_ITEM_HEIGHT = ResourcesUtils.dip2px(20);
 
         gestureDetector = new GestureDetector(context, gestureListener);
         gestureDetector.setIsLongpressEnabled(false);
