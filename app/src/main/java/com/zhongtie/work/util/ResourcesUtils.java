@@ -4,11 +4,13 @@ package com.zhongtie.work.util;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ArrayRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.TypedValue;
 
@@ -17,35 +19,41 @@ import com.zhongtie.work.app.App;
 
 
 /**
- * Shall
+ * Resources 的基本操作 在没有Context的情况下进行资源获取等
  */
-public class ViewUtils {
-    private static final String TAG = "ViewUtils";
+public class ResourcesUtils {
+    private static final String TAG = "ResourcesUtils";
 
     public static int getColorPrimary() {
         return getAttrColor(App.getInstance(), R.attr.colorPrimary);
     }
 
+
+    /**
+     * 获取style配置的眼神
+     *
+     * @param context 上下文
+     * @param attr    attr名称
+     * @return 参数
+     */
     public static int getAttrColor(Context context, int attr) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attr, typedValue, true);
         return typedValue.data;
     }
 
+
     public static int getColor(@ColorRes int color) {
-        return App.getInstance().getResources().getColor(color);
+        return ContextCompat.getColor(App.getInstance(), color);
     }
 
     /**
-     * 自定义字体数字字体
-     *
-     * @param context
-     * @return
+     * @param drawable drawable
+     * @return 根据ID获取 drawable
      */
-    public static Typeface getTextTypeface(Context context) {
-        return Typeface.createFromAsset(context.getAssets(), "fonts/HelveticaNeueLight.otf");
+    public static Drawable getDrawable(@DrawableRes int drawable) {
+        return ContextCompat.getDrawable(App.getInstance(), drawable);
     }
-
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
@@ -73,39 +81,49 @@ public class ViewUtils {
     }
 
     /**
-     * @param context
+     * 获取屏幕宽度
+     *
+     * @param context 上下文
      * @return 获取屏幕高
      */
     public static int getScreenHeight(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
     }
 
+    public static Drawable getTintColorDrawable(@DrawableRes int drawableID, @ColorInt int color) {
+        return getTintColorDrawable(getDrawable(drawableID), color);
+    }
 
-    public static Drawable getTintColorDrawable(Drawable oldDrawable, int color) {
+    public static Drawable getTintColorDrawable(Drawable oldDrawable, @ColorInt int color) {
         Drawable.ConstantState state = oldDrawable.getConstantState();
         Drawable mark1 = DrawableCompat.wrap(state == null ? oldDrawable : state.newDrawable()).mutate();
         DrawableCompat.setTint(mark1, color);
         return mark1;
     }
 
-    @DrawableRes
-    public static int getFileTypeImage(String filePath) {
-        if (filePath.endsWith("xls") || filePath.endsWith("xlsx")) {
-            return R.drawable.ic_file_excel;
-        } else if (filePath.endsWith("doc") || filePath.endsWith("docx")) {
-            return R.drawable.ic_file_word;
-        } else if (filePath.endsWith("ppt") || filePath.endsWith("pptx")) {
-            return R.drawable.ic_file_power;
-        } else if (filePath.endsWith("pdf")) {
-            return R.drawable.ic_file_pdf;
-        } else if (filePath.endsWith("txt")) {
-            return R.drawable.ic_file_unknow;
-        } else {
-            return R.drawable.ic_file_unknow;
-        }
+
+    /**
+     * @return 返回APP的Resources
+     */
+    public static Resources getResources() {
+        return App.getInstance().getResources();
     }
 
-    public static String getString(@StringRes int stringId) {
-        return App.getInstance().getString(stringId);
+    /**
+     * 获取字符串 不需要传入context对象 用的是系统对象
+     *
+     * @param id
+     * @return
+     */
+    public static String getString(@StringRes int id) {
+        return getResources().getString(id);
+    }
+
+    public static String getString(@StringRes int id, Object... formatArgs) {
+        return getResources().getString(id, formatArgs);
+    }
+
+    public static String[] getStringArray(@ArrayRes int id) {
+        return getResources().getStringArray(id);
     }
 }

@@ -15,7 +15,7 @@ import com.zhongtie.work.ui.safe.dialog.wheel.OnWheelChangedListener;
 import com.zhongtie.work.ui.safe.dialog.wheel.WheelAdapter;
 import com.zhongtie.work.ui.safe.dialog.wheel.WheelView;
 import com.zhongtie.work.util.TimeUtils;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.Calendar;
 import java.util.List;
@@ -150,7 +150,7 @@ public class SelectDateTimeDialog extends BaseDialog implements OnTouchListener,
      * 日期选择
      */
     private void initBirthDate() {
-        int textSize = ViewUtils.dip2px(18);
+        int textSize = ResourcesUtils.dip2px(18);
         yearWheel.setTextSize(textSize);
         yearWheel.setLabel("年");
         monthWheel.setTextSize(textSize);

@@ -11,10 +11,8 @@ import android.view.View;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.widget.DividerLineDrawable;
-
-import java.util.List;
 
 
 /**
@@ -32,7 +30,7 @@ public class SafeDetailDividerItemDecoration extends RecyclerView.ItemDecoration
     }
 
     public void setPaddingLeft(int paddingLeft) {
-        this.paddingLeft = ViewUtils.dip2px(paddingLeft);
+        this.paddingLeft = ResourcesUtils.dip2px(paddingLeft);
     }
 
     public void setDividerHeight(int dividerHeight) {

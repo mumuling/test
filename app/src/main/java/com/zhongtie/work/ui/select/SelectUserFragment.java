@@ -29,7 +29,7 @@ import com.zhongtie.work.ui.select.item.SelectUserGroupItemView;
 import com.zhongtie.work.ui.select.item.SelectUserItemView;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.util.parse.BindKey;
 import com.zhongtie.work.widget.AdapterDataObserver;
 import com.zhongtie.work.widget.DividerItemDecoration;
@@ -181,7 +181,7 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
         mSearchAdapter = new CommonAdapter().register(SelectUserItemView.class);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.white));
-        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(5));
+        dividerItemDecoration.setDividerHeight(ResourcesUtils.dip2px(5));
 
         mSearchList.getRecyclerView().addItemDecoration(dividerItemDecoration);
         mSearchList.getRecyclerView().setAdapter(mSearchAdapter);

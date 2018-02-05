@@ -12,7 +12,7 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.ui.file.select.NormalFile;
 import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ZTUtil;
 
 /**
  * Auth:Cheek
@@ -53,7 +53,7 @@ public class EndorseFileItemView extends AbstractItemView<NormalFile, EndorseFil
             vh.mFileDel.setVisibility(View.GONE);
         }
         vh.mFolderFileContent.setText(fileSize);
-        vh.mFileImg.setImageResource(ViewUtils.getFileTypeImage(data.getPath()));
+        vh.mFileImg.setImageResource(ZTUtil.getFileTypeImage(data.getPath()));
     }
 
     @Override

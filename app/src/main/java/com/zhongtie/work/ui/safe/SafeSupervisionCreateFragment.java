@@ -24,7 +24,7 @@ import com.zhongtie.work.ui.safe.presenter.SafeCreatePresenterImpl;
 import com.zhongtie.work.ui.safe.view.SafeCreateEditHeadView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +102,7 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     protected void initData() {
         SafeDividerItemDecoration dividerItemDecoration = new SafeDividerItemDecoration(getContext(), VERTICAL_LIST);
         dividerItemDecoration.setLineColor(Util.getColor(R.color.line2));
-        dividerItemDecoration.setDividerHeight(ViewUtils.dip2px(10));
+        dividerItemDecoration.setDividerHeight(ResourcesUtils.dip2px(10));
         dividerItemDecoration.setEndPosition(8);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(mCommonAdapter);

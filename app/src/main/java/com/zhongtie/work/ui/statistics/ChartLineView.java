@@ -16,7 +16,7 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.StatisticsLineData;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ChartLineView extends LinearLayout {
         mList.setNestedScrollingEnabled(false);
         mEmptyView = LayoutInflater.from(getContext()).inflate(R.layout.placeholder_empty_view, this, false);
         addView(mEmptyView);
-        mEmptyView.getLayoutParams().height = com.zhongtie.work.util.ViewUtils.dip2px(200);
+        mEmptyView.getLayoutParams().height = ResourcesUtils.dip2px(200);
         mEmptyView.setVisibility(VISIBLE);
         mList.setVisibility(GONE);
         mChartHeadView = LayoutInflater.from(getContext()).inflate(R.layout.statistics_head_view, this, false);
@@ -117,7 +117,7 @@ public class ChartLineView extends LinearLayout {
             vh.mChartPercent.setText(vh.mContext.getString(R.string.station_line_format, data.getTotal(), data.getPercent() * 100));
             vh.mChartTitle.setText(data.getCompany());
             if (width == 0) {
-                width = ViewUtils.getScreenWidth(vh.mContext) - ViewUtils.dip2px(80);
+                width = ResourcesUtils.getScreenWidth(vh.mContext) - ResourcesUtils.dip2px(80);
             }
 
             vh.mChartView.getLayoutParams().width = (int) (width * data.getPercent());

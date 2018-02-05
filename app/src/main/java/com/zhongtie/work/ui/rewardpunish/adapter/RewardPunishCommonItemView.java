@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.ViewUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +26,7 @@ import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.SelectReadGroupFragment;
 import com.zhongtie.work.ui.select.SelectSupervisorUserFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +118,7 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
                 CommonUserEntity user = new CommonUserEntity(rpRecordEntity);
                 list.add(user);
             }
-            String tip = com.zhongtie.work.util.ViewUtils.getString(R.string.search_hint);
+            String tip = ResourcesUtils.getString(R.string.search_hint);
             CommonSelectSearchActivity.newInstanceHint(getFragment(v.getContext()), SelectSupervisorUserFragment.class, data.getTitle(), tip, list);
         }
     }
@@ -141,7 +141,7 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
             mItemUserListTip = findViewById(R.id.item_user_list_tip);
             mItemUserAddImg = findViewById(R.id.item_user_add_img);
             mCheckExamineList = findViewById(R.id.check_examine_list);
-            mCheckExamineList.setPadding(0, 0, 0, com.zhongtie.work.util.ViewUtils.dip2px(10));
+            mCheckExamineList.setPadding(0, 0, 0, ResourcesUtils.dip2px(10));
         }
 
     }

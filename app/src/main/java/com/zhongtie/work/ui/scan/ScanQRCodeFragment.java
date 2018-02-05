@@ -14,7 +14,7 @@ import com.google.zxing.Result;
 import com.zhongtie.work.R;
 import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import me.dm7.barcodescanner.core.IViewFinder;
 import me.dm7.barcodescanner.core.ViewFinderView;
@@ -124,13 +124,13 @@ public class ScanQRCodeFragment extends BaseFragment implements ZXingScannerView
             float tradeMarkTop;
             float tradeMarkLeft;
             if (framingRect != null) {
-                tradeMarkTop = framingRect.bottom + PAINT.getTextSize() + ViewUtils.dip2px(10);
+                tradeMarkTop = framingRect.bottom + PAINT.getTextSize() + ResourcesUtils.dip2px(10);
                 tradeMarkLeft = framingRect.left;
             } else {
                 tradeMarkTop = 10;
-                tradeMarkLeft = canvas.getHeight() - PAINT.getTextSize() - ViewUtils.dip2px(10);
+                tradeMarkLeft = canvas.getHeight() - PAINT.getTextSize() - ResourcesUtils.dip2px(10);
             }
-            canvas.drawText(TRADE_MARK_TEXT, tradeMarkLeft + ViewUtils.dip2px(26), tradeMarkTop, PAINT);
+            canvas.drawText(TRADE_MARK_TEXT, tradeMarkLeft + ResourcesUtils.dip2px(26), tradeMarkTop, PAINT);
         }
     }
 }

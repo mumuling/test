@@ -14,7 +14,7 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.CompanyTeamEntity;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 /**
  * 安全监察选择
@@ -79,7 +79,7 @@ public class SelectSupervisorGroupItemView extends AbstractItemView<CompanyTeamE
             mTeamTitle = (RelativeLayout) findViewById(R.id.team_title);
 
             LinearLayout.LayoutParams l = (LinearLayout.LayoutParams) mCheckExamineList.getLayoutParams();
-            int len = ViewUtils.dip2px(16);
+            int len = ResourcesUtils.dip2px(16);
             l.setMargins(len, 0, len, len);
             mCheckExamineList.setLayoutParams(l);
 

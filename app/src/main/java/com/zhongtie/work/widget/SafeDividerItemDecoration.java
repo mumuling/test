@@ -11,8 +11,7 @@ import android.view.View;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
-import com.zhongtie.work.util.ViewUtils;
-import com.zhongtie.work.widget.DividerLineDrawable;
+import com.zhongtie.work.util.ResourcesUtils;
 
 
 /**
@@ -31,7 +30,7 @@ public class SafeDividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public void setPaddingLeft(int paddingLeft) {
-        this.paddingLeft = ViewUtils.dip2px(paddingLeft);
+        this.paddingLeft = ResourcesUtils.dip2px(paddingLeft);
     }
 
     public void setDividerHeight(int dividerHeight) {
@@ -129,7 +128,7 @@ public class SafeDividerItemDecoration extends RecyclerView.ItemDecoration {
             if (p == 0 && isTopLine) {
                 final int l = 0;
                 final int r = parent.getWidth();
-                final int t = child.getTop() + params.topMargin - ViewUtils.dip2px(8);
+                final int t = child.getTop() + params.topMargin - ResourcesUtils.dip2px(8);
                 final int b = child.getTop() + params.topMargin;
                 lineDrawable.setBounds(l, t, r, b);
                 lineDrawable.draw(c);
@@ -156,7 +155,7 @@ public class SafeDividerItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
 
         if (mOrientation == VERTICAL_LIST) {
-            outRect.set(0, isTopLine && itemPosition == 0 ? ViewUtils.dip2px(8) : 0, 0, endPosition == 0 || itemPosition < endPosition ? dividerHeight : 1);
+            outRect.set(0, isTopLine && itemPosition == 0 ? ResourcesUtils.dip2px(8) : 0, 0, endPosition == 0 || itemPosition < endPosition ? dividerHeight : 1);
         } else {
             outRect.set(0, 0, dividerHeight, 0);
         }

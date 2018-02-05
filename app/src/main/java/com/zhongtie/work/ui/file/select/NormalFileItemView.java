@@ -11,7 +11,7 @@ import com.zhongtie.work.base.adapter.BindItemData;
 import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.util.Util;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ZTUtil;
 
 /**
  * Auth:Cheek
@@ -33,7 +33,7 @@ public class NormalFileItemView extends AbstractItemView<NormalFile, NormalFileI
         vh.mFolderFileContent.setText(fileSize);
         vh.mFolderFileContent.append("\t");
         vh.mFolderFileContent.append(time);
-        vh.mFileImg.setImageResource(ViewUtils.getFileTypeImage(data.getPath()));
+        vh.mFileImg.setImageResource(ZTUtil.getFileTypeImage(data.getPath()));
     }
 
     @Override

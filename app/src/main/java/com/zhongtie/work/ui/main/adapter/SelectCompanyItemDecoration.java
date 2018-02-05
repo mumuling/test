@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.zhongtie.work.R;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 import com.zhongtie.work.widget.DividerLineDrawable;
 
 /**
@@ -24,8 +24,8 @@ public class SelectCompanyItemDecoration extends RecyclerView.ItemDecoration {
     public SelectCompanyItemDecoration(Context context) {
         mDivider = new DividerLineDrawable();
         mDivider.setColor(context.getResources().getColor(R.color.filtrate_select_color));
-        mInsets = ViewUtils.dip2px(16);
-        lineHeight = ViewUtils.dip2px(10);
+        mInsets = ResourcesUtils.dip2px(16);
+        lineHeight = ResourcesUtils.dip2px(10);
     }
 
     @Override

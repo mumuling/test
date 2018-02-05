@@ -12,7 +12,7 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.zhongtie.work.R;
 import com.zhongtie.work.enums.SignatureType;
 import com.zhongtie.work.list.OnSignatureTypeListener;
-import com.zhongtie.work.util.ViewUtils;
+import com.zhongtie.work.util.ResourcesUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,7 +60,7 @@ public class SignatureDialog extends Dialog {
         mSignaturePad = findViewById(R.id.signature_pad);
 
         LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mSignaturePad.getLayoutParams();
-        linearParams.width = (int) (ViewUtils.getScreenWidth(getContext()) * 0.82);
+        linearParams.width = (int) (ResourcesUtils.getScreenWidth(getContext()) * 0.82);
         linearParams.height = (int) (linearParams.width * 0.55f);
         mSignaturePad.setLayoutParams(linearParams);
 
