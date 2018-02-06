@@ -23,9 +23,12 @@
 
     <com.zhongtie.work.widget.BaseImageView
         android:id="@+id/safe_order_reply_sign"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="90dp"
+        android:layout_height="47dp"
         android:layout_alignParentRight="true"
+        app:placeholderImageScaleType="centerCrop"
+        app:actualImageScaleType="centerCrop"
+        app:failureImageScaleType="centerCrop"
         android:layout_centerVertical="true"
         tools:background="@color/line" />
 
