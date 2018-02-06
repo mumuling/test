@@ -8,9 +8,9 @@
         <item>统计图表</item>
         <item>文件下载</item>
         <item>质量督导</item>
-        <item>安全培训</item>
-        <item>会务系统</item>
-        <item>亮点展示</item>
+        <!--<item>安全培训</item>-->
+        <!--<item>会务系统</item>-->
+        <!--<item>亮点展示</item>-->
     </string-array>
     <integer-array name="home_items_icon">
         <item>@drawable/home1</item>

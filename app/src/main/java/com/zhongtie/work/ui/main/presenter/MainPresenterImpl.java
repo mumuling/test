@@ -16,6 +16,7 @@ import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.util.SharePrefUtil;
 import com.zhongtie.work.task.sync.SyncCompanyUtil;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
@@ -40,7 +41,16 @@ public class MainPresenterImpl extends BasePresenterImpl<MainContract.View> impl
             syncUserPic();
             SyncOfficeEventTask.execute();
             SyncWrongTask.execute();
+            checkCompanyDatabase();
         }
+    }
+
+    /**
+     * 检查数据库的完整性
+     */
+    private void checkCompanyDatabase() {
+
+
     }
 
     private void syncUserPic() {
