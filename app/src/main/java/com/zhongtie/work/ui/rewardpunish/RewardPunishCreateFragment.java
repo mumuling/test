@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
@@ -158,7 +159,24 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
             }
 
         }
+    }
+    @Override
+    public boolean isFetchBackEvent() {
+        return true;
+    }
 
+    @Override
+    public void onClickBack() {
+        super.onClickBack();
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_tip)
+                .content(R.string.dialog_edit_exit_tip)
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .onPositive((dialog, which) -> {
+                    getActivity().finish();
+                }).onNegative((dialog, which) -> dialog.dismiss())
+                .build().show();
     }
 
 }

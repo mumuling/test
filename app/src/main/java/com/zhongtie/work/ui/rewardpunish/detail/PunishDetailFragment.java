@@ -133,6 +133,7 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
 
         mHeadInfoView = new RPDetailHeadView(getActivity());
         initAdapter();
+        mHeadInfoView.requestFocus();
     }
 
     private void showSendBackDialog() {
@@ -194,10 +195,9 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
 
     @Override
     public void setItemList(List<Object> itemList) {
-        mInfoList.clear();
-        mInfoList.addAll(itemList);
+        mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
-        mList.postDelayed(() -> mList.smoothScrollToPosition(0),50);
+        mList.postDelayed(() -> mList.scrollTo(0,0),50);
 
     }
 

@@ -3,7 +3,6 @@ package com.zhongtie.work.ui.rewardpunish.detail;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +14,6 @@ import com.zhongtie.work.R;
 import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.ui.safe.detail.SafeOrderDetailFragment;
 import com.zhongtie.work.widget.BaseImageView;
-
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * 创建头部数据

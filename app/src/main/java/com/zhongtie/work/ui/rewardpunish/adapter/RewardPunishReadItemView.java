@@ -10,8 +10,6 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.RewardPunishEntity;
 import com.zhongtie.work.util.TimeUtils;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
-
 /**
  * 我可查看安全处罚信息
  *

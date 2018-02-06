@@ -7,24 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhongtie.work.R;
 import com.zhongtie.work.base.adapter.CommonAdapter;
 import com.zhongtie.work.data.ProjectTeamEntity;
 import com.zhongtie.work.data.SafeEventEntity;
+import com.zhongtie.work.event.ExitEvent;
 import com.zhongtie.work.event.SafeCreateEvent;
+import com.zhongtie.work.list.OnActivityKeyListener;
 import com.zhongtie.work.ui.base.BasePresenterFragment;
 import com.zhongtie.work.ui.image.MultiImageSelector;
 import com.zhongtie.work.ui.image.MultiImageSelectorActivity;
 import com.zhongtie.work.ui.safe.item.CreateEditContentItemView;
 import com.zhongtie.work.ui.safe.item.CreateSelectTypeItemView;
 import com.zhongtie.work.ui.safe.item.SafeCommonItemView;
-import com.zhongtie.work.widget.SafeDividerItemDecoration;
 import com.zhongtie.work.ui.safe.presenter.SafeCreateContract;
 import com.zhongtie.work.ui.safe.presenter.SafeCreatePresenterImpl;
 import com.zhongtie.work.ui.safe.view.SafeCreateEditHeadView;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
-import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ResourcesUtils;
+import com.zhongtie.work.util.Util;
+import com.zhongtie.work.widget.SafeDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +44,7 @@ import static com.zhongtie.work.widget.DividerItemDecoration.VERTICAL_LIST;
  * @date:2018.1.9
  */
 
-public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCreateContract.Presenter> implements SafeCreateContract.View {
-
+public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCreateContract.Presenter> implements SafeCreateContract.View, OnActivityKeyListener {
     public static final String ID = "id";
     /**
      * 要是修改则带入ID 添加ID参数
@@ -53,7 +55,6 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
     private CommonAdapter mCommonAdapter;
     private SafeCreateEditHeadView mHeadInfoView;
     private List<Object> mInfoList = new ArrayList<>();
-
 
     public static Bundle newInstance(int id) {
         Bundle args = new Bundle();
@@ -121,6 +122,13 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
         mCommonAdapter.notifyDataSetChanged();
     }
 
+
+
+    @Override
+    public void onClickRefresh() {
+        super.onClickRefresh();
+    }
+
     @Override
     public String getSelectDate() {
         return mHeadInfoView.getSelectDateTime();
@@ -176,64 +184,25 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
                 mPresenter.setSelectUserInfoList(title, createUserEntities);
                 mCommonAdapter.notifyDataSetChanged();
             }
-
         }
-
     }
 
-    public static final String[] imageUrls = new String[]{
-            "http://img.my.csdn.net/uploads/201309/01/1378037235_3453.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037235_7476.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037235_9280.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037234_3539.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037234_6318.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037194_2965.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037193_1687.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037193_1286.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037192_8379.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037178_9374.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037177_1254.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037177_6203.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037152_6352.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037151_9565.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037151_7904.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037148_7104.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037129_8825.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037128_5291.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037128_3531.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037127_1085.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037095_7515.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037094_8001.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037093_7168.jpg",
-            "http://img.my.csdn.net/uploads/201309/01/1378037091_4950.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949643_6410.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949642_6939.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949630_4505.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949630_4593.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949629_7309.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949629_8247.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949615_1986.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949614_8482.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949614_3743.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949614_4199.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949599_3416.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949599_5269.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949598_7858.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949598_9982.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949578_2770.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949578_8744.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949577_5210.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949577_1998.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949482_8813.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949481_6577.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949480_4490.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949455_6792.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949455_6345.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949442_4553.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949441_8987.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949441_5454.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949454_6367.jpg",
-            "http://img.my.csdn.net/uploads/201308/31/1377949442_4562.jpg"};
+    @Override
+    public boolean isFetchBackEvent() {
+        return true;
+    }
 
-
+    @Override
+    public void onClickBack() {
+        super.onClickBack();
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_tip)
+                .content(R.string.dialog_edit_exit_tip)
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .onPositive((dialog, which) -> {
+                    getActivity().finish();
+                }).onNegative((dialog, which) -> dialog.dismiss())
+                .build().show();
+    }
 }

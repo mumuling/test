@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhongtie.work.R;
+import com.zhongtie.work.list.OnActivityKeyListener;
 import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.util.ToastUtil;
 import com.zhongtie.work.util.parse.ParseData;
@@ -27,15 +28,17 @@ import io.reactivex.disposables.Disposable;
  *
  * @author Chaek
  */
-public abstract class BaseFragment extends Fragment implements BaseView, View.OnClickListener {
+public abstract class BaseFragment extends Fragment implements BaseView, View.OnClickListener, OnActivityKeyListener {
 
+    public Context mContext;
     public View fragmentView;
     public MultipleStatusView mStatusView;
     private boolean isInitView;
     private boolean isInitData;
-    public Context mContext;
     private BaseView activityBaseView;
     private OnChangeTitleListener mOnChangeTitleListener;
+    private BaseActivity mBaseActivity;
+
 
     @Override
     public void onAttach(Context context) {
@@ -47,6 +50,13 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
         if (context instanceof OnChangeTitleListener) {
             mOnChangeTitleListener = (OnChangeTitleListener) context;
         }
+        if (context instanceof BaseActivity) {
+            if (isFetchBackEvent()) {
+                mBaseActivity = (BaseActivity) context;
+                mBaseActivity.setOnActivityKeyListener(this);
+            }
+        }
+
         super.onAttach(context);
         this.mContext = context;
         EventBus.getDefault().register(this);
@@ -90,6 +100,7 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
             isInitData = true;
         }
     }
+
 
     public void initModel() {
     }
@@ -264,12 +275,26 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
     }
 
 
+    /**
+     * 要监听点击返回重写本方法为true
+     *
+     * @return
+     */
+    public boolean isFetchBackEvent() {
+        return false;
+    }
+
+
     @Override
     public void onDetach() {
         super.onDetach();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        if (mBaseActivity != null) {
+            mBaseActivity.setOnActivityKeyListener(null);
+        }
+        mBaseActivity = null;
     }
 
     /**
@@ -287,4 +312,8 @@ public abstract class BaseFragment extends Fragment implements BaseView, View.On
      */
     protected abstract void initData();
 
+    @Override
+    public void onClickBack() {
+
+    }
 }

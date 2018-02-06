@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhongtie.work.widget.MultipleStatusView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhongtie.work.widget.MultipleStatusView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/status_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="afterDescendants">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:descendantFocusability="afterDescendants">
 
         <LinearLayout
             android:id="@+id/bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/line2" />
+                android:background="@color/line2"/>
 
         </LinearLayout>
 
-        <include
-            layout="@layout/base_recyclerview"
+        <android.support.v7.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottom" />
+            android:layout_above="@id/bottom"
+            android:descendantFocusability="blocksDescendants"
+            android:focusableInTouchMode="true"
+            android:overScrollMode="never"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
 
     </RelativeLayout>

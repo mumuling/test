@@ -5,17 +5,16 @@ import android.support.v4.util.ArrayMap;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.EndorseUserEntity;
 import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
-import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.ui.base.BasePresenterImpl;
 import com.zhongtie.work.ui.file.select.NormalFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * Auth: Chaek
@@ -40,7 +39,7 @@ public class EndorseDetailPresenterImpl extends BasePresenterImpl<EndorseDetailC
             CommonUserEntity c = new CommonUserEntity();
             c.setUserId(i);
             c.setUserName("测试" + 1);
-            c.setUserPic(imageUrls[i]);
+//            c.setUserPic(imageUrls[i]);
             createUserEntities.add(c);
 
         }

@@ -10,7 +10,6 @@ import com.zhongtie.work.base.adapter.CommonViewHolder;
 import com.zhongtie.work.data.EndorseEntity;
 import com.zhongtie.work.ui.rewardpunish.adapter.RewardPunishItemView;
 
-import static com.zhongtie.work.ui.safe.SafeSupervisionCreateFragment.imageUrls;
 
 /**
  * Auth:Cheek
@@ -27,7 +26,7 @@ public class EndorseReadItemView extends AbstractItemView<EndorseEntity, RewardP
     @Override
     public void onBindViewHolder(@NonNull RewardPunishItemView.ViewHolder vh, @NonNull EndorseEntity data) {
         vh.mOrderUserPic.setVisibility(View.VISIBLE);
-        vh.mOrderUserPic.loadImage(imageUrls[0]);
+//        vh.mOrderUserPic.loadImage(imageUrls[0]);
         vh.mOrderCode.setText("张连英");
         vh.mOrderContent.setText("被处理对象：十号线供电线路项目分部十号线供...");
         vh.mOrderCreateTime.setText("11-20 11:49");

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.Cache;
 import com.zhongtie.work.base.adapter.CommonAdapter;
@@ -153,5 +154,24 @@ public class ReplyEditFragment extends BaseFragment implements OnSignatureListen
         } else {
             mCheckExamineList.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean isFetchBackEvent() {
+        return true;
+    }
+
+    @Override
+    public void onClickBack() {
+        super.onClickBack();
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_tip)
+                .content(R.string.dialog_edit_exit_tip)
+                .positiveText(R.string.confirm)
+                .negativeText(R.string.cancel)
+                .onPositive((dialog, which) -> {
+                    getActivity().finish();
+                }).onNegative((dialog, which) -> dialog.dismiss())
+                .build().show();
     }
 }

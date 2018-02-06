@@ -6,20 +6,11 @@ import android.support.annotation.MainThread;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.zhongtie.work.db.CacheAddWrongTable;
 import com.zhongtie.work.db.CacheAddWrongTable_Table;
-import com.zhongtie.work.db.CacheSafeEventTable;
-import com.zhongtie.work.db.CacheSafeEventTable_Table;
 import com.zhongtie.work.network.Http;
-import com.zhongtie.work.network.NetWorkFunc1;
-import com.zhongtie.work.network.Network;
-import com.zhongtie.work.network.api.SafeApi;
 import com.zhongtie.work.network.api.UserApi;
 import com.zhongtie.work.util.L;
-import com.zhongtie.work.util.upload.UploadUtil;
-
-import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
 
 /**
  * 上传离线的安全督导信息

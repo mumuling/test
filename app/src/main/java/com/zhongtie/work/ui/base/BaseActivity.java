@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.event.ExitEvent;
+import com.zhongtie.work.list.OnActivityKeyListener;
 import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.ToastUtil;
 import com.zhongtie.work.util.parse.ParseData;
@@ -33,6 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected TextView mToolbarTitle;
     protected TextView mMenuTitle;
     private LoadingDialog mLoadingDialog;
+
+    private OnActivityKeyListener mOnActivityKeyListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +96,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             mDisposable.clear();
         }
         cancelDialog();
+        mOnActivityKeyListener = null;
         mLoadingDialog = null;
     }
 
@@ -110,19 +114,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         setRightText(right);
     }
 
-    @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        super.onTitleChanged(title, color);
-
-    }
 
     /**
      * 设置标题
      *
      * @param title 标题内容
      */
-
-
     public void setTitle(String title) {
         if (mToolbarTitle != null) {
             mToolbarTitle.setText(title);
@@ -178,6 +175,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
     }
 
+    /**
+     * 设置监听回掉
+     *
+     * @param onActivityKeyListener 回调函数
+     */
+    public void setOnActivityKeyListener(OnActivityKeyListener onActivityKeyListener) {
+        mOnActivityKeyListener = onActivityKeyListener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mOnActivityKeyListener != null) {
+            mOnActivityKeyListener.onClickBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public void showLoadDialog(@StringRes int messageId) {
         showLoadDialog(getString(messageId));
@@ -196,6 +211,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             mDisposable = new CompositeDisposable();
         }
         mDisposable.add(disposable);
+
     }
 
 
@@ -227,7 +243,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
      * 需要拦截时间则需要 重写{@link #onClickLeft()}
      */
     protected void onClickLeft() {
-        finish();
+        if (mOnActivityKeyListener != null) {
+            mOnActivityKeyListener.onClickBack();
+        } else {
+            finish();
+        }
     }
 
     /**
@@ -276,6 +296,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             case R.id.title_right_btn:
                 onClickRight();
                 break;
+            default:
         }
     }
 
