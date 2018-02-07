@@ -207,7 +207,6 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
                     .compose(Network.convertDialogTip(mView))
                     .subscribe(integer -> {
                         mView.showToast(R.string.punish_edit_success);
-                        mView.createSuccess();
                         new PunishDetailUpdateEvent().post();
                     }, throwable -> {
                     }));
