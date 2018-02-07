@@ -2,6 +2,9 @@ package com.zhongtie.work.ui.rewardpunish.presenter;
 
 import com.zhongtie.work.R;
 import com.zhongtie.work.app.App;
+import com.zhongtie.work.data.ApproveEntity;
+import com.zhongtie.work.data.CommonUserEntity;
+import com.zhongtie.work.data.PunishAtUserEntity;
 import com.zhongtie.work.data.PunishGoBackEntity;
 import com.zhongtie.work.data.PunishReadEntity;
 import com.zhongtie.work.data.RPRecordEntity;
@@ -9,6 +12,7 @@ import com.zhongtie.work.data.RewardPunishDetailEntity;
 import com.zhongtie.work.data.TeamNameEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.ui.rewardpunish.adapter.PrRecordItemView;
+import com.zhongtie.work.util.L;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.TimeUtils;
 import com.zhongtie.work.util.ResourcesUtils;
@@ -26,6 +30,8 @@ class TransformationPunishModel {
     private RewardPunishDetailEntity detailEntity;
     private boolean isEdit;
 
+    private List<Integer> atUserList;
+
     TransformationPunishModel(RewardPunishDetailEntity detailEntity) {
         this(detailEntity, false);
     }
@@ -33,6 +39,13 @@ class TransformationPunishModel {
     TransformationPunishModel(RewardPunishDetailEntity detailEntity, boolean isEdit) {
         this.detailEntity = detailEntity;
         this.isEdit = isEdit;
+        atUserList = new ArrayList<>();
+
+        if (detailEntity.getAtuserlist() != null) {
+            for (PunishAtUserEntity approveEntity : detailEntity.getAtuserlist()) {
+                atUserList.add(approveEntity.getId());
+            }
+        }
     }
 
     /**
@@ -49,6 +62,16 @@ class TransformationPunishModel {
         punishUserData.setSignatureImg(detailEntity.getSupervisionUserSignImg());
         punishUserData.setSignTime(TimeUtils.formatPunishDetailTime(detailEntity.getSupervisionSignTime()));
         punishUserData.setState(PrRecordItemView.PUNISH_AGREE);
+        return punishUserData;
+    }
+
+    private CommonUserEntity getUpdateAgreeSupervisionData() {
+        CommonUserEntity punishUserData = new CommonUserEntity();
+        punishUserData.setSelect(true);
+        punishUserData.setAt(atUserList.contains(detailEntity.getSupervisionId()));
+        punishUserData.setUserId(detailEntity.getSupervisionId());
+        punishUserData.setUserName(detailEntity.getSupervisionUserName());
+        punishUserData.setUserPic(detailEntity.getSupervisionUserPic());
         return punishUserData;
     }
 
@@ -73,6 +96,17 @@ class TransformationPunishModel {
         }
         return leaderData;
     }
+
+    private CommonUserEntity getUpdatePunishLeaderData() {
+        CommonUserEntity leaderData = new CommonUserEntity();
+        leaderData.setSelect(true);
+        leaderData.setAt(atUserList.contains(detailEntity.getPunishLeaderId()));
+        leaderData.setUserId(detailEntity.getPunishLeaderId());
+        leaderData.setUserName(detailEntity.getPunishLeaderName());
+        leaderData.setUserPic(detailEntity.getPunishLeaderPic());
+        return leaderData;
+    }
+
 
     /**
      * 获取退回信息
@@ -104,7 +138,7 @@ class TransformationPunishModel {
     CommonItemType fetchPunishUserItem() {
         List<RPRecordEntity> endorseUserList = new ArrayList<>();
         if (TextUtil.isEmpty(detailEntity.getSupervisionUserSignImg()) && !isEdit) {
-            if (detailEntity.getSendBackList()!=null&&!detailEntity.getSendBackList().isEmpty()) {
+            if (detailEntity.getSendBackList() != null && !detailEntity.getSendBackList().isEmpty()) {
                 endorseUserList.addAll(getSendBackList());
             } else {
                 endorseUserList.add(getAgreeSupervisionData());
@@ -119,6 +153,18 @@ class TransformationPunishModel {
     }
 
     /**
+     * @return 修改的监察人
+     */
+    CommonItemType fetchUpdatePunishUserItem() {
+        List<CommonUserEntity> endorseUserList = new ArrayList<>();
+        endorseUserList.add(getUpdateAgreeSupervisionData());
+        String safeSupervision = App.getInstance().getString(R.string.safe_supervision_item_title);
+        CommonItemType<CommonUserEntity> checkUser = new CommonItemType<>(safeSupervision, ResourcesUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
+        checkUser.setTypeItemList(endorseUserList);
+        return checkUser;
+    }
+
+    /**
      * 被处理对象负责人
      */
     CommonItemType fetchPunishLeaderItem() {
@@ -126,6 +172,18 @@ class TransformationPunishModel {
         leadUserList.add(getPunishLeaderData());
         String safeSupervision = App.getInstance().getString(R.string.punish_leader_title);
         CommonItemType<RPRecordEntity> checkUser = new CommonItemType<>(safeSupervision, ResourcesUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
+        checkUser.setTypeItemList(leadUserList);
+        return checkUser;
+    }
+
+    /**
+     * 被处理修改对象负责人
+     */
+    CommonItemType fetchUpdatePunishLeaderItem() {
+        List<CommonUserEntity> leadUserList = new ArrayList<>();
+        leadUserList.add(getUpdatePunishLeaderData());
+        String safeSupervision = App.getInstance().getString(R.string.punish_leader_title);
+        CommonItemType<CommonUserEntity> checkUser = new CommonItemType<>(safeSupervision, ResourcesUtils.getString(R.string.punish_item_tip), R.drawable.plus, isEdit);
         checkUser.setTypeItemList(leadUserList);
         return checkUser;
     }

@@ -14,6 +14,7 @@ import com.zhongtie.work.list.OnChangeTitleListener;
 import com.zhongtie.work.list.OnEventPrintListener;
 import com.zhongtie.work.ui.base.BaseActivity;
 import com.zhongtie.work.ui.print.PrintEventActivity;
+import com.zhongtie.work.ui.select.SelectUserFragment;
 
 import java.io.Serializable;
 import java.util.List;
@@ -117,4 +118,6 @@ public class CommonFragmentActivity extends BaseActivity implements OnEventPrint
     protected void initData() {
 
     }
+
+
 }

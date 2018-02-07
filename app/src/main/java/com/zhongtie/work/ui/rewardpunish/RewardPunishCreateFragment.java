@@ -155,11 +155,12 @@ public class RewardPunishCreateFragment extends BasePresenterFragment<RewardPuni
                 String title = data.getStringExtra(TITLE);
                 List createUserEntities = (List) data.getSerializableExtra(LIST);
                 mPresenter.setSelectUserInfoList(title, createUserEntities);
-                mCommonAdapter.notifyDataSetChanged();
+                mCommonAdapter.notifyItemRangeChanged(3, 3);
             }
 
         }
     }
+
     @Override
     public boolean isFetchBackEvent() {
         return true;

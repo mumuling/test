@@ -40,7 +40,7 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
     /**
      * 是否隐藏显示check user
      */
-    private boolean isShowCheck;
+    private boolean isShowCheck=true;
     /**
      * 是否显示隐藏Hide 类别其它
      */
@@ -142,6 +142,7 @@ public class SafeDetailPresenterImpl extends BasePresenterImpl<SafeDetailContrac
             mAdapterItemList.add(checkUserItem);
             //检查人的由主list 展示 避免过多情况引起性能问题
             if (isShowCheck) {
+                //设置检查人人 更好的绘制分割线
                 mView.setCheckCount(checkUserItem.getTypeItemList().size());
                 mAdapterItemList.addAll(checkUserItem.getTypeItemList());
             } else {

@@ -62,15 +62,22 @@ public class PrRecordItemView extends AbstractItemView<RPRecordEntity, PrRecordI
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder vh, @NonNull RPRecordEntity data) {
-        vh.mSafeOrderName.setText(data.getUserName());
         if (data.isEdit()) {
             vh.mSafeOrderReplyHead.loadImage(data.getUserID());
+            if (data.isAt()) {
+                vh.mSafeOrderName.setTextColor(vh.mContext.getResources().getColor(R.color.state_red_color));
+                vh.mSafeOrderName.setText(vh.mContext.getString(R.string.at_user_name, data.getUserName()));
+            } else {
+                vh.mSafeOrderName.setTextColor(vh.mContext.getResources().getColor(R.color.text_color));
+                vh.mSafeOrderName.setText(data.getUserName());
+            }
             vh.mSafeOrderReplySign.setVisibility(View.GONE);
             vh.mSafeOrderReplyTime.setVisibility(View.GONE);
             vh.mRecordContent.setVisibility(View.GONE);
-        } else {
-            vh.mSafeOrderReplyHead.loadImage(data.getUserPic());
 
+        } else {
+            vh.mSafeOrderName.setText(data.getUserName());
+            vh.mSafeOrderReplyHead.loadImage(data.getUserPic());
             if (TextUtil.isEmpty(data.getReplyContent())) {
                 vh.mRecordContent.setVisibility(View.GONE);
             } else {

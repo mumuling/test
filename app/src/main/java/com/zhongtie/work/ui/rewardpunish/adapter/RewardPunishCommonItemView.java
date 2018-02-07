@@ -21,10 +21,12 @@ import com.zhongtie.work.data.CommonUserEntity;
 import com.zhongtie.work.data.RPRecordEntity;
 import com.zhongtie.work.data.create.CommonItemType;
 import com.zhongtie.work.list.CommonAdapterDataObserver;
+import com.zhongtie.work.ui.safe.item.CreateUserItemView;
 import com.zhongtie.work.ui.safe.item.TeamNameItemView;
 import com.zhongtie.work.ui.select.CommonSelectSearchActivity;
 import com.zhongtie.work.ui.select.SelectReadGroupFragment;
 import com.zhongtie.work.ui.select.SelectSupervisorUserFragment;
+import com.zhongtie.work.ui.select.SelectUserFragment;
 import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.ResourcesUtils;
 
@@ -81,6 +83,8 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
             }
             adapter.register(PrRecordItemView.class);
             adapter.register(TeamNameItemView.class);
+            adapter.register(CreateUserItemView.class);
+
             vh.mCheckExamineList.setAdapter(adapter);
         } else {
             adapter = (CommonAdapter) vh.mCheckExamineList.getAdapter();
@@ -112,14 +116,13 @@ public class RewardPunishCommonItemView extends AbstractItemView<CommonItemType,
             CommonFragmentActivity.newInstance(getFragment(v.getContext()), SelectReadGroupFragment.class, data.getTitle(), data.getTypeItemList());
         } else {
             //其它选择复原 保证再次打开界面会勾选 状态
-            List<CommonUserEntity> list = new ArrayList<>();
-            for (int i = 0; i < data.getTypeItemList().size(); i++) {
-                RPRecordEntity rpRecordEntity = (RPRecordEntity) data.getTypeItemList().get(i);
-                CommonUserEntity user = new CommonUserEntity(rpRecordEntity);
-                list.add(user);
-            }
-            String tip = ResourcesUtils.getString(R.string.search_hint);
-            CommonSelectSearchActivity.newInstanceHint(getFragment(v.getContext()), SelectSupervisorUserFragment.class, data.getTitle(), tip, list);
+//            List<CommonUserEntity> list = new ArrayList<>();
+//            for (int i = 0; i < data.getTypeItemList().size(); i++) {
+//                RPRecordEntity rpRecordEntity = (RPRecordEntity) data.getTypeItemList().get(i);
+//                CommonUserEntity user = new CommonUserEntity(rpRecordEntity);
+//                list.add(user);
+//            }
+            SelectUserFragment.start(getFragment(v.getContext()), data.getTitle(), data.getTypeItemList(), 1);
         }
     }
 

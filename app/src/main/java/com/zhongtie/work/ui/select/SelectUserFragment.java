@@ -3,6 +3,7 @@ package com.zhongtie.work.ui.select;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import com.zhongtie.work.ui.base.BaseFragment;
 import com.zhongtie.work.ui.safe.item.CreateUserItemView;
 import com.zhongtie.work.ui.select.item.SelectUserGroupItemView;
 import com.zhongtie.work.ui.select.item.SelectUserItemView;
+import com.zhongtie.work.ui.setting.CommonFragmentActivity;
 import com.zhongtie.work.util.TextUtil;
 import com.zhongtie.work.util.Util;
 import com.zhongtie.work.util.ResourcesUtils;
@@ -86,14 +88,30 @@ public class SelectUserFragment extends BaseFragment implements InputMethodRelat
     private List<CommonUserEntity> mSelectUserList = new ArrayList<>();
 
     private String mTip;
+    @BindKey(MAX_SELECT_COUNT)
     private int maxSelectCount = -1;
+
+    public static void start(Fragment fragment, String title, List list) {
+        start(fragment, title, list, -1);
+    }
+
+    public static void start(Fragment fragment, String title, List list, int count) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(LIST, (Serializable) list);
+        bundle.putInt(MAX_SELECT_COUNT, count);
+        CommonFragmentActivity.newInstance(fragment, SelectUserFragment.class, title, bundle);
+    }
+
 
     @Override
     public int getLayoutViewId() {
         mTip = "向右滑动查看更多";
+
         if (mTitle.equals("验证人")) {
             maxSelectCount = 2;
-            mTip = "最多可选择2人";
+        }
+        if (maxSelectCount > 0) {
+            mTip = getString(R.string.select_user_count, maxSelectCount);
         }
         return R.layout.select_user_fragment;
     }

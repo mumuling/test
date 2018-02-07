@@ -38,8 +38,6 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     public static final int SAFE_EVENT_COUNT = 1;
     public static final int SAFE_PUNISH_COUNT = 2;
 
-    private TextView mCancel;
-    private TextView mFinish;
     private MonthPager mCalendarView;
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
 
@@ -73,8 +71,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_calendar);
-        mCancel = findViewById(R.id.cancel);
-        mFinish = findViewById(R.id.finish);
+        TextView cancel = findViewById(R.id.cancel);
+        TextView finish = findViewById(R.id.finish);
         mCalendarView = findViewById(R.id.calendar_view);
 
         mCalendarView.setViewHeight(ResourcesUtils.dip2px(232));
@@ -83,8 +81,8 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
         mNext = findViewById(R.id.next);
         mUp.setOnClickListener(this);
         mNext.setOnClickListener(this);
-        mCancel.setOnClickListener(this);
-        mFinish.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+        finish.setOnClickListener(this);
         initCalendarPage();
 
     }
@@ -111,8 +109,6 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
 
     private void initCalendarPage() {
         currentDate = new CalendarDate();
-        getMonthCount(currentDate.year, currentDate.month);
-
         mCalendarDate.setText(getContext().getString(R.string.select_date, currentDate.getYear(), currentDate.getMonth()));
         CustomDayView customDayView = new CustomDayView(getContext(), R.layout.custom_day);
         mCalendarViewAdapter = new CalendarViewAdapter(getContext(), this, CalendarAttr.CalendarType.MONTH,
@@ -126,16 +122,18 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
             page.setAlpha(position);
         });
         mCalendarView.addOnPageChangeListener(this);
+        getMonthCount(currentDate.year, currentDate.month, currentDate);
     }
 
 
     /**
      * 获取当月事件数量
      *
-     * @param year  年份
-     * @param month 月份
+     * @param year        年份
+     * @param month       月份
+     * @param currentDate
      */
-    private void getMonthCount(int year, int month) {
+    private void getMonthCount(int year, int month, CalendarDate currentDate) {
         if (mCalendarTyp == SAFE_EVENT_COUNT) {
             int company = Cache.getSelectCompany();
             if (monthMar.get(year + "" + month) == null) {
@@ -148,16 +146,21 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
                             for (int i = 0; i < eventCountData.size(); i++) {
                                 EventCountData data = eventCountData.get(i);
                                 String[] date = data.getDay().split("-");
-                                map.put(date[0] + "-" + Integer.valueOf(date[1]) + "-" + date[2], data.getCount() + "");
+                                map.put(date[0] + "-" + Integer.valueOf(date[1]) + "-" + Integer.valueOf(date[2]), data.getCount() + "");
                             }
                             return map;
                         })
                         .compose(Network.networkIO())
                         .subscribe(eventCountData -> {
                             monthMar.put(year + "" + month, true);
+                            boolean isFrist = mEventCountList.isEmpty();
                             mEventCountList.putAll(eventCountData);
                             mCalendarViewAdapter.setMarkData(mEventCountList);
-                            mCalendarViewAdapter.notifyDataChanged();
+                            if (isFrist) {
+                                mCalendarViewAdapter.notifyDataChanged();
+                            } else {
+                                mCalendarView.post(() -> mCalendarViewAdapter.notifyDataSetChanged());
+                            }
                         }, Throwable::printStackTrace);
             }
         }
@@ -205,7 +208,7 @@ public class CalendarDialog extends BaseDialog implements OnSelectDateListener, 
         if (currentCalendars.get(position % currentCalendars.size()) != null) {
             currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
             mCalendarDate.setText(getContext().getString(R.string.select_date, currentDate.getYear(), currentDate.getMonth()));
-            getMonthCount(currentDate.year, currentDate.month);
+            getMonthCount(currentDate.year, currentDate.month, currentDate);
         }
     }
 

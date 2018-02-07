@@ -31,6 +31,7 @@ public class CommonUserEntity implements BaseEvent, Serializable {
         setUserName(rpRecordEntity.getUserName());
         setUserId(rpRecordEntity.getUserID());
         setUserPic(rpRecordEntity.getUserPic());
+        setAt(rpRecordEntity.isAt());
         setSelect(true);
     }
 

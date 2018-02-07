@@ -38,6 +38,7 @@ public class SelectDateTimeDialog extends BaseDialog implements OnTouchListener,
     public static final int BLOOD = 2;
     public static final int SEX_TYPE = 3;
     public static final int WEIGHT = 4;
+    public static final int START_YEAR = 2017;
 
 
     public WheelView yearWheel;
@@ -168,12 +169,14 @@ public class SelectDateTimeDialog extends BaseDialog implements OnTouchListener,
             mCurMonth = Integer.parseInt(str[1]) - 1;
             mCurDay = Integer.parseInt(str[2]) - 1;
         }
-        int oldYear = build.dataModel == Build.BIRTH ? curYear - 100 : curYear;
         int lastYear = build.dataModel == Build.BIRTH ? curYear : curYear + 10;
-        NumericWheelAdapter yearNumber = new NumericWheelAdapter(oldYear, lastYear);
-
+        if (lastYear < START_YEAR) {
+            lastYear = START_YEAR;
+        }
+        NumericWheelAdapter yearNumber = new NumericWheelAdapter(START_YEAR, lastYear);
+        int current = lastYear - START_YEAR;
         yearWheel.setAdapter(yearNumber);
-        yearWheel.setCurrentItem(build.dataModel == Build.BIRTH ? 100 : 0);
+        yearWheel.setCurrentItem(current);
         yearWheel.addChangingListener(this);
 
         monthWheel.setAdapter(new NumericWheelAdapter(1, 12, "%02d"));

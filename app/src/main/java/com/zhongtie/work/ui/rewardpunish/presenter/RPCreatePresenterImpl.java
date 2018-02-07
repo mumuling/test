@@ -98,11 +98,10 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
                     mDescribe = new EditContentEntity("详细情况", "请输入详细情况", data.getContent());
                     mPunishItemList.add(mDescribe);
                     TransformationPunishModel transModel = new TransformationPunishModel(data, true);
-                    CommonItemType punishUser = transModel.fetchPunishUserItem();
+                    CommonItemType punishUser = transModel.fetchUpdatePunishUserItem();
                     mPunishItemList.add(punishUser);
                     mItemArrayMap.put(punishUser.getTitle(), punishUser);
-
-                    CommonItemType punishLeader = transModel.fetchPunishLeaderItem();
+                    CommonItemType punishLeader = transModel.fetchUpdatePunishLeaderItem();
                     mPunishItemList.add(punishLeader);
                     mItemArrayMap.put(punishLeader.getTitle(), punishLeader);
 
@@ -177,13 +176,28 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
         createData.put("tax_eventid", eventId);
 
         CommonItemType itemType = mItemArrayMap.get(ResourcesUtils.getString(R.string.punish_leader_title));
-        RPRecordEntity lead = (RPRecordEntity) itemType.getTypeItemList().get(0);
-        createData.put("tax_leader", lead.getUserID());
+        CommonUserEntity leader = (CommonUserEntity) itemType.getTypeItemList().get(0);
+        createData.put("tax_leader", leader.getUserId());
         createData.put("tax_money", punishAmount);
         createData.put("tax_reader", mItemArrayMap.get(ResourcesUtils.getString(R.string.punish_read_group_title)).getTeamIDList());
         CommonItemType safer = mItemArrayMap.get(ResourcesUtils.getString(R.string.punish_safe_title));
-        RPRecordEntity saferItem = (RPRecordEntity) safer.getTypeItemList().get(0);
-        createData.put("tax_safer", saferItem.getUserID());
+        CommonUserEntity saferItem = (CommonUserEntity) safer.getTypeItemList().get(0);
+        createData.put("tax_safer", saferItem.getUserId());
+
+
+        //获取AT的用户
+        CommonUserEntity[] allUserData = {leader, saferItem};
+        StringBuilder at = new StringBuilder();
+        for (CommonUserEntity data : allUserData) {
+            if (data.isAt()) {
+                at.append(data);
+                at.append(",");
+            }
+        }
+        if (at.length() > 0) {
+            at.delete(at.length() - 1, at.length());
+        }
+        createData.put("tax_at", at.toString());
 
 
         if (mPunishId > 0) {
@@ -214,24 +228,7 @@ public class RPCreatePresenterImpl extends BasePresenterImpl<RewardPunishCreateC
     @Override
     public void setSelectUserInfoList(String title, List createUserEntities) {
         CommonItemType itemType = mItemArrayMap.get(title);
-        if (itemType != null) {
-            if (!title.contains(ResourcesUtils.getString(R.string.punish_read_group_title))) {
-                //编辑界面对选择的人进行转换
-                List<RPRecordEntity> list = new ArrayList<>();
-                for (int i = 0; i < createUserEntities.size(); i++) {
-                    CommonUserEntity user = (CommonUserEntity) createUserEntities.get(i);
-                    RPRecordEntity rpRecordEntity = new RPRecordEntity();
-                    rpRecordEntity.setUserName(user.getUserName());
-                    rpRecordEntity.setUserID(user.getUserId());
-                    rpRecordEntity.setUserPic(user.getUserPic());
-                    rpRecordEntity.setEdit(true);
-                    list.add(rpRecordEntity);
-                }
-                itemType.setTypeItemList(list);
-            } else {
-                itemType.setTypeItemList(createUserEntities);
-            }
-        }
+        itemType.setTypeItemList(createUserEntities);
     }
 
 }

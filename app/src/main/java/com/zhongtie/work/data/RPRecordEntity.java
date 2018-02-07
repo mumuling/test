@@ -22,6 +22,15 @@ public class RPRecordEntity implements BaseEvent, Serializable {
     private String signatureImg;
     private String signTime;
 
+    private boolean isAt;
+
+    public boolean isAt() {
+        return isAt;
+    }
+
+    public void setAt(boolean at) {
+        isAt = at;
+    }
 
     public String getSignTime() {
         return signTime;

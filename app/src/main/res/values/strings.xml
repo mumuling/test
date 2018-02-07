@@ -222,4 +222,5 @@
     <string name="endorse_upload_file_title">上传文件</string>
     <string name="endorse_sign_title">签认</string>
     <string name="dialog_edit_exit_tip">确定要返回，并放弃当前已经输入的内容吗？</string>
+    <string name="select_user_count" formatted="true">最多可选择%d人</string>
 </resources>

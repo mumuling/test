@@ -25,7 +25,6 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.http.PUT;
 
 /**
  * Date: 2018/1/17
@@ -38,6 +37,7 @@ public class SyncUserPic {
     private static final String TAG = "UserPicSync";
     public static final String DOWNLOAD_USER_PIC_TIME = "download_user_pic_time";
     private static final int TIME = 3 * 60 * 60 * 1000;
+    private static final int MAX_RUNNABLE_COUNT = 2;
     private static SyncUserPic sUserPicSync;
 
     private ExecutorService mDownloadServer;
@@ -58,7 +58,7 @@ public class SyncUserPic {
         return sUserPicSync;
     }
 
-    public SyncUserPic() {
+    private SyncUserPic() {
         mDownloadServer = Executors.newFixedThreadPool(3);
         cacheFolderName = new File(cacheFile);
         if (!cacheFolderName.exists()) {
@@ -120,7 +120,7 @@ public class SyncUserPic {
 
     private void executeDownload(List<String> strings) {
         L.e(TAG, "正在开始下载...." + strings.size() + "条数据");
-        for (int i = 0, count = Math.min(2, strings.size()); i < count; i++) {
+        for (int i = 0, count = Math.min(MAX_RUNNABLE_COUNT, strings.size()); i < count; i++) {
             mDownloadServer.execute(new DownRunnable(strings.get(i), new OnDownLoadCallBack() {
                 @Override
                 public void onDownComplete() {
@@ -194,11 +194,13 @@ public class SyncUserPic {
                     is.close();
                     fos.close();
                     response.close();
+                    call.cancel();
                     mOnDownLoadCallBack.onDownComplete();
                     L.e(TAG, downUrl + "下载成功、、、、、、、、");
                 } else {
                     L.e(TAG, downUrl + "下载失败、、、、、、、、");
                     response.close();
+                    call.cancel();
                     mOnDownLoadCallBack.onDownFail();
                 }
             } catch (Exception e) {

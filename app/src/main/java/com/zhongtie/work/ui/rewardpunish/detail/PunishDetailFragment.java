@@ -197,8 +197,6 @@ public class PunishDetailFragment extends BasePresenterFragment<RPDetailContract
     public void setItemList(List<Object> itemList) {
         mCommonAdapter.setListData(itemList);
         mCommonAdapter.notifyDataSetChanged();
-        mList.postDelayed(() -> mList.scrollTo(0,0),50);
-
     }
 
     @Override
