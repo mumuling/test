@@ -34,7 +34,6 @@
         android:id="@+id/project_title_bar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/white"
         app:slide_caterpillar="false"
         app:slide_footer_color="@color/app_color"
         app:slide_footer_line_height="3dp"
