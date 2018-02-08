@@ -177,6 +177,7 @@ public class SafeSupervisionCreateFragment extends BasePresenterFragment<SafeCre
             if (requestCode == MultiImageSelector.REQUEST_CODE) {
                 List<String> selectImgList = data.getStringArrayListExtra(MultiImageSelectorActivity.BASE_RESULT);
                 mPresenter.setSelectImageList(selectImgList);
+                mCommonAdapter.notifyItemChanged(4);
             } else if (requestCode == CommonFragmentActivity.USER_SELECT_CODE) {
                 String title = data.getStringExtra(TITLE);
                 List createUserEntities = (List) data.getSerializableExtra(LIST);

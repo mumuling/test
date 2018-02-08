@@ -217,7 +217,7 @@ public class SafeCreatePresenterImpl extends BasePresenterImpl<SafeCreateContrac
                 list.add(image);
             }
         }
-        mPicItemType.setTypeItemList(list);
+//        mPicItemType.setTypeItemList(list);
     }
 
     @Override
